@@ -33,7 +33,7 @@ const Page = () => {
                     </div>
                     <div className='flex flex-row gap-6'>
                         <div style={{ fontSize: 15, fontWeight: "400" }}>
-                            Tate.AI
+                            Tate.hello
                         </div>
                         <button>
                             <Image src={"/assets/twitter.png"} height={20} width={20} style={{ resize: "cover" }} />
