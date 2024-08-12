@@ -5,6 +5,7 @@ import 'react-phone-input-2/lib/style.css';
 
 const PhoneNumberInput = ({ phonenumber }) => {
     const [phone, setPhone] = useState('');
+    const [focus, setFocus] = useState(false);
     // console.log("Phone number is", phone);
 
     useEffect(() => {
@@ -22,11 +23,13 @@ const PhoneNumberInput = ({ phonenumber }) => {
                 height: '40px',
                 fontSize: '16px',
                 borderRadius: '4px',
-                border: '1px solid #00000000',
+                border: focus ? '2px solid #00000080' : "1px solid #00000070",
                 paddingLeft: '60px',
                 backgroundColor: "#EDEDEDC7",
                 height: 50
             }}
+            onFocus={() => setFocus(true)}
+            onBlur={() => setFocus(false)}
             containerStyle={{
                 marginBottom: '15px',
             }}

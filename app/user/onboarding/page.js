@@ -21,6 +21,7 @@ const Page = () => {
     const [isSmallScreen, setIsSmallScreen] = useState(false);
     const [open, setOpen] = useState(false);
     const [userName, setUserName] = useState("");
+    const [userLastName, setUserLastName] = useState("");
     const [userEmail, setUserEmail] = useState("");
     const [phoneNumber, setPhoneNumber] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -82,6 +83,10 @@ const Page = () => {
         borderRadius: 2
     };
 
+    const testStyle = {
+        bgcolor: "#ffffff"
+    }
+
     //code for apicall
     const handleTalktoBlandy = async () => {
         setLoading(true);
@@ -136,13 +141,13 @@ const Page = () => {
                         </div>
                         <button>
                             <Image
-                            layout='responsive'
-                            objectFit='contain' src={"/assets/twitter.png"} alt='social' height={20} width={20} style={{ resize: "cover" }} />
+                                layout='responsive'
+                                objectFit='contain' src={"/assets/twitter.png"} alt='social' height={20} width={20} style={{ resize: "cover" }} />
                         </button>
                         <button>
                             <Image
-                            layout='responsive'
-                            objectFit='contain' src={"/assets/instagram.png"} alt='social' height={20} width={20} style={{ resize: "cover" }} />
+                                layout='responsive'
+                                objectFit='contain' src={"/assets/instagram.png"} alt='social' height={20} width={20} style={{ resize: "cover" }} />
                         </button>
                     </div>
                 </div>
@@ -204,7 +209,7 @@ const Page = () => {
             <div className='flex items-end ms-8 mb-12 rounded' style={{ backgroundColor: "#620FEB66", width: "fit-content" }}>
                 <button className='flex flex-row p-4 items-center gap-6' onClick={handleClick}>
                     <div className='text-white' style={{ fontSize: 17, fontWeight: "600" }}>
-                        Build CreatorX
+                        Start calling
                     </div>
                     <Image src={"/assets/phone.png"} alt='phone' height={20} width={20} />
                 </button>
@@ -215,22 +220,52 @@ const Page = () => {
                 closeAfterTransition
                 BackdropProps={{
                     timeout: 1000,
+                    sx: {
+                        backgroundColor: 'transparent',
+                        backdropFilter: 'blur(40px)',
+                    },
                 }}
             >
                 <Fade in={open}>
                     <Box
                         sx={style}
                     >
-                        <h2></h2>
-                        <p>Fill the form</p>
+                        <div className='text-center' style={{ fontSize: 30, fontWeight: "600" }}>
+                            Tristan.ai
+                        </div>
                         <div className='mt-4'>
                             <TextField className='w-full'
                                 autofill='off'
                                 id="filled-basic"
-                                label="Name" variant="filled"
+                                label="First name" variant="outlined"
                                 value={userName}
                                 onChange={(e) => setUserName(e.target.value)}
-                                placeholder='Enter name'
+                                placeholder='Enter first name'
+                                sx={{
+                                    '& label.Mui-focused': {
+                                        color: '#050A0890',
+                                        // borderColor: "red"
+                                    },
+                                    '& .MuiFilledInput-root': {
+                                        // color: '#050A0860',
+                                        fontSize: 13,
+                                        fontWeight: '400'
+                                    },
+                                    '& .MuiOutlinedInput-root': {
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#00000080',
+                                        },
+                                    },
+                                }} />
+                        </div>
+                        <div className='mt-4'>
+                            <TextField className='w-full'
+                                autofill='off'
+                                id="filled-basic"
+                                label="Last name" variant="outlined"
+                                value={userLastName}
+                                onChange={(e) => setUserLastName(e.target.value)}
+                                placeholder='Enter last name'
                                 sx={{
                                     '& label.Mui-focused': {
                                         color: '#050A0890',
@@ -240,11 +275,10 @@ const Page = () => {
                                         fontSize: 13,
                                         fontWeight: '400'
                                     },
-                                    '& .MuiFilledInput-underline:before': {
-                                        borderBottomColor: '#050A0860',
-                                    },
-                                    '& .MuiFilledInput-underline:after': {
-                                        borderBottomColor: '#050A0890',
+                                    '& .MuiOutlinedInput-root': {
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#00000080',
+                                        },
                                     },
                                 }} />
                         </div>
@@ -252,7 +286,7 @@ const Page = () => {
                             <TextField className='w-full'
                                 autofill='off'
                                 id="filled-basic"
-                                label="Email" variant="filled"
+                                label="Email" variant="outlined"
                                 value={userEmail}
                                 onChange={(e) => setUserEmail(e.target.value)}
                                 placeholder='Enter email'
@@ -265,38 +299,14 @@ const Page = () => {
                                         fontSize: 13,
                                         fontWeight: '400'
                                     },
-                                    '& .MuiFilledInput-underline:before': {
-                                        borderBottomColor: '#050A0860',
-                                    },
-                                    '& .MuiFilledInput-underline:after': {
-                                        borderBottomColor: '#050A0890',
+                                    '& .MuiOutlinedInput-root': {
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#00000080',
+                                        },
                                     },
                                 }} />
                         </div>
                         <div className='mt-4'>
-                            {/*<TextField className='w-full'
-                                autofill='off'
-                                id="filled-basic"
-                                label="Phone Number" variant="filled"
-                                // value={userName}
-                                // onChange={(e) => setUserName(e.target.value)}
-                                placeholder='Enter phone number'
-                                sx={{
-                                    '& label.Mui-focused': {
-                                        color: '#050A0890',
-                                    },
-                                    '& .MuiFilledInput-root': {
-                                        // color: '#050A0860',
-                                        fontSize: 13,
-                                        fontWeight: '400'
-                                    },
-                                    '& .MuiFilledInput-underline:before': {
-                                        borderBottomColor: '#050A0860',
-                                    },
-                                    '& .MuiFilledInput-underline:after': {
-                                        borderBottomColor: '#050A0890',
-                                    },
-                                }} />*/}
                             <PhoneNumberInput phonenumber={getPhoneNumber} />
                         </div>
                         {

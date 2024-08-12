@@ -6,6 +6,7 @@ import { Alert, CircularProgress, Slide, Snackbar, TextField } from '@mui/materi
 const MakeCallForm = ({ closeForm }) => {
 
     const [userName, setUserName] = useState("");
+    const [userLastName, setUserLastName] = useState("");
     const [userEmail, setUserEmail] = useState("");
     const [phoneNumber, setPhoneNumber] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -60,15 +61,17 @@ const MakeCallForm = ({ closeForm }) => {
     return (
         <div>
             <div>
-                <p>Fill the form</p>
+                <div className='text-center' style={{ fontSize: 30, fontWeight: "600" }}>
+                    Tristan.ai
+                </div>
                 <div className='mt-4'>
                     <TextField className='w-full'
                         autofill='off'
                         id="filled-basic"
-                        label="Name" variant="filled"
+                        label="First name" variant="outlined"
                         value={userName}
                         onChange={(e) => setUserName(e.target.value)}
-                        placeholder='Enter name'
+                        placeholder='Enter first name'
                         sx={{
                             '& label.Mui-focused': {
                                 color: '#050A0890',
@@ -78,11 +81,10 @@ const MakeCallForm = ({ closeForm }) => {
                                 fontSize: 13,
                                 fontWeight: '400'
                             },
-                            '& .MuiFilledInput-underline:before': {
-                                borderBottomColor: '#050A0860',
-                            },
-                            '& .MuiFilledInput-underline:after': {
-                                borderBottomColor: '#050A0890',
+                            '& .MuiOutlinedInput-root': {
+                                '&.Mui-focused fieldset': {
+                                    borderColor: '#00000080',
+                                },
                             },
                         }} />
                 </div>
@@ -90,7 +92,31 @@ const MakeCallForm = ({ closeForm }) => {
                     <TextField className='w-full'
                         autofill='off'
                         id="filled-basic"
-                        label="Email" variant="filled"
+                        label="Last name" variant="outlined"
+                        value={userLastName}
+                        onChange={(e) => setUserLastName(e.target.value)}
+                        placeholder='Enter last name'
+                        sx={{
+                            '& label.Mui-focused': {
+                                color: '#050A0890',
+                            },
+                            '& .MuiFilledInput-root': {
+                                // color: '#050A0860',
+                                fontSize: 13,
+                                fontWeight: '400'
+                            },
+                            '& .MuiOutlinedInput-root': {
+                                '&.Mui-focused fieldset': {
+                                    borderColor: '#00000080',
+                                },
+                            },
+                        }} />
+                </div>
+                <div className='mt-4'>
+                    <TextField className='w-full'
+                        autofill='off'
+                        id="filled-basic"
+                        label="Email" variant="outlined"
                         value={userEmail}
                         onChange={(e) => setUserEmail(e.target.value)}
                         placeholder='Enter email'
@@ -102,13 +128,12 @@ const MakeCallForm = ({ closeForm }) => {
                                 // color: '#050A0860',
                                 fontSize: 13,
                                 fontWeight: '400'
-                            },
-                            '& .MuiFilledInput-underline:before': {
-                                borderBottomColor: '#050A0860',
-                            },
-                            '& .MuiFilledInput-underline:after': {
-                                borderBottomColor: '#050A0890',
-                            },
+                            },//MuiOutlinedInput-rootMui-focused fieldset
+                            '& .MuiOutlinedInput-root': {
+                                '&.Mui-focused fieldset': {
+                                    borderColor: "#00000080"
+                                }
+                            }
                         }} />
                 </div>
                 <div className='mt-4'>
