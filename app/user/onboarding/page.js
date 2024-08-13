@@ -6,6 +6,7 @@ import { Alert, Box, Button, CircularProgress, Drawer, Fade, Modal, Slide, Snack
 import PhoneNumberInput from '@/components/PhoneNumberInput';
 import MakeCallForm from '@/components/MakeCallForm';
 import ProfileAnimation from '@/components/animation/ProfileAnimation';
+import { useRouter } from 'next/navigation';
 
 const backgroundImage = {
     backgroundImage: 'url("/backgroundImage.png")', // Ensure the correct path
@@ -18,6 +19,8 @@ const backgroundImage = {
 
 const Page = () => {
 
+    const router = useRouter()
+    
     const [isSmallScreen, setIsSmallScreen] = useState(false);
     const [open, setOpen] = useState(false);
     const [userName, setUserName] = useState("");
@@ -60,6 +63,10 @@ const Page = () => {
 
         return () => mediaQuery.removeEventListener('change', handleResize); // Cleanup listener on component unmount
     }, []);
+    
+    //code for creating account
+    const handleContinue = () => {
+    }
 
     // Handle button click
     const handleClick = () => {
@@ -207,7 +214,7 @@ const Page = () => {
             </div>
 
             <div className='flex items-end ms-8 mb-12 rounded' style={{ backgroundColor: "#620FEB66", width: "fit-content" }}>
-                <button className='flex flex-row p-4 items-center gap-6' onClick={handleClick}>
+                <button className='flex flex-row p-4 items-center gap-6' onClick={handleContinue}>
                     <div className='text-white' style={{ fontSize: 17, fontWeight: "600" }}>
                         Start calling
                     </div>
