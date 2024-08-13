@@ -144,7 +144,7 @@ const Page = () => {
                     </div>
                     <div className='flex flex-row gap-6'>
                         <div style={{ fontSize: 15, fontWeight: "400" }}>
-                            Tate.AI
+                            Tate.voiceapp
                         </div>
                         <button>
                             <Image
