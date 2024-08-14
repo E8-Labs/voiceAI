@@ -15,7 +15,7 @@ const PhoneNumberInput = ({ phonenumber }) => {
 
     return (
         <PhoneInput
-            country={''}
+            country={'us'}
             value={phone}
             onChange={(phone) => setPhone(phone)}
             inputStyle={{
@@ -25,7 +25,7 @@ const PhoneNumberInput = ({ phonenumber }) => {
                 borderRadius: '4px',
                 border: focus ? '2px solid #00000080' : "1px solid #00000070",
                 paddingLeft: '60px',
-                backgroundColor: "#EDEDEDC7",
+                // backgroundColor: "#EDEDEDC7",
                 height: 50
             }}
             onFocus={() => setFocus(true)}

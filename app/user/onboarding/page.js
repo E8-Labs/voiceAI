@@ -7,6 +7,7 @@ import PhoneNumberInput from '@/components/PhoneNumberInput';
 import MakeCallForm from '@/components/MakeCallForm';
 import ProfileAnimation from '@/components/animation/ProfileAnimation';
 import { useRouter } from 'next/navigation';
+import LoginModal from '@/components/loginform/LoginModal';
 
 const backgroundImage = {
     backgroundImage: 'url("/backgroundImage.png")', // Ensure the correct path
@@ -20,7 +21,7 @@ const backgroundImage = {
 const Page = () => {
 
     const router = useRouter()
-    
+
     const [isSmallScreen, setIsSmallScreen] = useState(false);
     const [open, setOpen] = useState(false);
     const [userName, setUserName] = useState("");
@@ -30,6 +31,7 @@ const Page = () => {
     const [loading, setLoading] = useState(false);
     const [snackMessage, setSnackMessage] = useState(false);
     const [openBottomForm, setOpenBottomForm] = useState(false);
+    const [openLoginModal, setOpenLoginModal] = useState(false)
 
     const hideBottom = () => {
         setOpenBottomForm(false);
@@ -63,9 +65,11 @@ const Page = () => {
 
         return () => mediaQuery.removeEventListener('change', handleResize); // Cleanup listener on component unmount
     }, []);
-    
+
     //code for creating account
     const handleContinue = () => {
+        console.log("Test working");
+        setOpenLoginModal(true);
     }
 
     // Handle button click
@@ -83,6 +87,19 @@ const Page = () => {
         bgcolor: 'background.paper',
         // border: '2px solid #000',
         boxShadow: 24,
+        p: 2,
+        mx: 'auto',
+        my: '50vh',
+        transform: 'translateY(-50%)',
+        borderRadius: 2
+    };
+
+    const styleLoginModal = {
+        // width: 200,
+        height: 'auto',
+        bgcolor: 'transparent',
+        // border: '2px solid #000',
+        // boxShadow: 24,
         p: 2,
         mx: 'auto',
         my: '50vh',
@@ -144,7 +161,7 @@ const Page = () => {
                     </div>
                     <div className='flex flex-row gap-6'>
                         <div style={{ fontSize: 15, fontWeight: "400" }}>
-                            Tate.voiceapp
+                            Tate.AI
                         </div>
                         <button>
                             <Image
@@ -338,6 +355,25 @@ const Page = () => {
                         }
                     </Box>
                 </Fade>
+            </Modal>
+
+            <Modal
+                open={openLoginModal}
+                onClose={(() => setOpenLoginModal(false))}
+                closeAfterTransition
+                BackdropProps={{
+                    timeout: 1000,
+                    sx: {
+                        backgroundColor: 'transparent',
+                        backdropFilter: 'blur(40px)',
+                    },
+                }}
+            >
+                <Box className="lg:w-4/12 sm:w-7/12"
+                    sx={styleLoginModal}
+                >
+                    <LoginModal />
+                </Box>
             </Modal>
 
             <Drawer
