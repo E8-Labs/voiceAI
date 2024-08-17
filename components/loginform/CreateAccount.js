@@ -5,45 +5,55 @@ import PhoneNumberInput from '../PhoneNumberInput'
 import axios from 'axios'
 import Apis from '../apis/Apis'
 
-const CreateAccount = ({ handleContinue }) => {
+const CreateAccount = ({ handleContinue, handleBack }) => {
 
     const [userPhoneNumber, setUserPhoneNumber] = useState(null);
     const [userName, setUserName] = useState("");
     const [userEmail, setUserEmail] = useState("");
     const [userPassword, setUserPassword] = useState("");
     const [loginLoader, setLoginLoader] = useState(false);
-    const [checkPhoneLoader, setCheckPhoneLoader] = useState(false);
+    const [phoneNumberErr, setPhoneNumberErr] = useState(null);
+    const [numberFormatError, setNumberFormatError] = useState(false);
 
     const handlePhoneNumber = (number) => {
         console.log("Number is", number);
         setUserPhoneNumber(number);
     }
 
+
     const checkPhoneNumber = async () => {
-        const ApiPath = Apis.sendVerificationCode;
         const verificationNumber = {
             phone: userPhoneNumber
         }
+        setPhoneNumberErr(null);
         try {
-            setCheckPhoneLoader(true);
-            const response = await axios(ApiPath, verificationNumber, {
+            const ApiPath = Apis.checkPhone;
+            const response = await axios.post(ApiPath, verificationNumber, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
-            if (response) {
+            if (response.data.message === "Phone available") {
                 console.log("Response of api is", response.data);
+                setPhoneNumberErr(response.data.message);
+                // const phoneNumberPattern = /^\+[1-9]\d{1,14}$/;
+                // if (!phoneNumberPattern.test(`+${phone}`)) {
+                //     setNumberFormatError(true);
+                // } else {
+                //     setNumberFormatError(false);
+                // }
+            } else {
+                setPhoneNumberErr(response.data.message);
             }
         } catch (error) {
-            console.error("Error occured in api");
-            setCheckPhoneLoader(false);
+            console.error("Error occured in checknum api");
         }
     }
 
     useEffect(() => {
         const Timer = setTimeout(() => {
             checkPhoneNumber()
-        }, 1000);
+        }, 2000);
         return () => clearTimeout(Timer)
     }, [userPhoneNumber])
 
@@ -158,6 +168,18 @@ const CreateAccount = ({ handleContinue }) => {
             <div className='mt-4'>
                 <PhoneNumberInput phonenumber={handlePhoneNumber} />
             </div>
+            {
+                phoneNumberErr && phoneNumberErr === "Phone available" &&
+                <div style={{ fontWeight: "600", fontSize: 14, color: "green" }}>
+                    {phoneNumberErr}
+                </div>
+            }
+            {
+                phoneNumberErr && phoneNumberErr === "Phone already taken" &&
+                <div style={{ fontWeight: "600", fontSize: 14, color: "red" }}>
+                    {phoneNumberErr}
+                </div>
+            }
             <TextField className=' w-full mt-4'
                 autofill='off'
                 type='password'
@@ -193,14 +215,10 @@ const CreateAccount = ({ handleContinue }) => {
                 </button>
             </div>
             <div className='flex flex-row gap-1 mt-6'>
-                <div style={{ fontSize: 13, fontWeight: "400" }}>
-                    {
-                        checkPhoneLoader ?
-                            <CircularProgress size={20} /> :
-                            "Have an account?"
-                    }
-                </div>
-                <button onClick={handleContinue} className='text-purple' style={{ fontSize: 13, fontWeight: "400" }}>
+                <button onClick={handleContinue} style={{ fontSize: 13, fontWeight: "400" }}>
+                    Have an account?
+                </button>
+                <button onClick={handleBack} className='text-purple' style={{ fontSize: 13, fontWeight: "400" }}>
                     Sign in
                 </button>
             </div>

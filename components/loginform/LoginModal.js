@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import CreateAccount from './CreateAccount';
 import VerifyPhoneNumber from './VerifyPhoneNumber';
 import AddCard from './Addcard/AddCard';
+import Signin from './Signin';
 
 const boxVariants = {
     enter: (direction) => ({
@@ -20,10 +21,10 @@ const boxVariants = {
     }),
 };
 
-const LoginModal = () => {
+const LoginModal = ({ closeForm }) => {
 
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [direction, setDirection] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState(1);
+    const [direction, setDirection] = useState(1);
     const [userLoginDetails, setUserLoginDetails] = useState(null);
 
     const handleContinue = (details) => {
@@ -43,6 +44,11 @@ const LoginModal = () => {
     const handleBack = () => {
         setDirection(-1);
         setCurrentIndex((prevIndex) => prevIndex - 1);
+    };
+
+    const handleSignin = () => {
+        setDirection(-2);
+        setCurrentIndex((prevIndex) => prevIndex - 2);
     };
 
     const containerStyles = {
@@ -65,7 +71,7 @@ const LoginModal = () => {
         alignItems: 'center',
         justifyContent: 'center',
         marginInline: 10,
-        border: "2px solid red",
+        // border: "2px solid red",
     };
 
     return (
@@ -90,16 +96,14 @@ const LoginModal = () => {
                             style={styles} className='px-3 py-5'
                         >
                             <div className='w-full'>
-                                <CreateAccount handleContinue={handleContinue} />
+                                <Signin handleContinue={handleContinue} closeForm={closeForm} />
                             </div>
                         </motion.div>
                     </div>
                 )}
-
                 {currentIndex === 1 && (
                     <div className='flex flex-col h- justify-center' style={{ height: "", }}>
                         <motion.div
-                            className='px-3 py-5'
                             key="box2"
                             custom={direction}
                             variants={boxVariants}
@@ -107,10 +111,10 @@ const LoginModal = () => {
                             animate="center"
                             exit="exit"
                             transition={{ duration: 1 }}
-                            style={styles}
+                            style={styles} className='px-3 py-5'
                         >
                             <div className='w-full'>
-                                <VerifyPhoneNumber handleContinue={handleContinue} userLoginDetails={userLoginDetails} handleBack={handleBack} />
+                                <CreateAccount handleContinue={handleContinue} handleBack={handleBack} />
                             </div>
                         </motion.div>
                     </div>
@@ -130,7 +134,27 @@ const LoginModal = () => {
                             style={styles}
                         >
                             <div className='w-full'>
-                                <AddCard handleBack={handleBack} />
+                                <VerifyPhoneNumber handleContinue={handleContinue} userLoginDetails={userLoginDetails} handleBack={handleBack} handleSignin={handleSignin} />
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+
+                {currentIndex === 3 && (
+                    <div className='flex flex-col h- justify-center' style={{ height: "", }}>
+                        <motion.div
+                            className='px-3 py-5'
+                            key="box4"
+                            custom={direction}
+                            variants={boxVariants}
+                            initial="enter"
+                            animate="center"
+                            exit="exit"
+                            transition={{ duration: 1 }}
+                            style={styles}
+                        >
+                            <div className='w-full'>
+                                <AddCard handleBack={handleBack} closeForm={closeForm} />
                             </div>
                         </motion.div>
                     </div>

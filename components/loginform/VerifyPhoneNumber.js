@@ -5,7 +5,7 @@ import Apis from '../apis/Apis'
 import axios from 'axios'
 import { CircularProgress } from '@mui/material'
 
-const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails }) => {
+const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handleSignin }) => {
 
 
     const [P1, setP1] = useState("")
@@ -14,18 +14,16 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails }) => 
     const [P4, setP4] = useState("")
     const [P5, setP5] = useState("")
     const [verifyLoader, setVerifyLoader] = useState(false);
-    const [showError, setShowError] = useState(false)
+    const [showError, setShowError] = useState(null)
 
     const data = {
-        verficationCode: P1 + P2 + P3 + P4 + P5,
+        code: P1 + P2 + P3 + P4,
         phone: userLoginDetails.phone,
     }
 
     useEffect(() => {
         console.log("User details are", userLoginDetails);
     }, [])
-
-    console.log("Verification code is", data.verficationCode);
 
 
 
@@ -84,7 +82,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails }) => 
 
     const handleVerifyClick = async () => {
         // handleContinue();
-        setVerifyLoader(true)
+        setVerifyLoader(true);
         try {
             const response = await axios.post(Apis.verifyCode, data, {
                 headers: {
@@ -93,7 +91,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails }) => 
             });
             if (response) {
                 console.log("response of check code ", response.data);
-                if (response.data.status === true) {
+                if (response.data.message === 'Phone verified') {
                     // handleContinue();
                     const SignUpApiPath = Apis.SignUp;
                     try {
@@ -104,10 +102,10 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails }) => 
                         });
                         if (response.data.status === true) {
                             console.log("Response of signup api", response.data);
+                            localStorage.setItem("User", JSON.stringify(response.data));
                             handleContinue();
-                        }else{
+                        } else if (response.data.status === false) {
                             console.log("Signup api response not found");
-                            setShowError(true);
                         }
                     } catch (error) {
                         console.error("Error in login api is", error);
@@ -115,7 +113,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails }) => 
                         setVerifyLoader(false);
                     }
                 } else {
-                    setShowError(true)
+                    setShowError(response.data.message);
                 }
             }
         } catch (error) {
@@ -189,10 +187,10 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails }) => 
             </div>
             <div>
                 {
-                    showError ?
-                        <div className='mt-4' style={{ fontWeight: "600", fontSize: 14, color: "red" }}>
-                            Invalid Code or Phone number already used.
-                        </div> : ""
+                    showError &&
+                    <div className='mt-4' style={{ fontWeight: "600", fontSize: 14, color: "red" }}>
+                        {showError}
+                    </div>
                 }
             </div>
 
@@ -218,7 +216,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails }) => 
                 <div style={{ fontSize: 13, fontWeight: "400" }}>
                     Have an account?
                 </div>
-                <button onClick={() => handleContinue()} className='text-purple' style={{ fontSize: 13, fontWeight: "400" }}>
+                <button onClick={() => handleSignin()} className='text-purple' style={{ fontSize: 13, fontWeight: "400" }}>
                     Sign in Instead
                 </button>
             </div>

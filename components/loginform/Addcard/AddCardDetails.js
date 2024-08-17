@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js'
 import { CardCvcElement, CardExpiryElement, CardNumberElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js';
 // import { CardPostalCodeElement } from '@stripe/react-stripe-js';
@@ -6,9 +6,10 @@ import { Alert, Button, CircularProgress, Slide, Snackbar } from '@mui/material'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 import Image from 'next/image';
+import Apis from '@/components/apis/Apis';
 // import Apis from '../Apis/Apis';
 
-const AddCardDetails = ({ handleBack }) => {
+const AddCardDetails = ({ handleBack, closeForm }) => {
 
     const handleBackClick = (e) => {
         e.preventDefault();
@@ -48,6 +49,8 @@ const AddCardDetails = ({ handleBack }) => {
     const stripeReact = useStripe();
     const elements = useElements();
 
+    // useEffect(() => {})
+
     const handleAddCard = async (e) => {
         // Check if the event object is provided and prevent the default behavior
         setAddCardLoader(true);
@@ -57,7 +60,7 @@ const AddCardDetails = ({ handleBack }) => {
 
         // Close the modal
         // handleClose4(e);
-        return
+        // return
         if (!stripeReact || !elements) {
             return
         }
@@ -77,14 +80,17 @@ const AddCardDetails = ({ handleBack }) => {
                 console.log("Token generating for card number :", tok.token.id)
                 const tokenId = tok.token.id;
                 let api = process.env.NEXT_PUBLIC_REACT_APP_ENVIRONMENT === "Development2" ? "https://bf59-119-156-82-235.ngrok-free.app" : "https://plurawlapp.com/plurawl";
-                const ApiPath = Apis.AddCard;
+                const ApiPath = Apis.addCard;
                 const AddCardData = {
                     source: tokenId
                 }
                 try {
                     const LocalData = localStorage.getItem('User');
                     const D = JSON.parse(LocalData);
+                    // console.log("Local data is", D);
                     const AuthToken = D.data.token;
+                    console.log("Token for add card ", D.data.token);
+                    // return
                     console.log('Data sending in api is :', AddCardData);
                     const response = await axios.post(ApiPath, AddCardData, {
                         headers: {
@@ -93,14 +99,15 @@ const AddCardDetails = ({ handleBack }) => {
                         }
                     });
                     if (response) {
-                        console.log("Response of add card api is", response);
+                        console.log("Response of add card api is", response.data);
                     }
                     if (response.status === 200) {
-                        setAddCardDetails(response.data.message);
+                        // setAddCardDetails(response.data.message);
                         if (response.data.message === "Card not added") {
                             setAddCardFailure(true);
                         } else {
                             setAddCardSuccess(true);
+                            closeForm();
                         }
                     }
                 } catch (error) {
@@ -151,14 +158,9 @@ const AddCardDetails = ({ handleBack }) => {
                         <div>
                             <CircularProgress size={30} />
                         </div> :
-                        <div className='flex flex-row justify-between items-center mt-8 w-full'>
+                        <div className='flex flex-row justify-end items-center mt-8 w-full'>
                             <div>
-                                <button onClick={handleBackClick}>
-                                    <Image src={"/assets/backArrow.png"} alt='backArrow' height={9} width={13} />
-                                </button>
-                            </div>
-                            <div>
-                                <button className='bg-purple rounded px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15 }}>
+                                <button onClick={handleAddCard} className='bg-purple rounded px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15 }}>
                                     Continue
                                 </button>
                             </div>

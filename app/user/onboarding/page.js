@@ -30,27 +30,34 @@ const Page = () => {
     const [phoneNumber, setPhoneNumber] = useState(null);
     const [loading, setLoading] = useState(false);
     const [snackMessage, setSnackMessage] = useState(false);
-    const [openBottomForm, setOpenBottomForm] = useState(false);
+    const [openBottomForm, setOpenLoginModalDrawer] = useState(false);
     const [openLoginModal, setOpenLoginModal] = useState(false)
 
     const hideBottom = () => {
-        setOpenBottomForm(false);
-    }
-
-    const getPhoneNumber = (number) => {
-        setPhoneNumber(number);
-        console.log('Phone number recieved is', number);
+        setOpenLoginModalDrawer(false);
     }
 
     // Call function on small screens
     const smallScreenClick = useCallback(() => {
-        setOpenBottomForm(true);
+        const LocalData = localStorage.getItem('User');
+        if (LocalData) {
+            const D = JSON.parse(LocalData);
+            console.log("Data test", D.data);
+            handleTalktoBlandy();
+        } else {
+            setOpenLoginModalDrawer(true);
+        }
         console.log('do not touch me');
     }, []);
 
     // Call function on larger screens
     const handleLargeScreenClick = useCallback(() => {
-        setOpen(true);
+        const LocalData = localStorage.getItem('User');
+        if (LocalData) {
+            handleTalktoBlandy();
+        } else {
+            setOpenLoginModal(true);
+        }
         console.log('Phone number is', phoneNumber);
         console.log('User name is', userName);
     }, []);
@@ -67,13 +74,16 @@ const Page = () => {
     }, []);
 
     //code for creating account
-    const handleContinue = () => {
-        console.log("Test working");
+    const handleClick = async () => {
+        const LocalData = localStorage.getItem('User');
+        const D = await JSON.parse(LocalData);
+        console.log("Local data for auto cll", D.data.user);
+
         setOpenLoginModal(true);
     }
 
     // Handle button click
-    const handleClick = () => {
+    const handleContinue = () => {
         if (isSmallScreen) {
             smallScreenClick();
         } else {
@@ -114,18 +124,28 @@ const Page = () => {
     //code for apicall
     const handleTalktoBlandy = async () => {
         setLoading(true);
+        const LocalData = localStorage.getItem('User');
+        let D = null
+        if (LocalData) {
+            D = JSON.parse(LocalData)
+
+        } else {
+            return
+        }
+        console.log("Tryign to calll ", D.data.user.phone)
         try {
             const axios = require('axios');
             let data = JSON.stringify({
-                "name": userName,
-                "phone": phoneNumber,
-                "model": "1712788242190x897503015435501600"
+                "name": D.data.user.name,
+                "phone": D.data.user.phone,
+                "email": D.data.user.email
+                // "model": "1712788242190x897503015435501600"
             });
 
             let config = {
                 method: 'post',
                 maxBodyLength: Infinity,
-                url: 'https://fine-tuner.ai/api/1.1/wf/v2_voice_agent_call',
+                url: 'https://www.blindcircle.com:444/voice/api/calls/make_a_call',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer 1716566901317x213622515056508930'
@@ -154,25 +174,27 @@ const Page = () => {
     return (
         <div style={backgroundImage} className='flex flex-col justify-between h-full'>
             <div className='pt-8 ps-8'>
-                <div className='2xl:flex hidden w-2/12 px-6 py-2 flex gap-4 flex-row items-center'
-                    style={{ border: "2px solid #ffffff", borderRadius: 70 }}>
-                    <div style={{ border: "2px solid black", borderRadius: "50%", padding: 4 }}>
+                <div className='2xl:flex hidden px-6 py-2 flex gap-4 flex-row items-center'
+                    style={{ border: "2px solid #ffffff", borderRadius: 50, width: "13%" }}>
+                    <div style={{ border: "2px solid black", borderRadius: "50%",  }}>
                         <Image src={"/assets/profile.png"} alt='profilephoto' height={40} width={40} style={{ resize: "cover" }} />
                     </div>
-                    <div className='flex flex-row gap-6'>
+                    <div>
                         <div style={{ fontSize: 15, fontWeight: "400" }}>
                             Tate.AI
                         </div>
-                        <button>
-                            <Image
-                                layout='responsive'
-                                objectFit='contain' src={"/assets/twitter.png"} alt='social' height={20} width={20} style={{ resize: "cover" }} />
-                        </button>
-                        <button>
-                            <Image
-                                layout='responsive'
-                                objectFit='contain' src={"/assets/instagram.png"} alt='social' height={20} width={20} style={{ resize: "cover" }} />
-                        </button>
+                        <div className='flex flex-row gap-4'>
+                            <button>
+                                <Image
+                                    layout='responsive'
+                                    objectFit='contain' src={"/assets/twitter.png"} alt='social' height={15} width={15} style={{ resize: "cover" }} />
+                            </button>
+                            <button>
+                                <Image
+                                    layout='responsive'
+                                    objectFit='contain' src={"/assets/instagram.png"} alt='social' height={15} width={15} style={{ resize: "cover" }} />
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div className='2xl:hidden flex items-center'>
@@ -238,124 +260,6 @@ const Page = () => {
                     <Image src={"/assets/phone.png"} alt='phone' height={20} width={20} />
                 </button>
             </div>
-            <Modal
-                open={open}
-                onClose={(() => setOpen(false))}
-                closeAfterTransition
-                BackdropProps={{
-                    timeout: 1000,
-                    sx: {
-                        backgroundColor: 'transparent',
-                        backdropFilter: 'blur(40px)',
-                    },
-                }}
-            >
-                <Fade in={open}>
-                    <Box
-                        sx={style}
-                    >
-                        <div className='text-center' style={{ fontSize: 30, fontWeight: "600" }}>
-                            Tristan.ai
-                        </div>
-                        <div className='mt-4'>
-                            <TextField className='w-full'
-                                autofill='off'
-                                id="filled-basic"
-                                label="First name" variant="outlined"
-                                value={userName}
-                                onChange={(e) => setUserName(e.target.value)}
-                                placeholder='Enter first name'
-                                sx={{
-                                    '& label.Mui-focused': {
-                                        color: '#050A0890',
-                                        // borderColor: "red"
-                                    },
-                                    '& .MuiFilledInput-root': {
-                                        // color: '#050A0860',
-                                        fontSize: 13,
-                                        fontWeight: '400'
-                                    },
-                                    '& .MuiOutlinedInput-root': {
-                                        '&.Mui-focused fieldset': {
-                                            borderColor: '#00000080',
-                                        },
-                                    },
-                                }} />
-                        </div>
-                        <div className='mt-4'>
-                            <TextField className='w-full'
-                                autofill='off'
-                                id="filled-basic"
-                                label="Last name" variant="outlined"
-                                value={userLastName}
-                                onChange={(e) => setUserLastName(e.target.value)}
-                                placeholder='Enter last name'
-                                sx={{
-                                    '& label.Mui-focused': {
-                                        color: '#050A0890',
-                                    },
-                                    '& .MuiFilledInput-root': {
-                                        // color: '#050A0860',
-                                        fontSize: 13,
-                                        fontWeight: '400'
-                                    },
-                                    '& .MuiOutlinedInput-root': {
-                                        '&.Mui-focused fieldset': {
-                                            borderColor: '#00000080',
-                                        },
-                                    },
-                                }} />
-                        </div>
-                        <div className='mt-4'>
-                            <TextField className='w-full'
-                                autofill='off'
-                                id="filled-basic"
-                                label="Email" variant="outlined"
-                                value={userEmail}
-                                onChange={(e) => setUserEmail(e.target.value)}
-                                placeholder='Enter email'
-                                sx={{
-                                    '& label.Mui-focused': {
-                                        color: '#050A0890',
-                                    },
-                                    '& .MuiFilledInput-root': {
-                                        // color: '#050A0860',
-                                        fontSize: 13,
-                                        fontWeight: '400'
-                                    },
-                                    '& .MuiOutlinedInput-root': {
-                                        '&.Mui-focused fieldset': {
-                                            borderColor: '#00000080',
-                                        },
-                                    },
-                                }} />
-                        </div>
-                        <div className='mt-4'>
-                            <PhoneNumberInput phonenumber={getPhoneNumber} />
-                        </div>
-                        {
-                            userName && userEmail && phoneNumber ?
-                                <button
-                                    onClick={handleTalktoBlandy}
-                                    className='mt-4 bg-purple text-white hover:bg-purple2 w-full rounded py-2'>
-                                    {
-                                        loading ?
-                                            <CircularProgress size={25} /> :
-                                            <div style={{ fontSize: 15 }}>
-                                                Make Call
-                                            </div>
-                                    }
-                                </button> :
-                                <button
-                                    disabled
-                                    className='mt-4 bg-lightBlue bg-light-blue text-white w-full rounded py-2'
-                                    style={{ fontSize: 15 }}>
-                                    Make Call
-                                </button>
-                        }
-                    </Box>
-                </Fade>
-            </Modal>
 
             <Modal
                 open={openLoginModal}
@@ -372,14 +276,21 @@ const Page = () => {
                 <Box className="lg:w-4/12 sm:w-7/12"
                     sx={styleLoginModal}
                 >
-                    <LoginModal />
+                    <LoginModal closeForm={setOpenLoginModal} />
                 </Box>
             </Modal>
 
             <Drawer
                 open={openBottomForm}
-                onClose={() => setOpenBottomForm(false)}
+                onClose={() => setOpenLoginModalDrawer(false)}
                 anchor='bottom'
+                BackdropProps={{
+                    timeout: 1000,
+                    sx: {
+                        backgroundColor: 'transparent',
+                        backdropFilter: 'blur(40px)',
+                    },
+                }}
                 sx={{
                     '& .MuiDrawer-paper': {
                         height: 'auto',
@@ -389,7 +300,7 @@ const Page = () => {
                 }}>
                 <div>
                     <div className=''>
-                        <MakeCallForm closeForm={hideBottom} />
+                        <LoginModal closeForm={hideBottom} />
                     </div>
                 </div>
             </Drawer>
