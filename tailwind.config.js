@@ -21,6 +21,7 @@ module.exports = {
         "purple": '#620FEB',
         "purple2": '#620FEB80',
         "light-blue": '#1480FF',
+        "placeholderColor": '#620FEB50',
         "lightWhite": '#050A0860',
       },
     },

@@ -1,9 +1,11 @@
 'use client'
-import { Button, IconButton, InputAdornment, TextField, Visibility, VisibilityOff } from '@mui/material';
+import { Button, CircularProgress, IconButton, InputAdornment, TextField, Visibility, VisibilityOff } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { useEffect, useState } from "react";
 import PhoneNumberInput from '../PhoneNumberInput';
+import Apis from '../apis/Apis';
+import axios from 'axios';
 
 const boxVariants = {
     enter: (direction) => ({
@@ -22,9 +24,115 @@ const boxVariants = {
 
 export default function Animation({ onChangeIndex }) {
 
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [direction, setDirection] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState(1);
+    const [direction, setDirection] = useState(1);
     const [userName, setUserName] = useState("");
+    const [checkUserNameData, set1checkUserNameData] = useState(null);
+    const [checkUserEmailData, setCheckUserEmailData] = useState(null);
+    const [checkUserPhoneNumberData, setCheckUserPhoneNumberData] = useState(null);
+    const [userEmail, setUserEmail] = useState("");
+    const [userPhoneNumber, setUserPhoneNumber] = useState("");
+    const [userPassword, setUserPassword] = useState("")
+    const [VerifiyNumberLoader, setVerifiyNumberLoader] = useState(false);
+    const [P1, setP1] = useState("");
+    const [P2, setP2] = useState("");
+    const [P3, setP3] = useState("");
+    const [P4, setP4] = useState("");
+    const [EmailP1, setEmailP1] = useState("");
+    const [EmailP2, setEmailP2] = useState("");
+    const [EmailP3, setEmailP3] = useState("");
+    const [EmailP4, setEmailP4] = useState("");
+
+    const checkUserName = async () => {
+        const ApiPath = Apis.checkUserName;
+        const data = {
+            username: userName
+        }
+        try {
+            const response = await axios.post(ApiPath, data, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (response.data) {
+                console.log("Response of check name api is", response.data);
+                set1checkUserNameData(response.data);
+            }
+        } catch (error) {
+            console.error("Error occured in checkusername api", error);
+
+        }
+    }
+
+    useEffect(() => {
+        if (userName) {
+            setTimeout(() => {
+                checkUserName();
+            }, 2000);
+        }
+    }, [userName]);
+
+    const checkUserEmail = async () => {
+        const ApiPath = Apis.checkUserEmail;
+        const data = {
+            email: userEmail
+        }
+        try {
+            const response = await axios.post(ApiPath, data, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            if (response) {
+                if (response.data) {
+                    console.log("Response of checkemail", response.data);
+                    setCheckUserEmailData(response.data);
+                }
+            }
+        } catch (error) {
+            console.error("Error occured in checkuseremail api", error);
+
+        }
+    }
+
+    useEffect(() => {
+        if (userEmail) {
+            setTimeout(() => {
+                checkUserEmail();
+            }, 2000);
+        }
+    }, [userEmail]);
+
+    const checkPhoneNumber = async () => {
+        const data = {
+            phone: userPhoneNumber
+        }
+        const ApiPath = Apis.checkPhone;
+        try {
+            const response = await axios.post(ApiPath, data, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            if (response) {
+                if (response.data) {
+                    setCheckUserPhoneNumberData(response.data)
+                }
+            }
+        } catch (error) {
+            console.error("Error occured in checknumber api", error);
+
+        }
+    }
+
+    useEffect(() => {
+        if (userPhoneNumber) {
+            setTimeout(() => {
+                checkPhoneNumber();
+            }, 2000);
+        }
+    }, [userPhoneNumber]);
 
     const handleContinue = () => {
         // handleCurrentIndex();
@@ -41,7 +149,100 @@ export default function Animation({ onChangeIndex }) {
 
     useEffect(() => {
         onChangeIndex(currentIndex)
-    }, [currentIndex])
+    }, [currentIndex]);
+
+
+    const userNumber = (phone) => {
+        setUserPhoneNumber(phone)
+    }
+
+    //code for verifyphone
+    const handlePhoneVerificationClick = async () => {
+
+        setVerifiyNumberLoader(true)
+
+        const verificationNumber = {
+            phone: userPhoneNumber
+        }
+
+        try {
+            const ApiPath = Apis.sendVerificationCode;
+            const response = await axios.post(ApiPath, verificationNumber, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (response.status === 200) {
+                console.log("Response of api is", response.data);
+                handleContinue();
+            }
+        } catch (error) {
+            console.error("Error occured in sendVC", error);
+        } finally {
+            setVerifiyNumberLoader(false)
+        }
+    }
+
+    const handleInputChange = (e, setFunc, nextInputId) => {
+        const value = e.target.value;
+        setFunc(value);
+
+        if (value && nextInputId) {
+            document.getElementById(nextInputId).focus();
+        }
+    };
+
+    const handleBackspace = (e, setFunc, prevInputId) => {
+        if (e.key === "Backspace" && e.target.value === "") {
+            if (prevInputId) {
+                document.getElementById(prevInputId).focus();
+            }
+        }
+    };
+
+    //code for handleVerifyPhoneCode
+    const handleVerifyPhoneCode = async () => {
+        const data = {
+            code: P1 + P2 + P3 + P4,
+            phone: userPhoneNumber
+        }
+        const ApiPath = Apis.verifyCode;
+        try {
+            const response = await axios.post(ApiPath, data, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            if (response) {
+                console.log("Response of verifyphone code", response.data);
+                if (response.data.status === true) {
+                    // handleContinue();
+                    const data = {
+                        email: userEmail,
+                        username: userName,
+                        phone: userPhoneNumber,
+                        password: userPassword,
+                        role: "creator"
+                    }
+                    console.log("Data sending in register api is", data);
+
+                    const loginResponse = await axios.post(Apis.RegisterLogin, data, {
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    });
+                    if(loginResponse){
+                        if(loginResponse.data){
+                            console.log("response of login api is", loginResponse.data);
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.error("Error occured in api is", error);
+
+        }
+    }
 
     const containerStyles = {
         position: 'relative',
@@ -178,13 +379,16 @@ export default function Animation({ onChangeIndex }) {
                                     </button>
                                 </div>
                                 <div className='mt-8' style={{ color: "white" }}>
-                                    <Button onClick={handleContinue} className='bg-purple hover:bg-purple2 text-white rounded w-full' style={{ fontSize: 15, fontWeight: "400", height: "52px" }}>
+                                    <Button className='bg-purple hover:bg-purple2 text-white rounded w-full' style={{ fontSize: 15, fontWeight: "400", height: "52px" }}>
                                         Continue
                                     </Button>
                                 </div>
-                                <div className='mt-4'>
-                                    <button style={{ fontSize: 12, fontWeight: "500", color: "#00000070" }}>
-                                        or SignUp
+                                <div className='mt-6 flex flex-row items-center gap-1'>
+                                    <div style={{ fontSize: 12, fontWeight: "400" }}>
+                                        Or
+                                    </div>
+                                    <button onClick={handleContinue} style={{ fontSize: 15, fontWeight: "500" }}>
+                                        Signup
                                     </button>
                                 </div>
                             </div>
@@ -240,19 +444,57 @@ export default function Animation({ onChangeIndex }) {
                                             },
                                         }} />
 
+                                    <div>
+                                        {
+                                            checkUserNameData && checkUserNameData.status === true &&
+                                            <div style={{ fontWeight: "400", fontSize: 14, color: "green" }}>
+                                                {checkUserNameData.message}
+                                            </div>
+                                        }
+                                    </div>
+
+                                    <div>
+                                        {
+                                            checkUserNameData && checkUserNameData.status === false &&
+                                            <div style={{ fontWeight: "400", fontSize: 14, color: "red" }}>
+                                                {checkUserNameData.message}
+                                            </div>
+                                        }
+                                    </div>
+
                                     {/* <div className='mt-4' style={{ color: '#FF0100', fontSize: 12, fontWeight: "500" }}>
                                         This username seems to be taken already...<br />
                                         Try something similar.
                                     </div> */}
 
-                                    <Button onClick={handleContinue}
-                                        className='bg-purple hover:bg-purple2 text-white rounded w-full mt-12'
-                                        style={{ fontSize: 15, fontWeight: "400", height: "52px" }}>
-                                        Continue
-                                    </Button>
+                                    <div>
+                                        {
+                                            checkUserNameData && checkUserNameData.status === true ?
+                                                <div style={{ fontWeight: "400", fontSize: 14, color: "green" }}>
+                                                    <Button onClick={handleContinue}
+                                                        className='bg-purple hover:bg-purple2 text-white rounded w-full mt-12'
+                                                        style={{ fontSize: 15, fontWeight: "400", height: "52px" }}>
+                                                        Continue
+                                                    </Button>
+                                                </div> :
+                                                <div style={{ fontWeight: "400", fontSize: 14, color: "green" }}>
+                                                    <Button
+                                                        disabled
+                                                        className='bg-placeholderColor text-white rounded w-full mt-12'
+                                                        style={{ fontSize: 15, fontWeight: "400", height: "52px", color: "white" }}>
+                                                        Continue
+                                                    </Button>
+                                                </div>
+                                        }
+                                    </div>
 
-                                    <div className='mt-6' style={{ fontSize: 12, fontWeight: "400" }}>
-                                        Or Login
+                                    <div className='mt-6 flex flex-row items-center gap-1'>
+                                        <div style={{ fontSize: 12, fontWeight: "400" }}>
+                                            Or
+                                        </div>
+                                        <button onClick={handleBack} style={{ fontSize: 15, fontWeight: "500" }}>
+                                            Login
+                                        </button>
                                     </div>
 
                                 </div>
@@ -285,19 +527,25 @@ export default function Animation({ onChangeIndex }) {
                                         Now, create your account.
                                     </div>
                                     <div className='w-full flex flex-row gap-6 mt-8'>
-                                        <TextField className=' w-5/12'
-                                            autofill='off'
+                                        <TextField
+                                            className='w-5/12'
+                                            autoComplete='off'
                                             id="filled-basic"
-                                            label="Email address" variant="filled"
+                                            label="Email address"
+                                            variant="filled"
                                             placeholder='Enter your email address.'
+                                            value={userEmail}
+                                            onChange={(e) => setUserEmail(e.target.value)}
+                                            InputProps={{
+                                                autoComplete: 'off',
+                                            }}
                                             sx={{
                                                 '& label.Mui-focused': {
                                                     color: '#050A0890',
                                                 },
                                                 '& .MuiFilledInput-root': {
-                                                    // color: '#050A0860',
                                                     fontSize: 13,
-                                                    fontWeight: '400'
+                                                    fontWeight: '400',
                                                 },
                                                 '& .MuiFilledInput-underline:before': {
                                                     borderBottomColor: '#050A0860',
@@ -305,13 +553,17 @@ export default function Animation({ onChangeIndex }) {
                                                 '& .MuiFilledInput-underline:after': {
                                                     borderBottomColor: '#050A0890',
                                                 },
-                                            }} />
+                                            }}
+                                        />
+
                                         <TextField className=' w-5/12'
                                             autofill='off'
                                             id="password"
                                             type='password'
                                             label="Password" variant="filled"
                                             placeholder='Enter your email address.'
+                                            value={userPassword}
+                                            onChange={(e) => setUserPassword(e.target.value)}
                                             sx={{
                                                 '& label.Mui-focused': {
                                                     color: '#050A0890',
@@ -330,13 +582,42 @@ export default function Animation({ onChangeIndex }) {
                                             }} />
                                     </div>
                                     <div>
-                                        <Button
-                                            onClick={handleContinue}
-                                            sx={{ textDecoration: "none" }}
-                                            className='bg-purple hover:bg-purple2 w-full mt-8'
-                                            style={{ fontSize: 15, fontWeight: "400", color: "white", height: "51px" }}>
-                                            Continue
-                                        </Button>
+                                        {
+                                            checkUserEmailData && checkUserEmailData.status === true &&
+                                            <div style={{ fontWeight: "400", fontSize: 14, color: "green" }}>
+                                                {checkUserEmailData.message}
+                                            </div>
+                                        }
+                                        {
+                                            checkUserEmailData && checkUserEmailData.status === false &&
+                                            <div style={{ fontWeight: "400", fontSize: 14, color: "red" }}>
+                                                {checkUserEmailData.message}
+                                            </div>
+                                        }
+                                    </div>
+                                    <div>
+                                        {
+                                            checkUserEmailData && checkUserEmailData.status === true ?
+                                                <div style={{ fontWeight: "400", fontSize: 14, color: "green" }}>
+                                                    <Button
+                                                        onClick={handleContinue}
+                                                        sx={{ textDecoration: "none" }}
+                                                        className='bg-purple hover:bg-purple2 w-full mt-8'
+                                                        style={{ fontSize: 15, fontWeight: "400", color: "white", height: "51px" }}>
+                                                        Continue
+                                                    </Button>
+                                                </div> :
+                                                <div style={{ fontWeight: "400", fontSize: 14, color: "green" }}>
+                                                    <Button
+                                                        disabled
+                                                        // onClick={handleContinue}
+                                                        sx={{ textDecoration: "none" }}
+                                                        className='bg-placeholderColor w-full mt-8'
+                                                        style={{ fontSize: 15, fontWeight: "400", color: "white", height: "51px" }}>
+                                                        Continue
+                                                    </Button>
+                                                </div>
+                                        }
                                     </div>
                                     <div className='text-lightWhite mt-6' style={{ fontSize: 12, fontWeight: '400', textAlign: "center" }}>
                                         OR
@@ -379,7 +660,7 @@ export default function Animation({ onChangeIndex }) {
                                     <div className='text-lightWhite mt-1' style={{ fontSize: 13, fontWeight: "400" }}>
                                         code was sent to tat*********@gmail.com
                                     </div>
-                                    <div className='flex flex-row gap-6 mt-8'>
+                                    {/* <div className='flex flex-row gap-6 mt-8'>
                                         <input
                                             maxLength={1}
                                             type='password'
@@ -419,8 +700,48 @@ export default function Animation({ onChangeIndex }) {
                                                 height: 50, width: 50, borderRadius: 10, border: "none",
                                                 outline: "none", textAlign: "center", backgroundColor: "#EDEDEDC7",
                                             }}
+                                        />
+                                    </div> */}
+
+                                    <div className='flex flex-row gap-4 mt-8'>
+                                        <input
+                                            id="P1"
+                                            type='text'
+                                            value={EmailP1}
+                                            onChange={(e) => handleInputChange(e, setEmailP1, "P2")}
+                                            maxLength={1}
+                                            style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                                            onKeyDown={(e) => handleBackspace(e, setEmailP1, null)}
+                                        />
+                                        <input
+                                            id="P2"
+                                            type='text'
+                                            value={EmailP2}
+                                            onChange={(e) => handleInputChange(e, setEmailP2, "P3")}
+                                            maxLength={1}
+                                            style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                                            onKeyDown={(e) => handleBackspace(e, setEmailP2, "P1")}
+                                        />
+                                        <input
+                                            id="P3"
+                                            type='text'
+                                            value={EmailP3}
+                                            onChange={(e) => handleInputChange(e, setEmailP3, "P4")}
+                                            maxLength={1}
+                                            style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                                            onKeyDown={(e) => handleBackspace(e, setEmailP3, "P2")}
+                                        />
+                                        <input
+                                            id="P4"
+                                            type='text'
+                                            value={EmailP4}
+                                            onChange={(e) => handleInputChange(e, setEmailP4, null)}
+                                            maxLength={1}
+                                            style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                                            onKeyDown={(e) => handleBackspace(e, setEmailP4, "P3")}
                                         />
                                     </div>
+
                                     <div className='flex flex-row gap-1 mt-6'>
                                         <div className='text-lightWhite' style={{ fontSize: 13, fontWeight: "400" }}>
                                             Didn't receive code?
@@ -464,15 +785,46 @@ export default function Animation({ onChangeIndex }) {
                                         We can use this to share important updates to you
                                     </div>
                                     <div className='mt-6'>
-                                        <PhoneNumberInput />
+                                        <PhoneNumberInput phonenumber={userNumber} />
                                     </div>
                                     <div>
-                                        <Button
-                                            onClick={handleContinue}
-                                            className='w-full mt-6 bg-purple hover:bg-purple2 text-white'
-                                            style={{ height: 50, fontSize: 15, fontWeight: "400˝" }}>
-                                            Continue
-                                        </Button>
+                                        {
+                                            checkUserPhoneNumberData && checkUserPhoneNumberData.status === true &&
+                                            <div style={{ fontWeight: "400", fontSize: 14, color: "green" }}>
+                                                {checkUserPhoneNumberData.message}
+                                            </div>
+                                        }
+                                        {
+                                            checkUserPhoneNumberData && checkUserPhoneNumberData.status === false &&
+                                            <div style={{ fontWeight: "400", fontSize: 14, color: "red" }}>
+                                                {checkUserPhoneNumberData.message}
+                                            </div>
+                                        }
+                                    </div>
+                                    <div>
+                                        {
+                                            checkUserPhoneNumberData && checkUserPhoneNumberData.status === true ?
+                                                <div style={{ fontWeight: "400", fontSize: 14, color: "green" }}>
+                                                    <Button
+                                                        onClick={handlePhoneVerificationClick}
+                                                        className='w-full mt-6 bg-purple hover:bg-purple2 text-white'
+                                                        style={{ height: 50, fontSize: 15, fontWeight: "400", color: "white" }}>
+                                                        {VerifiyNumberLoader ?
+                                                            <CircularProgress size={20} /> :
+                                                            "Continue"}
+                                                    </Button>
+                                                </div> :
+                                                <div style={{ fontWeight: "400", fontSize: 14, color: "green" }}>
+                                                    <Button
+                                                        disabled
+                                                        className='w-full mt-6 bg-placeholderColor text-white'
+                                                        style={{ height: 50, fontSize: 15, fontWeight: "400", color: "white" }}>
+                                                        {VerifiyNumberLoader ?
+                                                            <CircularProgress size={20} /> :
+                                                            "Continue"}
+                                                    </Button>
+                                                </div>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -502,9 +854,9 @@ export default function Animation({ onChangeIndex }) {
                                             Verify phone number.
                                         </div>
                                         <div className='text-lightWhite mt-1' style={{ fontSize: 13, fontWeight: "400" }}>
-                                            5 digit code was sent to number ending with *9083
+                                            4 digit code was sent to number ending with *9083
                                         </div>
-                                        <div className='flex flex-row gap-6 mt-8'>
+                                        {/* <div className='flex flex-row gap-6 mt-8'>
                                             <input
                                                 maxLength={1}
                                                 type='password'
@@ -544,8 +896,53 @@ export default function Animation({ onChangeIndex }) {
                                                     height: 50, width: 50, borderRadius: 10, border: "none",
                                                     outline: "none", textAlign: "center", backgroundColor: "#EDEDEDC7",
                                                 }}
+                                            />
+                                        </div> */}
+
+
+
+                                        <div className='flex flex-row gap-4 mt-4'>
+                                            <input
+                                                id="P1"
+                                                type='text'
+                                                value={P1}
+                                                onChange={(e) => handleInputChange(e, setP1, "P2")}
+                                                maxLength={1}
+                                                style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                                                onKeyDown={(e) => handleBackspace(e, setP1, null)}
+                                            />
+                                            <input
+                                                id="P2"
+                                                type='text'
+                                                value={P2}
+                                                onChange={(e) => handleInputChange(e, setP2, "P3")}
+                                                maxLength={1}
+                                                style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                                                onKeyDown={(e) => handleBackspace(e, setP2, "P1")}
+                                            />
+                                            <input
+                                                id="P3"
+                                                type='text'
+                                                value={P3}
+                                                onChange={(e) => handleInputChange(e, setP3, "P4")}
+                                                maxLength={1}
+                                                style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                                                onKeyDown={(e) => handleBackspace(e, setP3, "P2")}
+                                            />
+                                            <input
+                                                id="P4"
+                                                type='text'
+                                                value={P4}
+                                                onChange={(e) => handleInputChange(e, setP4, null)}
+                                                maxLength={1}
+                                                style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                                                onKeyDown={(e) => handleBackspace(e, setP4, "P3")}
                                             />
                                         </div>
+
+
+
+
                                         <div className='flex flex-row gap-1 mt-6'>
                                             <div className='text-lightWhite' style={{ fontSize: 13, fontWeight: "400" }}>
                                                 Didn't receive code?
@@ -554,7 +951,7 @@ export default function Animation({ onChangeIndex }) {
                                                 Resend
                                             </button>
                                         </div>
-                                        <Button onClick={handleContinue}
+                                        <Button onClick={handleVerifyPhoneCode}
                                             className='w-full bg-purple hover:bg-purple2 text-white mt-8'
                                             style={{ fontWeight: "400", fontSize: 15, height: 50 }}>
                                             Verify
