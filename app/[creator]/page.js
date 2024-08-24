@@ -3,11 +3,12 @@ import { useState, useCallback, useEffect, useRef } from 'react';  // useRef add
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { Box, Drawer, Modal, Snackbar, Alert, Slide } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import ProfileAnimation from '@/components/animation/ProfileAnimation';
 import LoginModal from '@/components/loginform/LoginModal';
 import axios from 'axios';
 import Apis from '@/components/apis/Apis';
+import CycleArray from '@/components/animation/TestAnimation';
 
 const backgroundImage = {
     backgroundImage: 'url("/backgroundImage.png")', // Ensure the correct path
@@ -21,6 +22,7 @@ const backgroundImage = {
 const Page = () => {
     const router = useRouter();
     const buttonRef = useRef(null);
+    const buttonRef2 = useRef(null);
 
     const [isSmallScreen, setIsSmallScreen] = useState(false);
     const [open, setOpen] = useState(false);
@@ -38,21 +40,61 @@ const Page = () => {
     const [boxVisible, setBoxVisible] = useState(true);  // Animation state
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });  // Mouse position state
 
-    const [getRecentCallData, setGetRecentCallsData] = useState([
-        {
-            id: 1,
-            name: "Riya",
-            image: "/assets/profile1.png"
-        },
-        {
-            id: 2,
-            name: "Anya"
-        },
-        {
-            id: 3,
-            name: "Johnes"
+    const [getRecentCallData, setGetRecentCallsData] = useState([]);
+    const [getAssistantData, setGetAssistantData] = useState(null);
+    const [showLogoutBtn, setShowLogoutBtn] = useState(false);
+
+    const { creator } = useParams();
+
+    //move to become creator
+    const handleCreatorXClick = () => {
+        router.push('/creator/onboarding2')
+    }
+
+    //code for logoutbtn
+
+    const handleshowLogoutBtn = () => {
+        setShowLogoutBtn(!showLogoutBtn);
+    }
+
+    const handleLogout = () => {
+        localStorage.removeItem('User');
+        window.location.reload();
+    }
+
+    const getUserData = async () => {
+        console.log("Username for testing", creator);
+        const ApiPath = `${Apis.GetAssistantData}?username=${creator}`;
+        console.log("Api path is", ApiPath);
+        try {
+            const getResponse = await axios.get(ApiPath, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            if (getResponse) {
+                console.log("Response of getassistant data", getResponse.data);
+                setGetAssistantData(getResponse.data.data);
+            } else {
+                console.log("Error occured");
+            }
+        } catch (error) {
+            console.error("Error occured in getassistant api is", error);
         }
-    ])
+    }
+
+    useEffect(() => {
+        getUserData()
+    }, []);
+
+    //code to remove the route data
+    useEffect(() => {
+        setTimeout(() => {
+            localStorage.removeItem('route')
+        }, 1000);
+    }, [])
+
+
 
     // const CycleArray = ({ data }) => {
     //     const [currentIndex, setCurrentIndex] = useState(0);
@@ -60,120 +102,74 @@ const Page = () => {
     //     useEffect(() => {
     //         if (data.length === 0) return;
 
-    //         const intervalDuration = 2000;
-
-    //         //changes after 2 sec
+    //         const intervalDuration = 15000;
     //         const interval = setInterval(() => {
     //             setCurrentIndex(prevIndex => (prevIndex + 1) % data.length);
     //         }, intervalDuration);
 
-    //         // Cleanup interval on component unmount
     //         return () => clearInterval(interval);
     //     }, [data]);
 
+    //     const variants = {
+    //         hidden: { opacity: 0, y: 50 },
+    //         visible: { opacity: 1, y: 0 },
+    //         exit: { opacity: 0, y: -50 },
+    //     };
+
     //     return (
-    //         <div className='flex flex-row gap-2'
-    //             style={{
-    //                 backgroundColor: "white",
-    //                 padding: 15,
-    //                 borderRadius: 8,
-    //                 width: "250px",
-    //                 paddingTop: 20
-    //             }}>
-    //             <div>
-    //                 <Image src="/assets/profile1.png" alt='profile' height={31} width={31} layout='' />
-    //             </div>
-    //             <div>
-    //                 <div className='flex flex-row gap-1'>
-    //                     <Image src="/assets/callLogo.png" alt='logo' height={10} width={13} />
-    //                     <div style={{ fontSize: 13, fontWeight: "400", color: "#00000047" }}>
-    //                         Live Call
+    //         <motion.div
+    //             key={currentIndex}
+    //             initial="hidden"
+    //             animate="visible"
+    //             exit="exit"
+    //             variants={variants}
+    //             transition={{ duration: 0.5, }}
+    //         >
+    //             <div className='flex flex-row gap-2'
+    //                 style={{
+    //                     backgroundColor: "white",
+    //                     padding: 15,
+    //                     borderRadius: 20,
+    //                     paddingTop: 20,
+    //                     width: "250px"
+    //                 }}>
+    //                 <div>
+    //                     {
+    //                         data[currentIndex] && data[currentIndex].caller.profile_image ?
+    //                             <Image src={data[currentIndex].caller.profile_image} alt='profile' height={31} width={31} style={{ borderRadius: "50%" }} /> :
+    //                             // <Image src="/assets/profile1.png" alt='profile' height={31} width={31} />
+    //                             <div className='text-white flex items-center justify-center' style={{ height: 30, width: 30, backgroundColor: "red", borderRadius: "50%" }}>
+    //                                 H
+    //                             </div>
+    //                     }
+    //                 </div>
+    //                 <div>
+    //                     <div className='flex flex-row gap-1'>
+    //                         <Image src="/assets/callLogo.png" alt='logo' height={10} width={13} />
+    //                         <div style={{ fontSize: 13, fontWeight: "400", color: "#00000047" }}>
+    //                             Live Call
+    //                         </div>
+    //                     </div>
+    //                     <div className='flex flex-row items-center gap-1' style={{ fontWeight: "400", fontSize: 15 }}>
+    //                         On Call with <span style={{ fontWeight: "500", fontSize: 18 }}>
+    //                             {
+    //                                 data[currentIndex] &&
+    //                                 data[currentIndex].model.name
+    //                             }
+    //                         </span>
     //                     </div>
     //                 </div>
-    //                 <div className='flex flex-row items-center gap-1' style={{ fontWeight: "400", fontSize: 15 }}>
-    //                     On Call with <span style={{ fontWeight: "500", fontSize: 18 }}>
-    //                         <div>
-    //                             {data.length > 0 && <div>{data[currentIndex].name}</div>}
-    //                         </div>
-    //                     </span>
-    //                 </div>
     //             </div>
-    //         </div>
+    //         </motion.div>
     //     );
     // };
-
-
-    const CycleArray = ({ data }) => {
-        const [currentIndex, setCurrentIndex] = useState(0);
-
-        useEffect(() => {
-            if (data.length === 0) return;
-
-            const intervalDuration = 15000;
-            const interval = setInterval(() => {
-                setCurrentIndex(prevIndex => (prevIndex + 1) % data.length);
-            }, intervalDuration);
-
-            return () => clearInterval(interval);
-        }, [data]);
-
-        const variants = {
-            hidden: { opacity: 0, y: 50 },
-            visible: { opacity: 1, y: 0 },
-            exit: { opacity: 0, y: -50 },
-        };
-
-        return (
-            <motion.div
-                key={currentIndex}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                variants={variants}
-                transition={{ duration: 0.5, }}
-            >
-                <div className='flex flex-row gap-2'
-                    style={{
-                        backgroundColor: "white",
-                        padding: 15,
-                        borderRadius: 20,
-                        paddingTop: 20,
-                        width: "250px"
-                    }}>
-                    <div>
-                        {
-                            data[currentIndex].image ?
-                                <Image src={data[currentIndex].image} alt='profile' height={31} width={31} style={{ borderRadius: "50%" }} /> :
-                                // <Image src="/assets/profile1.png" alt='profile' height={31} width={31} />
-                                <div className='text-white flex items-center justify-center' style={{ height: 30, width: 30, backgroundColor: "red", borderRadius: "50%" }}>
-                                    H
-                                </div>
-                        }
-                    </div>
-                    <div>
-                        <div className='flex flex-row gap-1'>
-                            <Image src="/assets/callLogo.png" alt='logo' height={10} width={13} />
-                            <div style={{ fontSize: 13, fontWeight: "400", color: "#00000047" }}>
-                                Live Call
-                            </div>
-                        </div>
-                        <div className='flex flex-row items-center gap-1' style={{ fontWeight: "400", fontSize: 15 }}>
-                            On Call with <span style={{ fontWeight: "500", fontSize: 18 }}>
-                                {data[currentIndex].name}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </motion.div>
-        );
-    };
 
     //getting user data when logged in
 
     useEffect(() => {
         const LocalData = localStorage.getItem('User');
         const D = JSON.parse(LocalData);
-        // console.log("Local data for testing", D);
+        console.log("Login details from localstorage", D);
         if (LocalData) {
             setShowProfileIcon(true);
             if (D.data.user.role === "caller") {
@@ -205,6 +201,7 @@ const Page = () => {
             });
             if (response) {
                 console.log("respose of get recentcalls api", response.data);
+                setGetRecentCallsData(response.data.data);
             }
         } catch (error) {
             console.error("Error occured in getrecent calls api", error);
@@ -303,6 +300,16 @@ const Page = () => {
             } else {
                 setBoxVisible(true);  // Show the box if the button ref is not available
             }
+            if (buttonRef2.current) {
+                const rect = buttonRef2.current.getBoundingClientRect();
+                if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+                    setBoxVisible(false);  // Hide the animation when hovering over the button
+                } else {
+                    setBoxVisible(true);   // Show the animation otherwise
+                }
+            } else {
+                setBoxVisible(true);  // Show the box if the button ref is not available
+            }
         }
     };
 
@@ -368,7 +375,19 @@ const Page = () => {
                         <div>
                             <div className='flex flex-row items-center gap-8'>
                                 <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                    Tate.AI
+                                    {getAssistantData &&
+                                        <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                            {
+                                                getAssistantData.name ?
+                                                    <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                                        {getAssistantData.name}
+                                                    </div> :
+                                                    <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                                        {getAssistantData.assitant.name}
+                                                    </div>
+                                            }
+                                        </div>
+                                    }
                                 </div>
                                 <div className='flex flex-row gap-4'>
                                     <button>
@@ -387,31 +406,79 @@ const Page = () => {
                                 <div style={{ fontSize: 12, color: "grey", fontWeight: "400", fontFamily: "inter" }}>
                                     Calls:
                                 </div>
-                                <div className='ms-1' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
-                                    87
+                                <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
+                                    {
+                                        getAssistantData &&
+                                        <div>
+                                            {getAssistantData.calls ?
+                                                <div className='ms-1' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
+                                                    {getAssistantData.calls}
+                                                </div> :
+                                                <div className='ms-1' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
+                                                    0
+                                                </div>
+                                            }
+                                        </div>
+                                    }
                                 </div>
                                 <div className='ms-2' style={{ fontSize: 12, color: "grey", fontWeight: "400", fontFamily: "inter" }}>
                                     Earned:
                                 </div>
-                                <div className='ms-1' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
-                                    87K
+                                <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
+                                    {
+                                        getAssistantData &&
+                                        <div>
+                                            {getAssistantData.earned ?
+                                                <div className='ms-1' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
+                                                    {getAssistantData.earned} $
+                                                </div> :
+                                                <div className='ms-1' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
+                                                    0$
+                                                </div>
+                                            }
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     {
                         showProfileIcon &&
-                        <div className='me-8'>
-                            <Image src="/assets/profile1.png" alt='profile' height={40} width={40} />
+                        <div ref={buttonRef2} style={{ width: "8%" }}>
+                            <div className='flex flex-row gap-4 items-center'>
+                                {
+                                    showLogoutBtn &&
+                                    <div>
+                                        <button onClick={handleLogout} style={{ color: "red" }}>
+                                            Logout
+                                        </button>
+                                    </div>
+                                }
+                                <button onClick={handleshowLogoutBtn} className='me-8'>
+                                    <Image src="/assets/profile1.png" alt='profile' height={40} width={40} />
+                                </button>
+                            </div>
                         </div>
                     }
+
                 </div>
                 <div className='2xl:hidden flex items-center justify-between'>
                     <ProfileAnimation />
                     {
                         showProfileIcon &&
-                        <div className='me-8'>
-                            <Image src="/assets/profile1.png" alt='profile' height={40} width={40} />
+                        <div className='flex flex-row gap-4 items-center'>
+                            {
+                                showLogoutBtn &&
+                                <div>
+                                    <button onClick={handleLogout} style={{ color: "red" }}>
+                                        Logout
+                                    </button>
+                                </div>
+                            }
+                            <button onClick={handleshowLogoutBtn} className='me-8'>
+                                <Image src="/assets/profile1.png" alt='profile' height={40} width={40} />
+                            </button>
                         </div>
                     }
                 </div>
@@ -487,7 +554,7 @@ const Page = () => {
                         showCreatorBtn &&
                         <button className='flex flex-row p-4 items-center gap-4'>
                             <Image src={"/assets/stars.png"} alt='phone' height={20} width={20} />
-                            <div className='text-white' style={{ fontSize: 17, fontWeight: "600" }}>
+                            <div onClick={handleCreatorXClick} className='text-white' style={{ fontSize: 17, fontWeight: "600" }}>
                                 Build Your CreatorX
                             </div>
                         </button>
@@ -538,7 +605,7 @@ const Page = () => {
                 <Box className="lg:w-4/12 sm:w-7/12"
                     sx={styleLoginModal}
                 >
-                    <LoginModal closeForm={setOpenLoginModal} />
+                    <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} />
                 </Box>
             </Modal>
 
@@ -561,7 +628,7 @@ const Page = () => {
                 }}>
                 <div>
                     <div className=''>
-                        <LoginModal closeForm={hideBottom} />
+                        <LoginModal creator={creator} assistantData={getAssistantData} closeForm={hideBottom} />
                     </div>
                 </div>
             </Drawer>

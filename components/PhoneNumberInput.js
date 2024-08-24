@@ -8,9 +8,10 @@ const PhoneNumberInput = ({ phonenumber }) => {
     const [focus, setFocus] = useState(false);
     const [countryCode, setCountryCode] = useState('us');
     const [error, setError] = useState(false);
+    const [data, setData] = useState(null);
 
+    // Fetch user's current location
     useEffect(() => {
-        // Fetch the user's current location
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 async (position) => {
@@ -34,17 +35,29 @@ const PhoneNumberInput = ({ phonenumber }) => {
         }
     }, []);
 
+    // Update phone number in parent component
     useEffect(() => {
         phonenumber(phone);
+    }, [phone, phonenumber]);
+
+    // Validate phone number with a timeout
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            validatePhoneNumber(phone);
+        }, 3000);
+
+        // Cleanup timer to avoid memory leaks
+        return () => clearTimeout(timer);
     }, [phone]);
 
+    // Only run once to fetch local data
     useEffect(() => {
-        setError(false)
-        setTimeout(() => {
-            validatePhoneNumber()
-        }, 3000);
-        clearTimeout()
-    }, [phone])
+        const LocalData = localStorage.getItem('route');
+        const Data = JSON.parse(LocalData);
+        console.log("Data from localstorage", Data);
+        
+        setData(Data);
+    }, []);
 
     const validatePhoneNumber = (phone) => {
         const phoneNumberPattern = /^\+[1-9]\d{1,14}$/;
@@ -56,22 +69,19 @@ const PhoneNumberInput = ({ phonenumber }) => {
     };
 
     return (
-        <div>
+        <div className='w-full'>
             <PhoneInput
                 country={countryCode}
                 value={phone}
-                onChange={(phone) => {
-                    setPhone(phone)
-                    // validatePhoneNumber(phone);
-                }}
+                onChange={(phone) => setPhone(phone)}
                 inputStyle={{
                     width: '100%',
-                    height: '40px',
                     fontSize: '16px',
-                    borderRadius: '4px',
-                    border: focus ? '2px solid #00000080' : "1px solid #00000070",
+                    borderRadius: data ? "10px" : "20px",
+                    border: data ? "none" : focus ? '2px solid #00000080' : "1px solid #00000070",
                     paddingLeft: '60px',
-                    height: 50
+                    height: 50,
+                    backgroundColor: data ? "#EDEDED" : "transparent"
                 }}
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}
@@ -96,15 +106,6 @@ const PhoneNumberInput = ({ phonenumber }) => {
                 countryCodeEditable={false}
                 enableSearch={true}
             />
-            {/* {
-                error ?
-                    <div>
-                        err
-                    </div> :
-                    <div>
-                        no err
-                    </div>
-            } */}
         </div>
     );
 };

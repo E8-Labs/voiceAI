@@ -108,6 +108,7 @@ const AddCardDetails = ({ handleBack, closeForm }) => {
                         } else {
                             setAddCardSuccess(true);
                             closeForm();
+                            window.location.reload();
                         }
                     }
                 } catch (error) {

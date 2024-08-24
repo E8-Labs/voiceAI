@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import PhoneNumberInput from '../PhoneNumberInput';
 import Apis from '../apis/Apis';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 const boxVariants = {
     enter: (direction) => ({
@@ -24,8 +25,21 @@ const boxVariants = {
 
 export default function Animation({ onChangeIndex }) {
 
-    const [currentIndex, setCurrentIndex] = useState(1);
-    const [direction, setDirection] = useState(1);
+    const router = useRouter();
+
+    useEffect(() => {
+        const LocalData = localStorage.getItem('route');
+        if (LocalData) {
+            setCurrentIndex(0);
+            setDirection(0);
+        } else {
+            setCurrentIndex(2);
+            setDirection(2);
+        }
+    }, [])
+
+    const [currentIndex, setCurrentIndex] = useState(2);
+    const [direction, setDirection] = useState(2);
     const [userName, setUserName] = useState("");
     const [checkUserNameData, set1checkUserNameData] = useState(null);
     const [checkUserEmailData, setCheckUserEmailData] = useState(null);
@@ -42,6 +56,14 @@ export default function Animation({ onChangeIndex }) {
     const [EmailP2, setEmailP2] = useState("");
     const [EmailP3, setEmailP3] = useState("");
     const [EmailP4, setEmailP4] = useState("");
+    const [signinVerificationNumber, setSigninVerificationNumber] = useState(null);
+
+    //code for sending verification code when signIn
+    const [VP1, setVP1] = useState("");
+    const [VP2, setVP2] = useState("");
+    const [VP3, setVP3] = useState("");
+    const [VP4, setVP4] = useState("");
+    const [VP5, setVP5] = useState("");
 
     const checkUserName = async () => {
         const ApiPath = Apis.checkUserName;
@@ -63,6 +85,11 @@ export default function Animation({ onChangeIndex }) {
             console.error("Error occured in checkusername api", error);
 
         }
+    }
+
+    const SignInNumber = (number) => {
+        setSigninVerificationNumber(number);
+        console.log("Number is", number);
     }
 
     useEffect(() => {
@@ -134,15 +161,92 @@ export default function Animation({ onChangeIndex }) {
         }
     }, [userPhoneNumber]);
 
+    //code for login back
+    const handleLogin = async () => {
+        try {
+            const ApiPath = Apis.sendVerificationCode;
+            // const LocalData = localStorage.getItem('route');
+            // const D = JSON.parse(LocalData);
+            // const modalName = D.modalName;
+            // router.push(`/${modalName}`);
+            const data = {
+                phone: signinVerificationNumber,
+                // status: "true"
+                login: "true"
+            }
+            const response = await axios.post(ApiPath, data, {
+                headers: {
+                    'Content-Type': "application/json"
+                }
+            });
+            if (response) {
+                console.log("Response of login api is", response);
+                if (response.data.status === true) {
+                    handleContinue()
+                }
+            }
+        } catch (error) {
+            console.error("Error occured in login api", error);
+        }
+    }
+
+
     const handleContinue = () => {
         // handleCurrentIndex();
         setDirection(1);
         setCurrentIndex((prevIndex) => prevIndex + 1);
     };
 
+    const handleCaller_toCreator_Continue = () => {
+        setDirection(5);
+        setCurrentIndex((prevIndex) => prevIndex + 5);
+    }
+
+    //code when user want to become creator
+    const handleCreatorClick = async () => {
+        const LocalData = localStorage.getItem('User');
+        if (LocalData) {
+            const Data = JSON.parse(LocalData);
+            console.log("Local data is", Data);
+            const AuthToken = Data.data.token;
+            console.log("Authtoken is", AuthToken);
+            const ApiPath = Apis.Caller_to_Creator;
+            const data = {
+                username: userName,
+                role: "creator"
+            }
+            console.log("Data sending in api is", data);
+            try {
+                const response = await axios.post(ApiPath, data, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + AuthToken
+                    }
+                });
+                if (response) {
+                    console.log("Response of caller_to_creator api is", response.data);
+                    if (response.data.status === true) {
+                        handleCaller_toCreator_Continue();
+                    }
+                } else {
+                    console.log("Error in caller_to_creator api");
+                }
+            } catch (error) {
+                console.error("Error occured in api is", error);
+            }
+        } else {
+            handleContinue()
+        }
+    }
+
     const handleBack = () => {
         setDirection(-1);
         setCurrentIndex((prevIndex) => prevIndex - 1);
+    };
+
+    const handleMoveLogin = () => {
+        setDirection(-2);
+        setCurrentIndex((prevIndex) => prevIndex - 2);
     };
 
     // console.log("test index is", currentIndex);
@@ -231,8 +335,8 @@ export default function Animation({ onChangeIndex }) {
                             "Content-Type": "application/json"
                         }
                     });
-                    if(loginResponse){
-                        if(loginResponse.data){
+                    if (loginResponse) {
+                        if (loginResponse.data) {
                             console.log("response of login api is", loginResponse.data);
                         }
                     }
@@ -247,8 +351,9 @@ export default function Animation({ onChangeIndex }) {
     const containerStyles = {
         position: 'relative',
         // height: '40vh',
-        // width: '50vw',
+        width: '80%',
         overflow: 'hidden',
+        // backgroundColor: "blue"
     };
 
     const styles = {
@@ -265,6 +370,65 @@ export default function Animation({ onChangeIndex }) {
         justifyContent: 'center',
         marginInline: 10
     };
+
+
+    //code for verification code whe user sign in
+    //code for moving to next field
+    const handleInputChange2 = (e, setFunc, nextInputId) => {
+        const value = e.target.value;
+        if (value.length === 1) {
+            setFunc(value); // Update the current field
+            if (nextInputId) {
+                document.getElementById(nextInputId).focus(); // Move to the next field
+            }
+        }
+    };
+
+    const handleBackspace2 = (e, setFunc, prevInputId) => {
+        if (e.key === 'Backspace') {
+            setFunc(''); // Clear the current field
+            if (e.target.value === '' && prevInputId) {
+                document.getElementById(prevInputId).focus(); // Move to the previous field
+            }
+        }
+    };
+
+    const handleVerifyLoginCode = async () => {
+        const LocalData = localStorage.getItem('route');
+        const D = JSON.parse(LocalData);
+        const modalName = D.modalName;
+        // router.push(`/${modalName}`);
+        try {
+            const ApiPath = Apis.verifyCode;
+            const data = {
+                code: VP1 + VP2 + VP3 + VP4 + VP5,
+                phone: signinVerificationNumber,
+                login: true
+            }
+            console.log('Code sendding', data)
+            const response = await axios.post(ApiPath, data, {
+                headers: {
+                    'Content-Type': "application/json"
+                }
+            });
+            if (response) {
+                console.log("Response of ", response.data);
+
+                if (response.data.status === true) {
+                    console.log("Response of login verification code", response.data.data);
+                    localStorage.setItem('User', JSON.stringify(response.data));
+                    // router.push(`/${}`)
+                    // return
+                    router.push(`/${modalName}`);
+                    localStorage.removeItem('route');
+                }
+            } else {
+                console.log("error");
+            }
+        } catch (error) {
+            console.error("Error occured in loginverification code", error);
+        }
+    }
 
     return (
         <div style={containerStyles}>
@@ -283,13 +447,13 @@ export default function Animation({ onChangeIndex }) {
                         >
                             <div className='w-full'>
                                 <div style={{ fontSize: 24, fontWeight: "600", }}>
-                                    Log in
+                                    Sign in
                                 </div>
                                 <div className='text-lightWhite' style={{ fontSize: 13, fontWeight: "400" }}>
                                     Good to have you back!
                                 </div>
-                                <div className='w-full flex flex-row gap-6 mt-8'>
-                                    <TextField className=' w-5/12'
+                                <div className='w-8/12 flex flex-row gap-6 mt-8'>
+                                    {/* <TextField className=' w-5/12'
                                         autofill='off'
                                         id="filled-basic"
                                         label="Email address" variant="filled"
@@ -331,45 +495,10 @@ export default function Animation({ onChangeIndex }) {
                                             '& .MuiFilledInput-underline:after': {
                                                 borderBottomColor: '#050A0890',
                                             },
-                                        }} />
-                                    {/* <TextField
-                                        className='w-5/12'
-                                        id="password"
-                                        label="Password"
-                                        variant="filled"
-                                        placeholder='Enter your password'
-                                        type={showPassword ? 'text' : 'password'}
-                                        InputProps={{
-                                            endAdornment:
-                                                (
-                                                    <InputAdornment position="end">
-                                                        <IconButton
-                                                            aria-label="toggle password visibility"
-                                                            onClick={handleClickShowPassword}
-                                                            onMouseDown={handleMouseDownPassword}
-                                                            edge="end"
-                                                        >
-                                                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                                                        </IconButton>
-                                                    </InputAdornment>
-                                                )
-                                        }}
-                                        sx={{
-                                            '& label.Mui-focused': {
-                                                color: '#050A0890',
-                                            },
-                                            '& .MuiFilledInput-root': {
-                                                fontSize: 13,
-                                                fontWeight: '400',
-                                            },
-                                            '& .MuiFilledInput-underline:before': {
-                                                borderBottomColor: '#050A0860',
-                                            },
-                                            '& .MuiFilledInput-underline:after': {
-                                                borderBottomColor: '#050A0890',
-                                            },
-                                        }}
-                                    /> */}
+                                        }} /> */}
+
+                                    <PhoneNumberInput phonenumber={SignInNumber} />
+
                                 </div>
                                 <div className='mt-2'>
                                     <button style={{ color: "#552AFF", fontSize: 13, fontWeight: "400" }}>
@@ -378,8 +507,9 @@ export default function Animation({ onChangeIndex }) {
                                         </u>
                                     </button>
                                 </div>
-                                <div className='mt-8' style={{ color: "white" }}>
-                                    <Button className='bg-purple hover:bg-purple2 text-white rounded w-full' style={{ fontSize: 15, fontWeight: "400", height: "52px" }}>
+                                <div className='mt-8 w-8/12' style={{ color: "white" }}>
+                                    <Button className='bg-purple hover:bg-purple2 text-white w-full' onClick={handleLogin}
+                                        style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
                                         Continue
                                     </Button>
                                 </div>
@@ -387,7 +517,7 @@ export default function Animation({ onChangeIndex }) {
                                     <div style={{ fontSize: 12, fontWeight: "400" }}>
                                         Or
                                     </div>
-                                    <button onClick={handleContinue} style={{ fontSize: 15, fontWeight: "500" }}>
+                                    <button onClick={handleBack} style={{ fontSize: 15, fontWeight: "500" }}>
                                         Signup
                                     </button>
                                 </div>
@@ -399,6 +529,86 @@ export default function Animation({ onChangeIndex }) {
                     <div className='flex flex-col h-screen justify-center' style={{ height: "", }}>
                         <motion.div
                             key="box2"
+                            custom={direction}
+                            variants={boxVariants}
+                            initial="enter"
+                            animate="center"
+                            exit="exit"
+                            transition={{ duration: 1 }}
+                            style={styles}
+                        >
+                            <div className='w-full'>
+                                <div className='text-lightWhite' style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
+                                    Enter verification code sent to ****4319
+                                </div>
+                                <div className='flex flex-row gap-4 mt-4'>
+                                    <input
+                                        id="P1"
+                                        type='text'
+                                        value={VP1}
+                                        onChange={(e) => handleInputChange2(e, setVP1, "P2")}
+                                        maxLength={1}
+                                        style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                                        onKeyDown={(e) => handleBackspace2(e, setVP1, null)}
+                                    />
+                                    <input
+                                        id="P2"
+                                        type='text'
+                                        value={VP2}
+                                        onChange={(e) => handleInputChange2(e, setVP2, "P3")}
+                                        maxLength={1}
+                                        style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                                        onKeyDown={(e) => handleBackspace2(e, setVP2, "P1")}
+                                    />
+                                    <input
+                                        id="P3"
+                                        type='text'
+                                        value={VP3}
+                                        onChange={(e) => handleInputChange2(e, setVP3, "P4")}
+                                        maxLength={1}
+                                        style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                                        onKeyDown={(e) => handleBackspace2(e, setVP3, "P2")}
+                                    />
+                                    <input
+                                        id="P4"
+                                        type='text'
+                                        value={VP4}
+                                        onChange={(e) => handleInputChange2(e, setVP4, "P5")}
+                                        maxLength={1}
+                                        style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                                        onKeyDown={(e) => handleBackspace2(e, setVP4, "P3")}
+                                    />
+                                    <input
+                                        id="P5"
+                                        type='text'
+                                        value={VP5}
+                                        onChange={(e) => handleInputChange2(e, setVP5, null)}
+                                        maxLength={1}
+                                        style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                                        onKeyDown={(e) => handleBackspace2(e, setVP5, "P4")}
+                                    />
+                                </div>
+                                <div className='mt-8 w-8/12' style={{ color: "white" }}>
+                                    <Button onClick={handleVerifyLoginCode} className='bg-purple hover:bg-purple2 text-white rounded w-full' style={{ fontSize: 15, fontWeight: "400", height: "52px" }}>
+                                        Continue
+                                    </Button>
+                                </div>
+                                <div className='mt-6 flex flex-row items-center gap-1'>
+                                    <div style={{ fontSize: 12, fontWeight: "400" }}>
+                                        Or
+                                    </div>
+                                    <button onClick={handleBack} style={{ fontSize: 15, fontWeight: "500" }}>
+                                        Signup
+                                    </button>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+                {currentIndex === 2 && (
+                    <div className='flex flex-col h-screen justify-center' style={{ height: "", }}>
+                        <motion.div
+                            key="box3"
                             custom={direction}
                             variants={boxVariants}
                             initial="enter"
@@ -420,7 +630,7 @@ export default function Animation({ onChangeIndex }) {
                                     <div className='text-lightWhite mt-2' style={{ fontSize: 13, fontWeight: "400" }}>
                                         The good ones are still available
                                     </div>
-                                    <TextField className=' w-8/12 mt-8'
+                                    <TextField className=' w-9/12 mt-8'
                                         autofill='off'
                                         id="filled-basic"
                                         label="Name" variant="filled"
@@ -467,13 +677,13 @@ export default function Animation({ onChangeIndex }) {
                                         Try something similar.
                                     </div> */}
 
-                                    <div>
+                                    <div className='w-10/12'>
                                         {
                                             checkUserNameData && checkUserNameData.status === true ?
                                                 <div style={{ fontWeight: "400", fontSize: 14, color: "green" }}>
-                                                    <Button onClick={handleContinue}
-                                                        className='bg-purple hover:bg-purple2 text-white rounded w-full mt-12'
-                                                        style={{ fontSize: 15, fontWeight: "400", height: "52px" }}>
+                                                    <Button onClick={handleCreatorClick}
+                                                        className='bg-purple hover:bg-purple text-white w-full mt-12'
+                                                        style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
                                                         Continue
                                                     </Button>
                                                 </div> :
@@ -481,7 +691,7 @@ export default function Animation({ onChangeIndex }) {
                                                     <Button
                                                         disabled
                                                         className='bg-placeholderColor text-white rounded w-full mt-12'
-                                                        style={{ fontSize: 15, fontWeight: "400", height: "52px", color: "white" }}>
+                                                        style={{ fontSize: 15, fontWeight: "400", height: "52px", color: "white", borderRadius: "50px" }}>
                                                         Continue
                                                     </Button>
                                                 </div>
@@ -492,7 +702,7 @@ export default function Animation({ onChangeIndex }) {
                                         <div style={{ fontSize: 12, fontWeight: "400" }}>
                                             Or
                                         </div>
-                                        <button onClick={handleBack} style={{ fontSize: 15, fontWeight: "500" }}>
+                                        <button onClick={handleMoveLogin} style={{ fontSize: 15, fontWeight: "500" }}>
                                             Login
                                         </button>
                                     </div>
@@ -502,10 +712,10 @@ export default function Animation({ onChangeIndex }) {
                         </motion.div>
                     </div>
                 )}
-                {currentIndex === 2 && (
+                {currentIndex === 3 && (
                     <div className='flex flex-col h-screen justify-center' style={{ height: "", }}>
                         <motion.div
-                            key="box3"
+                            key="box4"
                             custom={direction}
                             variants={boxVariants}
                             initial="enter"
@@ -636,10 +846,10 @@ export default function Animation({ onChangeIndex }) {
                         </motion.div>
                     </div>
                 )}
-                {currentIndex === 3 && (
+                {currentIndex === 4 && (
                     <div className='flex flex-col h-screen justify-center' style={{ height: "", }}>
                         <motion.div
-                            key="box4"
+                            key="box5"
                             custom={direction}
                             variants={boxVariants}
                             initial="enter"
@@ -760,10 +970,10 @@ export default function Animation({ onChangeIndex }) {
                         </motion.div>
                     </div>
                 )}
-                {currentIndex === 4 && (
+                {currentIndex === 5 && (
                     <div className='flex flex-col h-screen justify-center' style={{ height: "", }}>
                         <motion.div
-                            key="box5"
+                            key="box6"
                             custom={direction}
                             variants={boxVariants}
                             initial="enter"
@@ -832,10 +1042,10 @@ export default function Animation({ onChangeIndex }) {
                     </div>
                 )}
                 {
-                    currentIndex === 5 && (
+                    currentIndex === 6 && (
                         <div className='flex h-screen flex-col justify-center' style={{ height: "", }}>
                             <motion.div
-                                key="box6"
+                                key="box7"
                                 custom={direction}
                                 variants={boxVariants}
                                 initial="enter"
@@ -962,10 +1172,10 @@ export default function Animation({ onChangeIndex }) {
                         </div>
                     )
                 }
-                {currentIndex === 6 && (
+                {currentIndex === 7 && (
                     <div className='flex flex-col justify-center h-screen' style={{ height: "", }}>
                         <motion.div
-                            key="box7"
+                            key="box8"
                             custom={direction}
                             variants={boxVariants}
                             initial="enter"
@@ -973,11 +1183,11 @@ export default function Animation({ onChangeIndex }) {
                             exit="exit"
                             transition={{ duration: 1 }}
                             style={styles}>
-                            <div style={{ height: "auto", border: "2px solid green" }}>
+                            <div style={{ height: "auto" }}>
                                 <div style={{ height: 14 }}>
-                                    <button onClick={handleBack}>
+                                    {/* <button onClick={handleBack}>
                                         <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
-                                    </button>
+                                    </button> */}
                                 </div>
                                 {/* <Image src={'/assets/congratulations.png'} alt='congrats' height={445} width={445} /> */}
                                 <div style={{ fontSize: 24, fontWeight: "600", textAlign: ' center' }}>

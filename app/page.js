@@ -1,5 +1,6 @@
 'use client'
 import Animation from '@/components/animation/Animation';
+import Apis from '@/components/apis/Apis';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -9,10 +10,19 @@ export default function Home() {
 
   const router = useRouter();
 
-  useEffect(() => {
-    router.push('/user/onboarding')
-  }, [])
+  // useEffect(() => {
+  //   router.push('/user/onboarding')
+  // }, [])
   const [currentIndex, setCurrentIndex] = useState(null);
+  const [assistantData, setAssistantData] = useState(null);
+
+  const getAssistantData = async () => {
+    try{
+      const ApiPath = Apis.GetAssistantData;
+    }catch(error){
+      console.error("Error occured in get assistant data api", error);
+    }
+  }
 
   const handleCurrentIndex = (id) => {
     setCurrentIndex(id);

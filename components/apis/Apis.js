@@ -1,12 +1,20 @@
 const BasePath = 'http://localhost:8005/'//'https://www.blindcircle.com:444/voice/' //;'http://localhost:8005/'
 
 const Apis = {
+    //user flow apis
     SignUp: `${BasePath}api/user/login`,
     sendVerificationCode: `${BasePath}api/user/sendVerificationCode`,
     verifyCode: `${BasePath}api/user/verifyCode`,
     checkPhone: `${BasePath}api/user/checkPhoneNumber`,
     addCard: `${BasePath}api/user/add_card`,
     MakeCall: `${BasePath}api/calls/make_a_call`,
+    Caller_to_Creator: `${BasePath}api/user/updateUserRole`,
+    BuildAI: `${BasePath}api/ai/buildAi`,
+    BuildScript:`${BasePath}api/ai/buildAiScript`,
+
+
+    GetRecentCalls: `${BasePath}api/calls/get_recent_calls`,
+    GetAssistantData: `${BasePath}api/user/getProfileFromUsername`,
 
 
     //apis for voice creator onboarding
