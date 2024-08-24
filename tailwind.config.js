@@ -23,6 +23,7 @@ module.exports = {
         "light-blue": '#1480FF',
         "placeholderColor": '#620FEB50',
         "lightWhite": '#050A0860',
+        "grayBg":"#EDEDED"
       },
     },
   },

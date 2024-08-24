@@ -21,7 +21,7 @@ const boxVariants = {
     }),
 };
 
-const LoginModal = ({ closeForm }) => {
+const LoginModal = ({ closeForm, creator, assistantData }) => {
 
     const [currentIndex, setCurrentIndex] = useState(1);
     const [direction, setDirection] = useState(1);
@@ -114,7 +114,7 @@ const LoginModal = ({ closeForm }) => {
                             style={styles} className='px-3 py-5'
                         >
                             <div className='w-full'>
-                                <CreateAccount handleContinue={handleContinue} handleBack={handleBack} />
+                                <CreateAccount creator={creator} modalData={assistantData} handleContinue={handleContinue} handleBack={handleBack} />
                             </div>
                         </motion.div>
                     </div>

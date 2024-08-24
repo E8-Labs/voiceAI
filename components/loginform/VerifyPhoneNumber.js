@@ -17,7 +17,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
     const [showError, setShowError] = useState(null)
 
     const data = {
-        code: P1 + P2 + P3 + P4,
+        code: P1 + P2 + P3 + P4 + P5,
         phone: userLoginDetails.phone,
     }
 
@@ -26,63 +26,34 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
     }, [])
 
 
-
-
-    function maskInput(event) {
-        const input = event.target;
-        const realValue = input.value;
-
-        // Store the real value in a data attribute
-        input.dataset.realValue = realValue;
-        console.log("Real value is", realValue);
-
-
-        // Replace the input value with an asterisk
-        // input.value = realValue ? '*' : '';
-
-        // Automatically move to the next input field
-        if (realValue && input.nextElementSibling && input.nextElementSibling.tagName === "INPUT") {
-            input.nextElementSibling.focus();
-        }
-    }
-
-    function restrictToNumbers(event) {
-        const key = event.key;
-
-        if (
-            key === "Backspace" || key === "Tab" || key === "Delete" ||
-            key === "ArrowLeft" || key === "ArrowRight" ||
-            key === "ArrowUp" || key === "ArrowDown"
-        ) {
-            return;
-        }
-
-        // If the key is not a number, prevent the input
-        if (!/^\d$/.test(key)) {
-            event.preventDefault();
-        }
-    }
-
-    document.querySelectorAll('input[type="text"]').forEach(input => {
-        input.addEventListener('keydown', function (event) {
-            if (event.key === "Backspace") {
-
-                input.value = ''; // Clear the current input value
-                input.dataset.realValue = ''; // Clear the real value stored in the data attribute
-
-                // Move the focus to the previous input field, if it exists
-                if (input.previousElementSibling && input.previousElementSibling.tagName === "INPUT") {
-                    input.previousElementSibling.focus();
-                }
+    //code for moving to next field
+    const handleInputChange = (e, setFunc, nextInputId) => {
+        const value = e.target.value;
+        if (value.length === 1) {
+            setFunc(value); // Update the current field
+            if (nextInputId) {
+                document.getElementById(nextInputId).focus(); // Move to the next field
             }
-        });
-    });
+        }
+    };
+
+    const handleBackspace = (e, setFunc, prevInputId) => {
+        if (e.key === 'Backspace') {
+            setFunc(''); // Clear the current field
+            if (e.target.value === '' && prevInputId) {
+                document.getElementById(prevInputId).focus(); // Move to the previous field
+            }
+        }
+    };
+
 
 
 
     const handleVerifyClick = async () => {
         // handleContinue();
         setVerifyLoader(true);
+        console.log("Code sending is", data);
+        // return
         try {
             const response = await axios.post(Apis.verifyCode, data, {
                 headers: {
@@ -91,7 +62,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
             });
             if (response) {
                 console.log("response of check code ", response.data);
-                if (response.data.message === 'Phone verified') {
+                if (response.data.status === true) {
                     // handleContinue();
                     const SignUpApiPath = Apis.SignUp;
                     try {
@@ -105,6 +76,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                             localStorage.setItem("User", JSON.stringify(response.data));
                             handleContinue();
                         } else if (response.data.status === false) {
+                            console.log("Response of api", response.data);
                             console.log("Signup api response not found");
                         }
                     } catch (error) {
@@ -139,52 +111,128 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
 
 
 
-            <div className='flex flex-row gap-4 mt-4'>
+            {/* <div className='flex flex-row gap-4 mt-4'>
                 <input
+                    id='P1'
                     placeholder='*'
                     type='text'
                     value={P1}
-                    onChange={(e) => setP1(e.target.value)}
+                    // onChange={(e) => setP1(e.target.value)}
+                    onChange={(e) => handleInputChange(e, setP1, "P2")}
                     maxLength={1}
                     style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
-                    onInput={maskInput}
+                    // onInput={maskInput}
                     data-real-value=""
-                    onKeyDown={restrictToNumbers}
+                    // onKeyDown={restrictToNumbers}
+                    onKeyDown={(e) => handleBackspace(e, setP1, null)}
                 />
                 <input
+                    id='P2'
                     type='text'
                     placeholder='*'
                     value={P2}
-                    onChange={(e) => setP2(e.target.value)}
+                    // onChange={(e) => setP2(e.target.value)}
+                    onChange={(e) => handleInputChange(e, setP2, "P2")}
                     maxLength={1}
                     style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
                     onInput={maskInput}
                     data-real-value=""
-                    onKeyDown={restrictToNumbers}
+                    // onKeyDown={restrictToNumbers}
+                    onKeyDown={(e) => handleBackspace(e, setP2, null)}
                 />
                 <input
+                    id='P3'
                     placeholder='*'
                     type='text'
                     value={P3}
-                    onChange={(e) => setP3(e.target.value)}
+                    // onChange={(e) => setP3(e.target.value)}
+                    onChange={(e) => handleInputChange(e, setP3, "P3")}
                     maxLength={1}
                     style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
                     onInput={maskInput}
                     data-real-value=""
-                    onKeyDown={restrictToNumbers}
+                    // onKeyDown={restrictToNumbers}
+                    onKeyDown={(e) => handleBackspace(e, setP3, null)}
                 />
                 <input
+                    id='P4'
                     type='text'
                     placeholder='*'
                     value={P4}
-                    onChange={(e) => setP4(e.target.value)}
+                    // onChange={(e) => setP4(e.target.value)}
+                    onChange={(e) => handleInputChange(e, setP4, "P4")}
                     maxLength={1}
                     style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
                     onInput={maskInput}
                     data-real-value=""
-                    onKeyDown={restrictToNumbers}
+                    // onKeyDown={restrictToNumbers}
+                    onKeyDown={(e) => handleBackspace(e, setP4, null)}
+                />
+                <input
+                    id='P5'
+                    type='text'
+                    placeholder='*'
+                    value={P5}
+                    // onChange={(e) => setP5(e.target.value)}
+                    onChange={(e) => handleInputChange(e, setP5, null)}
+                    maxLength={1}
+                    style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                    onInput={maskInput}
+                    data-real-value=""
+                    // onKeyDown={restrictToNumbers}
+                    onKeyDown={(e) => handleBackspace(e, setP5, "p4")}
+                />
+            </div> */}
+
+            <div className='flex flex-row gap-4 mt-4'>
+                <input
+                    id="P1"
+                    type='text'
+                    value={P1}
+                    onChange={(e) => handleInputChange(e, setP1, "P2")}
+                    maxLength={1}
+                    style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                    onKeyDown={(e) => handleBackspace(e, setP1, null)}
+                />
+                <input
+                    id="P2"
+                    type='text'
+                    value={P2}
+                    onChange={(e) => handleInputChange(e, setP2, "P3")}
+                    maxLength={1}
+                    style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                    onKeyDown={(e) => handleBackspace(e, setP2, "P1")}
+                />
+                <input
+                    id="P3"
+                    type='text'
+                    value={P3}
+                    onChange={(e) => handleInputChange(e, setP3, "P4")}
+                    maxLength={1}
+                    style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                    onKeyDown={(e) => handleBackspace(e, setP3, "P2")}
+                />
+                <input
+                    id="P4"
+                    type='text'
+                    value={P4}
+                    onChange={(e) => handleInputChange(e, setP4, "P5")}
+                    maxLength={1}
+                    style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                    onKeyDown={(e) => handleBackspace(e, setP4, "P3")}
+                />
+                <input
+                    id="P5"
+                    type='text'
+                    value={P5}
+                    onChange={(e) => handleInputChange(e, setP5, null)}
+                    maxLength={1}
+                    style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                    onKeyDown={(e) => handleBackspace(e, setP5, "P4")}
                 />
             </div>
+
+
             <div>
                 {
                     showError &&
