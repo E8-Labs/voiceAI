@@ -163,6 +163,19 @@ const MakeCallForm = ({ closeForm }) => {
             </div>
             {/* Code for snack when api call success */}
 
+            {/*
+                !snackMessage &&
+                <div style={{width: '280px', height: '80px', backgroundColor: 'red'}}>
+                    <div>
+                        <div style={{ fontSize: 15, fontWeight: '500', fontFamily: 'inter' }}>
+                            Congratulations
+                        </div>
+                    </div>
+                    <div>
+                    </div>
+                </div>
+            */}
+
             <Snackbar
                 open={snackMessage}
                 autoHideDuration={5000}

@@ -43,8 +43,23 @@ const Page = () => {
     const [getRecentCallData, setGetRecentCallsData] = useState([]);
     const [getAssistantData, setGetAssistantData] = useState(null);
     const [showLogoutBtn, setShowLogoutBtn] = useState(false);
+    // const [showPopup]
 
     const { creator } = useParams();
+
+    //code to show modal
+    useEffect(() => {
+        const data = {
+            status: true
+        }
+        localStorage.setItem('showPopupData', JSON.stringify(data));
+    }, [])
+
+    useEffect(() => {
+        const localData = localStorage.getItem('showPopupData');
+        const Data = JSON.parse(localData);
+        console.log('Data is', Data);
+    }, [])
 
     //move to become creator
     const handleCreatorXClick = () => {
@@ -346,6 +361,7 @@ const Page = () => {
             axios.request(config)
                 .then((response) => {
                     console.log(JSON.stringify(response.data));
+                    setSnackMessage(true);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -354,11 +370,18 @@ const Page = () => {
             console.error('Error occurred:', error);
         } finally {
             setLoading(false);
-            setSnackMessage(true);
             setOpen(false);
             console.log('Response is true');
         }
     }
+
+    useEffect(() => {
+        if (snackMessage === true) {
+            setTimeout(() => {
+                setSnackMessage(false)
+            }, 2000);
+        }
+    }, [snackMessage])
 
     return (
         <div style={backgroundImage} className='flex flex-col justify-between h-full' onMouseMove={handleMouseMove}>
@@ -632,7 +655,22 @@ const Page = () => {
                     </div>
                 </div>
             </Drawer>
-            <Snackbar
+            {
+                snackMessage &&
+                <div style={{ width: '280px', height: '80px', padding: 15, borderRadius: 20, border: '2px solid white', backgroundColor: '#ffffff60', position: 'absolute', top: 10, right: 12 }}>
+                    <div>
+                        <div style={{ fontSize: 15, fontWeight: '500', fontFamily: 'inter' }}>
+                            Congratulations
+                        </div>
+                        <div>
+                        </div>
+                    </div>
+                    <div style={{ fontSize: 13, fontWeight: '400', fontFamily: 'inter' }}>
+                        Your call has been initiated successfully
+                    </div>
+                </div>
+            }
+            {/*<Snackbar
                 open={snackMessage}
                 autoHideDuration={5000}
                 onClose={() => setSnackMessage(false)}
@@ -651,7 +689,7 @@ const Page = () => {
                     sx={{ width: '100%' }}>
                     You will receive a call soon.
                 </Alert>
-            </Snackbar>
+            </Snackbar>*/}
         </div>
     );
 }
