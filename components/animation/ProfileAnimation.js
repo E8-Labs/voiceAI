@@ -1,16 +1,56 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box } from '@mui/material';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
+import Apis from '../apis/Apis';
+import axios from 'axios';
 
-const ProfileAnimation = () => {
+const ProfileAnimation = ({ creator }) => {
 
     const [isOpen, setIsOpen] = useState(false);
+    const [getAssistantData, setGetAssistantData] = useState(null);
+    // console.log("Creator on profile animation  is", creator);
+    
 
     const handleClick = () => {
         setIsOpen(!isOpen);
     };
+
+    //code for getting the assistant api
+    const getUserData = async () => {
+        console.log("Username for testing", creator);
+        const ApiPath = `${Apis.GetAssistantData}?username=${creator}`;
+        console.log("Api path is", ApiPath);
+        try {
+            const getResponse = await axios.get(ApiPath, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            if (getResponse) {
+                console.log("Response of getassistant data on profile animation screen", getResponse.data);
+                const AssistantData = getResponse.data.data;
+                localStorage.setItem('assistantData', JSON.stringify(AssistantData));
+                setGetAssistantData(getResponse.data.data);
+            } else {
+                console.log("Error occured");
+            }
+        } catch (error) {
+            console.error("Error occured in getassistant api is", error);
+        }
+    }
+
+    useEffect(() => {
+        getUserData()
+    }, []);
+
+    // useEffect(() => {
+    //     const localData = localStorage.getItem('assistantData');
+    //     const Data = JSON.parse(localData);
+    //     console.log('Data recieved is', Data);
+    //     setGetAssistantData(Data);
+    // }, [])
 
     return (
         <div>
@@ -41,7 +81,19 @@ const ProfileAnimation = () => {
                                 }}
                             >
                                 <div style={{ fontSize: 15, fontWeight: "400" }}>
-                                    Tate.AI
+                                    {getAssistantData &&
+                                        <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                            {
+                                                getAssistantData.name ?
+                                                    <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                                        {getAssistantData.name}
+                                                    </div> :
+                                                    <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                                        {getAssistantData.assitant.name}
+                                                    </div>
+                                            }
+                                        </div>
+                                    }
                                 </div>
                             </motion.div>
 

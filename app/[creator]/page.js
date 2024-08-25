@@ -43,33 +43,46 @@ const Page = () => {
     const [getRecentCallData, setGetRecentCallsData] = useState([]);
     const [getAssistantData, setGetAssistantData] = useState(null);
     const [showLogoutBtn, setShowLogoutBtn] = useState(false);
-    // const [showPopup]
+    const [showPopup, setshowPopup] = useState(true);
 
     const { creator } = useParams();
 
     //code to show modal
-    useEffect(() => {
-        const data = {
-            status: true
-        }
-        localStorage.setItem('showPopupData', JSON.stringify(data));
-    }, [])
-
-    useEffect(() => {
-        const localData = localStorage.getItem('showPopupData');
-        const Data = JSON.parse(localData);
-        console.log('Data is', Data);
-    }, [])
+    // useEffect(() => {
+    //     const localData = localStorage.getItem()
+    // }, [])
 
     //move to become creator
     const handleCreatorXClick = () => {
         router.push('/creator/onboarding2')
     }
 
+    const hidePopup = () => {
+        const PopupStatus = {
+            status: true
+        }
+        localStorage.setItem('popupStatus', JSON.stringify(PopupStatus));
+        setshowPopup(false);
+    }
+
+    useEffect(() => {
+        const localData = localStorage.getItem('popupStatus');
+        if (localData) {
+            const Data = JSON.parse(localData);
+            console.log("Data is", Data);
+            if (Data.status === true) {
+                setshowPopup(false);
+            }
+        } else {
+            setshowPopup(true);
+        }
+    }, [])
+
     //code for logoutbtn
 
     const handleshowLogoutBtn = () => {
-        setShowLogoutBtn(!showLogoutBtn);
+        router.push("/profile")
+        // setShowLogoutBtn(!showLogoutBtn);
     }
 
     const handleLogout = () => {
@@ -89,6 +102,8 @@ const Page = () => {
             });
             if (getResponse) {
                 console.log("Response of getassistant data", getResponse.data);
+                const AssistantData = getResponse.data.data;
+                localStorage.setItem('assistantData', JSON.stringify(AssistantData));
                 setGetAssistantData(getResponse.data.data);
             } else {
                 console.log("Error occured");
@@ -108,76 +123,6 @@ const Page = () => {
             localStorage.removeItem('route')
         }, 1000);
     }, [])
-
-
-
-    // const CycleArray = ({ data }) => {
-    //     const [currentIndex, setCurrentIndex] = useState(0);
-
-    //     useEffect(() => {
-    //         if (data.length === 0) return;
-
-    //         const intervalDuration = 15000;
-    //         const interval = setInterval(() => {
-    //             setCurrentIndex(prevIndex => (prevIndex + 1) % data.length);
-    //         }, intervalDuration);
-
-    //         return () => clearInterval(interval);
-    //     }, [data]);
-
-    //     const variants = {
-    //         hidden: { opacity: 0, y: 50 },
-    //         visible: { opacity: 1, y: 0 },
-    //         exit: { opacity: 0, y: -50 },
-    //     };
-
-    //     return (
-    //         <motion.div
-    //             key={currentIndex}
-    //             initial="hidden"
-    //             animate="visible"
-    //             exit="exit"
-    //             variants={variants}
-    //             transition={{ duration: 0.5, }}
-    //         >
-    //             <div className='flex flex-row gap-2'
-    //                 style={{
-    //                     backgroundColor: "white",
-    //                     padding: 15,
-    //                     borderRadius: 20,
-    //                     paddingTop: 20,
-    //                     width: "250px"
-    //                 }}>
-    //                 <div>
-    //                     {
-    //                         data[currentIndex] && data[currentIndex].caller.profile_image ?
-    //                             <Image src={data[currentIndex].caller.profile_image} alt='profile' height={31} width={31} style={{ borderRadius: "50%" }} /> :
-    //                             // <Image src="/assets/profile1.png" alt='profile' height={31} width={31} />
-    //                             <div className='text-white flex items-center justify-center' style={{ height: 30, width: 30, backgroundColor: "red", borderRadius: "50%" }}>
-    //                                 H
-    //                             </div>
-    //                     }
-    //                 </div>
-    //                 <div>
-    //                     <div className='flex flex-row gap-1'>
-    //                         <Image src="/assets/callLogo.png" alt='logo' height={10} width={13} />
-    //                         <div style={{ fontSize: 13, fontWeight: "400", color: "#00000047" }}>
-    //                             Live Call
-    //                         </div>
-    //                     </div>
-    //                     <div className='flex flex-row items-center gap-1' style={{ fontWeight: "400", fontSize: 15 }}>
-    //                         On Call with <span style={{ fontWeight: "500", fontSize: 18 }}>
-    //                             {
-    //                                 data[currentIndex] &&
-    //                                 data[currentIndex].model.name
-    //                             }
-    //                         </span>
-    //                     </div>
-    //                 </div>
-    //             </div>
-    //         </motion.div>
-    //     );
-    // };
 
     //getting user data when logged in
 
@@ -248,8 +193,6 @@ const Page = () => {
         } else {
             setOpenLoginModal(true);
         }
-        console.log('Phone number is', phoneNumber);
-        console.log('User name is', userName);
     }, []);
 
     // Effect to update screen size status
@@ -288,10 +231,49 @@ const Page = () => {
         mx: 'auto',
         my: '50vh',
         transform: 'translateY(-50%)',
-        borderRadius: 2
+        borderRadius: 2,
+        border: "none",
+        outline: "none"
     };
 
     // Animation handler
+    // const handleMouseMove = (event) => {
+    //     const centerX = window.innerWidth / 2;
+    //     const centerY = window.innerHeight / 2;
+    //     const x = event.clientX;
+    //     const y = event.clientY;
+
+    //     setMousePosition({ x, y });
+
+    //     // Check if the mouse is within 100px of the center
+    //     if (Math.abs(x - centerX) <= 150 && Math.abs(y - centerY) <= 150) {
+    //         setBoxVisible(false); // Hide the box
+    //     } else {
+    //         // Check if the mouse is over the button
+    //         if (buttonRef.current) {
+    //             const rect = buttonRef.current.getBoundingClientRect();
+    //             if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+    //                 setBoxVisible(false);  // Hide the animation when hovering over the button
+    //             } else {
+    //                 setBoxVisible(true);   // Show the animation otherwise
+    //             }
+    //         } else {
+    //             setBoxVisible(true);  // Show the box if the button ref is not available
+    //         }
+    //         if (buttonRef2.current) {
+    //             const rect = buttonRef2.current.getBoundingClientRect();
+    //             if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+    //                 setBoxVisible(false);  // Hide the animation when hovering over the button
+    //             } else {
+    //                 setBoxVisible(true);   // Show the animation otherwise
+    //             }
+    //         } else {
+    //             setBoxVisible(true);  // Show the box if the button ref is not available
+    //         }
+    //     }
+    // };
+
+
     const handleMouseMove = (event) => {
         const centerX = window.innerWidth / 2;
         const centerY = window.innerHeight / 2;
@@ -300,33 +282,34 @@ const Page = () => {
 
         setMousePosition({ x, y });
 
-        // Check if the mouse is within 100px of the center
+        // Check if the mouse is within 150px of the center
         if (Math.abs(x - centerX) <= 150 && Math.abs(y - centerY) <= 150) {
             setBoxVisible(false); // Hide the box
-        } else {
-            // Check if the mouse is over the button
-            if (buttonRef.current) {
-                const rect = buttonRef.current.getBoundingClientRect();
-                if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
-                    setBoxVisible(false);  // Hide the animation when hovering over the button
-                } else {
-                    setBoxVisible(true);   // Show the animation otherwise
-                }
-            } else {
-                setBoxVisible(true);  // Show the box if the button ref is not available
-            }
-            if (buttonRef2.current) {
-                const rect = buttonRef2.current.getBoundingClientRect();
-                if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
-                    setBoxVisible(false);  // Hide the animation when hovering over the button
-                } else {
-                    setBoxVisible(true);   // Show the animation otherwise
-                }
-            } else {
-                setBoxVisible(true);  // Show the box if the button ref is not available
+            return;
+        }
+
+        // Check if the mouse is over buttonRef
+        if (buttonRef.current) {
+            const rect = buttonRef.current.getBoundingClientRect();
+            if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+                setBoxVisible(false);  // Hide the animation when hovering over buttonRef
+                return;
             }
         }
+
+        // Check if the mouse is over buttonRef2
+        if (buttonRef2.current) {
+            const rect = buttonRef2.current.getBoundingClientRect();
+            if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+                setBoxVisible(false);  // Hide the animation when hovering over buttonRef2
+                return;
+            }
+        }
+
+        // If none of the conditions are met, show the box
+        setBoxVisible(true);
     };
+
 
     //code for apicall
     const handleTalktoBlandy = async () => {
@@ -388,7 +371,7 @@ const Page = () => {
             <div className='pt-8 ps-8'>
                 <div className='2xl:flex hidden w-full flex flex-row justify-between'>
                     <div className='px-6 py-2 flex gap-4 flex-row items-center'
-                        style={{ border: "2px solid #ffffff", borderRadius: 50, width: "13%" }}>
+                        style={{ border: "2px solid #ffffff", borderRadius: 50}}>
                         <div className='flex flex-row items-center'>
                             <div style={{ border: "2px solid black", borderRadius: "50%" }}>
                                 <Image src={"/assets/profile.png"} alt='profilephoto' height={40} width={40} style={{ resize: "cover" }} />
@@ -479,7 +462,7 @@ const Page = () => {
                                     </div>
                                 }
                                 <button onClick={handleshowLogoutBtn} className='me-8'>
-                                    <Image src="/assets/profile1.png" alt='profile' height={40} width={40} />
+                                    <Image src="/assets/placeholderImg.jpg" alt='profile' height={40} width={40} style={{ borderRadius: "50%" }} />
                                 </button>
                             </div>
                         </div>
@@ -487,7 +470,7 @@ const Page = () => {
 
                 </div>
                 <div className='2xl:hidden flex items-center justify-between'>
-                    <ProfileAnimation />
+                    <ProfileAnimation creator={creator} />
                     {
                         showProfileIcon &&
                         <div className='flex flex-row gap-4 items-center'>
@@ -500,7 +483,7 @@ const Page = () => {
                                 </div>
                             }
                             <button onClick={handleshowLogoutBtn} className='me-8'>
-                                <Image src="/assets/profile1.png" alt='profile' height={40} width={40} />
+                                <Image src="/assets/placeholderImg.jpg" alt='profile' height={40} width={40} style={{ borderRadius: "50%" }} />
                             </button>
                         </div>
                     }
@@ -584,31 +567,6 @@ const Page = () => {
                     }
                 </div>
                 <div className='me-8 md:flex hidden'>
-                    {/* <div className='flex flex-row gap-2'
-                        style={{
-                            backgroundColor: "white",
-                            padding: 15,
-                            borderRadius: 8,
-                            width: "250px",
-                            paddingTop: 20
-                        }}>
-                        <div>
-                            <Image src="/assets/profile1.png" alt='profile' height={31} width={31} layout='' />
-                        </div>
-                        <div>
-                            <div className='flex flex-row gap-1'>
-                                <Image src="/assets/callLogo.png" alt='logo' height={10} width={13} />
-                                <div style={{ fontSize: 13, fontWeight: "400", color: "#00000047" }}>
-                                    Live Call
-                                </div>
-                            </div>
-                            <div className='flex flex-row items-center gap-1' style={{ fontWeight: "400", fontSize: 15 }}>
-                                On Call with <span style={{ fontWeight: "500", fontSize: 18 }}>
-                                    <CycleArray data={getRecentCallData} />
-                                </span>
-                            </div>
-                        </div>
-                    </div> */}
                     <CycleArray data={getRecentCallData} />
                 </div>
             </div>
@@ -670,26 +628,43 @@ const Page = () => {
                     </div>
                 </div>
             }
-            {/*<Snackbar
-                open={snackMessage}
-                autoHideDuration={5000}
-                onClose={() => setSnackMessage(false)}
-                anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right'
-                }}
-                TransitionComponent={Slide}
-                TransitionProps={{
-                    direction: 'left'
+            <Modal
+                open={showPopup}
+                // onClose={(() => setshowPopup(false))}
+                closeAfterTransition
+                BackdropProps={{
+                    timeout: 1000,
+                    sx: {
+                        backgroundColor: 'transparent',
+                        backdropFilter: 'blur(40px)',
+                    },
                 }}
             >
-                <Alert
-                    onClose={() => setSnackMessage(false)}
-                    severity="success"
-                    sx={{ width: '100%' }}>
-                    You will receive a call soon.
-                </Alert>
-            </Snackbar>*/}
+                <Box className="lg:w-4/12 sm:w-7/12"
+                    sx={styleLoginModal}
+                >
+                    <div style={{ backgroundColor: 'white', padding: 18, borderRadius: 15, height: "35vh" }}>
+                        <div style={{ fontWeight: '600', fontSize: 24, fontFamily: 'inter' }}>
+                            First 5 minutes are on us!
+                        </div>
+                        <div className='text-lightWhite' style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter", marginTop: 10 }}>
+                            We have got your first 5 minutes covered! Anything more is just $1 per minute to get some of the best advice of your life. You are only charged for minutes talked. We add 10 minutes to your account when it drops below 2 minutes. Enjoy!
+                        </div>
+                        <div className='flex flex-row justify-between w-full' style={{ marginTop: 30 }}>
+                            <div>
+                                <button>
+                                    <Image src="/assets/backArrow.png" height={9} width={13} alt='back' />
+                                </button>
+                            </div>
+                            <div>
+                                <button onClick={hidePopup} className='bg-purple px-6 py-2 text-white' style={{ fontWeight: "400", fontFamily: "inter", fontSize: 15, borderRadius: "50px" }}>
+                                    Continue
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </Box>
+            </Modal>
         </div>
     );
 }

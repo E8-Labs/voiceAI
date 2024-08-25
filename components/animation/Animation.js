@@ -92,6 +92,11 @@ export default function Animation({ onChangeIndex }) {
         console.log("Number is", number);
     }
 
+    //code for navigating to 3rd flow from congrats
+    const handleCongratsClick = () => {
+        router.push('/creator/buildscript')
+    }
+
     useEffect(() => {
         if (userName) {
             setTimeout(() => {
@@ -1194,7 +1199,7 @@ export default function Animation({ onChangeIndex }) {
                                     Congratulations
                                 </div>
                                 <Image
-                                    src={'/assets/applogo.png'}
+                                    src={'/assets/congratulation.png'}
                                     alt='congrats'
                                     height={550}
                                     width={445}
@@ -1206,6 +1211,13 @@ export default function Animation({ onChangeIndex }) {
                                 //     height: 'auto'
                                 // }}
                                 />
+
+                                <div className='w-full flex justify-center mt-4'>
+                                    <button onClick={handleCongratsClick} className='bg-purple text-white px-6 py-2' style={{borderRadius: "50px"}}>
+                                        Continue
+                                    </button>
+                                </div>
+
                                 <div className='flex flex-row mt-6 justify-center w-full gap-1'>
                                     <button style={{ fontSize: 11, fontWeight: "400" }}>
                                         Privacy policy -

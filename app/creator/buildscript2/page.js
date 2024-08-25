@@ -14,43 +14,6 @@ export default function Home() {
     }
 
     return (
-        // <div className='w-full' style={{ height: "100vh", display: 'flex', alignItems: "center", width: "", overflow: "hidden" }}>
-        //     <div className='flex flex-row items-center justify-center w-full'>
-        //         <div
-        //             // className='flex flex-row justify-center md:w-5/12 w-full items-center'
-        //             className={`flex flex-row justify-center items-center ${currentIndex === 6 ? 'w-full' : 'md:w-5/12 w-full'}`}
-        //         >
-        //             <div className='w-11/12'>
-        //                 <div className='mt-24 sm:flex hidden'>
-        //                     <Image src={'/assets/applogo.png'}
-        //                         alt='logo'
-        //                         height={40}
-        //                         width={37}
-        //                     />
-        //                     {/* <div>Onboarding 2</div> */}
-        //                 </div>
-        //                 {/* <ScriptAiAnimation /> */}
-        //                 <div style={{ border: "2px solid red" }}>
-        //                     <ScriptAnimation onChangeIndex={handleCurrentIndex} />
-        //                 </div>
-        //             </div>
-        //         </div>
-        //         {
-        //             currentIndex === 0 &&
-        //             <div className='w-7/12 flex md:flex hidden justify-center' style={{ height: "100%" }}>
-        //                 <img src="/assets/groupImages.png" alt='app' style={{ height: "850px", width: "100%", resize: "cover", objectFit: "contain" }} />
-        //                 {/* <ImagesFile /> */}
-        //             </div>
-        //         }
-        //         {
-        //             currentIndex < 6 && currentIndex > 0 &&
-        //             <div className='w-7/12 flex md:flex hidden  justify-center'>
-        //                 <img src='/assets/mainLogo.png' alt='app' style={{ height: "637px", width: "637px", resize: "cover", objectFit: "contain" }} />
-        //             </div>
-        //         }
-        //     </div>
-        //     {/* <div>hello</div> */}
-        // </div>
         <div className='w-full' style={{ height: "100vh", display: 'flex', alignItems: "center", width: "", overflow: "hidden" }}>
             <div className='flex flex-row items-center justify-center w-full'>
                 <div

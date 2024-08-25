@@ -43,12 +43,9 @@ const CycleArray = ({ data }) => {
                 }}>
                 <div>
                     {
-                        data[currentIndex] && data[currentIndex].caller.profile_image ?
+                        data[currentIndex] && data[currentIndex].caller && data[currentIndex].caller.profile_image ?
                             <Image src={data[currentIndex].caller.profile_image} alt='profile' height={31} width={31} style={{ borderRadius: "50%" }} /> :
-                            // <Image src="/assets/profile1.png" alt='profile' height={31} width={31} />
-                            <div className='text-white flex items-center justify-center' style={{ height: 30, width: 30, backgroundColor: "red", borderRadius: "50%" }}>
-                                H
-                            </div>
+                            <Image src="/assets/placeholderImg.jpg" alt='profile' height={40} width={40} style={{ borderRadius: "50%" }} />
                     }
                 </div>
                 <div>

@@ -9,6 +9,7 @@ import axios from 'axios';
 import AiSocialLinks from './AiSocialLinks';
 import CallerInfo from './CallerInfo';
 import SetPrice from './SetPrice';
+import AddCard from '../loginform/Addcard/AddCard';
 
 const boxVariants = {
     enter: (direction) => ({
@@ -38,7 +39,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
     //code for callingipt api
     const handleBuildScript = async () => {
-        try{
+        try {
             const ApiPath = Apis.BuildScript;
             const LocalData = localStorage.getItem('User');
             const Data = JSON.parse(LocalData);
@@ -48,25 +49,25 @@ export default function ScriptAnimation2({ onChangeIndex }) {
             fromData.append("greeting", greetText);
             fromData.append("possibleUserQuery", serviceDetails);
             const response = await axios.post(ApiPath, fromData, {
-                headers:{
+                headers: {
                     'Content-Type': 'application/json',
-                    'Authorization' : 'Bearer ' + AuthToken
+                    'Authorization': 'Bearer ' + AuthToken
                 }
             });
 
-            if(response){
+            if (response) {
                 console.log("Response is", response.data);
-                if(response.data.status === true){
+                if (response.data.status === true) {
                     console.log("Response of buildscript api is", response);
-                    
-                }else{
+                    handleContinue();
+                } else {
                     console.log("Status is", response.data.status);
                 }
             }
 
-        }catch(error){
+        } catch (error) {
             console.error("error occured in script api is", error);
-        }finally{
+        } finally {
             console.log("Done");
         }
     }
@@ -146,7 +147,19 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
     useEffect(() => {
         console.log('selected value', value)
-    }, [value])
+    }, [value]);
+
+
+    //code for card index
+    const [selectCard, setSelectCard] = useState(null);
+
+    const handleCardSelect = (index) => {
+        if (selectCard === index) {
+            setSelectCard(null); // Deselect the card if it is already select
+        } else {
+            setSelectCard(index); // Select the card if it is not selected
+        }
+    }
 
     return (
         <div style={containerStyles}>
@@ -595,9 +608,9 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         <div className='mt-6' style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
                                             Set your price.
                                         </div>
-                                        <div className='text-lightWhite mt-2' style={{ fontSize: 13, fontWeight: "400" }}>
+                                        <button onClick={handleContinue} className='text-lightWhite mt-2' style={{ fontSize: 13, fontWeight: "400" }}>
                                             How much do you charge perinute?
-                                        </div>
+                                        </button>
 
                                         <div>
                                             <SetPrice handleContinue={handleBuildScript} />
@@ -619,41 +632,82 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             exit="exit"
                             transition={{ duration: 1 }}
                             style={styles}>
-                            <div className='w-full' style={{ height: "auto", border: "2px solid green", height: "100%" }}>
-                                <div style={{ height: 14 }}>
-                                    <button onClick={handleBack}>
-                                        <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
-                                    </button>
+                            <div className='w-full flex flex-row' style={{ height: "auto" }}>
+                                <div className='w-6/12'>
+                                    <div style={{ height: 14 }}>
+                                        <button onClick={handleBack}>
+                                            <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
+                                        </button>
+                                    </div>
+                                    <div className='mt-12' style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
+                                        Subscribe
+                                    </div>
+                                    <div className='flex flex-row items-center w-8/12 px-6 rounded-xl justify-between' style={{ height: "70px", border: "1px solid #EFEFEF", marginTop: 30 }}>
+                                        <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
+                                            $97/ mo
+                                        </div>
+                                        <button onClick={() => handleCardSelect(1)}>
+                                            {
+                                                selectCard === 1 ?
+                                                    <Image alt='selected' style={{ borderRadius: "50%" }} src='/assets/selected.png' height={27} width={27} /> :
+                                                    <Image alt='selected' style={{ borderRadius: "50%" }} src='/assets/unselected.png' height={27} width={27} />
+                                            }
+                                        </button>
+                                    </div>
+                                    <div className='items-center w-8/12 px-6 rounded-xl justify-between' style={{ height: "70px", border: "1px solid #EFEFEF", marginTop: 50 }}>
+                                        <div className='w-full flex flex-row justify-end'>
+                                            <div className='bg-purple text-white px-2 py-1' style={{ borderRadius: "50px", width: "fit-content", marginTop: "-18px" }}>
+                                                Recomended
+                                            </div>
+                                        </div>
+                                        <div className='flex flex-row items-center w-full rounded-xl justify-between'>
+                                            <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
+                                                <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
+                                                    $1200/ yr
+                                                </div>
+                                                <div style={{ fontWeight: "400", fontSize: 18, fontFamily: "inter" }}>
+                                                    Save $200 (12 %)
+                                                </div>
+                                            </div>
+                                            <div className='flex flex-row gap-2 items-center'>
+                                                <button onClick={() => handleCardSelect(2)}>
+                                                    {
+                                                        selectCard === 2 ?
+                                                            <Image alt='selected' style={{ borderRadius: "50%" }} src='/assets/selected.png' height={27} width={27} /> :
+                                                            <Image alt='selected' style={{ borderRadius: "50%" }} src='/assets/unselected.png' height={27} width={27} />
+                                                    }
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className='w-8/12 flex justify-center' style={{ marginTop: 30 }}>
+                                        <button className='w-full py-3 text-white bg-purple' style={{ borderRadius: "50px" }}>
+                                            Continue
+                                        </button>
+                                    </div>
+                                    <div style={{ fontWeight: "700", fontSize: 16, fontFamily: "inter", marginTop: 30 }}>
+                                        You will not be charged right now!
+                                    </div>
+                                    <div className='text-lightWhite w-8/12' style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13, marginTop: 20 }}>
+                                        Your account will be under review. We do this to ensure we CreatorX is a safe and authentic platform for creators. You'll need to complete this step for our team to review your creator account. We'll be in touch in 24hrs.
+                                    </div>
                                 </div>
-                                {/* <Image src={'/assets/congratulations.png'} alt='congrats' height={445} width={445} /> */}
-                                <div style={{ fontSize: 24, fontWeight: "600", textAlign: ' center' }}>
-                                    Add card
+                                <div className='w-6/12'>
+                                    <div style={{ fontSize: 20, fontWeight: '400', fontFamily: 'inter', marginTop: 40 }}>
+                                        Make Payment
+                                    </div>
+                                    <div style={{ fontSize: 15, fontWeight: '400', fontFamily: 'inter', marginTop: 30 }}>
+                                        You are only charged for minutes talked
+                                    </div>
+                                    <div className='flex flex-row gap-6' style={{ marginTop: 25 }}>
+                                        <Image src="/assets/card.png" alt='card' height={64} width={140} />
+                                        <Image src="/assets/eps.png" alt='card' height={64} width={140} />
+                                        <Image src="/assets/giro.png" alt='card' height={64} width={140} />
+                                    </div>
+                                    <div className='w-8/12'>
+                                        <AddCard />
+                                    </div>
                                 </div>
-                                {/* <Image
-                                    src={'/assets/applogo.png'}
-                                    alt='congrats'
-                                    height={550}
-                                    width={445}
-                                    layout="responsive"
-                                    objectFit="contain"
-                                // style={{
-                                //     aspectRatio: '3 / 2',
-                                //     maxWidth: '100%',
-                                //     height: 'auto'
-                                // }}
-                                /> */}
-                                {/* <div className='flex flex-row mt-6 justify-center w-full gap-1'>
-                                    <button style={{ fontSize: 11, fontWeight: "400" }}>
-                                        Privacy policy -
-                                    </button>
-                                    <button style={{ fontSize: 11, fontWeight: "400" }}>
-                                        Terms & Condition -
-                                    </button>
-                                    <button style={{ fontSize: 11, fontWeight: "400" }}>
-                                        Cookie Policy
-                                    </button>
-                                </div> */}
-
                             </div>
                         </motion.div>
                     </div>

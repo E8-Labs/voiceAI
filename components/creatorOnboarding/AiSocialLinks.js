@@ -88,7 +88,7 @@ function AiSocialLinks({ handleContinue, handleBack }) {
 
                 <div className='flex flex-row gap-5 mb-5'>
                     <Image style={styles.image}
-                        src={'/assets/webIcon.png'} alt='web'
+                        src={'/assets/instagram.png'} alt='web'
                         height={30} width={30} />
                     <div className='bg-grayBg w-8/12' style={styles.button}>
                         <button style={styles.buttonFont}>

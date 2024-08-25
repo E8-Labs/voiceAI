@@ -79,14 +79,16 @@ export default function ScriptAnimation({ onChangeIndex }) {
             const ApiPath = Apis.BuildAI;
             const LocalData = localStorage.getItem('User');
             const Data = JSON.parse(LocalData);
-            // return
             const AuthToken = Data.data.token;
             console.log("Authtoken is", AuthToken);
             const formData = new FormData();
             formData.append('name', aiName);
             formData.append('action', helpTagline);
             formData.append('tagline', talkAbout);
-            formData.append('media', audioUrl);
+            if (selectedAudio) {
+                formData.append('media', selectedAudio);
+                console.log("Audi sending in api", selectedAudio);
+            }
             console.log("Data sending in api is", formData);
             const response = await axios.post(ApiPath, formData, {
                 headers: {
@@ -98,6 +100,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
             if (response) {
                 console.log("Response of create builai api is", response.data);
                 if (response.data.status === true) {
+                    router.push('/creator/buildscript2');
                     console.log("response of build ai apis is", response.data.data);
                 } else {
                     console.log("status of api", response.data.status);
