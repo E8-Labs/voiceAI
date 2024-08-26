@@ -28,7 +28,7 @@ const AddCardDetails = ({ handleBack, closeForm }) => {
     const elementOptions = {
         style: {
             base: {
-                backgroundColor: '#EDEDEDC7',
+                backgroundColor: 'transparent',
                 color: '#000000',
                 fontSize: '18px',
                 lineHeight: '40px',
@@ -123,33 +123,44 @@ const AddCardDetails = ({ handleBack, closeForm }) => {
 
     return (
         <div style={{ width: '100%' }}>
-            <div style={{ fontSize: 18, fontWeight: "500", fontFamily: "inter" }}>
-                Add Card
+            <div style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
+                Add Payment Method
             </div>
             <div className='mt-4'>
-                <CardNumberElement
-                    options={elementOptions}
-                    style={{
-                        width: '100%', padding: '8px', backgroundColor: 'black',
-                        color: 'black', fontSize: '22px', border: '1px solid blue', borderRadius: '4px'
-                    }} />
+                <div style={{ fontWeight: "400", fontFamily: "inter", fontSize: 13, color: "#4F5B76" }}>
+                    Card Number
+                </div>
+                <div className='mt-2 px-3 py-1' style={{ backgroundColor: "#EDEDEDC7", borderRadius: "8px" }}>
+                    <CardNumberElement
+                        options={elementOptions} />
+                </div>
             </div>
-            <div className='flex flex-row gap-2 w-full mt-4'>
+            <div className='flex flex-row gap-2 w-full mt-8'>
                 <div className='w-6/12'>
-                    <CardExpiryElement
-                        options={elementOptions}
-                        style={{
-                            width: '100%', padding: '8px',
-                            color: 'white', fontSize: '22px', border: '1px solid blue', borderRadius: '4px'
-                        }} />
+                    <div style={{ fontWeight: "400", fontFamily: "inter", fontSize: 13, color: "#4F5B76" }}>
+                        Exp
+                    </div>
+                    <div className='mt-2 px-3 py-1' style={{ backgroundColor: "#EDEDEDC7", borderRadius: "8px" }}>
+                        <CardExpiryElement
+                            options={elementOptions}
+                            style={{
+                                width: '100%', padding: '8px',
+                                color: 'white', fontSize: '22px', border: '1px solid blue', borderRadius: '4px'
+                            }} />
+                    </div>
                 </div>
                 <div className='w-6/12'>
-                    <CardCvcElement
-                        options={elementOptions}
-                        style={{
-                            width: '100%', padding: '8px',
-                            color: 'white', fontSize: '22px', border: '1px solid blue', borderRadius: '4px'
-                        }} />
+                    <div style={{ fontWeight: "400", fontFamily: "inter", fontSize: 13, color: "#4F5B76" }}>
+                        CVC
+                    </div>
+                    <div className='mt-2 px-3 py-1' style={{ backgroundColor: "#EDEDEDC7", borderRadius: "8px" }}>
+                        <CardCvcElement
+                            options={elementOptions}
+                            style={{
+                                width: '100%', padding: '8px',
+                                color: 'white', fontSize: '22px', border: '1px solid blue', borderRadius: '4px'
+                            }} />
+                    </div>
                 </div>
             </div>
             {/* <CardPostalCodeElement id="postal-code" options={elementOptions} /> */}
@@ -161,7 +172,7 @@ const AddCardDetails = ({ handleBack, closeForm }) => {
                         </div> :
                         <div className='flex flex-row justify-end items-center mt-8 w-full'>
                             <div>
-                                <button onClick={handleAddCard} className='bg-purple rounded px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15 }}>
+                                <button onClick={handleAddCard} className='bg-purple rounded px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15, borderRadius: "50px" }}>
                                     Continue
                                 </button>
                             </div>

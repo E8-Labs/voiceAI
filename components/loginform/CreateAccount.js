@@ -5,6 +5,7 @@ import PhoneNumberInput from '../PhoneNumberInput'
 import axios from 'axios'
 import Apis from '../apis/Apis'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 const CreateAccount = ({ handleContinue, handleBack, creator, modalData }) => {
 
@@ -18,10 +19,28 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData }) => {
     const [loginLoader, setLoginLoader] = useState(false);
     const [phoneNumberErr, setPhoneNumberErr] = useState(null);
     const [numberFormatError, setNumberFormatError] = useState(false);
+    const [termsCheck, setTermsCheck] = useState(false);
+    const [checkUserEmailData, setCheckUserEmailData] = useState(null);
 
     const handlePhoneNumber = (number) => {
         console.log("Number is", number);
         setUserPhoneNumber(number);
+    }
+
+    //call emailValidation api
+    useEffect(() => {
+        if (userEmail) {
+            const timeOut = setTimeout(() => {
+                checkUserEmail();
+            }, 2000);
+            return () => clearTimeout(timeOut);
+        }
+    }, [userEmail]);
+
+    //code for termscheck button
+
+    const handleTermsCheckBtn = () => {
+        setTermsCheck(!termsCheck);
     }
 
     const handleSignInClick = () => {
@@ -46,17 +65,8 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData }) => {
                     'Content-Type': 'application/json'
                 }
             });
-            if (response.data.message === "Phone available") {
-                console.log("Response of api is", response.data);
-                setPhoneNumberErr(response.data.message);
-                // const phoneNumberPattern = /^\+[1-9]\d{1,14}$/;
-                // if (!phoneNumberPattern.test(`+${phone}`)) {
-                //     setNumberFormatError(true);
-                // } else {
-                //     setNumberFormatError(false);
-                // }
-            } else {
-                setPhoneNumberErr(response.data.message);
+            if (response.data) {
+                setPhoneNumberErr(response.data)
             }
         } catch (error) {
             console.error("Error occured in checknum api");
@@ -65,13 +75,23 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData }) => {
 
     useEffect(() => {
         if (userPhoneNumber) {
-            setTimeout(() => {
-                checkPhoneNumber()
+            const timeOut = setTimeout(() => {
+                checkPhoneNumber();
             }, 2000);
+            return () => clearTimeout(timeOut)
         }
-    }, [userPhoneNumber])
+    }, [userPhoneNumber]);
 
     const handleLogin = async () => {
+
+        //code to save userFormdata
+        const data = {
+            firstName: userName,
+            lastName: userLastName,
+            email: userEmail,
+            phonenumber: userPhoneNumber
+        }
+        localStorage.setItem('formData', JSON.stringify(data));
 
         const userData = {
             name: userName + " " + userLastName,
@@ -80,7 +100,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData }) => {
             password: userPassword
         }
         console.log("Data for create account", userData);
-        
+
         // return
 
         setLoginLoader(true);
@@ -105,44 +125,84 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData }) => {
         } finally {
             setLoginLoader(false)
         }
-
-        // return
-        // try {
-
-
-        //     const response = await axios.post(ApiPath, data, {
-        //         headers: {
-        //             'Content-Type': 'application/json'
-        //         }
-        //     });
-        //     if (response.status === 200) {
-        //         console.log("response of login is", response.data.data);
-        //         handleContinue()
-        //     }
-        // } catch (error) {
-        //     console.log("Error occured in apis is", error);
-        // }
-        // finally {
-        //     setLoginLoader(false);
-        // }
     }
 
-    // const handleNavigateToSignIn = () => {
-    //     router.push('/creator/onboarding2', {
-    //         query: {
-    //             pathName: "creator"
-    //         }
-    //     });
-    // }
+    const MuiFieldStyle = {
+        '& label.Mui-focused': {
+            color: '#050A08',
+            // paddingBottom: "10px",
+        },
+        '& .MuiFilledInput-root': {
+            fontSize: 13,
+            fontWeight: '400',
+        },
+        '& .MuiOutlinedInput-root': {
+            borderRadius: 2,
+            height: "48px",
+            backgroundColor: "#EDEDEDC7",
+            color: "black",
+            '& fieldset': {
+                borderColor: 'transparent',  // Border none when not focused
+            },
+            '&:hover fieldset': {
+                borderColor: 'transparent',  // Border none on hover
+            },
+            '&.Mui-focused fieldset': {
+                borderColor: '#00000000',  // Your existing focus styles
+                backgroundColor: "#EDEDEDC7",
+                color: "#000000",
+            },
+        },
+    }
+
+    //code for email validation
+    const checkUserEmail = async () => {
+        const ApiPath = Apis.checkUserEmail;
+        const data = {
+            email: userEmail
+        }
+        try {
+            const response = await axios.post(ApiPath, data, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            if (response) {
+                if (response.data) {
+                    console.log("Response of checkemail", response.data);
+                    setCheckUserEmailData(response.data);
+                }
+            }
+        } catch (error) {
+            console.error("Error occured in checkuseremail api", error);
+
+        }
+    }
+
+    //code to retrive the formData data
+
+    useEffect(() => {
+        const localData = localStorage.getItem("formData");
+        if (localData) {
+            const Data = JSON.parse(localData);
+            console.log("Form data retrived", Data);
+
+            setUserName(Data.firstName);
+            setUserLastName(Data.lastName);
+            setUserEmail(Data.email);
+            // setUserPhoneNumber(Data.phonenumber);
+        }
+    }, [])
+
 
 
     return (
         <div>
-            <div style={{ fontWeight: "600", fontSize: 28, textAlign: "center" }}>
+            <div style={{ fontWeight: "600", fontSize: 28, textAlign: "center", marginTop: 18 }}>
                 {
                     loginLoader ?
                         <CircularProgress size={20} /> :
-                        <div style={{ fontWeight: "600", fontSize: 28, textAlign: "center" }}>
+                        <div style={{ fontWeight: "600", fontSize: 24, textAlign: "center" }}>
                             {modalData &&
                                 <div>
                                     {modalData.name ?
@@ -157,101 +217,78 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData }) => {
                         </div>
                 }
             </div>
-            <TextField className=' w-full mt-4'
+            <TextField className=' w-full mt-10'
                 autofill='off'
                 id="filled-basic"
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
                 label="First Name" variant="outlined"
                 placeholder='Enter First name.'
-                sx={{
-                    '& label.Mui-focused': {
-                        color: '#050A08',
-                        // borderColor: "red"
-                    },
-                    '& .MuiFilledInput-root': {
-                        // color: '#050A0860',
-                        fontSize: 13,
-                        fontWeight: '400',
-                    },
-                    '& .MuiOutlinedInput-root': {
-                        borderRadius: 5,
-                        height: 48,
-                        '&.Mui-focused fieldset': {
-                            borderColor: '#00000080',
-                            // backgroundColor: "#EDEDEDC7",
-                            color: "#050A08",
-                        },
-                    },
-                }} />
+                sx={MuiFieldStyle}
+            />
 
-            <TextField className=' w-full mt-4'
+            <TextField className=' w-full mt-8'
                 autofill='off'
                 id="filled-basic"
                 value={userLastName}
                 onChange={(e) => setUserLastName(e.target.value)}
                 label="Last Name" variant="outlined"
                 placeholder='Enter Last name.'
-                sx={{
-                    '& label.Mui-focused': {
-                        color: '#050A08',
-                        // borderColor: "red"
-                    },
-                    '& .MuiFilledInput-root': {
-                        // color: '#050A0860',
-                        fontSize: 13,
-                        fontWeight: '400',
-                    },
-                    '& .MuiOutlinedInput-root': {
-                        borderRadius: 5,
-                        height: 48,
-                        '&.Mui-focused fieldset': {
-                            borderColor: '#00000080',
-                            // backgroundColor: "#EDEDEDC7",
-                            color: "#050A08",
-                        },
-                    },
-                }} />
-            <TextField className=' w-full mt-4'
+                // sx={{
+                //     '& label.Mui-focused': {
+                //         color: '#050A08',
+                //         // borderColor: "red"
+                //     },
+                //     '& .MuiFilledInput-root': {
+                //         // color: '#050A0860',
+                //         fontSize: 13,
+                //         fontWeight: '400',
+                //     },
+                //     '& .MuiOutlinedInput-root': {
+                //         borderRadius: 5,
+                //         height: 48,
+                //         '&.Mui-focused fieldset': {
+                //             borderColor: '#00000080',
+                //             // backgroundColor: "#EDEDEDC7",
+                //             color: "#050A08",
+                //         },
+                //     },
+                // }}
+                sx={MuiFieldStyle}
+            />
+            <TextField className=' w-full mt-8'
                 autofill='off'
                 id="filled-basic"
                 value={userEmail}
-                onChange={(e) => setUserEmail(e.target.value)}
+                onChange={(e) => {
+                    setUserEmail(e.target.value);
+                    setCheckUserEmailData(null);
+                }}
                 label="EmailAddress" variant="outlined"
                 placeholder='Enter email address.'
-                sx={{
-                    '& label.Mui-focused': {
-                        color: '#050A0890',
-                        // borderColor: "red"
-                    },
-                    '& .MuiFilledInput-root': {
-                        // color: '#050A0860',
-                        fontSize: 13,
-                        fontWeight: '400'
-                    },
-                    '& .MuiOutlinedInput-root': {
-                        borderRadius: 5,
-                        height: 48,
-                        '&.Mui-focused fieldset': {
-                            borderColor: '#00000080',
-                            // backgroundColor: "#EDEDEDC7"
-                        },
-                    },
-                }} />
-            <div className='mt-4'>
+                sx={MuiFieldStyle}
+            />
+            {
+                checkUserEmailData && checkUserEmailData.status === true ?
+                    <div className='mt-2 ms-3' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "green" }}>
+                        {checkUserEmailData.message}
+                    </div> :
+                    <div className='mt-2 ms-3' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100" }}>
+                        {checkUserEmailData && checkUserEmailData.message}
+                    </div>
+            }
+            {/* <TextField className='mt-4' id="outlined-basic" label="Outlined" variant="outlined" sx={MuiFieldStyle} /> */}
+            <div className='mt-8'>
                 <PhoneNumberInput phonenumber={handlePhoneNumber} />
             </div>
             {
-                phoneNumberErr && phoneNumberErr === "Phone available" &&
-                <div style={{ fontWeight: "600", fontSize: 14, color: "green" }}>
-                    {phoneNumberErr}
-                </div>
-            }
-            {
-                phoneNumberErr && phoneNumberErr === "Phone already taken" &&
-                <div style={{ fontWeight: "600", fontSize: 14, color: "red" }}>
-                    {phoneNumberErr}
-                </div>
+                phoneNumberErr && phoneNumberErr.status === true ?
+                    <div style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "green" }}>
+                        {phoneNumberErr.message}
+                    </div> :
+                    <div style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100" }}>
+                        {phoneNumberErr && phoneNumberErr.message}
+                    </div>
             }
             {/* <TextField className=' w-full mt-4'
                 autofill='off'
@@ -280,10 +317,24 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData }) => {
                         },
                     },
                 }} /> */}
-            <div className='w-ful flex justify-center mt-4'>
+            <div className='flex flex-row gap-2 items-center mt-10'>
                 {
-                    userEmail && userName && userPhoneNumber ?
-                        <button onClick={handleLogin} className='bg-purple px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 24, borderRadius: "50px" }}>
+                    termsCheck ?
+                        <button onClick={handleTermsCheckBtn}>
+                            <Image src="/assets/selected.png" height={17} width={17} />
+                        </button> :
+                        <button onClick={handleTermsCheckBtn}>
+                            <Image src="/assets/unselected.png" height={17} width={17} />
+                        </button>
+                }
+                <button onClick={() => { window.open('https://www.youtube.com/watch?v=XzYpBL7MnuY', '_blank'); }} style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter" }}>
+                    I agree to the terms and conditions
+                </button>
+            </div>
+            <div className='w-full flex justify-center mt-8'>
+                {
+                    userEmail && userName && userPhoneNumber && termsCheck && checkUserEmailData && checkUserEmailData.status === true ?
+                        <button onClick={handleLogin} className='bg-purple w-full px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15, borderRadius: "50px" }}>
                             {
                                 loginLoader ?
                                     <CircularProgress size={20} /> :
@@ -302,7 +353,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData }) => {
                                     </div>
                             }
                         </button> :
-                        <button className='bg-light-blue px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 24, borderRadius: "50px" }}>
+                        <button className='bg-light-blue w-full px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15, borderRadius: "50px" }}>
                             {
                                 loginLoader ?
                                     <CircularProgress size={20} /> :

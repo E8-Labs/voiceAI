@@ -111,79 +111,6 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
 
 
 
-            {/* <div className='flex flex-row gap-4 mt-4'>
-                <input
-                    id='P1'
-                    placeholder='*'
-                    type='text'
-                    value={P1}
-                    // onChange={(e) => setP1(e.target.value)}
-                    onChange={(e) => handleInputChange(e, setP1, "P2")}
-                    maxLength={1}
-                    style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
-                    // onInput={maskInput}
-                    data-real-value=""
-                    // onKeyDown={restrictToNumbers}
-                    onKeyDown={(e) => handleBackspace(e, setP1, null)}
-                />
-                <input
-                    id='P2'
-                    type='text'
-                    placeholder='*'
-                    value={P2}
-                    // onChange={(e) => setP2(e.target.value)}
-                    onChange={(e) => handleInputChange(e, setP2, "P2")}
-                    maxLength={1}
-                    style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
-                    onInput={maskInput}
-                    data-real-value=""
-                    // onKeyDown={restrictToNumbers}
-                    onKeyDown={(e) => handleBackspace(e, setP2, null)}
-                />
-                <input
-                    id='P3'
-                    placeholder='*'
-                    type='text'
-                    value={P3}
-                    // onChange={(e) => setP3(e.target.value)}
-                    onChange={(e) => handleInputChange(e, setP3, "P3")}
-                    maxLength={1}
-                    style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
-                    onInput={maskInput}
-                    data-real-value=""
-                    // onKeyDown={restrictToNumbers}
-                    onKeyDown={(e) => handleBackspace(e, setP3, null)}
-                />
-                <input
-                    id='P4'
-                    type='text'
-                    placeholder='*'
-                    value={P4}
-                    // onChange={(e) => setP4(e.target.value)}
-                    onChange={(e) => handleInputChange(e, setP4, "P4")}
-                    maxLength={1}
-                    style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
-                    onInput={maskInput}
-                    data-real-value=""
-                    // onKeyDown={restrictToNumbers}
-                    onKeyDown={(e) => handleBackspace(e, setP4, null)}
-                />
-                <input
-                    id='P5'
-                    type='text'
-                    placeholder='*'
-                    value={P5}
-                    // onChange={(e) => setP5(e.target.value)}
-                    onChange={(e) => handleInputChange(e, setP5, null)}
-                    maxLength={1}
-                    style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
-                    onInput={maskInput}
-                    data-real-value=""
-                    // onKeyDown={restrictToNumbers}
-                    onKeyDown={(e) => handleBackspace(e, setP5, "p4")}
-                />
-            </div> */}
-
             <div className='flex flex-row gap-4 mt-4'>
                 <input
                     id="P1"
@@ -251,7 +178,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                     </button>
                 </div>
                 <div>
-                    <button onClick={handleVerifyClick} className='bg-purple rounded px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15 }}>
+                    <button onClick={handleVerifyClick} className='bg-purple px-8 text-white py-2' style={{ fontWeight: "400", fontSize: 15, borderRadius: "50px" }}>
                         {
                             verifyLoader ?
                                 <CircularProgress size={25} /> :

@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 
 
-const CycleArray = ({ data }) => {
+const CycleArray = ({ data, assistantData }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {
@@ -35,11 +35,12 @@ const CycleArray = ({ data }) => {
         >
             <div className='flex flex-row gap-2'
                 style={{
-                    backgroundColor: "white",
-                    padding: 15,
+                    backgroundColor: "#ffffff40",
+                    padding: 12,
                     borderRadius: 20,
                     paddingTop: 20,
-                    width: "250px"
+                    width: "250px",
+                    border: "2px solid white"
                 }}>
                 <div>
                     {
@@ -55,13 +56,13 @@ const CycleArray = ({ data }) => {
                             Live Call
                         </div>
                     </div>
-                    <div className='flex flex-row items-center gap-1' style={{ fontWeight: "400", fontSize: 15 }}>
-                        On Call with <span style={{ fontWeight: "500", fontSize: 18 }}>
+                    <div className='flex flex-row items-center gap-1' style={{ fontWeight: "400", fontSize: 15, color: "#00000050" }}>
+                        <div style={{ fontWeight: "300", fontSize: 15 }}>
                             {
                                 data[currentIndex] &&
-                                data[currentIndex].model.name
+                                data[currentIndex].message
                             }
-                        </span>
+                        </div>
                     </div>
                 </div>
             </div>

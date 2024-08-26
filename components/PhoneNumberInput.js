@@ -10,6 +10,17 @@ const PhoneNumberInput = ({ phonenumber }) => {
     const [error, setError] = useState(false);
     const [data, setData] = useState(null);
 
+    useEffect(() => {
+        const localData = localStorage.getItem('formData');
+        if (localData) {
+            const Data = JSON.parse(localData);
+            const timeOut = setTimeout(() => {
+                setPhone(Data.phonenumber)
+            }, 1500);
+            return() => clearTimeout(timeOut);
+        }
+    }, [])
+
     // Fetch user's current location
     useEffect(() => {
         if (navigator.geolocation) {
@@ -42,12 +53,12 @@ const PhoneNumberInput = ({ phonenumber }) => {
 
     // Validate phone number with a timeout
     useEffect(() => {
-        const timer = setTimeout(() => {
-            validatePhoneNumber(phone);
-        }, 3000);
-
-        // Cleanup timer to avoid memory leaks
-        return () => clearTimeout(timer);
+        if (phone) {
+            const timer = setTimeout(() => {
+                validatePhoneNumber(phone);
+            }, 2000);
+            return () => clearTimeout(timer);
+        }
     }, [phone]);
 
     // Only run once to fetch local data
@@ -55,7 +66,7 @@ const PhoneNumberInput = ({ phonenumber }) => {
         const LocalData = localStorage.getItem('route');
         const Data = JSON.parse(LocalData);
         console.log("Data from localstorage", Data);
-        
+
         setData(Data);
     }, []);
 
@@ -77,11 +88,11 @@ const PhoneNumberInput = ({ phonenumber }) => {
                 inputStyle={{
                     width: '100%',
                     fontSize: '16px',
-                    borderRadius: data ? "10px" : "20px",
-                    border: data ? "none" : focus ? '2px solid #00000080' : "1px solid #00000070",
+                    borderRadius: "10px", // data ? "10px" : "20px",
+                    border: "#00000070", //data ? "none" : focus ? '2px solid #00000080' : "1px solid #00000070",
                     paddingLeft: '60px',
                     height: 50,
-                    backgroundColor: data ? "#EDEDED" : "transparent"
+                    backgroundColor: "#EDEDED", // data ? "#EDEDED" : "transparent"
                 }}
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}

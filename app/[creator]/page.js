@@ -39,13 +39,26 @@ const Page = () => {
 
     const [boxVisible, setBoxVisible] = useState(true);  // Animation state
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });  // Mouse position state
-
+    const { creator } = useParams();
     const [getRecentCallData, setGetRecentCallsData] = useState([]);
     const [getAssistantData, setGetAssistantData] = useState(null);
     const [showLogoutBtn, setShowLogoutBtn] = useState(false);
     const [showPopup, setshowPopup] = useState(true);
+    const [isWideScreen, setIsWideScreen] = useState(false);
 
-    const { creator } = useParams();
+    useEffect(() => {
+        const handleResize = () => {
+            setIsWideScreen(window.innerWidth >= 1024);
+        };
+
+        handleResize(); // Set initial state
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
 
     //code to show modal
     // useEffect(() => {
@@ -69,7 +82,7 @@ const Page = () => {
         const localData = localStorage.getItem('popupStatus');
         if (localData) {
             const Data = JSON.parse(localData);
-            console.log("Data is", Data);
+            //console.log("Data is", Data);
             if (Data.status === true) {
                 setshowPopup(false);
             }
@@ -91,7 +104,7 @@ const Page = () => {
     }
 
     const getUserData = async () => {
-        console.log("Username for testing", creator);
+        // console.log("Username for testing", creator);
         const ApiPath = `${Apis.GetAssistantData}?username=${creator}`;
         console.log("Api path is", ApiPath);
         try {
@@ -101,7 +114,7 @@ const Page = () => {
                 }
             });
             if (getResponse) {
-                console.log("Response of getassistant data", getResponse.data);
+                console.log("Response of getassistant data", getResponse.data.data);
                 const AssistantData = getResponse.data.data;
                 localStorage.setItem('assistantData', JSON.stringify(AssistantData));
                 setGetAssistantData(getResponse.data.data);
@@ -116,6 +129,9 @@ const Page = () => {
     useEffect(() => {
         getUserData()
     }, []);
+    useEffect(() => {
+        console.log("Get assistant data chagned ", getAssistantData)
+    }, [getAssistantData])
 
     //code to remove the route data
     useEffect(() => {
@@ -129,7 +145,7 @@ const Page = () => {
     useEffect(() => {
         const LocalData = localStorage.getItem('User');
         const D = JSON.parse(LocalData);
-        console.log("Login details from localstorage", D);
+        //console.log("Login details from localstorage", D);
         if (LocalData) {
             setShowProfileIcon(true);
             if (D.data.user.role === "caller") {
@@ -160,7 +176,7 @@ const Page = () => {
                 }
             });
             if (response) {
-                console.log("respose of get recentcalls api", response.data);
+                //console.log("respose of get recentcalls api", response.data);
                 setGetRecentCallsData(response.data.data);
             }
         } catch (error) {
@@ -177,12 +193,12 @@ const Page = () => {
         const LocalData = localStorage.getItem('User');
         if (LocalData) {
             const D = JSON.parse(LocalData);
-            console.log("Data test", D.data);
+            //console.log("Data test", D.data);
             handleTalktoBlandy();
         } else {
             setOpenLoginModalDrawer(true);
         }
-        console.log('do not touch me');
+        //console.log('do not touch me');
     }, []);
 
     // Call function on larger screens
@@ -210,7 +226,7 @@ const Page = () => {
     const handleClick = async () => {
         const LocalData = localStorage.getItem('User');
         const D = await JSON.parse(LocalData);
-        console.log("Local data for auto cll", D.data.user);
+        //console.log("Local data for auto cll", D.data.user);
 
         setOpenLoginModal(true);
     }
@@ -233,7 +249,8 @@ const Page = () => {
         transform: 'translateY(-50%)',
         borderRadius: 2,
         border: "none",
-        outline: "none"
+        outline: "none",
+        // border: "2px solid green"
     };
 
     // Animation handler
@@ -322,18 +339,32 @@ const Page = () => {
             return;
         }
         console.log("Trying to call", D.data.user.phone);
+        // console.log("Id to send is", getAssistantData);
+        const localAssistanData = localStorage.getItem('assistantData');
+        let modelId = null;
+        if (localAssistanData) {
+            const asistantLocalData = JSON.parse(localAssistanData);
+            console.log("Assistant data retrived", asistantLocalData);
+            modelId = (asistantLocalData.id);
+        }
+        console.log("id to send", modelId);
+
+
+
+        // return
         try {
             const axios = require('axios');
             let data = JSON.stringify({
                 "name": D.data.user.name,
                 "phone": D.data.user.phone,
-                "email": D.data.user.email
+                "email": D.data.user.email,
+                modelId: modelId
             });
 
             let config = {
                 method: 'post',
                 maxBodyLength: Infinity,
-                url: 'https://www.blindcircle.com:444/voice/api/calls/make_a_call',
+                url: Apis.MakeCall,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer 1716566901317x213622515056508930'
@@ -366,12 +397,13 @@ const Page = () => {
         }
     }, [snackMessage])
 
+
     return (
-        <div style={backgroundImage} className='flex flex-col justify-between h-full' onMouseMove={handleMouseMove}>
+        <div style={backgroundImage} className='h-screen overflow-none' onMouseMove={handleMouseMove}>
             <div className='pt-8 ps-8'>
                 <div className='2xl:flex hidden w-full flex flex-row justify-between'>
                     <div className='px-6 py-2 flex gap-4 flex-row items-center'
-                        style={{ border: "2px solid #ffffff", borderRadius: 50}}>
+                        style={{ border: "2px solid #ffffff", borderRadius: 50, backgroundColor: "#ffffff20" }}>
                         <div className='flex flex-row items-center'>
                             <div style={{ border: "2px solid black", borderRadius: "50%" }}>
                                 <Image src={"/assets/profile.png"} alt='profilephoto' height={40} width={40} style={{ resize: "cover" }} />
@@ -491,7 +523,12 @@ const Page = () => {
             </div>
 
             {/* Animating Image */}
-            <div className='w-full flex justify-center items-center'>
+            <div style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+            }} className='w-full flex justify-center items-center md:flex hidden'>
                 <button className='flex items-center justify-center flex-1' onClick={handleContinue}
                     style={{
                         cursor: "pointer",
@@ -499,23 +536,59 @@ const Page = () => {
                         border: "none",
                     }}>
                     <motion.img
-                        src="/assets/applogo.png"
+                        src="/assets/borderedApplogo.png"
                         alt="Animating Image"
                         animate={{
-                            width: ["400px", "300px", "400px"],  // Keyframes for width
-                            height: ["400px", "300px", "400px"], // Keyframes for height
+                            width: isWideScreen ? ["950px", "650px", "950px"] : ["600px", "400px", "600px"],  // Keyframes for width
+                            height: isWideScreen ? ["950px", "650px", "950px"] : ["600px", "400px", "600px"], // Keyframes for height
                         }}
                         transition={{
-                            duration: 10,
+                            duration: 7,
                             repeat: Infinity,
                             repeatType: "loop",
                             ease: "easeInOut",
                         }}
                         style={{
-                            margin: "auto",
+                            // margin: "auto",
                             display: "block",
-                            width: "400px", // Initial width
-                            height: "400px", // Initial height
+                            width: isWideScreen ? "950px" : "600px", // Initial width
+                            height: isWideScreen ? "950px" : "600px", // Initial height
+                        }}
+                    />
+                </button>
+            </div>
+
+            {/* visible on small screens only */}
+            <div style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+            }} className='w-full flex justify-center items-center md:hidden'>
+                <button className='flex items-center justify-center flex-1' onClick={handleContinue}
+                    style={{
+                        cursor: "pointer",
+                        outline: "none",
+                        border: "none",
+                    }}>
+                    <motion.img
+                        src="/assets/borderedApplogo.png"
+                        alt="Animating Image"
+                        animate={{
+                            width: ["380px", "200px", "380px"],  // Keyframes for width
+                            height: ["380px", "200px", "380px"], // Keyframes for height
+                        }}
+                        transition={{
+                            duration: 7,
+                            repeat: Infinity,
+                            repeatType: "loop",
+                            ease: "easeInOut",
+                        }}
+                        style={{
+                            // margin: "auto",
+                            display: "block",
+                            width: "380px", // Initial width
+                            height: "380px", // Initial height
                         }}
                     />
                 </button>
@@ -553,8 +626,8 @@ const Page = () => {
             </div>
 
 
-            {/* Button and Snackbar */}
-            <div className='w-full flex items-end justify-between mb-12 rounded'>
+            {/* Button and Calls array */}
+            <div style={{ position: "absolute", bottom: 10 }} className='w-full flex items-end justify-between mb-12 rounded'>
                 <div ref={buttonRef} className='flex items-end ms-8 px-4' style={{ backgroundColor: "#620FEB66", width: "fit-content", borderRadius: "70px" }}>
                     {
                         showCreatorBtn &&
@@ -567,13 +640,13 @@ const Page = () => {
                     }
                 </div>
                 <div className='me-8 md:flex hidden'>
-                    <CycleArray data={getRecentCallData} />
+                    <CycleArray data={getRecentCallData} assistantData={getAssistantData} />
                 </div>
             </div>
 
             <Modal
                 open={openLoginModal}
-                onClose={(() => setOpenLoginModal(false))}
+                // onClose={(() => setOpenLoginModal(false))}
                 closeAfterTransition
                 BackdropProps={{
                     timeout: 1000,
@@ -583,7 +656,7 @@ const Page = () => {
                     },
                 }}
             >
-                <Box className="lg:w-4/12 sm:w-7/12"
+                <Box className="lg:w-5/12 sm:w-7/12"
                     sx={styleLoginModal}
                 >
                     <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} />
@@ -592,7 +665,7 @@ const Page = () => {
 
             <Drawer
                 open={openBottomForm}
-                onClose={() => setOpenLoginModalDrawer(false)}
+                // onClose={() => setOpenLoginModalDrawer(false)}
                 anchor='bottom'
                 BackdropProps={{
                     timeout: 1000,
@@ -608,7 +681,7 @@ const Page = () => {
                     }
                 }}>
                 <div>
-                    <div className=''>
+                    <div className='w-full'>
                         <LoginModal creator={creator} assistantData={getAssistantData} closeForm={hideBottom} />
                     </div>
                 </div>
@@ -618,7 +691,7 @@ const Page = () => {
                 <div style={{ width: '280px', height: '80px', padding: 15, borderRadius: 20, border: '2px solid white', backgroundColor: '#ffffff60', position: 'absolute', top: 10, right: 12 }}>
                     <div>
                         <div style={{ fontSize: 15, fontWeight: '500', fontFamily: 'inter' }}>
-                            Congratulations
+                            🎉Congratulations
                         </div>
                         <div>
                         </div>

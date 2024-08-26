@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        '2xl': '1280px', // Custom 2xl breakpoint at 1400px
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
@@ -23,7 +26,7 @@ module.exports = {
         "light-blue": '#1480FF',
         "placeholderColor": '#620FEB50',
         "lightWhite": '#050A0860',
-        "grayBg":"#EDEDED"
+        "grayBg": "#EDEDED"
       },
     },
   },
