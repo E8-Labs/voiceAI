@@ -52,6 +52,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
     const handleVerifyClick = async () => {
         // handleContinue();
         setVerifyLoader(true);
+        localStorage.removeItem('formData')
         console.log("Code sending is", data);
         // return
         try {
@@ -192,7 +193,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                     Have an account?
                 </div>
                 <button onClick={() => handleSignin()} className='text-purple' style={{ fontSize: 13, fontWeight: "400" }}>
-                    Sign in Instead
+                    Sign in
                 </button>
             </div>
         </div>

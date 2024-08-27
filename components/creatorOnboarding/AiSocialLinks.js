@@ -1,10 +1,59 @@
+"use client"
 import Image from 'next/image'
-import React, { useState } from 'react'
-import { TextField } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { Button } from '@mui/material'
 
 function AiSocialLinks({ handleContinue, handleBack }) {
 
     const [text, setText] = useState("");
+    //socials url values
+    const [fbUrl, setFburl] = useState("");
+    const [youtubeUrl, setYoutubeurl] = useState("");
+    const [appleProducts, setAppleProducts] = useState("");
+    const [twitterUrl, setTwitterurl] = useState("");
+    const [spotifyurl, setSpotifyurl] = useState("");
+    const [instaUrl, setInstaurl] = useState("");
+
+    useEffect(() => {
+        const localData = localStorage.getItem('socialsUrl');
+        if (localData) {
+            const Data = JSON.parse(localData);
+            console.log("social inks data recieved", Data);
+            if (Data.appleProducts_Url) {
+                setAppleProducts(Data.appleProducts_Url)
+            }
+            if (Data.fb_Url) {
+                setFburl(Data.fb_Url)
+            }
+            if (Data.insta_Url) {
+                setInstaurl(Data.insta_Url)
+            }
+            if (Data.spotify_Url) {
+                setSpotifyurl(Data.spotify_Url)
+            }
+            if (Data.twitter_Url) {
+                setTwitterurl(Data.twitter_Url)
+            }
+            if (Data.youtube_Url) {
+                setYoutubeurl(Data.youtube_Url)
+            }
+        }
+    }, [])
+
+    const handleContinueSocial = () => {
+        const data = {
+            fb_Url: fbUrl,
+            youtube_Url: youtubeUrl,
+            appleProducts_Url: appleProducts,
+            twitter_Url: twitterUrl,
+            spotify_Url: spotifyurl,
+            insta_Url: instaUrl
+        }
+        console.log("Social links url", data);
+
+        localStorage.setItem('socialsUrl', JSON.stringify(data));
+        handleContinue();
+    }
 
     const styles = {
         image: {
@@ -17,85 +66,111 @@ function AiSocialLinks({ handleContinue, handleBack }) {
             fontWeight: "400",
             fontSize: 13,
             fontFamily: "inter"
+        },
+        urlsInput: {
+            fontWeight: "400",
+            fontSize: 13,
+            fontFamily: "inter"
         }
     }
 
     return (
-        <div className='w-full flex flex-col justify-center items-center'style={{}} >
+        <div className='w-full flex flex-col justify-center items-center' style={{}} >
             <div className='w-full'>
                 <div className='text-gray-400 text-sm mt-3 mb-10 mb-5 w-11/12'>
                     This is used as your knowledge base to train your ai model.
                 </div>
-                <div className='flex flex-row gap-5 mb-5'>
-                    <Image style={styles.image}
-                        src={'/assets/fbIcon.png'} alt='facebook'
-                        height={30} width={30} />
-                    <div className='bg-grayBg w-8/12' style={styles.button}>
-                        <button style={styles.buttonFont}>
-                            Paste url
-                        </button>
-
-                    </div>
-                </div>
-
-                <div className='flex flex-row gap-5 mb-5'>
-                    <Image style={styles.image}
-                        src={'/assets/youtubeIcon.png'} alt='Youtube'
-                        height={30} width={30} />
-                    <div className='bg-grayBg w-8/12' style={styles.button}>
-                        <button style={styles.buttonFont}>
-                            Paste url
-                        </button>
-
-                    </div>
-                </div>
-
-                <div className='flex flex-row gap-5 mb-5'>
-                    <Image style={styles.image}
-                        src={'/assets/icon.png'} alt='Icon'
-                        height={30} width={30} />
-                    <div className='bg-grayBg w-8/12' style={styles.button}>
-                        <button style={styles.buttonFont}>
-                            Paste url
-                        </button>
-
-                    </div>
-                </div>
-
-                <div className='flex flex-row gap-5 mb-5'>
-                    <Image style={styles.image}
-                        src={'/assets/twiterIcon.png'} alt='twiter'
-                        height={30} width={30} />
-                    <div className='bg-grayBg w-8/12' style={styles.button}>
-                        <button style={styles.buttonFont}>
-                            Paste url
-                        </button>
-
-                    </div>
-                </div>
-
-                <div className='flex flex-row gap-5 mb-5'>
-                    <Image style={styles.image}
-                        src={'/assets/tiktokIcon.png'} alt='tiktok'
-                        height={30} width={30} />
-                    <div className='bg-grayBg w-8/12' style={styles.button}>
-                        <button style={styles.buttonFont}>
-                            Paste url
-                        </button>
-
-                    </div>
-                </div>
-
-                <div className='flex flex-row gap-5 mb-5'>
+                <div className='flex flex-row gap-5 mb-8'>
                     <Image style={styles.image}
                         src={'/assets/instagram.png'} alt='web'
                         height={30} width={30} />
                     <div className='bg-grayBg w-8/12' style={styles.button}>
-                        <button style={styles.buttonFont}>
-                            Paste url
-                        </button>
+                        <input style={styles.urlsInput}
+                            value={instaUrl}
+                            onChange={(e) => setInstaurl(e.target.value)}
+                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paset URL'
+                        />
 
                     </div>
+                </div>
+
+                <div className='flex flex-row gap-5 mb-8'>
+                    <Image style={styles.image}
+                        src={'/assets/youtubeIcon.png'} alt='Youtube'
+                        height={30} width={30} />
+                    <div className='bg-grayBg w-8/12' style={styles.button}>
+                        <input style={styles.urlsInput}
+                            value={youtubeUrl}
+                            onChange={(e) => setYoutubeurl(e.target.value)}
+                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paset URL'
+                        />
+
+                    </div>
+                </div>
+
+                <div className='flex flex-row gap-5 mb-8'>
+                    <Image style={styles.image}
+                        src={'/assets/twiterIcon.png'} alt='twiter'
+                        height={30} width={30} />
+                    <div className='bg-grayBg w-8/12' style={styles.button}>
+                        <input style={styles.urlsInput}
+                            value={twitterUrl}
+                            onChange={(e) => setTwitterurl(e.target.value)}
+                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paset URL'
+                        />
+
+                    </div>
+                </div>
+
+                <div className='flex flex-row gap-5 mb-8'>
+                    <Image style={styles.image}
+                        src={'/assets/appleProducts.png'} alt='Icon'
+                        height={30} width={30} />
+                    <div className='bg-grayBg w-8/12' style={styles.button}>
+                        <input style={styles.urlsInput}
+                            value={appleProducts}
+                            onChange={(e) => setAppleProducts(e.target.value)}
+                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paset URL'
+                        />
+
+                    </div>
+                </div>
+
+                <div className='flex flex-row gap-5 mb-8'>
+                    <Image style={styles.image}
+                        src={'/assets/spotify.png'} alt='tiktok'
+                        height={30} width={30} />
+                    <div className='bg-grayBg w-8/12' style={styles.button}>
+                        <input style={styles.urlsInput}
+                            value={spotifyurl}
+                            onChange={(e) => setSpotifyurl(e.target.value)}
+                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paset URL'
+                        />
+
+                    </div>
+                </div>
+
+                <div className='flex flex-row gap-5 mb-8'>
+                    <Image style={styles.image}
+                        src={'/assets/fbIcon.png'} alt='facebook'
+                        height={30} width={30} />
+                    <div className='bg-grayBg w-8/12' style={styles.button}>
+                        {/* <input style={styles.urlsInput}
+                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paset URL'
+                        /> */}
+                        <input style={styles.urlsInput}
+                            value={fbUrl}
+                            onChange={(e) => setFburl(e.target.value)}
+                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paset URL'
+                        />
+                    </div>
+                </div>
+                <div>
+                    <Button onClick={handleContinueSocial}
+                        className='bg-purple hover:bg-purple text-white px-4 mt-2 w-4/12 py-2'
+                        style={{ fontSize: 15, fontWeight: "400", borderRadius: "50px" }}>
+                        Continue
+                    </Button>
                 </div>
             </div>
         </div>

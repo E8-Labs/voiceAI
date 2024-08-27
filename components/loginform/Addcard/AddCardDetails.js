@@ -107,6 +107,10 @@ const AddCardDetails = ({ handleBack, closeForm }) => {
                             setAddCardFailure(true);
                         } else {
                             setAddCardSuccess(true);
+                            const callStatus = {
+                                callStatus: true
+                            }
+                            localStorage.setItem('callStatus', JSON.stringify(callStatus));
                             closeForm();
                             window.location.reload();
                         }
@@ -173,7 +177,7 @@ const AddCardDetails = ({ handleBack, closeForm }) => {
                         <div className='flex flex-row justify-end items-center mt-8 w-full'>
                             <div>
                                 <button onClick={handleAddCard} className='bg-purple rounded px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15, borderRadius: "50px" }}>
-                                    Continue
+                                    Start a call
                                 </button>
                             </div>
                         </div>

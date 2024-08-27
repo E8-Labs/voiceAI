@@ -7,7 +7,7 @@ import Apis from '../apis/Apis'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 
-const CreateAccount = ({ handleContinue, handleBack, creator, modalData }) => {
+const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeForm }) => {
 
     const router = useRouter();
 
@@ -127,10 +127,40 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData }) => {
         }
     }
 
+    // const MuiFieldStyle = {
+    //     '& label.Mui-focused': {
+    //         color: '#050A08',
+    //         // paddingBottom: "10px",
+    //     },
+    //     '& .MuiFilledInput-root': {
+    //         fontSize: 13,
+    //         fontWeight: '400',
+    //     },
+    //     '& .MuiOutlinedInput-root': {
+    //         borderRadius: 2,
+    //         height: "48px",
+    //         backgroundColor: "#EDEDEDC7",
+    //         color: "black",
+    //         '& fieldset': {
+    //             borderColor: 'transparent',  // Border none when not focused
+    //         },
+    //         '&:hover fieldset': {
+    //             borderColor: 'transparent',  // Border none on hover
+    //         },
+    //         '&.Mui-focused fieldset': {
+    //             borderColor: '#00000000',  // Your existing focus styles
+    //             backgroundColor: "#EDEDEDC7",
+    //             color: "#000000",
+    //         },
+    //     },
+    // }
+
+    //code for email validation
+
+
     const MuiFieldStyle = {
         '& label.Mui-focused': {
-            color: '#050A08',
-            // paddingBottom: "10px",
+            color: 'black',
         },
         '& .MuiFilledInput-root': {
             fontSize: 13,
@@ -142,20 +172,29 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData }) => {
             backgroundColor: "#EDEDEDC7",
             color: "black",
             '& fieldset': {
-                borderColor: 'transparent',  // Border none when not focused
+                borderColor: 'transparent',
             },
             '&:hover fieldset': {
-                borderColor: 'transparent',  // Border none on hover
+                borderColor: 'transparent',
             },
             '&.Mui-focused fieldset': {
-                borderColor: '#00000000',  // Your existing focus styles
-                backgroundColor: "#EDEDEDC7",
+                borderColor: '#00000000',
+                // backgroundColor: "#EDEDEDC7",
                 color: "#000000",
             },
+            '& .MuiOutlinedInput-input': {
+                color: 'black !important',
+            },
+            '&.Mui-focused .MuiOutlinedInput-input': {
+                color: 'black !important',
+            },
         },
-    }
+    };
 
-    //code for email validation
+
+
+
+
     const checkUserEmail = async () => {
         const ApiPath = Apis.checkUserEmail;
         const data = {
@@ -194,28 +233,42 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData }) => {
         }
     }, [])
 
+    //code to close form
+    const handleCloseForm = () => {
+        console.log("test working");
+        closeForm();
+    }
+
 
 
     return (
         <div>
-            <div style={{ fontWeight: "600", fontSize: 28, textAlign: "center", marginTop: 18 }}>
-                {
-                    loginLoader ?
-                        <CircularProgress size={20} /> :
-                        <div style={{ fontWeight: "600", fontSize: 24, textAlign: "center" }}>
-                            {modalData &&
-                                <div>
-                                    {modalData.name ?
-                                        <div>
-                                            {modalData.name}
-                                        </div> :
-                                        <div style={{ fontWeight: "600", fontSize: 28, textAlign: "center" }}>
-                                            {modalData.assitant.name}
-                                        </div>}
-                                </div>
-                            }
-                        </div>
-                }
+            <div className='w-full flex flex-row justify-between items-center' style={{ marginTop: 18 }}>
+                <div />
+                <div style={{ fontWeight: "600", fontSize: 28, textAlign: "center" }}>
+                    {
+                        loginLoader ?
+                            <CircularProgress size={20} /> :
+                            <div style={{ fontWeight: "600", fontSize: 24, textAlign: "center" }}>
+                                {modalData &&
+                                    <div>
+                                        {modalData.name ?
+                                            <div>
+                                                {modalData.name}
+                                            </div> :
+                                            <div style={{ fontWeight: "600", fontSize: 28, textAlign: "center" }}>
+                                                {modalData.assitant.name}
+                                            </div>}
+                                    </div>
+                                }
+                            </div>
+                    }
+                </div>
+                <div>
+                    <button onClick={handleCloseForm}>
+                        <Image src="/assets/croseBtn.png" alt='cross' height={25} width={25} />
+                    </button>
+                </div>
             </div>
             <TextField className=' w-full mt-10'
                 autofill='off'
@@ -223,8 +276,14 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData }) => {
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
                 label="First Name" variant="outlined"
-                placeholder='Enter First name.'
+                placeholder='First name.'
                 sx={MuiFieldStyle}
+                inputProps={{
+                    style: {
+                        color: 'black !important',  // Apply black color directly
+                    },
+                }}
+                style={{ color: "black" }}
             />
 
             <TextField className=' w-full mt-8'
@@ -233,27 +292,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData }) => {
                 value={userLastName}
                 onChange={(e) => setUserLastName(e.target.value)}
                 label="Last Name" variant="outlined"
-                placeholder='Enter Last name.'
-                // sx={{
-                //     '& label.Mui-focused': {
-                //         color: '#050A08',
-                //         // borderColor: "red"
-                //     },
-                //     '& .MuiFilledInput-root': {
-                //         // color: '#050A0860',
-                //         fontSize: 13,
-                //         fontWeight: '400',
-                //     },
-                //     '& .MuiOutlinedInput-root': {
-                //         borderRadius: 5,
-                //         height: 48,
-                //         '&.Mui-focused fieldset': {
-                //             borderColor: '#00000080',
-                //             // backgroundColor: "#EDEDEDC7",
-                //             color: "#050A08",
-                //         },
-                //     },
-                // }}
+                placeholder='Last name.'
                 sx={MuiFieldStyle}
             />
             <TextField className=' w-full mt-8'
@@ -264,8 +303,8 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData }) => {
                     setUserEmail(e.target.value);
                     setCheckUserEmailData(null);
                 }}
-                label="EmailAddress" variant="outlined"
-                placeholder='Enter email address.'
+                label="Email" variant="outlined"
+                placeholder='Address.'
                 sx={MuiFieldStyle}
             />
             {
@@ -327,9 +366,14 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData }) => {
                             <Image src="/assets/unselected.png" height={17} width={17} />
                         </button>
                 }
-                <button onClick={() => { window.open('https://www.youtube.com/watch?v=XzYpBL7MnuY', '_blank'); }} style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter" }}>
-                    I agree to the terms and conditions
-                </button>
+                <div style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter" }}>
+                    I agree to the
+                    <button onClick={() => {
+                        window.open('https://docs.google.com/document/d/1TdicVwsq3TTUp9tKyIONcPXBcGgKxFgkFPyE9hBapBg/edit#heading=h.wcbyg6d9eki4', '_blank');
+                    }} className='text-purple ms-1'>
+                        Terms & Conditions
+                    </button>
+                </div>
             </div>
             <div className='w-full flex justify-center mt-8'>
                 {
@@ -366,10 +410,10 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData }) => {
                                                         <div>
                                                             {modalData.name ?
                                                                 <div>
-                                                                    {modalData.name}
+                                                                    Call {modalData.name}
                                                                 </div> :
                                                                 <div>
-                                                                    {modalData.assitant.name}
+                                                                    Call {modalData.assitant.name}
                                                                 </div>}
                                                         </div>
                                                     }

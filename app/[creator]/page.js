@@ -9,6 +9,7 @@ import LoginModal from '@/components/loginform/LoginModal';
 import axios from 'axios';
 import Apis from '@/components/apis/Apis';
 import CycleArray from '@/components/animation/TestAnimation';
+import AnimatedButton from '@/components/testcomponents/Dropdown';
 
 const backgroundImage = {
     backgroundImage: 'url("/backgroundImage.png")', // Ensure the correct path
@@ -23,6 +24,8 @@ const Page = () => {
     const router = useRouter();
     const buttonRef = useRef(null);
     const buttonRef2 = useRef(null);
+    const buttonRef3 = useRef(null);
+    const buttonRef4 = useRef(null);
 
     const [isSmallScreen, setIsSmallScreen] = useState(false);
     const [open, setOpen] = useState(false);
@@ -37,7 +40,7 @@ const Page = () => {
     const [showCreatorBtn, setShowCreatorBtn] = useState(false);
     const [showProfileIcon, setShowProfileIcon] = useState(false);
 
-    const [boxVisible, setBoxVisible] = useState(true);  // Animation state
+    const [boxVisible, setBoxVisible] = useState(false);  // Animation state
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });  // Mouse position state
     const { creator } = useParams();
     const [getRecentCallData, setGetRecentCallsData] = useState([]);
@@ -45,6 +48,9 @@ const Page = () => {
     const [showLogoutBtn, setShowLogoutBtn] = useState(false);
     const [showPopup, setshowPopup] = useState(true);
     const [isWideScreen, setIsWideScreen] = useState(false);
+    const [openClaimPopup, setOpenClaimPopup] = useState(false);
+    // for side animation
+    const [isVisible, setisVisible] = useState(true);
 
     useEffect(() => {
         const handleResize = () => {
@@ -59,37 +65,12 @@ const Page = () => {
         };
     }, []);
 
-
-    //code to show modal
-    // useEffect(() => {
-    //     const localData = localStorage.getItem()
-    // }, [])
-
     //move to become creator
     const handleCreatorXClick = () => {
         router.push('/creator/onboarding2')
     }
 
-    const hidePopup = () => {
-        const PopupStatus = {
-            status: true
-        }
-        localStorage.setItem('popupStatus', JSON.stringify(PopupStatus));
-        setshowPopup(false);
-    }
 
-    useEffect(() => {
-        const localData = localStorage.getItem('popupStatus');
-        if (localData) {
-            const Data = JSON.parse(localData);
-            //console.log("Data is", Data);
-            if (Data.status === true) {
-                setshowPopup(false);
-            }
-        } else {
-            setshowPopup(true);
-        }
-    }, [])
 
     //code for logoutbtn
 
@@ -323,6 +304,22 @@ const Page = () => {
             }
         }
 
+        if (buttonRef3.current) {
+            const rect = buttonRef3.current.getBoundingClientRect();
+            if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+                setBoxVisible(false);  // Hide the animation when hovering over buttonRef3
+                return;
+            }
+        }
+
+        if (buttonRef4) {
+            const rect = buttonRef4.current.getBoundingClientRect();
+            if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+                setBoxVisible(false);
+                return;
+            }
+        }
+
         // If none of the conditions are met, show the box
         setBoxVisible(true);
     };
@@ -349,7 +346,7 @@ const Page = () => {
         }
         console.log("id to send", modelId);
 
-
+        // setSnackMessage(true);
 
         // return
         try {
@@ -375,6 +372,8 @@ const Page = () => {
             axios.request(config)
                 .then((response) => {
                     console.log(JSON.stringify(response.data));
+                    localStorage.removeItem('callStatus');
+                    console.log("Data of call removed");
                     setSnackMessage(true);
                 })
                 .catch((error) => {
@@ -395,107 +394,188 @@ const Page = () => {
                 setSnackMessage(false)
             }, 2000);
         }
-    }, [snackMessage])
+    }, [snackMessage]);
+
+
+    const handleAni = () => {
+        // setShowProfileIcon(false)
+        setisVisible(true);
+    }
+
+    useEffect(() => {
+        if (isVisible) {
+            const timeout = setTimeout(() => {
+                // setisVisible(false);
+                // setShowProfileIcon(true)
+            }, 2000);
+            return () => clearTimeout(timeout);
+        }
+    }, [isVisible])
+
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         setSnackMessage(true);
+    //     }, 1000);
+    // },[])
+
+    //test code
+    const triangle = {
+        width: 5,
+        height: 5,
+        // border: "2px solid red",
+        borderTop: "4px solid transparent",
+        borderBottom: "4px solid transparent",
+        borderLeft: "6px solid #000000"
+    }
+
+
+    //code for autto call when we add card
+
+    useEffect(() => {
+        const callStatusData = localStorage.getItem('callStatus');
+        if (callStatusData) {
+            const callStatus = JSON.parse(callStatusData);
+            console.log("Status of call is", callStatus);
+
+            // return
+            if (callStatus.callStatus === true) {
+                handleTalktoBlandy();
+            }
+        }
+    }, [])
 
 
     return (
         <div style={backgroundImage} className='h-screen overflow-none' onMouseMove={handleMouseMove}>
             <div className='pt-8 ps-8'>
                 <div className='2xl:flex hidden w-full flex flex-row justify-between'>
-                    <div className='px-6 py-2 flex gap-4 flex-row items-center'
-                        style={{ border: "2px solid #ffffff", borderRadius: 50, backgroundColor: "#ffffff20" }}>
-                        <div className='flex flex-row items-center'>
-                            <div style={{ border: "2px solid black", borderRadius: "50%" }}>
-                                <Image src={"/assets/profile.png"} alt='profilephoto' height={40} width={40} style={{ resize: "cover" }} />
+                    <div className='flex flex-col items-start'
+                    // style={{ border: "2px solid #ffffff", borderRadius: 50, backgroundColor: "#ffffff20" }}
+                    >
+                        <div className='px-6 py-2 flex gap-4 flex-row items-center' ref={buttonRef4}
+                            style={{
+                                border: "2px solid #ffffff",
+                                // borderTopLeftRadius: 50, borderTopRightRadius: 50,
+                                // borderBottomRightRadius: 50,
+                                borderRadius: 50,
+                                backgroundColor: "#ffffff20"
+                            }}>
+                            <div className='flex flex-col items-center'>
+                                <div className='relative'>
+                                    {/* Profile Image with Claim Button */}
+                                    <div className='flex flex-row items-center'>
+                                        <div style={{ position: 'relative' }}>
+                                            <div style={{ border: "2px solid black", borderRadius: "50%" }}>
+                                                <Image src={"/assets/profile.png"} alt='profilephoto' height={50} width={50} style={{ padding: 4 }} />
+                                            </div>
+                                            {/* Claim Button */}
+                                            <div className='absolute top-0 -left-2' style={{ backgroundColor: "transparent" }}>
+                                                {/* <Image onClick={() => {
+                                                    console.log("Sary gama pada na ri sa");
+                                                }} src="/assets/claimLogo.png" alt='claimbtn' height={35} width={35}
+                                                    style={{ cursor: "pointer", backgroundColor: "" }} /> */}
+                                                <div style={{ height: "30px", width: "30px", backgroundColor: "transparent" }}>
+                                                    <Image onClick={() => {
+                                                        console.log("Sary gama pada na ri sa");
+                                                        setOpenClaimPopup(true);
+                                                    }} src="/assets/claimLogo.png" alt='claimbtn' height={40} width={40}
+                                                        style={{ cursor: "pointer", backgroundColor: "transparent" }} />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style={triangle} />
+                                    </div>
+                                </div>
                             </div>
-                            <div style={{ height: "5px", width: "5px", backgroundColor: "black", borderTopRightRadius: "10px", borderBottomRightRadius: "10px" }} />
-                        </div>
-                        <div>
-                            <div className='flex flex-row items-center gap-8'>
-                                <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                    {getAssistantData &&
-                                        <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                            {
-                                                getAssistantData.name ?
-                                                    <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                        {getAssistantData.name}
+
+
+                            <div>
+                                {/* code for assistant name and calls */}
+                                <div className='flex flex-row items-center gap-8'>
+                                    <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                        {getAssistantData &&
+                                            <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                                {
+                                                    getAssistantData.name ?
+                                                        <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                                            {getAssistantData.name}
+                                                        </div> :
+                                                        <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                                            {getAssistantData.assitant.name}
+                                                        </div>
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                <div className='flex flex-row'>
+                                    <div style={{ fontSize: 12, color: "grey", fontWeight: "400", fontFamily: "inter" }}>
+                                        Calls:
+                                    </div>
+                                    <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
+                                        {
+                                            getAssistantData &&
+                                            <div>
+                                                {getAssistantData.calls ?
+                                                    <div className='ms-1' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
+                                                        {getAssistantData.calls}
                                                     </div> :
-                                                    <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                        {getAssistantData.assitant.name}
+                                                    <div className='ms-1' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
+                                                        0
                                                     </div>
-                                            }
-                                        </div>
-                                    }
-                                </div>
-                                <div className='flex flex-row gap-4'>
-                                    <button>
-                                        <Image
-                                            layout='responsive'
-                                            objectFit='contain' src={"/assets/twitter.png"} alt='social' height={11} width={11} style={{ resize: "cover" }} />
-                                    </button>
-                                    <button>
-                                        <Image
-                                            layout='responsive'
-                                            objectFit='contain' src={"/assets/instagram.png"} alt='social' height={11} width={11} style={{ resize: "cover" }} />
-                                    </button>
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                    <div className='ms-2' style={{ fontSize: 12, color: "grey", fontWeight: "400", fontFamily: "inter" }}>
+                                        Earned:
+                                    </div>
+                                    <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
+                                        {
+                                            getAssistantData &&
+                                            <div>
+                                                {getAssistantData.earned ?
+                                                    <div className='ms-1' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
+                                                        $ {getAssistantData.earned}
+                                                    </div> :
+                                                    <div className='ms-1' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
+                                                        $ 0
+                                                    </div>
+                                                }
+                                            </div>
+                                        }
+                                    </div>
                                 </div>
                             </div>
-                            <div className='flex flex-row'>
-                                <div style={{ fontSize: 12, color: "grey", fontWeight: "400", fontFamily: "inter" }}>
-                                    Calls:
-                                </div>
-                                <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
-                                    {
-                                        getAssistantData &&
-                                        <div>
-                                            {getAssistantData.calls ?
-                                                <div className='ms-1' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
-                                                    {getAssistantData.calls}
-                                                </div> :
-                                                <div className='ms-1' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
-                                                    0
-                                                </div>
-                                            }
-                                        </div>
-                                    }
-                                </div>
-                                <div className='ms-2' style={{ fontSize: 12, color: "grey", fontWeight: "400", fontFamily: "inter" }}>
-                                    Earned:
-                                </div>
-                                <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
-                                    {
-                                        getAssistantData &&
-                                        <div>
-                                            {getAssistantData.earned ?
-                                                <div className='ms-1' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
-                                                    {getAssistantData.earned} $
-                                                </div> :
-                                                <div className='ms-1' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
-                                                    0$
-                                                </div>
-                                            }
-                                        </div>
-                                    }
-                                </div>
+                        </div>
+                        {/* code for socials */}
+                        <div className='flex flex-row items-center justify-center pb-6 px-3 ms-6 mt-2' ref={buttonRef3}
+                            style={{
+                                border: "2px solid #ffffff", borderBottomLeftRadius: 50,
+                                borderBottomRightRadius: 50,
+                            }}>
+                            <div className='flex flex-col gap-4' style={{ marginTop: 10 }}>
+                                <button>
+                                    <Image
+                                        // layout='responsive'
+                                        objectFit='contain' src={"/assets/instagram.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
+                                </button>
+                                <button>
+                                    <Image
+                                        // layout='responsive'
+                                        objectFit='contain' src={"/assets/twitter.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
+                                </button>
                             </div>
                         </div>
                     </div>
 
                     {
                         showProfileIcon &&
-                        <div ref={buttonRef2} style={{ width: "8%" }}>
+                        <div ref={buttonRef2} style={{ width: "10%" }}>
+
+                            <AnimatedButton snackMessage={snackMessage} />
+
                             <div className='flex flex-row gap-4 items-center'>
-                                {
-                                    showLogoutBtn &&
-                                    <div>
-                                        <button onClick={handleLogout} style={{ color: "red" }}>
-                                            Logout
-                                        </button>
-                                    </div>
-                                }
-                                <button onClick={handleshowLogoutBtn} className='me-8'>
-                                    <Image src="/assets/placeholderImg.jpg" alt='profile' height={40} width={40} style={{ borderRadius: "50%" }} />
-                                </button>
                             </div>
                         </div>
                     }
@@ -506,17 +586,9 @@ const Page = () => {
                     {
                         showProfileIcon &&
                         <div className='flex flex-row gap-4 items-center'>
-                            {
-                                showLogoutBtn &&
-                                <div>
-                                    <button onClick={handleLogout} style={{ color: "red" }}>
-                                        Logout
-                                    </button>
-                                </div>
-                            }
-                            <button onClick={handleshowLogoutBtn} className='me-8'>
-                                <Image src="/assets/placeholderImg.jpg" alt='profile' height={40} width={40} style={{ borderRadius: "50%" }} />
-                            </button>
+                            <div className='me-8'>
+                                <AnimatedButton snackMessage={snackMessage} />
+                            </div>
                         </div>
                     }
                 </div>
@@ -528,19 +600,20 @@ const Page = () => {
                 top: '50%',
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
-            }} className='w-full flex justify-center items-center md:flex hidden'>
-                <button className='flex items-center justify-center flex-1' onClick={handleContinue}
+            }} className='flex w-9/12 justify-center items-center md:flex hidden'>
+                <button className='flex items-center justify-center flex-1 '
                     style={{
                         cursor: "pointer",
                         outline: "none",
                         border: "none",
+                        backgroundColor: "transparent",
                     }}>
-                    <motion.img
-                        src="/assets/borderedApplogo.png"
+                    <motion.img onClick={handleContinue}
+                        src="/borderedAppLogo.png"
                         alt="Animating Image"
                         animate={{
-                            width: isWideScreen ? ["950px", "650px", "950px"] : ["600px", "400px", "600px"],  // Keyframes for width
-                            height: isWideScreen ? ["950px", "650px", "950px"] : ["600px", "400px", "600px"], // Keyframes for height
+                            width: isWideScreen ? ["830px", "650px", "830px"] : ["600px", "400px", "600px"],  // Keyframes for width
+                            height: isWideScreen ? ["830px", "650px", "830px"] : ["600px", "400px", "600px"], // Keyframes for height
                         }}
                         transition={{
                             duration: 7,
@@ -551,8 +624,8 @@ const Page = () => {
                         style={{
                             // margin: "auto",
                             display: "block",
-                            width: isWideScreen ? "950px" : "600px", // Initial width
-                            height: isWideScreen ? "950px" : "600px", // Initial height
+                            width: isWideScreen ? "830px" : "600px", // Initial width
+                            height: isWideScreen ? "830px" : "600px", // Initial height
                         }}
                     />
                 </button>
@@ -572,7 +645,7 @@ const Page = () => {
                         border: "none",
                     }}>
                     <motion.img
-                        src="/assets/borderedApplogo.png"
+                        src="/borderedAppLogo.png"
                         alt="Animating Image"
                         animate={{
                             width: ["380px", "200px", "380px"],  // Keyframes for width
@@ -663,6 +736,52 @@ const Page = () => {
                 </Box>
             </Modal>
 
+            <Modal
+                open={openClaimPopup}
+                onClose={(() => setOpenClaimPopup(false))}
+                closeAfterTransition
+                BackdropProps={{
+                    timeout: 1000,
+                    sx: {
+                        backgroundColor: 'transparent',
+                        backdropFilter: 'blur(40px)',
+                    },
+                }}
+            >
+                <Box className="lg:w-5/12 sm:w-7/12"
+                    sx={styleLoginModal}
+                >
+                    {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
+                    <div className='flex flex-row justify-center'>
+                        <div className='w-7/12' style={{ backgroundColor: "#ffffff23", padding: 20, borderRadius: 10 }}>
+                            {/* <AddCard handleBack={handleBack} closeForm={closeForm} /> */}
+                            <div style={{ backgroundColor: 'white', padding: 18, borderRadius: 10 }}>
+                                <div className='mt-4'>
+                                    <Image src="/assets/claimIcon.png" alt='claimimg' height={24} width={24} />
+                                </div>
+                                <div className='mt-8' style={{ fontWeight: '600', fontSize: 24, fontFamily: 'inter' }}>
+                                    Claim Account
+                                </div>
+                                <div className='text-black' style={{ fontWeight: "400", fontSize: 15, fontFamily: "inter", marginTop: 10 }}>
+                                    This account hasn't been claimed by its creator. In order to claim this creator, you must be the real creator and verify your identity.
+                                </div>
+                                <div className='flex flex-row justify-start mt-4 w-full' style={{ marginTop: 30 }}>
+                                    <div>
+                                        <button
+                                            onClick={() => {
+                                                window.open("https://www.youtube.com", '_blank')
+                                            }} className='bg-purple px-6 py-2 text-white'
+                                            style={{ fontWeight: "400", fontFamily: "inter", fontSize: 15, borderRadius: "50px" }}>
+                                            Verify Identity
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Box>
+            </Modal>
+
             <Drawer
                 open={openBottomForm}
                 // onClose={() => setOpenLoginModalDrawer(false)}
@@ -686,7 +805,7 @@ const Page = () => {
                     </div>
                 </div>
             </Drawer>
-            {
+            {/* {
                 snackMessage &&
                 <div style={{ width: '280px', height: '80px', padding: 15, borderRadius: 20, border: '2px solid white', backgroundColor: '#ffffff60', position: 'absolute', top: 10, right: 12 }}>
                     <div>
@@ -700,44 +819,7 @@ const Page = () => {
                         Your call has been initiated successfully
                     </div>
                 </div>
-            }
-            <Modal
-                open={showPopup}
-                // onClose={(() => setshowPopup(false))}
-                closeAfterTransition
-                BackdropProps={{
-                    timeout: 1000,
-                    sx: {
-                        backgroundColor: 'transparent',
-                        backdropFilter: 'blur(40px)',
-                    },
-                }}
-            >
-                <Box className="lg:w-4/12 sm:w-7/12"
-                    sx={styleLoginModal}
-                >
-                    <div style={{ backgroundColor: 'white', padding: 18, borderRadius: 15, height: "35vh" }}>
-                        <div style={{ fontWeight: '600', fontSize: 24, fontFamily: 'inter' }}>
-                            First 5 minutes are on us!
-                        </div>
-                        <div className='text-lightWhite' style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter", marginTop: 10 }}>
-                            We have got your first 5 minutes covered! Anything more is just $1 per minute to get some of the best advice of your life. You are only charged for minutes talked. We add 10 minutes to your account when it drops below 2 minutes. Enjoy!
-                        </div>
-                        <div className='flex flex-row justify-between w-full' style={{ marginTop: 30 }}>
-                            <div>
-                                <button>
-                                    <Image src="/assets/backArrow.png" height={9} width={13} alt='back' />
-                                </button>
-                            </div>
-                            <div>
-                                <button onClick={hidePopup} className='bg-purple px-6 py-2 text-white' style={{ fontWeight: "400", fontFamily: "inter", fontSize: 15, borderRadius: "50px" }}>
-                                    Continue
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </Box>
-            </Modal>
+            } */}
         </div>
     );
 }

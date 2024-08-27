@@ -9,6 +9,7 @@ import axios from 'axios';
 import AiSocialLinks from './AiSocialLinks';
 import { useRouter } from 'next/navigation';
 import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
+import Knowledgebase from '../buildai/Knowledgebase';
 
 const boxVariants = {
     enter: (direction) => ({
@@ -39,7 +40,11 @@ export default function ScriptAnimation({ onChangeIndex }) {
     const [selectedAudio, setSelectedAudio] = useState(null);
     const [audioUrl, setAudioUrl] = useState(null);
     const [compressedAudioUrl, setCompressedAudioUrl] = useState(null);
+    //state to get sociallinks data
+    const [socialLinks, setSocialLinks] = useState(null);
     const fileInputRef = useRef(null);
+
+    // const handleSocialLinks = () => {}
 
     const handleAudioChange = (event) => {
         const file = event.target.files[0];
@@ -163,6 +168,51 @@ export default function ScriptAnimation({ onChangeIndex }) {
         marginInline: 10
     };
 
+
+    //styles for mui fields
+    const MuiFieldStyle = {
+        '& label.Mui-focused': {
+            color: 'black',
+        },
+        '& .MuiFilledInput-root': {
+            fontSize: 13,
+            fontWeight: '400',
+            backgroundColor: '#EDEDEDC7', // Optional: Removes the background color
+            '&:before': {
+                borderBottom: 'none', // Remove the default inactive state bottom border
+            },
+            '&:after': {
+                borderBottom: 'none', // Remove the focused state bottom border
+            },
+            '&:hover:before': {
+                borderBottom: 'none', // Remove the hover state bottom border
+            },
+        },
+        '& .MuiOutlinedInput-root': {
+            borderRadius: 2,
+            height: "48px",
+            backgroundColor: "#EDEDEDC7",
+            color: "black",
+            '& fieldset': {
+                borderColor: 'transparent',
+            },
+            '&:hover fieldset': {
+                borderColor: 'transparent',
+            },
+            '&.Mui-focused fieldset': {
+                borderColor: '#00000000',
+                color: "#000000",
+            },
+            '& .MuiOutlinedInput-input': {
+                color: 'black !important',
+            },
+            '&.Mui-focused .MuiOutlinedInput-input': {
+                color: 'black !important',
+            },
+        },
+    };
+
+
     return (
         <div style={containerStyles}>
             <AnimatePresence initial={false} custom={direction}>
@@ -199,29 +249,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                                         value={aiName}
                                         onChange={(e) => setAiName(e.target.value)}
                                         placeholder='For ex: Hormozi, Tate.ai'
-                                        sx={{
-                                            '& label.Mui-focused': {
-                                                color: '#050A0890',
-                                            },
-                                            '& .MuiFilledInput-root': {
-                                                backgroundColor: '#EDEDED', // Optional: Removes the background color
-                                                // padding: '6px 8px', // Decrease the padding inside the input container
-                                                fontSize: 13,
-                                                fontWeight: '400'
-                                            },
-                                            '& .MuiFilledInput-root:before': {
-                                                borderBottom: 'none', // Remove the default inactive state bottom border
-                                            },
-                                            '& .MuiFilledInput-root:after': {
-                                                borderBottom: 'none', // Remove the focused state bottom border
-                                            },
-                                            '& .MuiFilledInput-root:hover:before': {
-                                                borderBottom: 'none', // Remove the hover state bottom border
-                                            },
-                                            '& .MuiFilledInput-root.Mui-focused:before': {
-                                                borderBottom: 'none', // Ensure no border is shown when the field is focused
-                                            }
-                                        }}
+                                        sx={MuiFieldStyle}
                                     />
 
                                     <div className='w-10/12'>
@@ -261,72 +289,19 @@ export default function ScriptAnimation({ onChangeIndex }) {
                                     <div className='mt-6' style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
                                         Describe what {aiName} does as a creator or influencer?
                                     </div>
-                                    {/* <TextField
-                                        className='w-9/12 bg-grayBg mt-5'
-                                        // label="Type here"
-                                        style={{ borderRadius: 5 }}
-                                        multiline
-                                        rows={5} // Controls the number of visible rows
-                                        variant="filled" // You can choose between outlined, filled, or standard
-                                        // fullWidth
-                                        // value={text}
-                                        // onChange={e => setText(e.target.value)}
-                                        placeholder="Hey this is James. Feel free to ask me anything about...."
-                                        sx={{
-                                            '& .MuiFilledInput-root': {
-                                                backgroundColor: 'transparent', // Optional: Removes the background color
-                                                padding: '6px 8px', // Decrease the padding inside the input container
-                                            },
-                                            '& .MuiInputBase-input': {
-                                                padding: '4px 0px', // Decrease the padding inside the input itself
-                                            },
-                                            '& .MuiFilledInput-root:before': {
-                                                borderBottom: 'none', // Remove the default inactive state bottom border
-                                            },
-                                            '& .MuiFilledInput-root:after': {
-                                                borderBottom: 'none', // Remove the focused state bottom border
-                                            },
-                                            '& .MuiFilledInput-root:hover:before': {
-                                                borderBottom: 'none', // Remove the hover state bottom border
-                                            },
-                                            '& .MuiFilledInput-root.Mui-focused:before': {
-                                                borderBottom: 'none', // Ensure no border is shown when the field is focused
-                                            }
-                                        }}
-                                    /> */}
 
-                                    <TextField className=' w-9/12 mt-8'
+                                    <TextField
+                                        className='w-9/12 mt-8'
                                         autofill='off'
                                         id="filled-basic"
-                                        label="Description" variant="filled"
+                                        label="Description"
+                                        variant="filled"
                                         multiline
                                         rows={3}
                                         value={talkAbout}
                                         onChange={(e) => setTalkAbout(e.target.value)}
                                         placeholder=' talk about dating, business, fitness ...'
-                                        sx={{
-                                            '& label.Mui-focused': {
-                                                color: '#050A0890',
-                                            },
-                                            '& .MuiFilledInput-root': {
-                                                backgroundColor: '#EDEDED', // Optional: Removes the background color
-                                                // padding: '6px 8px', // Decrease the padding inside the input container
-                                                fontSize: 13,
-                                                fontWeight: '400'
-                                            },
-                                            '& .MuiFilledInput-root:before': {
-                                                borderBottom: 'none', // Remove the default inactive state bottom border
-                                            },
-                                            '& .MuiFilledInput-root:after': {
-                                                borderBottom: 'none', // Remove the focused state bottom border
-                                            },
-                                            '& .MuiFilledInput-root:hover:before': {
-                                                borderBottom: 'none', // Remove the hover state bottom border
-                                            },
-                                            '& .MuiFilledInput-root.Mui-focused:before': {
-                                                borderBottom: 'none', // Ensure no border is shown when the field is focused
-                                            }
-                                        }}
+                                        sx={MuiFieldStyle}
                                     />
 
                                     <div className='w-10/12'>
@@ -435,39 +410,16 @@ export default function ScriptAnimation({ onChangeIndex }) {
                                     </div>
 
                                     <div>
-                                        <AiSocialLinks />
+                                        <AiSocialLinks handleContinue={handleContinue} />
                                     </div>
-                                    {/* <TextField className=' w-9/12 mt-8'
-                                        autofill='off'
-                                        id="filled-basic"
-                                        label="Name" variant="filled"
-                                        // value={userName}
-                                        // onChange={(e) => setUserName(e.target.value)}
-                                        placeholder='Voice.ai/ name'
-                                        sx={{
-                                            '& label.Mui-focused': {
-                                                color: '#050A0890',
-                                            },
-                                            '& .MuiFilledInput-root': {
-                                                // color: '#050A0860',
-                                                fontSize: 13,
-                                                fontWeight: '400'
-                                            },
-                                            '& .MuiFilledInput-underline:before': {
-                                                borderBottomColor: '#050A0860',
-                                            },
-                                            '& .MuiFilledInput-underline:after': {
-                                                borderBottomColor: '#050A0890',
-                                            },
-                                        }} /> */}
 
-                                    <div className='w-10/12'>
+                                    {/* <div className='w-10/12'>
                                         <Button onClick={handleTempContinue}
                                             className='bg-purple hover:bg-purple text-white w-full mt-12'
                                             style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
                                             Continue
                                         </Button>
-                                    </div>
+                                    </div> */}
 
                                 </div>
                             </div>
@@ -499,29 +451,10 @@ export default function ScriptAnimation({ onChangeIndex }) {
                                         style={{ fontSize: 13, fontWeight: "400", fontFamily: "inter" }}>
                                         Upload documents, paste plain text or a web url
                                     </div>
-                                    <TextField className=' w-9/12 mt-8'
-                                        autofill='off'
-                                        id="filled-basic"
-                                        label="Name" variant="filled"
-                                        // value={userName}
-                                        // onChange={(e) => setUserName(e.target.value)}
-                                        placeholder='Voice.ai/ name'
-                                        sx={{
-                                            '& label.Mui-focused': {
-                                                color: '#050A0890',
-                                            },
-                                            '& .MuiFilledInput-root': {
-                                                // color: '#050A0860',
-                                                fontSize: 13,
-                                                fontWeight: '400'
-                                            },
-                                            '& .MuiFilledInput-underline:before': {
-                                                borderBottomColor: '#050A0860',
-                                            },
-                                            '& .MuiFilledInput-underline:after': {
-                                                borderBottomColor: '#050A0890',
-                                            },
-                                        }} />
+
+                                    <div className='mt-8'>
+                                        <Knowledgebase />
+                                    </div>
 
                                     <div className='w-10/12'>
                                         <Button onClick={handleContinue}

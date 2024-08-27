@@ -129,7 +129,9 @@ const LoginModal = ({ closeForm, creator, assistantData }) => {
                             className='p-6'
                         >
                             <div className='w-full'>
-                                <CreateAccount creator={creator} modalData={assistantData} handleContinue={handleContinue} handleBack={handleBack} />
+                                <CreateAccount
+                                    creator={creator} modalData={assistantData}
+                                    handleContinue={handleContinue} handleBack={handleBack} closeForm={closeForm} />
                             </div>
                         </motion.div>
                     </div>
@@ -210,7 +212,7 @@ const LoginModal = ({ closeForm, creator, assistantData }) => {
                             transition={{ duration: 1 }}
                             style={styles}
                         >
-                            <div className='w-full'>
+                            <div className='w-full px-6 py-4'>
                                 {/* <button onClick={handleBack}>h</button> */}
                                 <AddCard handleBack={handleBack} closeForm={closeForm} />
                             </div>

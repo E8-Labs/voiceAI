@@ -435,6 +435,40 @@ export default function Animation({ onChangeIndex }) {
         }
     }
 
+    //test code for hiding the bordercolor
+    const MuiFieldStyle = {
+        '& label.Mui-focused': {
+            color: 'black',
+        },
+        '& .MuiFilledInput-root': {
+            fontSize: 13,
+            fontWeight: '400',
+        },
+        '& .MuiOutlinedInput-root': {
+            borderRadius: 2,
+            height: "48px",
+            backgroundColor: "#EDEDEDC7",
+            color: "black",
+            '& fieldset': {
+                borderColor: 'transparent',
+            },
+            '&:hover fieldset': {
+                borderColor: 'transparent',
+            },
+            '&.Mui-focused fieldset': {
+                borderColor: '#00000000',
+                // backgroundColor: "#EDEDEDC7",
+                color: "#000000",
+            },
+            '& .MuiOutlinedInput-input': {
+                color: 'black !important',
+            },
+            '&.Mui-focused .MuiOutlinedInput-input': {
+                color: 'black !important',
+            },
+        },
+    };
+
     return (
         <div style={containerStyles}>
             <AnimatePresence initial={false} custom={direction}>
@@ -505,13 +539,13 @@ export default function Animation({ onChangeIndex }) {
                                     <PhoneNumberInput phonenumber={SignInNumber} />
 
                                 </div>
-                                <div className='mt-2'>
+                                {/* <div className='mt-2'>
                                     <button style={{ color: "#552AFF", fontSize: 13, fontWeight: "400" }}>
                                         <u>
                                             Reset Password
                                         </u>
                                     </button>
-                                </div>
+                                </div> */}
                                 <div className='mt-8 w-8/12' style={{ color: "white" }}>
                                     <Button className='bg-purple hover:bg-purple2 text-white w-full' onClick={handleLogin}
                                         style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
@@ -594,7 +628,8 @@ export default function Animation({ onChangeIndex }) {
                                     />
                                 </div>
                                 <div className='mt-8 w-8/12' style={{ color: "white" }}>
-                                    <Button onClick={handleVerifyLoginCode} className='bg-purple hover:bg-purple2 text-white rounded w-full' style={{ fontSize: 15, fontWeight: "400", height: "52px" }}>
+                                    <Button onClick={handleVerifyLoginCode} className='bg-purple hover:bg-purple2 text-white rounded w-full'
+                                        style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
                                         Continue
                                     </Button>
                                 </div>
@@ -635,7 +670,7 @@ export default function Animation({ onChangeIndex }) {
                                     <div className='text-lightWhite mt-2' style={{ fontSize: 13, fontWeight: "400" }}>
                                         The good ones are still available
                                     </div>
-                                    <TextField className=' w-9/12 mt-8'
+                                    {/* <TextField className=' w-9/12 mt-8'
                                         autofill='off'
                                         id="filled-basic"
                                         label="Name" variant="filled"
@@ -657,7 +692,23 @@ export default function Animation({ onChangeIndex }) {
                                             '& .MuiFilledInput-underline:after': {
                                                 borderBottomColor: '#050A0890',
                                             },
-                                        }} />
+                                        }} /> */}
+
+                                    <TextField className=' w-9/12 mt-10'
+                                        autofill='off'
+                                        id="filled-basic"
+                                        value={userName}
+                                        onChange={(e) => setUserName(e.target.value)}
+                                        label="First Name" variant="outlined"
+                                        placeholder='First name.'
+                                        sx={MuiFieldStyle}
+                                        inputProps={{
+                                            style: {
+                                                color: 'black !important',  // Apply black color directly
+                                            },
+                                        }}
+                                        style={{ color: "black" }}
+                                    />
 
                                     <div>
                                         {
@@ -1213,7 +1264,7 @@ export default function Animation({ onChangeIndex }) {
                                 />
 
                                 <div className='w-full flex justify-center mt-4'>
-                                    <button onClick={handleCongratsClick} className='bg-purple text-white px-6 py-2' style={{borderRadius: "50px"}}>
+                                    <button onClick={handleCongratsClick} className='bg-purple text-white px-6 py-2' style={{ borderRadius: "50px" }}>
                                         Continue
                                     </button>
                                 </div>
