@@ -9,7 +9,7 @@ import Image from 'next/image';
 import Apis from '@/components/apis/Apis';
 // import Apis from '../Apis/Apis';
 
-const AddCardDetails = ({ handleBack, closeForm }) => {
+const AddCardDetails = ({ handleBack, closeForm, handleContinue }) => {
 
     const handleBackClick = (e) => {
         e.preventDefault();
@@ -24,6 +24,7 @@ const AddCardDetails = ({ handleBack, closeForm }) => {
     const [addCardSuccess, setAddCardSuccess] = useState(false);
     const [addCardFailure, setAddCardFailure] = useState(false);
     const [addCardDetails, setAddCardDetails] = useState(null);
+    const [buildScreenData, setBuildScreenData] = useState(null);
 
     const elementOptions = {
         style: {
@@ -49,11 +50,17 @@ const AddCardDetails = ({ handleBack, closeForm }) => {
     const stripeReact = useStripe();
     const elements = useElements();
 
+    useEffect(() => {
+        const localData = localStorage.getItem('fromBuildScreen');
+        const Data = JSON.parse(localData);
+        console.log("Data recieved from build screen", Data);
+        setBuildScreenData(Data);
+    }, [])
+
     // useEffect(() => {})
 
     const handleAddCard = async (e) => {
         // Check if the event object is provided and prevent the default behavior
-        setAddCardLoader(true);
         if (e && e.preventDefault) {
             e.preventDefault();
         }
@@ -77,6 +84,7 @@ const AddCardDetails = ({ handleBack, closeForm }) => {
                     theme: "dark"
                 });
             } else if (tok.token.id) {
+                setAddCardLoader(true);
                 console.log("Token generating for card number :", tok.token.id)
                 const tokenId = tok.token.id;
                 let api = process.env.NEXT_PUBLIC_REACT_APP_ENVIRONMENT === "Development2" ? "https://bf59-119-156-82-235.ngrok-free.app" : "https://plurawlapp.com/plurawl";
@@ -110,6 +118,10 @@ const AddCardDetails = ({ handleBack, closeForm }) => {
                             const callStatus = {
                                 callStatus: true
                             }
+                            if (buildScreenData) {
+                                handleContinue();
+                                localStorage.removeItem("fromBuildScreen");
+                            }
                             localStorage.setItem('callStatus', JSON.stringify(callStatus));
                             closeForm();
                             window.location.reload();
@@ -127,9 +139,13 @@ const AddCardDetails = ({ handleBack, closeForm }) => {
 
     return (
         <div style={{ width: '100%' }}>
-            <div style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
-                Add Payment Method
-            </div>
+            {
+                buildScreenData ?
+                    "" :
+                    <div style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
+                        Add Payment Method
+                    </div>
+            }
             <div className='mt-4'>
                 <div style={{ fontWeight: "400", fontFamily: "inter", fontSize: 13, color: "#4F5B76" }}>
                     Card Number
@@ -171,13 +187,15 @@ const AddCardDetails = ({ handleBack, closeForm }) => {
             <div className='w-full mt-6 flex justify-center'>
                 {
                     addCardLoader ?
-                        <div>
+                        <div className='flex flex-row justify-end items-center mt-8 w-full'>
                             <CircularProgress size={30} />
                         </div> :
                         <div className='flex flex-row justify-end items-center mt-8 w-full'>
                             <div>
                                 <button onClick={handleAddCard} className='bg-purple rounded px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15, borderRadius: "50px" }}>
-                                    Start a call
+                                    {
+                                        buildScreenData ? "Continue" : "Start a call"
+                                    }
                                 </button>
                             </div>
                         </div>
@@ -188,7 +206,8 @@ const AddCardDetails = ({ handleBack, closeForm }) => {
                     open={credentialsErr}
                     autoHideDuration={3000}
                     onClose={() => {
-                        setCredentialsErr(false)
+                        setCredentialsErr(false);
+                        setAddCardLoader(false);
                     }}
                     anchorOrigin={{
                         vertical: 'top',
@@ -201,7 +220,8 @@ const AddCardDetails = ({ handleBack, closeForm }) => {
                 >
                     <Alert
                         onClose={() => {
-                            setCredentialsErr(false)
+                            setCredentialsErr(false);
+                            setAddCardLoader(false);
                         }} severity="error"
                         sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}>
                         Enter all Credientials.

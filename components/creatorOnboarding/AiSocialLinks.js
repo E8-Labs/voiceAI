@@ -19,35 +19,35 @@ function AiSocialLinks({ handleContinue, handleBack }) {
         if (localData) {
             const Data = JSON.parse(localData);
             console.log("social inks data recieved", Data);
-            if (Data.appleProducts_Url) {
-                setAppleProducts(Data.appleProducts_Url)
+            if (Data.discord_url) {
+                setAppleProducts(Data.discord_url)
             }
-            if (Data.fb_Url) {
-                setFburl(Data.fb_Url)
+            if (Data.fb_url) {
+                setFburl(Data.fb_url)
             }
-            if (Data.insta_Url) {
-                setInstaurl(Data.insta_Url)
+            if (Data.insta_url) {
+                setInstaurl(Data.insta_url)
             }
-            if (Data.spotify_Url) {
-                setSpotifyurl(Data.spotify_Url)
+            if (Data.spotify_url) {
+                setSpotifyurl(Data.spotify_url)
             }
-            if (Data.twitter_Url) {
-                setTwitterurl(Data.twitter_Url)
+            if (Data.twitter_url) {
+                setTwitterurl(Data.twitter_url)
             }
-            if (Data.youtube_Url) {
-                setYoutubeurl(Data.youtube_Url)
+            if (Data.youtube_url) {
+                setYoutubeurl(Data.youtube_url)
             }
         }
     }, [])
 
     const handleContinueSocial = () => {
         const data = {
-            fb_Url: fbUrl,
-            youtube_Url: youtubeUrl,
-            appleProducts_Url: appleProducts,
-            twitter_Url: twitterUrl,
-            spotify_Url: spotifyurl,
-            insta_Url: instaUrl
+            fb_url: fbUrl,
+            youtube_url: youtubeUrl,
+            discord_url: appleProducts,
+            twitter_url: twitterUrl,
+            spotify_url: spotifyurl,
+            insta_url: instaUrl
         }
         console.log("Social links url", data);
 

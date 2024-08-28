@@ -10,6 +10,7 @@ import AiSocialLinks from './AiSocialLinks';
 import CallerInfo from './CallerInfo';
 import SetPrice from './SetPrice';
 import AddCard from '../loginform/Addcard/AddCard';
+import { useRouter } from 'next/navigation';
 
 const boxVariants = {
     enter: (direction) => ({
@@ -28,27 +29,108 @@ const boxVariants = {
 
 export default function ScriptAnimation2({ onChangeIndex }) {
 
+    const router = useRouter();
     const [currentIndex, setCurrentIndex] = useState(0);
     const [direction, setDirection] = useState(0);
-    const [selected, setSlected] = useState("");
     const [value, setValue] = useState("");
 
     //code for getting value of input fields
     const [greetText, setGreetText] = useState("");
     const [serviceDetails, setServiceDetails] = useState("");
+    const [selectCard, setSelectCard] = useState(null);
+    const [inputs, setInputs] = useState([
+        { value: '', placeholder: 'What is your name?' },
+        { value: '', placeholder: 'Where are you from?' }
+    ]);
+    const [inputRows, setInputRows] = useState([
+        { productAmount: '', productName: '' }
+    ]);
+    const [sellingProducts, setSellingProducts] = useState([]);
+    const [sellProduct, setSellProduct] = useState(false);
+    const [inviteWebinar, setInviteWebinar] = useState(false);
+    const [somethingElse, setSetSomethingElse] = useState(false);
+    const [webinarUrl, setWebinarUrl] = useState("");
+    const [otherUrl, setOtherUrl] = useState("");
+    const [otherGoal, setOtherGoal] = useState("");
+    const [selected, setSlected] = useState("");
 
     //code for callingipt api
-    const handleBuildScript = async () => {
+    const handleBuildScript = async (setPriceData) => {
+        console.log("Data of setprice screen", setPriceData);
+
         try {
+            let goalType = null;
+            if (sellProduct === true) {
+                goalType = "Product"
+            } else if (inviteWebinar === true) {
+                goalType = "Webinar"
+            } else if (somethingElse === true) {
+                goalType = "Other"
+            }
             const ApiPath = Apis.BuildScript;
             const LocalData = localStorage.getItem('User');
             const Data = JSON.parse(LocalData);
             const AuthToken = Data.data.token;
             console.log("Auth token", AuthToken);
-            const fromData = new FormData();
-            fromData.append("greeting", greetText);
-            fromData.append("possibleUserQuery", serviceDetails);
-            const response = await axios.post(ApiPath, fromData, {
+            const formData = new FormData();
+            formData.append("greeting", greetText);
+            formData.append("possibleUserQuery", serviceDetails);
+            formData.append("goalType", goalType);
+
+            //code to send social link
+            const localData = localStorage.getItem('socialsUrl');
+            if (localData) {
+                const Data = JSON.parse(localData);
+                console.log("social inks data recieved", Data);
+                if (Data.discord_url) {
+                    formData.append("discord_url", Data.discord_url)
+                }
+                if (Data.fb_url) {
+                    formData.append("fb_url", Data.fb_url)
+                }
+                if (Data.insta_url) {
+                    formData.append("insta_url", Data.insta_url)
+                }
+                if (Data.spotify_url) {
+                    formData.append("spotify_url", Data.spotify_url)
+                }
+                if (Data.twitter_url) {
+                    formData.append("twitter_url", Data.twitter_url)
+                }
+                if (Data.youtube_url) {
+                    formData.append("youtube_url", Data.youtube_url)
+                }
+            }
+
+            //checking the goal sending
+            if (selected) {
+                formData.append("productToSell", selected)
+            } else if (webinarUrl) {
+                formData.append("webinarUrl", webinarUrl)
+            } else if (otherUrl) {
+                formData.append("goalUrl", otherUrl)
+            }
+            if (otherGoal) {
+                formData.append("goalTitle", otherGoal)
+            }
+
+            formData.append("isFree", setPriceData.toogleActive);
+            if (setPriceData.callPrice) {
+                formData.append("price", setPriceData.callPrice);
+            }
+            inputs.forEach((row, index) => {
+                formData.append(`kycQuestions[${index}][question]`, row.value);
+            });
+            inputRows.forEach((row, index) => {
+                formData.append(`products[${index}][name]`, row.productName);
+                formData.append(`products[${index}][productPrice]`, row.productAmount);
+            });
+            console.log('Data being sent to the API:');
+            for (let [key, value] of formData.entries()) {
+                console.log(`${key}: ${value}`);
+            }
+            // return
+            const response = await axios.post(ApiPath, formData, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + AuthToken
@@ -60,6 +142,10 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                 if (response.data.status === true) {
                     console.log("Response of buildscript api is", response);
                     handleContinue();
+                    const data = {
+                        from: "builScript"
+                    }
+                    localStorage.setItem('fromBuildScreen', JSON.stringify(data));
                 } else {
                     console.log("Status is", response.data.status);
                 }
@@ -112,7 +198,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
     const goalsStyles = {
         button: {
-            borderWidth: 1,
+            border: "1px solid #EDEDED",
             borderColor: "#EDEDED29",
             borderRadius: 5,
             padding: 10,
@@ -120,26 +206,6 @@ export default function ScriptAnimation2({ onChangeIndex }) {
         }
     }
 
-    const goals = [
-        {
-            id: 1,
-            name: 'Sell a Product / Service',
-            type: "input"
-        }, {
-            id: 2,
-            name: 'Select',
-            type: "dropdown"
-        }, {
-            id: 3,
-            name: 'Invite to a webinar',
-            type: "input"
-        }, {
-            id: 4,
-            name: 'Something else',
-            type: "input"
-        },
-
-    ]
 
     const handleOnClick = (item) => {
         setSlected(item.name)
@@ -151,7 +217,6 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
 
     //code for card index
-    const [selectCard, setSelectCard] = useState(null);
 
     const handleCardSelect = (index) => {
         if (selectCard === index) {
@@ -160,6 +225,65 @@ export default function ScriptAnimation2({ onChangeIndex }) {
             setSelectCard(index); // Select the card if it is not selected
         }
     }
+
+    //code for dynamic field
+
+    const addInputField = () => {
+        setInputs([...inputs, { value: '', placeholder: 'New Question' }]);
+    };
+
+    // Function to handle input value change
+    const handleInputChange = (index, event) => {
+        const newInputs = [...inputs];
+        newInputs[index].value = event.target.value;
+        setInputs(newInputs);
+        console.log(newInputs);
+    };
+
+    const handleDeleteInput = (index) => {
+        const newInputs = [...inputs];
+        newInputs.splice(index, 1); // Remove the input at the given index
+        setInputs(newInputs);
+        console.log(newInputs);
+    };
+
+    const inputStyle = {
+        inputContainer: {
+            marginTop: 30,
+            // display: "flex",
+            // alignItems: "center",
+            backgroundColor: "#EDEDED29", //EDEDED29 /* Light grey background */
+            bordeRadius: 20, /* Rounded corners */
+            padding: "10px 10px", /* Padding around input */
+            display: 'flex', alignItems: 'center', marginBottom: '8px'
+        }
+    }
+
+    //code to add dynamic fields onadd produce index
+
+
+    // Function to handle adding a new row of input fields
+    const addInputRow = () => {
+        setInputRows([...inputRows, { productAmount: '', productName: '' }]);
+    };
+
+    // Function to handle input value change
+    const handleInputChange2 = (index, field, event) => {
+        const newInputRows = [...inputRows];
+        newInputRows[index][field] = event.target.value;
+        setInputRows(newInputRows);
+        console.log(newInputRows);
+    };
+
+    // Function to handle deleting a row of input fields
+    const handleDeleteRow = (index) => {
+        const newInputRows = [...inputRows];
+        newInputRows.splice(index, 1); // Remove the row at the given index
+        setInputRows(newInputRows);
+        console.log(newInputRows);
+    };
+
+
 
     return (
         <div style={containerStyles}>
@@ -173,7 +297,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             initial="enter"
                             animate="center"
                             exit="exit"
-                            transition={{ duration: 1 }}
+                            transition={{ duration: 0.5 }}
                             style={styles}
                         >
 
@@ -249,7 +373,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             initial="enter"
                             animate="center"
                             exit="exit"
-                            transition={{ duration: 1 }}
+                            transition={{ duration: 0.5 }}
                             style={styles}
                         >
                             <div className='w-full flex justify-center'>
@@ -320,7 +444,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             initial="enter"
                             animate="center"
                             exit="exit"
-                            transition={{ duration: 1 }}
+                            transition={{ duration: 0.5 }}
                             style={styles}>
                             <div className='w-full flex justify-center'>
                                 <div className='w-10/12'>
@@ -365,7 +489,37 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         }}
                                     /> */}
 
-                                    <CallerInfo />
+                                    {/* <CallerInfo /> */}
+
+                                    <div className='mt-6' style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
+                                        KYC - What would you like to know about your callers?
+                                    </div>
+                                    <div className='text-sm text-gray-400 mt-2'>
+                                        These are questions your AI will ask during the call to give you a better understanding about the person
+                                    </div>
+                                    <div style={{ maxHeight: "40vh", overflowY: "auto" }}>
+                                        {inputs.map((input, index) => (
+                                            <div key={index}
+                                                // style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}
+                                                style={inputStyle.inputContainer}
+                                                className='flex -flex-row justify-between items-center rounded-lg'
+                                            >
+                                                <input className='w-full bg-transparent border-none outline-none'
+                                                    type="text"
+                                                    value={input.value}
+                                                    onChange={(e) => handleInputChange(index, e)}
+                                                    placeholder={input.placeholder}
+                                                    style={{ marginRight: '8px', fontSize: 13, fontWeight: "400", fontFamily: "inter" }}
+                                                />
+                                                <button onClick={() => handleDeleteInput(index)}>
+                                                    <Image src="/assets/croseBtn.png" alt='cross' height={20} width={20} />
+                                                </button>
+                                            </div>
+                                        ))}
+                                        <button onClick={addInputField} className='text-purple mt-8 outline-none border-none' style={{ textDecoration: 'underline' }}>
+                                            New Question
+                                        </button>
+                                    </div>
 
                                     <div className='w-10/12'>
                                         <Button onClick={handleContinue}
@@ -389,7 +543,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             initial="enter"
                             animate="center"
                             exit="exit"
-                            transition={{ duration: 1 }}
+                            transition={{ duration: 0.5 }}
                             style={styles}>
                             <div className='w-full flex justify-center'>
                                 <div className='w-10/12'>
@@ -404,7 +558,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
                                     <div>
                                         {/* <AiSocialLinks /> */}
-                                        <div className='w-full flex flex-col justify-center items-center' >
+                                        {/* <div className='w-full flex flex-col justify-center items-center' >
                                             <div className='w-full'>
                                                 <div className='w-11/12 flex flex-row gap-3 mt-6'>
                                                     <TextField
@@ -475,6 +629,43 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                     </button>
                                                 </div>
                                             </div>
+                                        </div> */}
+                                    </div>
+
+                                    {/* Code to make dynamic routes */}
+                                    <div className='mt-8' style={{ maxHeight: "20vh", overflowY: "auto", scrollbarWidth: "none" }}>
+                                        {inputRows.map((row, index) => (
+                                            <div className='w-full flex flex-row gap-2 mt-2' key={index} style={{}}>
+                                                <div className='w-3/12 px-3 py-3 rounded-lg flex flex-row gap-4 items-center' style={{ backgroundColor: "#EDEDED80", }}>
+                                                    <input
+                                                        className='w-full border-none bg-transparent outline-none'
+                                                        type="number"
+                                                        value={row.name}
+                                                        onChange={(e) => handleInputChange2(index, 'productAmount', e)}
+                                                        placeholder="$"
+                                                    // style={{ marginRight: '8px' }}
+                                                    />
+                                                </div>
+                                                <div className='w-9/12 px-3 py-3 rounded-lg flex flex-row gap-4 items-center' style={{ backgroundColor: "#EDEDED80", }}>
+                                                    <input
+                                                        className='w-full border-none bg-transparent outline-none'
+                                                        type="text"
+                                                        value={row.email}
+                                                        onChange={(e) => handleInputChange2(index, 'productName', e)}
+                                                        placeholder="Product Name"
+                                                    />
+                                                    <button onClick={() => handleDeleteRow(index)} style={{ backgroundColor: "", }}>
+                                                        <Image src="/assets/croseBtn.png" alt='cross' height={20} width={20} />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                        <div className='mt-6'>
+                                            <button onClick={addInputRow} className='text-purple' style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter" }}>
+                                                <u>
+                                                    Add New
+                                                </u>
+                                            </button>
                                         </div>
                                     </div>
 
@@ -500,7 +691,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             initial="enter"
                             animate="center"
                             exit="exit"
-                            transition={{ duration: 1 }}
+                            transition={{ duration: 0.5 }}
                             style={styles}>
                             <div className='w-full flex justify-center'>
                                 <div className='w-10/12'>
@@ -518,57 +709,156 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                 What do you want your AI to do?
                                             </div>
 
+
+                                            <div className='w-11/12 flex flex-col mt-8'>
+                                                <div>
+                                                    <div className='flex flex-row w-11/12 items-center justify-between '
+                                                        style={goalsStyles.button}
+                                                    >
+                                                        <div style={{ fontSize: 12, fontWeight: 'normal' }}>
+                                                            Sell a Product / Service
+                                                        </div>
+                                                        <Image
+                                                            style={{ cursor: "pointer" }}
+                                                            onClick={() => {
+                                                                setSellProduct(!sellProduct);
+                                                                setInviteWebinar(false);
+                                                                setSetSomethingElse(false);
+                                                            }}
+                                                            src={sellProduct ? '/assets/selected.png' : '/assets/unselected.png'}
+                                                            alt='cicle' height={30} width={30} />
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
                                             {
-                                                goals.map((item) => (
-                                                    item.type === "input" ? (
-                                                        <div className='w-11/12 flex flex-col mt-8'>
-                                                            <button
-                                                                onClick={() => handleOnClick(item)}
-                                                            >
-                                                                <div className='flex flex-row w-11/12 items-center justify-between '
-                                                                    style={goalsStyles.button}
-                                                                >
-                                                                    <div style={{ fontSize: 12, fontWeight: 'normal' }}>
-                                                                        {item.name}
-                                                                    </div>
-                                                                    <Image src={item.name === selected ? '/assets/selected.png' : '/assets/unSelected.png'}
-                                                                        alt='cicle' height={30} width={30} />
-                                                                </div>
-                                                            </button>
-
-                                                        </div>
-                                                    ) : (
-                                                        <div className='w-10/12 flex flex-col mt-8'>
-                                                            <FormControl
-                                                                variant='outlined'
-                                                            // sx={{
-                                                            //     minWidth: 300,
-                                                            //     backgroundColor: '#f5f5f5', // Light background similar to the image
-                                                            //     borderRadius: '5px', // Rounded corners
-                                                            // }}
-                                                            >
-                                                                <InputLabel id="dropdown-label">Select</InputLabel>
-                                                                <Select
-                                                                    labelId='dropdown-label'
-                                                                    label="Select"
-                                                                    value={value}
-                                                                    onChange={(e) => {
-                                                                        setValue(e.target.value)
-                                                                        setSlected(e.target.value)
-                                                                    }}
-                                                                >
-                                                                    <MenuItem value="Option 1">Option 1</MenuItem>
-                                                                    <MenuItem value="Option 2">Option 2</MenuItem>
-                                                                    <MenuItem value="Option 3">Option 3</MenuItem>
-
-                                                                </Select>
-                                                            </FormControl>
-
-                                                        </div>
-                                                    )
-
-                                                ))
+                                                sellProduct &&
+                                                <div className='w-10/12 flex flex-col mt-8'>
+                                                    <FormControl className='w-full mt-4'>
+                                                        <Select
+                                                            className=' border-none rounded-md'
+                                                            displayEmpty
+                                                            value={value}
+                                                            onChange={(e) => {
+                                                                setValue(e.target.value)
+                                                                setSlected(e.target.value)
+                                                            }}
+                                                            renderValue={(selected) => {
+                                                                if (selected.length === 0) {
+                                                                    return <em>Select Type</em>;
+                                                                }
+                                                                return selected;
+                                                            }}
+                                                            sx={{
+                                                                backgroundColor: '#EDEDED80',
+                                                                '& .MuiOutlinedInput-notchedOutline': {
+                                                                    border: 'none',
+                                                                },
+                                                            }}
+                                                            MenuProps={{
+                                                                PaperProps: {
+                                                                    sx: { backgroundColor: '#ffffff' },
+                                                                },
+                                                            }}
+                                                        >
+                                                            <MenuItem value="none">
+                                                                <em>Select Type</em>
+                                                            </MenuItem>
+                                                            {
+                                                                inputRows.map((item) => (
+                                                                    <MenuItem value={item.productName}>
+                                                                        {item.productName}
+                                                                    </MenuItem>
+                                                                ))
+                                                            }
+                                                        </Select>
+                                                    </FormControl>
+                                                </div>
                                             }
+
+                                            <div className='w-11/12 flex flex-col mt-8'>
+                                                <div>
+                                                    <div className='flex flex-row w-11/12 items-center justify-between '
+                                                        style={goalsStyles.button}
+                                                    >
+                                                        <div style={{ fontSize: 12, fontWeight: 'normal' }}>
+                                                            Invite to a webinar
+                                                        </div>
+                                                        <Image
+                                                            style={{ cursor: "pointer" }}
+                                                            onClick={() => {
+                                                                setInviteWebinar(!inviteWebinar);
+                                                                setSellProduct(false);
+                                                                setSetSomethingElse(false);
+                                                            }}
+                                                            src={inviteWebinar ? '/assets/selected.png' : '/assets/unselected.png'}
+                                                            alt='cicle' height={30} width={30} />
+                                                    </div>
+                                                </div>
+
+                                                {
+                                                    inviteWebinar &&
+                                                    <div className='w-11/12 mt-8' style={{}}>
+                                                        <input
+                                                            value={webinarUrl}
+                                                            onChange={(e) => setWebinarUrl(e.target.value)}
+                                                            type='text'
+                                                            className='w-full p-4 rounded-lg outline-none'
+                                                            placeholder='Paste website or calender link'
+                                                            style={{ backgroundColor: "#EDEDED80", border: "1px solid #EDEDED" }}
+                                                        />
+                                                    </div>
+                                                }
+
+                                            </div>
+
+                                            <div className='w-11/12 flex flex-col mt-8'>
+                                                <div>
+                                                    <div className='flex flex-row w-11/12 items-center justify-between '
+                                                        style={goalsStyles.button}
+                                                    >
+                                                        <div style={{ fontSize: 12, fontWeight: 'normal' }}>
+                                                            Something else
+                                                        </div>
+                                                        <Image
+                                                            style={{ cursor: "pointer" }}
+                                                            onClick={() => {
+                                                                setSetSomethingElse(!somethingElse);
+                                                                setSellProduct(false);
+                                                                setInviteWebinar(false);
+                                                            }}
+                                                            src={somethingElse ? '/assets/selected.png' : '/assets/unselected.png'}
+                                                            alt='cicle' height={30} width={30} />
+                                                    </div>
+                                                    {
+                                                        somethingElse &&
+                                                        <div>
+                                                            <div className='w-11/12 mt-8' style={{}}>
+                                                                <input
+                                                                    value={otherGoal}
+                                                                    onChange={(e) => setOtherGoal(e.target.value)}
+                                                                    type='text'
+                                                                    className='w-full p-4 rounded-lg outline-none'
+                                                                    placeholder='What is the goal?'
+                                                                    style={{ backgroundColor: "#EDEDED80", border: "1px solid #EDEDED" }}
+                                                                />
+                                                            </div>
+                                                            <div className='w-11/12 mt-8' style={{}}>
+                                                                <input
+                                                                    value={otherUrl}
+                                                                    onChange={(e) => setOtherUrl(e.target.value)}
+                                                                    type='text'
+                                                                    className='w-full p-4 rounded-lg outline-none'
+                                                                    placeholder='URL'
+                                                                    style={{ backgroundColor: "#EDEDED80", border: "1px solid #EDEDED" }}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </div>
+
+                                            </div>
 
                                         </div>
                                     </div>
@@ -596,7 +886,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                 initial="enter"
                                 animate="center"
                                 exit="exit"
-                                transition={{ duration: 1 }}
+                                transition={{ duration: 0.5 }}
                                 style={styles}>
                                 <div className='w-full flex justify-center'>
                                     <div className='w-10/12'>
@@ -609,7 +899,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                             Set your price.
                                         </div>
                                         <button onClick={handleContinue} className='text-lightWhite mt-2' style={{ fontSize: 13, fontWeight: "400" }}>
-                                            How much do you charge perinute?
+                                            How much do you charge per minute?
                                         </button>
 
                                         <div>
@@ -630,7 +920,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             initial="enter"
                             animate="center"
                             exit="exit"
-                            transition={{ duration: 1 }}
+                            transition={{ duration: 0.5 }}
                             style={styles}>
                             <div className='w-full flex flex-row' style={{ height: "auto" }}>
                                 <div className='w-6/12'>
@@ -705,13 +995,76 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         <Image src="/assets/giro.png" alt='card' height={64} width={140} />
                                     </div>
                                     <div className='w-8/12'>
-                                        <AddCard />
+                                        <AddCard handleContinue={handleContinue} />
                                     </div>
                                 </div>
                             </div>
                         </motion.div>
                     </div>
                 )}
+
+                {
+                    currentIndex === 7 && (
+                        <div className='flex h-screen flex-col justify-center' style={{ height: "", }}>
+                            <motion.div
+                                key="box8"
+                                custom={direction}
+                                variants={boxVariants}
+                                initial="enter"
+                                animate="center"
+                                exit="exit"
+                                transition={{ duration: 0.5 }}
+                                style={styles}>
+                                <div className='w-full flex justify-center'>
+                                    <div className='w-full flex flex-col justify-center items-center '>
+                                        <div className='w-8/12'>
+                                            <button style={{ marginTop: 20 }}
+                                                onClick={handleBack}
+                                            >
+                                                {/* <Image src={"/assets/backArrow.png"} width={30} height={30} /> */}
+                                            </button>
+
+                                            <Image className='mt-5' src={"/assets/redNotificationIcon.png"} width={30} height={30} />
+
+                                            <div className='text-2xl mt-10'>
+                                                Notification Permission.
+                                            </div>
+                                            <div className='text-sm text-gray-400 mt-5'>
+                                                Get notified when Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                            </div>
+                                            <div className='w-11/12 flex flex-row'>
+
+
+
+                                                <button className='w-5/12 mt-5' style={{
+                                                    height: 40, backgroundColor: '#552AFF', borderRadius: 5, color: 'white', borderRadius: "50px"
+                                                }}
+                                                    onClick={() => {
+                                                        router.push("/profile")
+                                                    }}
+                                                >
+                                                    {/* <div className='text-red'> */}
+                                                    Countinue
+                                                    {/* </div> */}
+                                                </button>
+                                                <button className='w-3/12 mt-5'
+                                                    onClick={() => {
+                                                        router.push("/profile")
+                                                    }}
+                                                >
+                                                    {/* <div className='text-red'> */}
+                                                    Skip
+                                                    {/* </div> */}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </div>
+                    )
+                }
+
             </AnimatePresence>
         </div>
     );

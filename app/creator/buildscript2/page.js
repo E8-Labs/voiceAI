@@ -53,6 +53,12 @@ export default function Home() {
                         <img src='/assets/mainLogo.png' alt='app' style={{ height: "737px", width: "737px", resize: "cover", objectFit: "contain" }} />
                     </div>
                 }
+                {
+                    currentIndex === 7 &&
+                    <div className='w-7/12 flex md:flex hidden  justify-center'>
+                        <img src='/assets/mainLogo.png' alt='app' style={{ height: "737px", width: "737px", resize: "cover", objectFit: "contain" }} />
+                    </div>
+                }
             </div>
             {/* <div>hello</div> */}
         </div>

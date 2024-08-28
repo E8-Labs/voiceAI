@@ -6,6 +6,7 @@ function SetPrice({ handleBack, handleContinue }) {
 
     const [toogleActive, setToogleActive] = useState(false);
     const [buildScriptLoader, setBuildScriptLoader] = useState(false);
+    const [callPrice, setCallPrice] = useState("");
 
     const handleApiCall = () => {
         try {
@@ -51,7 +52,12 @@ function SetPrice({ handleBack, handleContinue }) {
     }
 
     const handleChange = () => {
-        setToogleActive(!toogleActive)
+        setToogleActive(!toogleActive);
+        setCallPrice("");
+    }
+
+    const handleUploadClick = () => {
+        handleContinue({ callPrice, toogleActive });
     }
 
     return (
@@ -60,10 +66,11 @@ function SetPrice({ handleBack, handleContinue }) {
                 <div className='w-10/12 rounded' style={styles.inputContainer}>
                     {/* <div>$</div> */}
                     <input style={styles.input}
+                        value={callPrice}
+                        onChange={(e) => setCallPrice(e.target.value)}
                         placeholder='$'
                         type='number'
-                    >
-                    </input>
+                    />
                 </div>
                 <div className='text-gray-400 mt-3' style={styles.text}>
                     Nothing less than $1 per minute
@@ -86,7 +93,7 @@ function SetPrice({ handleBack, handleContinue }) {
                             <div className='w-full flex flex-row justify-center'>
                                 <CircularProgress size={30} />
                             </div> :
-                            <Button onClick={handleContinue}
+                            <Button onClick={handleUploadClick}
                                 className='bg-purple hover:bg-purple text-white w-full'
                                 style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
                                 Upload
@@ -100,7 +107,7 @@ function SetPrice({ handleBack, handleContinue }) {
                     </div>
 
                     <div className='' style={styles.text2}>
-                        $10
+                        $ {callPrice}
                     </div>
 
                 </div>

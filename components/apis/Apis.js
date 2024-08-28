@@ -20,7 +20,8 @@ const Apis = {
     //apis for voice creator onboarding
     checkUserName: `${BasePath}api/user/checkUsernameExists`,
     checkUserEmail: `${BasePath}api/user/checkEmailExists`,
-    RegisterLogin: `${BasePath}api/user/login`
+    RegisterLogin: `${BasePath}api/user/login`,
+    KnowledgeBaseApi: `${BasePath}api/ai/addKnowledgebase`
 
 
 }

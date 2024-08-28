@@ -43,13 +43,7 @@ function CallerInfo({ handleContinue, handleBack }) {
                 >
                     <Image src={"/assets/backArrow.png"} width={30} height={30} />
                 </button> */}
-                <div  className='mt-6' style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
-                    KYC - What would you like to know about your callers?
-                </div>
-                <div className='text-sm text-gray-400 mt-2'>
-                    These are questions your AI will ask during the call to give you a better understanding about the person
-                </div>
-                <div className='w-11/12 rounded' style={styles.inputContainer}>
+                {/* <div className='w-11/12 rounded' style={styles.inputContainer}>
                     <input className='w-8/12' style={styles.input}
                         placeholder="What's your name?"
                     />
@@ -58,9 +52,9 @@ function CallerInfo({ handleContinue, handleBack }) {
                     >
                         <Image src={'/assets/croseBtn.png'} height={20} width={20}/>
                     </button>
-                </div>
+                </div> */}
 
-                <div className='w-11/12 rounded' style={styles.inputContainer}>
+                {/* <div className='w-11/12 rounded' style={styles.inputContainer}>
                     <input className='w-8/12' style={styles.input}
                         placeholder="Where are you from?"
                     />
@@ -69,11 +63,11 @@ function CallerInfo({ handleContinue, handleBack }) {
                     >
                         <Image src={'/assets/croseBtn.png'} height={20} width={20}/>
                     </button>
-                </div>
+                </div> */}
 
-                <button className='text-purple mt-8' style={{textDecoration:'underline'}}>
+                {/* <button className='text-purple mt-8' style={{textDecoration:'underline'}}>
                     New Question
-                </button>
+                </button> */}
 
             </div>
 

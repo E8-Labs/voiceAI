@@ -9,11 +9,11 @@ import AddCardDetails from './AddCardDetails'
 let stripePublickKey = process.env.NEXT_PUBLIC_REACT_APP_ENVIRONMENT === "Production" ? process.env.NEXT_PUBLIC_REACT_APP_STRIPE_PUBLISHABLE_KEY_LIVE : process.env.NEXT_PUBLIC_REACT_APP_STRIPE_PUBLISHABLE_KEY;
 const stripePromise = loadStripe(stripePublickKey);
 
-const AddCard = ({handleBack, closeForm}) => {
+const AddCard = ({handleBack, closeForm, handleContinue}) => {
 
     return (
         <Elements stripe={stripePromise}>
-            <AddCardDetails handleBack={handleBack} closeForm={closeForm} />
+            <AddCardDetails handleBack={handleBack} closeForm={closeForm} handleContinue={handleContinue} />
         </Elements>
     )
 }

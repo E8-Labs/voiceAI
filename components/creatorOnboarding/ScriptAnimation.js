@@ -97,7 +97,6 @@ export default function ScriptAnimation({ onChangeIndex }) {
             console.log("Data sending in api is", formData);
             const response = await axios.post(ApiPath, formData, {
                 headers: {
-                    'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + AuthToken
                 }
             });
@@ -453,16 +452,16 @@ export default function ScriptAnimation({ onChangeIndex }) {
                                     </div>
 
                                     <div className='mt-8'>
-                                        <Knowledgebase />
+                                        <Knowledgebase handleContinue={handleContinue} />
                                     </div>
 
-                                    <div className='w-10/12'>
+                                    {/* <div className='w-10/12'>
                                         <Button onClick={handleContinue}
                                             className='bg-purple hover:bg-purple text-white w-full mt-12'
                                             style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
                                             Continue
                                         </Button>
-                                    </div>
+                                    </div> */}
 
                                 </div>
                             </div>
@@ -529,33 +528,44 @@ export default function ScriptAnimation({ onChangeIndex }) {
                                                         Your browser does not support the audio element.
                                                     </audio>
                                                 )}
-                                                <button
+                                                {/* <button
                                                     onClick={handleUploadClick}
                                                     className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
                                                 >
                                                     Select Audio
-                                                </button>
+                                                </button> */}
                                             </div>
 
                                             <div className='flex flex-row items-center gap-6 mt-12'>
                                                 <div className='w-7/12'>
-                                                    {
-                                                        buildAiLoader ?
-                                                            <div className='w-full flex justify-center'>
-                                                                <CircularProgress size={30} />
-                                                            </div> :
-                                                            <Button onClick={handleBuildAI}
-                                                                className='bg-purple hover:bg-purple text-white w-full'
-                                                                style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
-                                                                Upload
-                                                            </Button>
-                                                    }
+                                                    <Button onClick={handleUploadClick}
+                                                        className='bg-purple hover:bg-purple text-white w-full'
+                                                        style={{ fontSize: 15, fontWeight: "400", borderRadius: "50px" }}>
+                                                        Upload
+                                                    </Button>
                                                 </div>
                                                 <button onClick={handleContinueToScript2}>
                                                     <u>
                                                         Skip
                                                     </u>
                                                 </button>
+                                            </div>
+                                            <div className='w-full flex flex-row justify-end'>
+
+                                                <div className='w-6/12'>
+                                                    <Button onClick={handleBuildAI}
+                                                        className='bg-purple hover:bg-purple text-white w-full mt-12'
+                                                        style={{ fontSize: 15, fontWeight: "400", borderRadius: "50px" }}>
+                                                        {
+                                                            buildAiLoader ?
+                                                                <div className='w-full flex justify-center'>
+                                                                    <CircularProgress size={30} />
+                                                                </div> :
+                                                                "Continue"
+                                                        }
+                                                    </Button>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
