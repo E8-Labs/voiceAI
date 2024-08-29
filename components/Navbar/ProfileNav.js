@@ -88,6 +88,14 @@ const ProfileNav = () => {
         }
     }, []);
 
+    //showing user profile data
+    useEffect(() => {
+        const localData = localStorage.getItem('User');
+        const data = JSON.parse(localData);
+        console.log("Get user details", data.data.user);
+        
+    }, [])
+
 
 
     return (
@@ -104,23 +112,9 @@ const ProfileNav = () => {
                             <div style={{ height: "5px", width: "5px", backgroundColor: "black", borderTopRightRadius: "10px", borderBottomRightRadius: "10px" }} />
                         </div>
                         <div>
-                            <div className='flex flex-row items-center gap-8'>
-                                <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                    {getAssistantData &&
-                                        <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                            {
-                                                getAssistantData.name ?
-                                                    <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                        {getAssistantData.name}
-                                                    </div> :
-                                                    <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                        {getAssistantData.assitant.name}
-                                                    </div>
-                                            }
-                                        </div>
-                                    }
-                                </div>
-                                <div className='flex flex-row gap-4'>
+                            <div className='flex flex-row items-center gap-8' style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                
+                                {/* <div className='flex flex-row gap-4'>
                                     <button>
                                         <Image
                                             layout='responsive'
@@ -131,7 +125,7 @@ const ProfileNav = () => {
                                             layout='responsive'
                                             objectFit='contain' src={"/assets/instagram.png"} alt='social' height={11} width={11} style={{ resize: "cover" }} />
                                     </button>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>

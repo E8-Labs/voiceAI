@@ -1,5 +1,5 @@
 'use client'
-import { Button, CircularProgress, FormControl, IconButton, InputAdornment, InputLabel, MenuItem, Select, TextField, Visibility, VisibilityOff } from '@mui/material';
+import { Alert, Button, CircularProgress, Fade, FormControl, IconButton, InputAdornment, InputLabel, MenuItem, Select, Slide, Snackbar, TextField, Visibility, VisibilityOff } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { useEffect, useState } from "react";
@@ -11,6 +11,18 @@ import CallerInfo from './CallerInfo';
 import SetPrice from './SetPrice';
 import AddCard from '../loginform/Addcard/AddCard';
 import { useRouter } from 'next/navigation';
+import AddCardDetails from '../loginform/Addcard/AddCardDetails';
+
+import { loadStripe } from '@stripe/stripe-js'
+import { CardCvcElement, CardExpiryElement, CardNumberElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js'
+
+
+
+
+
+
+
+
 
 const boxVariants = {
     enter: (direction) => ({
@@ -29,6 +41,10 @@ const boxVariants = {
 
 export default function ScriptAnimation2({ onChangeIndex }) {
 
+    let stripePublickKey = process.env.NEXT_PUBLIC_REACT_APP_ENVIRONMENT === "Production" ? process.env.NEXT_PUBLIC_REACT_APP_STRIPE_PUBLISHABLE_KEY_LIVE : process.env.NEXT_PUBLIC_REACT_APP_STRIPE_PUBLISHABLE_KEY;
+    console.log("Public key is ", stripePublickKey)
+    const stripePromise = loadStripe(stripePublickKey);
+
     const router = useRouter();
     const [currentIndex, setCurrentIndex] = useState(0);
     const [direction, setDirection] = useState(0);
@@ -37,7 +53,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
     //code for getting value of input fields
     const [greetText, setGreetText] = useState("");
     const [serviceDetails, setServiceDetails] = useState("");
-    const [selectCard, setSelectCard] = useState(null);
+    const [selectedPlan, setSelectedPlan] = useState(null);
     const [inputs, setInputs] = useState([
         { value: '', placeholder: 'What is your name?' },
         { value: '', placeholder: 'Where are you from?' }
@@ -53,12 +69,16 @@ export default function ScriptAnimation2({ onChangeIndex }) {
     const [otherUrl, setOtherUrl] = useState("");
     const [otherGoal, setOtherGoal] = useState("");
     const [selected, setSlected] = useState("");
+    const [buildScriptErr, setBuildScriptErr] = useState(true);
+    const [isVisible, setIsVisible] = useState(true);
+    const [buildScriptLoader, setBuildScriptLoader] = useState(false);
 
     //code for callingipt api
     const handleBuildScript = async (setPriceData) => {
         console.log("Data of setprice screen", setPriceData);
 
         try {
+            setBuildScriptLoader(true);
             let goalType = null;
             if (sellProduct === true) {
                 goalType = "Product"
@@ -148,12 +168,14 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                     localStorage.setItem('fromBuildScreen', JSON.stringify(data));
                 } else {
                     console.log("Status is", response.data.status);
+                    setBuildScriptErr(true);
                 }
             }
 
         } catch (error) {
             console.error("error occured in script api is", error);
         } finally {
+            setBuildScriptLoader(false);
             console.log("Done");
         }
     }
@@ -219,10 +241,11 @@ export default function ScriptAnimation2({ onChangeIndex }) {
     //code for card index
 
     const handleCardSelect = (index) => {
-        if (selectCard === index) {
-            setSelectCard(null); // Deselect the card if it is already select
+        console.log("Handle plan select", index)
+        if (selectedPlan === index) {
+            // setSelectedPlan(null); // Deselect the card if it is already select
         } else {
-            setSelectCard(index); // Select the card if it is not selected
+            setSelectedPlan(index); // Select the card if it is not selected
         }
     }
 
@@ -282,6 +305,110 @@ export default function ScriptAnimation2({ onChangeIndex }) {
         setInputRows(newInputRows);
         console.log(newInputRows);
     };
+
+    //code to add subscription
+
+    const [subscribe, setsubscibe] = useState(false);
+    const [cardData, setCardData] = useState(null);
+    const [subscribeLoader, setsubscribeLoader] = useState(false);
+    const [cardAdded, setCardAdded] = useState(null);
+    // console.log("Card data added", setCardData);
+    const [AddCardErr, setAddCardErr] = useState(false);
+
+    const handleBuildScriptCont = (e) => {
+        console.log("Continue build script function");
+        handleContinue();
+    }
+
+    const handleCardData = (e) => {
+        setCardAdded(e);
+        console.log("Card data", e);
+    }
+
+
+    const subscribePlan = async (plan) => {
+        console.log("Subscribing user plan ", plan)
+        if(!plan){
+            console.log("Select plan is null")
+            setsubscribeLoader(false)
+            return
+        }
+        try {
+            const localData = localStorage.getItem('User');
+            const data = JSON.parse(localData);
+            console.log("Local data for subscibe plan", data.data.token);
+
+            const AuthToken = data.data.token;
+            console.log("Auth token is", AuthToken);
+            const ApiPath = Apis.CreateSubscription;
+            console.log("Api path for subscribe pla :", ApiPath);
+            // console.log("Subscribing plan", )
+            // let plan = null;
+            // if (selectedPlan) {
+            //     plan = selectedPlan
+            // }
+            const dataToSend = {
+                sub_type: plan
+            }
+            console.log("Data sending in api", dataToSend);
+            // return
+            const response = await axios.post(ApiPath, dataToSend, {
+                headers: {
+                    "Authorization": "Bearer " + AuthToken,
+                    "Content-Type": "application/json"
+                }
+            });
+            // return
+            if (response) {
+                console.log("Response of subscribe plan api is", response.data);
+                if (response.data.status === true) {
+                    localStorage.removeItem("fromBuildScreen");
+                    // handleSubLoader(false);
+                    handleContinue();
+                }
+            } else {
+                console.log("api not responded");
+            }
+        } catch (error) {
+            console.error("ERROR occured in subscribePlan Api", error);
+
+        }
+        finally{
+            // handleSubLoader(false);
+        }
+    }
+
+    const handleSubscribePlan = () => {
+        // if(!selectedPlan){
+        //     console.log("Select plan is null handleSubscribePlan")
+        //     setsubscribeLoader(false)
+        //     return
+        // }
+        // return
+        //broadcast event
+        const event = new CustomEvent('subscribePlan', {
+            detail: { message: 'Subscribe to a plan' },
+        });
+        window.dispatchEvent(event);
+        // if (selectedPlan === null) {
+        //     // subscribePlan();
+        //     // selectedPlan
+        //     setAddCardErr(true);
+        // }
+        // else {
+        //     setsubscribeLoader(true);
+        //     setsubscibe(true);
+        // }
+    }
+
+    const handleStop = (e) => {
+        setsubscibe(e);
+    }
+
+    const handleSubLoader = (e) => {
+        setsubscribeLoader(e);
+    }
+
 
 
 
@@ -898,13 +1025,59 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         <div className='mt-6' style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
                                             Set your price.
                                         </div>
-                                        <button onClick={handleContinue} className='text-lightWhite mt-2' style={{ fontSize: 13, fontWeight: "400" }}>
+                                        <button onClick={() => {
+                                            const data = {
+                                                from: "builScript"
+                                            }
+                                            localStorage.setItem('fromBuildScreen', JSON.stringify(data));
+                                            handleContinue();
+                                        }} className='text-lightWhite mt-2' style={{ fontSize: 13, fontWeight: "400" }}>
                                             How much do you charge per minute?
                                         </button>
 
                                         <div>
                                             <SetPrice handleContinue={handleBuildScript} />
                                         </div>
+                                        {
+                                            buildScriptErr &&
+                                            <div>
+                                                <Snackbar
+                                                    open={buildScriptErr}
+                                                    autoHideDuration={5000}
+                                                    anchorOrigin={{
+                                                        vertical: 'top',
+                                                        horizontal: 'center',
+                                                    }}
+                                                    TransitionComponent={Fade}
+                                                    TransitionProps={{
+                                                        timeout: {
+                                                            enter: 1000,
+                                                            exit: 1000,
+                                                        }
+                                                    }}
+                                                    sx={{
+                                                        position: 'fixed', // Ensures it stays in place
+                                                        top: 20, // Adjust as needed for spacing from the top
+                                                        left: '50%', // Center horizontally
+                                                        transform: 'translateX(-50%)', // Center horizontally
+                                                    }}
+                                                >
+                                                    <Alert
+                                                        severity="success"
+                                                        sx={{
+                                                            width: '100%',
+                                                            backgroundColor: 'white', // Set background color to white
+                                                            color: 'black', // Optional: Set text color for contrast
+                                                            // '& .MuiAlert-icon': {
+                                                            //     color: 'black', // Optional: Set icon color for contrast
+                                                            // }
+                                                        }}
+                                                    >
+                                                        Some Error occured
+                                                    </Alert>
+                                                </Snackbar>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             </motion.div>
@@ -936,9 +1109,9 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
                                             $97/ mo
                                         </div>
-                                        <button onClick={() => handleCardSelect(1)}>
+                                        <button onClick={() => handleCardSelect(0)}>
                                             {
-                                                selectCard === 1 ?
+                                                selectedPlan === 0 ?
                                                     <Image alt='selected' style={{ borderRadius: "50%" }} src='/assets/selected.png' height={27} width={27} /> :
                                                     <Image alt='selected' style={{ borderRadius: "50%" }} src='/assets/unselected.png' height={27} width={27} />
                                             }
@@ -960,9 +1133,9 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                 </div>
                                             </div>
                                             <div className='flex flex-row gap-2 items-center'>
-                                                <button onClick={() => handleCardSelect(2)}>
+                                                <button onClick={() => handleCardSelect(1)}>
                                                     {
-                                                        selectCard === 2 ?
+                                                        selectedPlan === 1 ?
                                                             <Image alt='selected' style={{ borderRadius: "50%" }} src='/assets/selected.png' height={27} width={27} /> :
                                                             <Image alt='selected' style={{ borderRadius: "50%" }} src='/assets/unselected.png' height={27} width={27} />
                                                     }
@@ -971,10 +1144,53 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         </div>
                                     </div>
                                     <div className='w-8/12 flex justify-center' style={{ marginTop: 30 }}>
-                                        <button className='w-full py-3 text-white bg-purple' style={{ borderRadius: "50px" }}>
-                                            Continue
+                                        <button onClick={handleSubscribePlan} className='w-full py-3 text-white bg-purple' style={{ borderRadius: "50px" }}>
+                                            {
+                                                subscribeLoader ?
+                                                    <CircularProgress size={30} /> : "Continue"
+                                            }
                                         </button>
                                     </div>
+
+
+                                    {/* err msg when card noot added */}
+                                    <Snackbar
+                                        open={AddCardErr}
+                                        autoHideDuration={2000}
+                                        onClose={() => setAddCardErr(false)}
+                                        anchorOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'center',
+                                        }}
+                                        TransitionComponent={Fade}
+                                        TransitionProps={{
+                                            timeout: {
+                                                enter: 1000,
+                                                exit: 1000,
+                                            }
+                                        }}
+                                        sx={{
+                                            position: 'fixed', // Ensures it stays in place
+                                            top: 20, // Adjust as needed for spacing from the top
+                                            left: '50%', // Center horizontally
+                                            transform: 'translateX(-50%)', // Center horizontally
+                                        }}
+                                    >
+                                        <Alert
+                                            onClose={() => setAddCardErr(false)}
+                                            severity="error"
+                                            sx={{
+                                                width: '100%',
+                                                backgroundColor: 'white', // Set background color to white
+                                                color: 'black',
+                                                border: "2px solid grey"
+                                            }}
+                                        >
+                                            Select plan to continue.
+                                        </Alert>
+                                    </Snackbar>
+
+
                                     <div style={{ fontWeight: "700", fontSize: 16, fontFamily: "inter", marginTop: 30 }}>
                                         You will not be charged right now!
                                     </div>
@@ -986,16 +1202,24 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                     <div style={{ fontSize: 20, fontWeight: '400', fontFamily: 'inter', marginTop: 40 }}>
                                         Make Payment
                                     </div>
-                                    <div style={{ fontSize: 15, fontWeight: '400', fontFamily: 'inter', marginTop: 30 }}>
+                                    <button onClick={handleContinue} style={{ fontSize: 15, fontWeight: '400', fontFamily: 'inter', marginTop: 30 }}>
                                         You are only charged for minutes talked
-                                    </div>
+                                    </button>
                                     <div className='flex flex-row gap-6' style={{ marginTop: 25 }}>
                                         <Image src="/assets/card.png" alt='card' height={64} width={140} />
                                         <Image src="/assets/eps.png" alt='card' height={64} width={140} />
                                         <Image src="/assets/giro.png" alt='card' height={64} width={140} />
                                     </div>
                                     <div className='w-8/12'>
-                                        <AddCard handleContinue={handleContinue} />
+                                        <Elements stripe={stripePromise}>
+                                            <AddCardDetails
+                                                subscribePlan={subscribePlan}
+                                                selectedPlan={selectedPlan}
+                                                fromBuildAiScreen={true}
+                                                stop={stop}
+                                                handleSubLoader={handleSubLoader} handleBuilScriptContinue={handleContinue}
+                                            />
+                                        </Elements>
                                     </div>
                                 </div>
                             </div>
@@ -1018,11 +1242,11 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                 <div className='w-full flex justify-center'>
                                     <div className='w-full flex flex-col justify-center items-center '>
                                         <div className='w-8/12'>
-                                            <button style={{ marginTop: 20 }}
+                                            {/* <button style={{ marginTop: 20 }}
                                                 onClick={handleBack}
                                             >
-                                                {/* <Image src={"/assets/backArrow.png"} width={30} height={30} /> */}
-                                            </button>
+                                                <Image src={"/assets/backArrow.png"} width={30} height={30} />
+                                            </button> */}
 
                                             <Image className='mt-5' src={"/assets/redNotificationIcon.png"} width={30} height={30} />
 

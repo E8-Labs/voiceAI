@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js'
-import { CardCvcElement, CardExpiryElement, CardNumberElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js';
+import { CardCvcElement, CardExpiryElement, CardNumberElement, useElements, useStripe } from '@stripe/react-stripe-js';
 // import { CardPostalCodeElement } from '@stripe/react-stripe-js';
 import { Alert, Button, CircularProgress, Slide, Snackbar } from '@mui/material'
 import { toast } from 'react-toastify'
@@ -9,8 +9,26 @@ import Image from 'next/image';
 import Apis from '@/components/apis/Apis';
 // import Apis from '../Apis/Apis';
 
-const AddCardDetails = ({ handleBack, closeForm, handleContinue }) => {
+const AddCardDetails = ({
+    handleSubLoader, handleBack, closeForm, subscribePlan,
+    handleSubscribePlan, stop, selectedPlan, fromBuildAiScreen = false }) => {
 
+
+    const stripeReact = useStripe();
+    const elements = useElements();
+    console.log("From Build AI Screen ", fromBuildAiScreen)
+    console.log("From Build AI Screen Selected Plan", selectedPlan)
+    if (!stripeReact || !elements) {
+        console.log("Stripe error here");
+        console.log("Stripe error ", stripeReact)
+        console.log("Stripe error 2 ", elements)
+        return (
+            <div>Loading stripe</div>
+        )
+    }
+    else {
+        console.log("No stripe err");
+    }
     const handleBackClick = (e) => {
         e.preventDefault();
         handleBack();
@@ -24,7 +42,7 @@ const AddCardDetails = ({ handleBack, closeForm, handleContinue }) => {
     const [addCardSuccess, setAddCardSuccess] = useState(false);
     const [addCardFailure, setAddCardFailure] = useState(false);
     const [addCardDetails, setAddCardDetails] = useState(null);
-    const [buildScreenData, setBuildScreenData] = useState(null);
+    const [selectedUserPlan, setSelectedUserPlan] = useState(null);
 
     const elementOptions = {
         style: {
@@ -47,20 +65,48 @@ const AddCardDetails = ({ handleBack, closeForm, handleContinue }) => {
 
     //code for adding card api
 
-    const stripeReact = useStripe();
-    const elements = useElements();
+
 
     useEffect(() => {
-        const localData = localStorage.getItem('fromBuildScreen');
-        const Data = JSON.parse(localData);
-        console.log("Data recieved from build screen", Data);
-        setBuildScreenData(Data);
+        // const localData = localStorage.getItem('fromBuildScreen');
+        // const Data = JSON.parse(localData);
+        // console.log("Data recieved from build screen", Data);
+        // setfromBuildAiScreen(Data);
+
+        const handleCustomEvent = (event) => {
+            console.log('Received event:', event.detail.message);
+            handleAddCard()
+        };
+
+        window.addEventListener('subscribePlan', handleCustomEvent);
+
+        // Cleanup listener on component unmount
+        return () => {
+            window.removeEventListener('subscribePlan', handleCustomEvent);
+        };
     }, [])
 
     // useEffect(() => {})
+    console.log("Sending back plan ", selectedPlan)
+    // let selPlan = null;
 
     const handleAddCard = async (e) => {
         // Check if the event object is provided and prevent the default behavior
+        if (selectedPlan) {
+            // selPlan = selectedPlan;
+            setSelectedUserPlan(selectedPlan);
+            console.log("selected plan is ", selectedPlan);
+        }
+        console.log("Pln status i have selecetd", selectedPlan);
+        if (!selectedPlan) {
+            console.log("No plan selected")
+        }
+        // return
+        if (stop) {
+            stop(false);
+        }
+
+        // return
         if (e && e.preventDefault) {
             e.preventDefault();
         }
@@ -69,7 +115,13 @@ const AddCardDetails = ({ handleBack, closeForm, handleContinue }) => {
         // handleClose4(e);
         // return
         if (!stripeReact || !elements) {
+            console.log("Stripe error here");
+            console.log("Stripe error ", stripeReact)
+            console.log("Stripe error 2 ", elements)
             return
+        }
+        else {
+            console.log("No stripe err");
         }
 
         const cardNumberElement = elements.getElement(CardNumberElement);
@@ -84,10 +136,14 @@ const AddCardDetails = ({ handleBack, closeForm, handleContinue }) => {
                     theme: "dark"
                 });
             } else if (tok.token.id) {
-                setAddCardLoader(true);
+                // setAddCardLoader(true);
+                // if (handleSubLoader) {
+                //     handleSubLoader(true);
+                // }
+                // return
                 console.log("Token generating for card number :", tok.token.id)
                 const tokenId = tok.token.id;
-                let api = process.env.NEXT_PUBLIC_REACT_APP_ENVIRONMENT === "Development2" ? "https://bf59-119-156-82-235.ngrok-free.app" : "https://plurawlapp.com/plurawl";
+
                 const ApiPath = Apis.addCard;
                 const AddCardData = {
                     source: tokenId
@@ -114,33 +170,97 @@ const AddCardDetails = ({ handleBack, closeForm, handleContinue }) => {
                         if (response.data.message === "Card not added") {
                             setAddCardFailure(true);
                         } else {
+                            console.log("Here in subscribe plan else", fromBuildAiScreen)
                             setAddCardSuccess(true);
                             const callStatus = {
                                 callStatus: true
                             }
-                            if (buildScreenData) {
-                                handleContinue();
-                                localStorage.removeItem("fromBuildScreen");
+                            console.log("Testing build screen data",);
+
+                            if (fromBuildAiScreen) {
+                                console.log("plan sending in api ", selectedUserPlan)
+                                subscribePlan(selectedUserPlan);
                             }
-                            localStorage.setItem('callStatus', JSON.stringify(callStatus));
-                            closeForm();
-                            window.location.reload();
+                            else {
+                                console.log("No build screen data", fromBuildAiScreen)
+                            }
+                            if (closeForm) { //
+                                localStorage.setItem('callStatus', JSON.stringify(callStatus));
+                                closeForm();
+                                window.location.reload();
+                            }
                         }
                     }
                 } catch (error) {
                     console.error("Error occured in adding user card api is :", error);
                 } finally {
-                    setAddCardLoader(false);
+                    // setAddCardLoader(false);
                 }
             }
         })
 
     }
 
+    //code to add card from subscription screen
+    // console.log("status on subscribe", handleSubscribePlan);
+    // if (handleSubscribePlan === true) {
+    //     handleAddCard();
+    // }
+
+
+    // const subscribePlan = async () => {
+    //     console.log("Subscribing user")
+    //     try {
+    //         const localData = localStorage.getItem('User');
+    //         const data = JSON.parse(localData);
+    //         console.log("Local data for subscibe plan", data.data.token);
+
+    //         const AuthToken = data.data.token;
+    //         console.log("Auth token is", AuthToken);
+    //         const ApiPath = Apis.CreateSubscription;
+    //         console.log("Api path for subscribe pla :", ApiPath);
+    //         // console.log("Subscribing plan", )
+    //         let plan = null;
+    //         // if (selectedPlan) {
+    //         //     plan = selectedPlan
+    //         // }
+    //         const dataToSend = {
+    //             sub_type: selectedPlan
+    //         }
+    //         console.log("Data sending in api", dataToSend);
+    //         // return
+    //         const response = await axios.post(ApiPath, dataToSend, {
+    //             headers: {
+    //                 "Authorization": "Bearer " + AuthToken,
+    //                 "Content-Type": "application/json"
+    //             }
+    //         });
+    //         // return
+    //         if (response) {
+    //             console.log("Response of subscribe plan api is", response.data);
+    //             if (response.data.status === true) {
+    //                 localStorage.removeItem("fromBuildScreen");
+    //                 handleSubLoader(false);
+    //                 handleBuilScriptContinue(true);
+    //             }
+    //         } else {
+    //             console.log("api not responded");
+    //         }
+    //     } catch (error) {
+    //         console.error("ERROR occured in subscribePlan Api", error);
+
+    //     }
+    //     finally{
+    //         handleSubLoader(false);
+    //     }
+    // }
+
+
+
     return (
         <div style={{ width: '100%' }}>
             {
-                buildScreenData ?
+                fromBuildAiScreen ?
                     "" :
                     <div style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
                         Add Payment Method
@@ -192,11 +312,17 @@ const AddCardDetails = ({ handleBack, closeForm, handleContinue }) => {
                         </div> :
                         <div className='flex flex-row justify-end items-center mt-8 w-full'>
                             <div>
-                                <button onClick={handleAddCard} className='bg-purple rounded px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15, borderRadius: "50px" }}>
+                                {
+                                    !fromBuildAiScreen &&
+                                    <button onClick={handleAddCard} className='bg-purple rounded px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15, borderRadius: "50px" }}>
+                                        Start a call
+                                    </button>
+                                }
+                                {/* <button onClick={handleAddCard} className='bg-purple rounded px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15, borderRadius: "50px" }}>
                                     {
-                                        buildScreenData ? "Continue" : "Start a call"
+                                        fromBuildAiScreen ? "Continue" : "Start a call"
                                     }
-                                </button>
+                                </button> */}
                             </div>
                         </div>
                 }

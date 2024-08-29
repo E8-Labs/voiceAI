@@ -7,13 +7,19 @@ import axios from 'axios'
 import AddCardDetails from './AddCardDetails'
 
 let stripePublickKey = process.env.NEXT_PUBLIC_REACT_APP_ENVIRONMENT === "Production" ? process.env.NEXT_PUBLIC_REACT_APP_STRIPE_PUBLISHABLE_KEY_LIVE : process.env.NEXT_PUBLIC_REACT_APP_STRIPE_PUBLISHABLE_KEY;
+console.log("Public key is ", stripePublickKey)
 const stripePromise = loadStripe(stripePublickKey);
 
-const AddCard = ({handleBack, closeForm, handleContinue}) => {
+
+const AddCard = ({ handleSubLoader, handleBack, closeForm, handleContinue, handleSubscribePlan, stop, getcardData, selectedPlan, handleBuilScriptContinue }) => {
 
     return (
         <Elements stripe={stripePromise}>
-            <AddCardDetails handleBack={handleBack} closeForm={closeForm} handleContinue={handleContinue} />
+            <AddCardDetails
+                closeForm={closeForm} handleContinue={handleContinue} selectedPlan={selectedPlan}
+                handleSubscribePlan={handleSubscribePlan} stop={stop} getcardData={getcardData}
+                handleSubLoader={handleSubLoader} handleBuilScriptContinue={handleBuilScriptContinue}
+                />
         </Elements>
     )
 }
