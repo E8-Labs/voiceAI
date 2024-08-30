@@ -1,4 +1,4 @@
-const BasePath = 'http://localhost:8005/'//'https://www.blindcircle.com:444/voice/' //;'http://localhost:8005/'
+const BasePath = 'https://www.blindcircle.com:444/voice/'//'https://www.blindcircle.com:444/voice/' //;'http://localhost:8005/'
 
 const Apis = {
     //user flow apis
@@ -22,7 +22,9 @@ const Apis = {
     checkUserEmail: `${BasePath}api/user/checkEmailExists`,
     RegisterLogin: `${BasePath}api/user/login`,
     KnowledgeBaseApi: `${BasePath}api/ai/addKnowledgebase`,
-    CreateSubscription: `${BasePath}api/user/subscribe`
+    CreateSubscription: `${BasePath}api/user/subscribe`,
+    CallsApi: `${BasePath}api/user/creator_calls`,
+    DashBoardApi: `${BasePath}api/user/creator_dashboard`
 
 
 }

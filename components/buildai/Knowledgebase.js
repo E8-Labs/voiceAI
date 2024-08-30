@@ -205,7 +205,7 @@ const Knowledgebase = ({ handleContinue }) => {
 
     return (
         <div className='w-full' style={{ height: "60vh", overflow: "auto" }}>
-            <div className='border-2 border-grey-200 p-4 rounded-xl mt-4'>
+            <div className='p-4 rounded-xl mt-4' style={{ border: "2px solid #EDEDED78" }} >
                 <div style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter" }}>
                     Select Type
                 </div>

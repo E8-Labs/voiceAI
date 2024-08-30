@@ -435,7 +435,7 @@ export default function Animation({ onChangeIndex }) {
         }
     }
 
-    //test code for hiding the bordercolor
+    //code for hiding the bordercolor
     const MuiFieldStyle = {
         '& label.Mui-focused': {
             color: 'black',
@@ -699,8 +699,8 @@ export default function Animation({ onChangeIndex }) {
                                         id="filled-basic"
                                         value={userName}
                                         onChange={(e) => setUserName(e.target.value)}
-                                        label="First Name" variant="outlined"
-                                        placeholder='First name.'
+                                        label="Name" variant="outlined"
+                                        placeholder='voice.ai'
                                         sx={MuiFieldStyle}
                                         inputProps={{
                                             style: {
@@ -1250,7 +1250,7 @@ export default function Animation({ onChangeIndex }) {
                                     Congratulations
                                 </div>
                                 <Image
-                                    src={'/assets/congratulation.png'}
+                                    src={'/congrats.png'}
                                     alt='congrats'
                                     height={550}
                                     width={445}

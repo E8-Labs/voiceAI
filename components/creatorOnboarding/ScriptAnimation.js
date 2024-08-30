@@ -1,5 +1,5 @@
 'use client'
-import { Button, CircularProgress, IconButton, InputAdornment, TextField, Visibility, VisibilityOff } from '@mui/material';
+import { Alert, Button, CircularProgress, Fade, IconButton, InputAdornment, Snackbar, TextField, Visibility, VisibilityOff } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from "react";
@@ -40,6 +40,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
     const [selectedAudio, setSelectedAudio] = useState(null);
     const [audioUrl, setAudioUrl] = useState(null);
     const [compressedAudioUrl, setCompressedAudioUrl] = useState(null);
+    const [showBuildAiErr, setShowBuildAiErr] = useState(false);
     //state to get sociallinks data
     const [socialLinks, setSocialLinks] = useState(null);
     const fileInputRef = useRef(null);
@@ -108,6 +109,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     console.log("response of build ai apis is", response.data.data);
                 } else {
                     console.log("status of api", response.data.status);
+                    setShowBuildAiErr(true);
                 }
             }
 
@@ -236,7 +238,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                                         </button> */}
                                     </div>
                                     <div className='mt-6' style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
-                                        Name you AI
+                                        Name your AI
                                     </div>
                                     <div className='text-lightWhite mt-2' style={{ fontSize: 13, fontWeight: "400" }}>
                                         {/* Name you ai */}
@@ -244,19 +246,42 @@ export default function ScriptAnimation({ onChangeIndex }) {
                                     <TextField className=' w-9/12 mt-8'
                                         autofill='off'
                                         id="filled-basic"
-                                        label="Name" variant="filled"
+                                        label="Name" variant="outlined"
                                         value={aiName}
                                         onChange={(e) => setAiName(e.target.value)}
                                         placeholder='For ex: Hormozi, Tate.ai'
                                         sx={MuiFieldStyle}
                                     />
+                                    {/* <TextField className=' w-9/12 mt-10'
+                                        autofill='off'
+                                        id="filled-basic"
+                                        label="First Name" variant="outlined"
+                                        placeholder='First name.'
+                                        sx={MuiFieldStyle}
+                                        inputProps={{
+                                            style: {
+                                                color: 'black !important',  // Apply black color directly
+                                            },
+                                        }}
+                                        style={{ color: "black" }}
+                                    /> */}
 
                                     <div className='w-10/12'>
-                                        <Button onClick={handleContinue}
-                                            className='bg-purple hover:bg-purple text-white w-full mt-12'
-                                            style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
-                                            Continue
-                                        </Button>
+                                        {
+                                            aiName ?
+                                                <Button onClick={handleContinue}
+                                                    className='bg-purple hover:bg-purple text-white w-full mt-12'
+                                                    style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
+                                                    Continue
+                                                </Button> :
+                                                <Button
+                                                    disabled
+                                                    // onClick={handleContinue}
+                                                    className='bg-purple2 hover:bg-purple text-white w-full mt-12'
+                                                    style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px", color: "white" }}>
+                                                    Continue
+                                                </Button>
+                                        }
                                     </div>
 
                                 </div>
@@ -289,6 +314,43 @@ export default function ScriptAnimation({ onChangeIndex }) {
                                         Describe what {aiName} does as a creator or influencer?
                                     </div>
 
+                                    {/* <TextField
+                                        className='w-9/12 mt-8'
+                                        autofill='off'
+                                        id="filled-basic"
+                                        label="Description"
+                                        variant="filled"
+                                        multiline
+                                        rows={3}
+                                        value={talkAbout}
+                                        onChange={(e) => setTalkAbout(e.target.value)}
+                                        placeholder=' talk about dating, business, fitness ...'
+                                        sx={{
+                                            '& label.Mui-focused': {
+                                                color: '#050A0890',
+                                            },
+                                            '& .MuiFilledInput-root': {
+                                                backgroundColor: '#EDEDED', // Optional: Removes the background color
+                                                // padding: '6px 8px', // Decrease the padding inside the input container
+                                                fontSize: 13,
+                                                fontWeight: '400',
+                                                fontFamily: "inter"
+                                            },
+                                            '& .MuiFilledInput-root:before': {
+                                                borderBottom: 'none', // Remove the default inactive state bottom border
+                                            },
+                                            '& .MuiFilledInput-root:after': {
+                                                borderBottom: 'none', // Remove the focused state bottom border
+                                            },
+                                            '& .MuiFilledInput-root:hover:before': {
+                                                borderBottom: 'none', // Remove the hover state bottom border
+                                            },
+                                            '& .MuiFilledInput-root.Mui-focused:before': {
+                                                borderBottom: 'none', // Ensure no border is shown when the field is focused
+                                            }
+                                        }}
+                                    /> */}
+
                                     <TextField
                                         className='w-9/12 mt-8'
                                         autofill='off'
@@ -300,15 +362,53 @@ export default function ScriptAnimation({ onChangeIndex }) {
                                         value={talkAbout}
                                         onChange={(e) => setTalkAbout(e.target.value)}
                                         placeholder=' talk about dating, business, fitness ...'
-                                        sx={MuiFieldStyle}
+                                        sx={{
+                                            '& label.Mui-focused': {
+                                                color: '#050A0890',
+                                            },
+                                            '& .MuiFilledInput-root': {
+                                                backgroundColor: '#EDEDED', // Background color of the input
+                                                fontSize: 13,
+                                                fontWeight: '400',
+                                                fontFamily: "inter"
+                                            },
+                                            '& .MuiFilledInput-root:before': {
+                                                borderBottom: 'none', // Remove the default inactive state bottom border
+                                            },
+                                            '& .MuiFilledInput-root:after': {
+                                                borderBottom: 'none', // Remove the focused state bottom border
+                                            },
+                                            '& .MuiFilledInput-root:hover:not(.Mui-disabled):before': {
+                                                borderBottom: 'none', // Remove the hover state bottom border
+                                            },
+                                            '& .MuiFilledInput-root.Mui-focused:before': {
+                                                borderBottom: 'none', // Ensure no border is shown when the field is focused
+                                            },
+                                            '& .MuiFilledInput-root.Mui-focused': {
+                                                borderBottom: 'none', // Ensure no border is shown when the field is focused
+                                                boxShadow: 'none', // Remove any box-shadow
+                                            }
+                                        }}
                                     />
 
+
+
                                     <div className='w-10/12'>
-                                        <Button onClick={handleContinue}
-                                            className='bg-purple hover:bg-purple text-white w-full mt-12'
-                                            style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
-                                            Continue
-                                        </Button>
+                                        {
+                                            talkAbout ?
+                                                <Button onClick={handleContinue}
+                                                    className='bg-purple hover:bg-purple text-white w-full mt-12'
+                                                    style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
+                                                    Continue
+                                                </Button> :
+                                                <Button
+                                                    disabled
+                                                    // onClick={handleContinue}
+                                                    className='bg-purple2 hover:bg-purple text-white w-full mt-12'
+                                                    style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px", color: "white" }}>
+                                                    Continue
+                                                </Button>
+                                        }
                                     </div>
 
 
@@ -374,11 +474,21 @@ export default function ScriptAnimation({ onChangeIndex }) {
                                     />
 
                                     <div className='w-10/12'>
-                                        <Button onClick={handleContinue}
-                                            className='bg-purple hover:bg-purple text-white w-full mt-12'
-                                            style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
-                                            Continue
-                                        </Button>
+                                        {
+                                            helpTagline ?
+                                                <Button onClick={handleContinue}
+                                                    className='bg-purple hover:bg-purple text-white w-full mt-12'
+                                                    style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
+                                                    Continue
+                                                </Button> :
+                                                <Button
+                                                    disabled
+                                                    // onClick={handleContinue}
+                                                    className='bg-purple2 hover:bg-purple text-white w-full mt-12'
+                                                    style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px", color: "white" }}>
+                                                    Continue
+                                                </Button>
+                                        }
                                     </div>
 
                                 </div>
@@ -514,7 +624,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                                                 )}
                                             </div> */}
 
-                                            <div className="flex flex-col items-center">
+                                            <div className="flex flex-col items-center mt-6">
                                                 <input
                                                     type="file"
                                                     accept="audio/*"
@@ -596,7 +706,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                                     Congratulations
                                 </div>
                                 <Image
-                                    src={'/assets/applogo.png'}
+                                    src={'/congrats.png'}
                                     alt='congrats'
                                     height={550}
                                     width={445}
@@ -625,6 +735,53 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     </div>
                 )}
             </AnimatePresence>
+            {
+                showBuildAiErr &&
+                <div>
+                    <Snackbar
+                        open={showBuildAiErr}
+                        autoHideDuration={3000}
+                        onClose={() => setShowBuildAiErr(false)}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'center',
+                        }}
+                        TransitionComponent={Fade}
+                        TransitionProps={{
+                            timeout: {
+                                enter: 2000,
+                                exit: 3000,
+                            }
+                        }}
+                        sx={{
+                            position: 'fixed', // Ensures it stays in place
+                            top: 20, // Adjust as needed for spacing from the top
+                            left: '50%', // Center horizontally
+                            transform: 'translateX(-50%)', // Center horizontally
+                        }}
+                    >
+                        <Alert
+                            // onClose={() => setShowBuildAiErr(false)}
+                            severity="error"
+                            sx={{
+                                width: '100%',
+                                backgroundColor: 'white', // Set background color to white
+                                color: 'black',
+                                border: "none"
+                            }}
+                        >
+                            <div>
+                                <div style={{ color: "#FF543E", fontWeight: "400", fontSize: 11, fontFamily: "inter" }}>
+                                    Error
+                                </div>
+                                <div style={{ color: "#000000", fontWeight: "400", fontSize: 13, fontFamily: "inter" }}>
+                                    Some thing went wrong try again to continue
+                                </div>
+                            </div>
+                        </Alert>
+                    </Snackbar>
+                </div>
+            }
         </div>
     );
 }

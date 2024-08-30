@@ -90,14 +90,26 @@ function SetPrice({ handleBack, handleContinue }) {
                 <div className='w-10/12 mt-4'>
                     {
                         buildScriptLoader ?
-                            <div className='w-full flex flex-row justify-center'>
+                            <div className='w-full flex flex-row justify-center mt-2'>
                                 <CircularProgress size={30} />
                             </div> :
-                            <Button onClick={handleUploadClick}
-                                className='bg-purple hover:bg-purple text-white w-full'
-                                style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
-                                Upload
-                            </Button>
+                            <div>
+                                {
+                                    toogleActive || callPrice ?
+                                        <Button onClick={handleUploadClick}
+                                            className='bg-purple hover:bg-purple text-white w-full'
+                                            style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
+                                            Upload
+                                        </Button> :
+                                        <Button
+                                            disabled
+                                            //onClick={handleUploadClick}
+                                            className='bg-purple2 hover:bg-purple text-white w-full'
+                                            style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px", color: "white" }}>
+                                            Upload
+                                        </Button>
+                                }
+                            </div>
                     }
                 </div>
 

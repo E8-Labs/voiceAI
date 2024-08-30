@@ -9,35 +9,47 @@ import Image from 'next/image';
 const ProfileNav = () => {
     const router = useRouter();
     const pathName = usePathname();
-    const [userName, setUserName] = useState("");
-    const [formattedEmail, setFormattedEmail] = useState('');
+    const [formattedName, setformattedName] = useState('');
+    const [formattedEmail, setformattedEmail] = useState('');
     const [separateLetters, setSeparateLetters] = useState('');
     const [getAssistantData, setGetAssistantData] = useState(null);
+    const [userDetails, setUserDetails] = useState(null);
 
-    const links1 = [
+    const links = [
         {
             id: 1,
-            name: 'My Account',
+            name: 'My CreatorX',
             href: '/profile',
-            image: '/assets/about.png'
+            image: '/assets/selectedCreatorIcon.png',
+            unSelectedImg: '/assets/unselectedCreatorIcon.png'
         },
         {
             id: 2,
-            name: 'Plans',
-            href: '/profile/plans',
-            image: '/assets/plansI.png'
+            name: 'My Account',
+            href: '/profile/myaccount',
+            image: '/assets/about.png',
+            unSelectedImg: '/unselectedaccountIcon.png'
         },
         {
             id: 3,
-            name: 'Feedback',
-            href: '',
-            image: '/assets/feedback.png'
+            name: 'Plans',
+            href: '/profile/plans',
+            image: '/assets/selectedplansIcon.png',
+            unSelectedImg: '/assets/plansI.png'
         },
         {
             id: 4,
+            name: 'Feedback',
+            href: '',
+            image: '/assets/selectedfeedbackIcon.png',
+            unSelectedImg: '/assets/feedback.png'
+        },
+        {
+            id: 5,
             name: 'Terms & Condition',
             href: '',
-            image: '/assets/terms.png'
+            image: '/assets/selectedtermsIcon.png',
+            unSelectedImg: '/assets/terms.png'
         }
     ]
 
@@ -61,6 +73,32 @@ const ProfileNav = () => {
 
 
     useEffect(() => {
+        const formatName = (name) => {
+            if (name.length <= 8) {
+                return name;
+            }
+            else if (name.length > 8) {
+                return name.slice(0, 8) + "...";
+            }
+        };
+        const reduceName = (name) => {
+            if (name.length) {
+                return name.slice(0, 1).toUpperCase()
+            }
+        }
+        const A = localStorage.getItem('User');
+        const B = JSON.parse(A);
+        const name = B.data.user.name;
+        // setProfileData(B);
+        if (name) {
+            setformattedName(formatName(name));
+            setSeparateLetters(reduceName(name));
+        };
+
+
+    }, []);
+
+    useEffect(() => {
         const formatEmail = (email) => {
             if (email.length <= 15) {
                 return email;
@@ -79,13 +117,11 @@ const ProfileNav = () => {
         const email = B.data.user.email;
         // setProfileData(B);
         if (email) {
-            setFormattedEmail(formatEmail(email));
+            setformattedEmail(formatEmail(email));
             setSeparateLetters(reduceemail(email));
         };
 
-        if (B.data.user.name) {
-            setUserName(B.data.user.name)
-        }
+
     }, []);
 
     //showing user profile data
@@ -93,8 +129,18 @@ const ProfileNav = () => {
         const localData = localStorage.getItem('User');
         const data = JSON.parse(localData);
         console.log("Get user details", data.data.user);
-        
-    }, [])
+        setUserDetails(data.data.user);
+    }, []);
+
+    //code to make triangle
+    const triangle = {
+        width: 5,
+        height: 5,
+        // border: "2px solid red",
+        borderTop: "4px solid transparent",
+        borderBottom: "4px solid transparent",
+        borderLeft: "6px solid #000000"
+    }
 
 
 
@@ -107,25 +153,41 @@ const ProfileNav = () => {
                         style={{ border: "2px solid #ffffff", borderRadius: 50 }}>
                         <div className='flex flex-row items-center'>
                             <div style={{ border: "2px solid black", borderRadius: "50%" }}>
-                                <Image src={"/assets/profile.png"} alt='profilephoto' height={40} width={40} style={{ resize: "cover", padding: 2 }} />
+                                {
+                                    userDetails && userDetails.profile_image ?
+                                        <Image src={userDetails.profile_image} alt='profilephoto' height={40} width={40} style={{ resize: "cover", padding: 2, borderRadius: "50%" }} /> :
+                                        <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={50} width={50} style={{ resize: "cover", padding: 2, borderRadius: "50%" }} />
+                                }
                             </div>
-                            <div style={{ height: "5px", width: "5px", backgroundColor: "black", borderTopRightRadius: "10px", borderBottomRightRadius: "10px" }} />
+                            <div style={triangle} />
                         </div>
                         <div>
                             <div className='flex flex-row items-center gap-8' style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                
-                                {/* <div className='flex flex-row gap-4'>
-                                    <button>
-                                        <Image
-                                            layout='responsive'
-                                            objectFit='contain' src={"/assets/twitter.png"} alt='social' height={11} width={11} style={{ resize: "cover" }} />
-                                    </button>
-                                    <button>
-                                        <Image
-                                            layout='responsive'
-                                            objectFit='contain' src={"/assets/instagram.png"} alt='social' height={11} width={11} style={{ resize: "cover" }} />
-                                    </button>
-                                </div> */}
+
+                                {
+                                    userDetails && userDetails.name ?
+                                        <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                            {formattedName}
+                                        </div> :
+                                        <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                            {userDetails &&
+                                                { formattedEmail }
+                                            }
+                                        </div>
+                                }
+
+                            </div>
+                            <div className='flex flex-row gap-4'>
+                                <button>
+                                    <Image
+                                        // layout='responsive'
+                                        objectFit='contain' src={"/assets/twitter.png"} alt='social' height={11} width={11} style={{ resize: "cover" }} />
+                                </button>
+                                <button>
+                                    <Image
+                                        // layout='responsive'
+                                        objectFit='contain' src={"/assets/instagram.png"} alt='social' height={11} width={11} style={{ resize: "cover" }} />
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -136,7 +198,7 @@ const ProfileNav = () => {
 
                         <div>
                             {
-                                links1.map((link) => {
+                                links.map((link) => {
                                     return (
                                         <div key={link.id} className='mt-3'>
                                             <Link className='flex flex-row gap-4 items-center py-2' sx={{ textDecoration: 'none', cursor: "pointer", color: "black" }}
@@ -149,10 +211,10 @@ const ProfileNav = () => {
                                                     backgroundColor: pathName === link.href ? 'blue' : '',
                                                     // padding: pathName === link.href ? 6 : "", 
                                                     borderRadius: "50px",
-                                                    paddingInline: 20
+                                                    paddingInline: 10
                                                 }}> {/* 2548FD40 */}
                                                 <div>
-                                                    <Image src={link.image} height={25} width={25} alt='abc' />
+                                                    <Image src={pathName === link.href ? link.image : link.unSelectedImg} height={25} width={25} alt='abc' />
                                                 </div>
                                                 <div
                                                     style={{

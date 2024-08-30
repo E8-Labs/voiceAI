@@ -48,11 +48,14 @@ export default function Home() {
                 >
                     <div className='w-11/12'>
                         <div className='mt-24 sm:flex hidden'>
-                            <Image src={'/assets/applogo.png'}
-                                alt='logo'
-                                height={40}
-                                width={37}
-                            />
+                            {
+                                currentIndex < 6 &&
+                                <Image src={'/assets/applogo.png'}
+                                    alt='logo'
+                                    height={40}
+                                    width={37}
+                                />
+                            }
                             {/* <div>Onboarding 2</div> */}
                         </div>
                         <div className='w-full flex justify-center items-center' >

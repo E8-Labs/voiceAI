@@ -10,24 +10,23 @@ import Apis from '@/components/apis/Apis';
 // import Apis from '../Apis/Apis';
 
 const AddCardDetails = ({
-    handleSubLoader, handleBack, closeForm, subscribePlan,
-    handleSubscribePlan, stop, selectedPlan, fromBuildAiScreen = false }) => {
+    subscribePlan, fromBuildAiScreen = false, closeForm, selectedPlan }) => {
 
 
     const stripeReact = useStripe();
     const elements = useElements();
-    console.log("From Build AI Screen ", fromBuildAiScreen)
-    console.log("From Build AI Screen Selected Plan", selectedPlan)
+    //console.log("From Build AI Screen ", fromBuildAiScreen)
+    //console.log("From Build AI Screen Selected Plan", selectedPlan)
     if (!stripeReact || !elements) {
-        console.log("Stripe error here");
-        console.log("Stripe error ", stripeReact)
-        console.log("Stripe error 2 ", elements)
+        //console.log("Stripe error here");
+        //console.log("Stripe error ", stripeReact)
+        //console.log("Stripe error 2 ", elements)
         return (
             <div>Loading stripe</div>
         )
     }
     else {
-        console.log("No stripe err");
+        //console.log("No stripe err");
     }
     const handleBackClick = (e) => {
         e.preventDefault();
@@ -42,7 +41,7 @@ const AddCardDetails = ({
     const [addCardSuccess, setAddCardSuccess] = useState(false);
     const [addCardFailure, setAddCardFailure] = useState(false);
     const [addCardDetails, setAddCardDetails] = useState(null);
-    const [selectedUserPlan, setSelectedUserPlan] = useState(null);
+    // const [selectedUserPlan, setSelectedUserPlan] = useState(null);
 
     const elementOptions = {
         style: {
@@ -65,17 +64,20 @@ const AddCardDetails = ({
 
     //code for adding card api
 
-
+    // useEffect(()=>{
+    //     console.log("Selected Plan changed", selectedPlan)
+    // }, [selectedPlan])
 
     useEffect(() => {
         // const localData = localStorage.getItem('fromBuildScreen');
         // const Data = JSON.parse(localData);
-        // console.log("Data recieved from build screen", Data);
+        // //console.log("Data recieved from build screen", Data);
         // setfromBuildAiScreen(Data);
 
         const handleCustomEvent = (event) => {
-            console.log('Received event:', event.detail.message);
-            handleAddCard()
+            //console.log('Received event:', event.detail.message);
+            // handleAddCard()
+            subscribePlan();
         };
 
         window.addEventListener('subscribePlan', handleCustomEvent);
@@ -87,20 +89,27 @@ const AddCardDetails = ({
     }, [])
 
     // useEffect(() => {})
-    console.log("Sending back plan ", selectedPlan)
+    //console.log("Sending back plan ", selectedPlan)
     // let selPlan = null;
 
     const handleAddCard = async (e) => {
+
         // Check if the event object is provided and prevent the default behavior
-        if (selectedPlan) {
-            // selPlan = selectedPlan;
-            setSelectedUserPlan(selectedPlan);
-            console.log("selected plan is ", selectedPlan);
-        }
-        console.log("Pln status i have selecetd", selectedPlan);
-        if (!selectedPlan) {
-            console.log("No plan selected")
-        }
+        // if (selectedPlan) {
+        //     // selPlan = selectedPlan;
+        //     // setSelectedUserPlan(selectedPlan);
+        //     //console.log("selected plan is ", selectedPlan);
+        // }
+        //console.log("Pln status i have selecetd", selectedPlan);
+        // if (!selectedPlan) {
+        //     console.log("No plan selected Add Card Detail")
+        //     return
+        // }
+        // if (fromBuildAiScreen) {
+        //     //console.log("plan sending in api ", selectedUserPlan)
+        //     subscribePlan();
+        // }
+        // return
         // return
         if (stop) {
             stop(false);
@@ -115,13 +124,13 @@ const AddCardDetails = ({
         // handleClose4(e);
         // return
         if (!stripeReact || !elements) {
-            console.log("Stripe error here");
-            console.log("Stripe error ", stripeReact)
-            console.log("Stripe error 2 ", elements)
+            //console.log("Stripe error here");
+            //console.log("Stripe error ", stripeReact)
+            //console.log("Stripe error 2 ", elements)
             return
         }
         else {
-            console.log("No stripe err");
+            //console.log("No stripe err");
         }
 
         const cardNumberElement = elements.getElement(CardNumberElement);
@@ -141,7 +150,7 @@ const AddCardDetails = ({
                 //     handleSubLoader(true);
                 // }
                 // return
-                console.log("Token generating for card number :", tok.token.id)
+                //console.log("Token generating for card number :", tok.token.id)
                 const tokenId = tok.token.id;
 
                 const ApiPath = Apis.addCard;
@@ -151,11 +160,11 @@ const AddCardDetails = ({
                 try {
                     const LocalData = localStorage.getItem('User');
                     const D = JSON.parse(LocalData);
-                    // console.log("Local data is", D);
+                    // //console.log("Local data is", D);
                     const AuthToken = D.data.token;
-                    console.log("Token for add card ", D.data.token);
+                    //console.log("Token for add card ", D.data.token);
                     // return
-                    console.log('Data sending in api is :', AddCardData);
+                    //console.log('Data sending in api is :', AddCardData);
                     const response = await axios.post(ApiPath, AddCardData, {
                         headers: {
                             'Content-Type': 'application/json',
@@ -163,26 +172,26 @@ const AddCardDetails = ({
                         }
                     });
                     if (response) {
-                        console.log("Response of add card api is", response.data);
+                        //console.log("Response of add card api is", response.data);
                     }
                     if (response.status === 200) {
                         // setAddCardDetails(response.data.message);
                         if (response.data.message === "Card not added") {
                             setAddCardFailure(true);
                         } else {
-                            console.log("Here in subscribe plan else", fromBuildAiScreen)
+                            //console.log("Here in subscribe plan else", fromBuildAiScreen)
                             setAddCardSuccess(true);
                             const callStatus = {
                                 callStatus: true
                             }
-                            console.log("Testing build screen data",);
+                            //console.log("Testing build screen data",);
 
                             if (fromBuildAiScreen) {
-                                console.log("plan sending in api ", selectedUserPlan)
-                                subscribePlan(selectedUserPlan);
+                                //console.log("plan sending in api ", selectedUserPlan)
+                                subscribePlan();
                             }
                             else {
-                                console.log("No build screen data", fromBuildAiScreen)
+                                //console.log("No build screen data", fromBuildAiScreen)
                             }
                             if (closeForm) { //
                                 localStorage.setItem('callStatus', JSON.stringify(callStatus));
@@ -202,25 +211,24 @@ const AddCardDetails = ({
     }
 
     //code to add card from subscription screen
-    // console.log("status on subscribe", handleSubscribePlan);
+    // //console.log("status on subscribe", handleSubscribePlan);
     // if (handleSubscribePlan === true) {
     //     handleAddCard();
     // }
 
-
     // const subscribePlan = async () => {
-    //     console.log("Subscribing user")
+    //     console.log("Subscribing user plan ", selectedPlan)
     //     try {
     //         const localData = localStorage.getItem('User');
     //         const data = JSON.parse(localData);
-    //         console.log("Local data for subscibe plan", data.data.token);
+    //         //console.log("Local data for subscibe plan", data.data.token);
 
     //         const AuthToken = data.data.token;
-    //         console.log("Auth token is", AuthToken);
+    //         //console.log("Auth token is", AuthToken);
     //         const ApiPath = Apis.CreateSubscription;
-    //         console.log("Api path for subscribe pla :", ApiPath);
-    //         // console.log("Subscribing plan", )
-    //         let plan = null;
+    //         //console.log("Api path for subscribe pla :", ApiPath);
+    //         // //console.log("Subscribing plan", )
+    //         // let plan = null;
     //         // if (selectedPlan) {
     //         //     plan = selectedPlan
     //         // }
@@ -228,7 +236,7 @@ const AddCardDetails = ({
     //             sub_type: selectedPlan
     //         }
     //         console.log("Data sending in api", dataToSend);
-    //         // return
+    //         return
     //         const response = await axios.post(ApiPath, dataToSend, {
     //             headers: {
     //                 "Authorization": "Bearer " + AuthToken,
@@ -237,21 +245,21 @@ const AddCardDetails = ({
     //         });
     //         // return
     //         if (response) {
-    //             console.log("Response of subscribe plan api is", response.data);
+    //             //console.log("Response of subscribe plan api is", response.data);
     //             if (response.data.status === true) {
     //                 localStorage.removeItem("fromBuildScreen");
-    //                 handleSubLoader(false);
-    //                 handleBuilScriptContinue(true);
+    //                 // handleSubLoader(false);
+    //                 handleContinue();
     //             }
     //         } else {
-    //             console.log("api not responded");
+    //             //console.log("api not responded");
     //         }
     //     } catch (error) {
     //         console.error("ERROR occured in subscribePlan Api", error);
 
     //     }
-    //     finally{
-    //         handleSubLoader(false);
+    //     finally {
+    //         // handleSubLoader(false);
     //     }
     // }
 

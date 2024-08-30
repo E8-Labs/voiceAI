@@ -2,7 +2,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react';  // useRef added
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { Box, Drawer, Modal, Snackbar, Alert, Slide } from '@mui/material';
+import { Box, Drawer, Modal, Snackbar, Alert, Slide, Fade } from '@mui/material';
 import { useParams, useRouter } from 'next/navigation';
 import ProfileAnimation from '@/components/animation/ProfileAnimation';
 import LoginModal from '@/components/loginform/LoginModal';
@@ -51,6 +51,7 @@ const Page = () => {
     const [openClaimPopup, setOpenClaimPopup] = useState(false);
     // for side animation
     const [isVisible, setisVisible] = useState(true);
+    const [callErr, setCallErr] = useState(false);
 
     useEffect(() => {
         const handleResize = () => {
@@ -378,6 +379,7 @@ const Page = () => {
                 })
                 .catch((error) => {
                     console.log(error);
+                    setCallErr(true);
                 });
         } catch (error) {
             console.error('Error occurred:', error);
@@ -418,7 +420,7 @@ const Page = () => {
     //     }, 1000);
     // },[])
 
-    //test code
+    //code to make triangle
     const triangle = {
         width: 5,
         height: 5,
@@ -443,6 +445,7 @@ const Page = () => {
             }
         }
     }, [])
+
 
 
     return (
@@ -536,7 +539,7 @@ const Page = () => {
                                             <div>
                                                 {getAssistantData.earned ?
                                                     <div className='ms-1' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
-                                                        $ {getAssistantData.earned}
+                                                        $ {Number(getAssistantData.earned.toFixed(2))}
                                                     </div> :
                                                     <div className='ms-1' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
                                                         $ 0
@@ -820,6 +823,43 @@ const Page = () => {
                     </div>
                 </div>
             } */}
+            <Snackbar
+                open={callErr}
+                autoHideDuration={2000}
+                onClose={() => setCallErr(false)}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                }}
+                TransitionComponent={Fade}
+                TransitionProps={{
+                    timeout: {
+                        enter: 1000,
+                        exit: 1000,
+                    }
+                }}
+                sx={{
+                    position: 'fixed', // Ensures it stays in place
+                    top: 20, // Adjust as needed for spacing from the top
+                    left: '50%', // Center horizontally
+                    transform: 'translateX(-50%)', // Center horizontally
+                }}
+            >
+                <Alert
+                    // onClose={() => setCallErr(false)}
+                    severity="error"
+                    sx={{
+                        width: '100%',
+                        backgroundColor: 'white', // Set background color to white
+                        color: 'black',
+                        width: "300px",
+                        borderRadius: "20px"
+                        // border: "2px solid grey"
+                    }}
+                >
+                    Unfortunately, we were unable to process your payment method on file, please update your payment method to start a call.
+                </Alert>
+            </Snackbar>
         </div>
     );
 }

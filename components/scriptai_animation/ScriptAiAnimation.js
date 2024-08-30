@@ -175,7 +175,7 @@ export default function ScriptAiAnimation({ onChangeIndex }) {
                                     Congratulations
                                 </div>
                                 <Image
-                                    src={'/assets/applogo.png'}
+                                    src={'/congrats.png'}
                                     alt='congrats'
                                     height={550}
                                     width={445}

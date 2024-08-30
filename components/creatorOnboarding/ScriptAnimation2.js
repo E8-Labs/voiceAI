@@ -2,7 +2,7 @@
 import { Alert, Button, CircularProgress, Fade, FormControl, IconButton, InputAdornment, InputLabel, MenuItem, Select, Slide, Snackbar, TextField, Visibility, VisibilityOff } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import PhoneNumberInput from '../PhoneNumberInput';
 import Apis from '../apis/Apis';
 import axios from 'axios';
@@ -42,7 +42,7 @@ const boxVariants = {
 export default function ScriptAnimation2({ onChangeIndex }) {
 
     let stripePublickKey = process.env.NEXT_PUBLIC_REACT_APP_ENVIRONMENT === "Production" ? process.env.NEXT_PUBLIC_REACT_APP_STRIPE_PUBLISHABLE_KEY_LIVE : process.env.NEXT_PUBLIC_REACT_APP_STRIPE_PUBLISHABLE_KEY;
-    console.log("Public key is ", stripePublickKey)
+    //console.log("Public key is ", stripePublickKey)
     const stripePromise = loadStripe(stripePublickKey);
 
     const router = useRouter();
@@ -54,6 +54,8 @@ export default function ScriptAnimation2({ onChangeIndex }) {
     const [greetText, setGreetText] = useState("");
     const [serviceDetails, setServiceDetails] = useState("");
     const [selectedPlan, setSelectedPlan] = useState(null);
+    //ref for selected plan
+    const selectedPlanRef = useRef(selectedPlan);
     const [inputs, setInputs] = useState([
         { value: '', placeholder: 'What is your name?' },
         { value: '', placeholder: 'Where are you from?' }
@@ -72,10 +74,23 @@ export default function ScriptAnimation2({ onChangeIndex }) {
     const [buildScriptErr, setBuildScriptErr] = useState(true);
     const [isVisible, setIsVisible] = useState(true);
     const [buildScriptLoader, setBuildScriptLoader] = useState(false);
+    const [allQuestionsFilled, setAllQuestionsFilled] = useState(null);
+
+    //update ref when selectedplan changed
+    // useEffect(() => {
+    //     selectedPlanRef.current = selectedPlan;
+    // }, [selectedPlan]);
+
+    //code to check if all questions are filled
+    useEffect(() => {
+        const allQuestionFilled = inputs.every(input => input.value.trim() !== '');
+        setAllQuestionsFilled(allQuestionFilled);
+    }, [inputs]);
+
 
     //code for callingipt api
     const handleBuildScript = async (setPriceData) => {
-        console.log("Data of setprice screen", setPriceData);
+        //console.log("Data of setprice screen", setPriceData);
 
         try {
             setBuildScriptLoader(true);
@@ -91,7 +106,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
             const LocalData = localStorage.getItem('User');
             const Data = JSON.parse(LocalData);
             const AuthToken = Data.data.token;
-            console.log("Auth token", AuthToken);
+            //console.log("Auth token", AuthToken);
             const formData = new FormData();
             formData.append("greeting", greetText);
             formData.append("possibleUserQuery", serviceDetails);
@@ -101,7 +116,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
             const localData = localStorage.getItem('socialsUrl');
             if (localData) {
                 const Data = JSON.parse(localData);
-                console.log("social inks data recieved", Data);
+                //console.log("social inks data recieved", Data);
                 if (Data.discord_url) {
                     formData.append("discord_url", Data.discord_url)
                 }
@@ -145,9 +160,9 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                 formData.append(`products[${index}][name]`, row.productName);
                 formData.append(`products[${index}][productPrice]`, row.productAmount);
             });
-            console.log('Data being sent to the API:');
+            //console.log('Data being sent to the API:');
             for (let [key, value] of formData.entries()) {
-                console.log(`${key}: ${value}`);
+                //console.log(`${key}: ${value}`);
             }
             // return
             const response = await axios.post(ApiPath, formData, {
@@ -158,7 +173,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
             });
 
             if (response) {
-                console.log("Response is", response.data);
+                //console.log("Response is", response.data);
                 if (response.data.status === true) {
                     console.log("Response of buildscript api is", response);
                     handleContinue();
@@ -167,7 +182,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                     }
                     localStorage.setItem('fromBuildScreen', JSON.stringify(data));
                 } else {
-                    console.log("Status is", response.data.status);
+                    //console.log("Status is", response.data.status);
                     setBuildScriptErr(true);
                 }
             }
@@ -176,7 +191,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
             console.error("error occured in script api is", error);
         } finally {
             setBuildScriptLoader(false);
-            console.log("Done");
+            //console.log("Done");
         }
     }
 
@@ -234,18 +249,22 @@ export default function ScriptAnimation2({ onChangeIndex }) {
     }
 
     useEffect(() => {
-        console.log('selected value', value)
+        //console.log('selected value', value)
     }, [value]);
 
 
     //code for card index
 
-    const handleCardSelect = (index) => {
+    useEffect(() => {
+        console.log("Selected Plan changed", selectedPlan)
+    }, [selectedPlan])
+    const handlePlanSelect = (index) => {
         console.log("Handle plan select", index)
         if (selectedPlan === index) {
             // setSelectedPlan(null); // Deselect the card if it is already select
         } else {
             setSelectedPlan(index); // Select the card if it is not selected
+            selectedPlanRef.current = index;
         }
     }
 
@@ -260,14 +279,14 @@ export default function ScriptAnimation2({ onChangeIndex }) {
         const newInputs = [...inputs];
         newInputs[index].value = event.target.value;
         setInputs(newInputs);
-        console.log(newInputs);
+        //console.log(newInputs);
     };
 
     const handleDeleteInput = (index) => {
         const newInputs = [...inputs];
         newInputs.splice(index, 1); // Remove the input at the given index
         setInputs(newInputs);
-        console.log(newInputs);
+        //console.log(newInputs);
     };
 
     const inputStyle = {
@@ -295,7 +314,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
         const newInputRows = [...inputRows];
         newInputRows[index][field] = event.target.value;
         setInputRows(newInputRows);
-        console.log(newInputRows);
+        //console.log(newInputRows);
     };
 
     // Function to handle deleting a row of input fields
@@ -303,7 +322,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
         const newInputRows = [...inputRows];
         newInputRows.splice(index, 1); // Remove the row at the given index
         setInputRows(newInputRows);
-        console.log(newInputRows);
+        //console.log(newInputRows);
     };
 
     //code to add subscription
@@ -312,37 +331,38 @@ export default function ScriptAnimation2({ onChangeIndex }) {
     const [cardData, setCardData] = useState(null);
     const [subscribeLoader, setsubscribeLoader] = useState(false);
     const [cardAdded, setCardAdded] = useState(null);
-    // console.log("Card data added", setCardData);
-    const [AddCardErr, setAddCardErr] = useState(false);
+    // //console.log("Card data added", setCardData);
+    const [selectPlanErr, setSelectPlanErr] = useState(false);
 
     const handleBuildScriptCont = (e) => {
-        console.log("Continue build script function");
+        //console.log("Continue build script function");
         handleContinue();
     }
 
     const handleCardData = (e) => {
         setCardAdded(e);
-        console.log("Card data", e);
+        //console.log("Card data", e);
     }
 
 
-    const subscribePlan = async (plan) => {
-        console.log("Subscribing user plan ", plan)
-        if(!plan){
-            console.log("Select plan is null")
-            setsubscribeLoader(false)
-            return
+    const subscribePlan = async () => {
+        const plan = selectedPlanRef.current;
+        console.log("Subscribing user plan ", plan);
+        if (plan == null) {
+            console.log("Select plan is ", plan)
+            // setsubscribeLoader(false)
+            // return
         }
         try {
             const localData = localStorage.getItem('User');
             const data = JSON.parse(localData);
-            console.log("Local data for subscibe plan", data.data.token);
+            //console.log("Local data for subscibe plan", data.data.token);
 
             const AuthToken = data.data.token;
-            console.log("Auth token is", AuthToken);
+            //console.log("Auth token is", AuthToken);
             const ApiPath = Apis.CreateSubscription;
-            console.log("Api path for subscribe pla :", ApiPath);
-            // console.log("Subscribing plan", )
+            //console.log("Api path for subscribe pla :", ApiPath);
+            // //console.log("Subscribing plan", )
             // let plan = null;
             // if (selectedPlan) {
             //     plan = selectedPlan
@@ -360,45 +380,35 @@ export default function ScriptAnimation2({ onChangeIndex }) {
             });
             // return
             if (response) {
-                console.log("Response of subscribe plan api is", response.data);
+                //console.log("Response of subscribe plan api is", response.data);
                 if (response.data.status === true) {
                     localStorage.removeItem("fromBuildScreen");
                     // handleSubLoader(false);
                     handleContinue();
                 }
             } else {
-                console.log("api not responded");
+                //console.log("api not responded");
             }
         } catch (error) {
             console.error("ERROR occured in subscribePlan Api", error);
 
         }
-        finally{
+        finally {
             // handleSubLoader(false);
         }
     }
 
     const handleSubscribePlan = () => {
-        // if(!selectedPlan){
-        //     console.log("Select plan is null handleSubscribePlan")
-        //     setsubscribeLoader(false)
-        //     return
-        // }
-        // return
         //broadcast event
+        if(selectedPlan === null){
+            setSelectPlanErr(true)
+            return
+        }
         const event = new CustomEvent('subscribePlan', {
             detail: { message: 'Subscribe to a plan' },
         });
         window.dispatchEvent(event);
-        // if (selectedPlan === null) {
-        //     // subscribePlan();
-        //     // selectedPlan
-        //     setAddCardErr(true);
-        // }
-        // else {
-        //     setsubscribeLoader(true);
-        //     setsubscibe(true);
-        // }
+        setsubscribeLoader(true);
     }
 
     const handleStop = (e) => {
@@ -444,7 +454,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
                                     <TextField
                                         className='w-10/12 bg-grayBg mt-5'
-                                        // label="Type here"
+                                        label="Greeting"
                                         style={{ borderRadius: 5 }}
                                         multiline
                                         rows={6} // Controls the number of visible rows
@@ -454,12 +464,14 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         onChange={e => setGreetText(e.target.value)}
                                         placeholder="Hey this is James. Feel free to ask me anything about...."
                                         sx={{
-                                            '& .MuiFilledInput-root': {
-                                                backgroundColor: 'transparent', // Optional: Removes the background color
-                                                padding: '6px 8px', // Decrease the padding inside the input container
+                                            '& label.Mui-focused': {
+                                                color: '#050A0890',
                                             },
-                                            '& .MuiInputBase-input': {
-                                                padding: '4px 0px', // Decrease the padding inside the input itself
+                                            '& .MuiFilledInput-root': {
+                                                backgroundColor: '#EDEDED', // Background color of the input
+                                                fontSize: 13,
+                                                fontWeight: '400',
+                                                fontFamily: "inter"
                                             },
                                             '& .MuiFilledInput-root:before': {
                                                 borderBottom: 'none', // Remove the default inactive state bottom border
@@ -467,21 +479,35 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                             '& .MuiFilledInput-root:after': {
                                                 borderBottom: 'none', // Remove the focused state bottom border
                                             },
-                                            '& .MuiFilledInput-root:hover:before': {
+                                            '& .MuiFilledInput-root:hover:not(.Mui-disabled):before': {
                                                 borderBottom: 'none', // Remove the hover state bottom border
                                             },
                                             '& .MuiFilledInput-root.Mui-focused:before': {
                                                 borderBottom: 'none', // Ensure no border is shown when the field is focused
+                                            },
+                                            '& .MuiFilledInput-root.Mui-focused': {
+                                                borderBottom: 'none', // Ensure no border is shown when the field is focused
+                                                boxShadow: 'none', // Remove any box-shadow
                                             }
                                         }}
                                     />
 
                                     <div className='w-10/12'>
-                                        <Button onClick={handleContinue}
-                                            className='bg-purple hover:bg-purple text-white w-full mt-12'
-                                            style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
-                                            Continue
-                                        </Button>
+                                        {
+                                            greetText ?
+                                                <Button onClick={handleContinue}
+                                                    className='bg-purple hover:bg-purple text-white w-full mt-12'
+                                                    style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
+                                                    Continue
+                                                </Button> :
+                                                <Button
+                                                    disabled
+                                                    // onClick={handleContinue}
+                                                    className='bg-purple2 hover:bg-purple text-white w-full mt-12'
+                                                    style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px", color: "white" }}>
+                                                    Continue
+                                                </Button>
+                                        }
                                     </div>
 
                                 </div>
@@ -549,11 +575,21 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                     />
 
                                     <div className='w-10/12'>
-                                        <Button onClick={handleContinue}
-                                            className='bg-purple hover:bg-purple text-white w-full mt-12'
-                                            style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
-                                            Continue
-                                        </Button>
+                                        {
+                                            serviceDetails ?
+                                                <Button onClick={handleContinue}
+                                                    className='bg-purple hover:bg-purple text-white w-full mt-12'
+                                                    style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
+                                                    Continue
+                                                </Button> :
+                                                <Button
+                                                    disabled
+                                                    // onClick={handleContinue}
+                                                    className='bg-purple2 hover:bg-purple text-white w-full mt-12'
+                                                    style={{ fontSize: 15, color: "white", fontWeight: "400", height: "52px", borderRadius: "50px" }}>
+                                                    Continue
+                                                </Button>
+                                        }
                                     </div>
 
 
@@ -580,42 +616,6 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                             <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
                                         </button>
                                     </div>
-                                    {/* <div className='mt-6' style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
-                                        What does  help your community with?
-                                    </div> */}
-                                    {/* <TextField className=' w-9/12 mt-8'
-                                        autofill='off'
-                                        id="filled-basic"
-                                        label="Ai help tagline" variant="filled"
-                                        multiline
-                                        rows={3}
-                                        placeholder='I help my community of followers with understanding their feelings for others, overcoming obstacles with their relationships, etc'
-                                        sx={{
-                                            '& label.Mui-focused': {
-                                                color: '#050A0890',
-                                            },
-                                            '& .MuiFilledInput-root': {
-                                                backgroundColor: '#EDEDED', // Optional: Removes the background color
-                                                // padding: '6px 8px', // Decrease the padding inside the input container
-                                                fontSize: 13,
-                                                fontWeight: '400',
-                                                fontFamily: "inter"
-                                            },
-                                            '& .MuiFilledInput-root:before': {
-                                                borderBottom: 'none', // Remove the default inactive state bottom border
-                                            },
-                                            '& .MuiFilledInput-root:after': {
-                                                borderBottom: 'none', // Remove the focused state bottom border
-                                            },
-                                            '& .MuiFilledInput-root:hover:before': {
-                                                borderBottom: 'none', // Remove the hover state bottom border
-                                            },
-                                            '& .MuiFilledInput-root.Mui-focused:before': {
-                                                borderBottom: 'none', // Ensure no border is shown when the field is focused
-                                            }
-                                        }}
-                                    /> */}
-
                                     {/* <CallerInfo /> */}
 
                                     <div className='mt-6' style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
@@ -649,11 +649,21 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                     </div>
 
                                     <div className='w-10/12'>
-                                        <Button onClick={handleContinue}
-                                            className='bg-purple hover:bg-purple text-white w-full mt-12'
-                                            style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
-                                            Continue
-                                        </Button>
+                                        {
+                                            allQuestionsFilled ?
+                                                <Button onClick={handleContinue}
+                                                    className='bg-purple hover:bg-purple text-white w-full mt-12'
+                                                    style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
+                                                    Continue
+                                                </Button> :
+                                                <Button
+                                                    disabled
+                                                    // onClick={handleContinue}
+                                                    className='bg-purple2 hover:bg-purple text-white w-full mt-12'
+                                                    style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px", color: "white" }}>
+                                                    Continue
+                                                </Button>
+                                        }
                                     </div>
 
                                 </div>
@@ -681,82 +691,6 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                     </div>
                                     <div className='mt-6' style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
                                         Do you sell any products or services that {name} can offer to qualified callers?
-                                    </div>
-
-                                    <div>
-                                        {/* <AiSocialLinks /> */}
-                                        {/* <div className='w-full flex flex-col justify-center items-center' >
-                                            <div className='w-full'>
-                                                <div className='w-11/12 flex flex-row gap-3 mt-6'>
-                                                    <TextField
-                                                        className='w-3/12 bg-grayBg'
-                                                        style={{ borderRadius: 5 }}
-                                                        // label="Product Name"
-                                                        placeholder='$'
-                                                        variant='filled'
-                                                        sx={{
-                                                            '& .MuiFilledInput-root': {
-                                                                backgroundColor: 'transparent', // Optional: Removes the background color
-                                                                padding: '6px 8px', // Decrease the padding inside the input container
-                                                            },
-                                                            '& .MuiInputBase-input': {
-                                                                padding: '4px 0px', // Decrease the padding inside the input itself
-                                                            },
-                                                            '& .MuiFilledInput-root:before': {
-                                                                borderBottom: 'none', // Remove the default inactive state bottom border
-                                                            },
-                                                            '& .MuiFilledInput-root:after': {
-                                                                borderBottom: 'none', // Remove the focused state bottom border
-                                                            },
-                                                            '& .MuiFilledInput-root:hover:before': {
-                                                                borderBottom: 'none', // Remove the hover state bottom border
-                                                            },
-                                                            '& .MuiFilledInput-root.Mui-focused:before': {
-                                                                borderBottom: 'none', // Ensure no border is shown when the field is focused
-                                                            }
-                                                        }}
-
-                                                    />
-                                                    <TextField
-                                                        className='w-6/12 bg-grayBg'
-                                                        style={{ borderRadius: 5 }}
-                                                        // label="Paste Product URL"
-                                                        placeholder='Product name'
-                                                        variant='filled'
-                                                        sx={{
-                                                            '& .MuiFilledInput-root': {
-                                                                backgroundColor: 'transparent', // Optional: Removes the background color
-                                                                padding: '6px 8px', // Decrease the padding inside the input container
-                                                            },
-                                                            '& .MuiInputBase-input': {
-                                                                padding: '4px 0px', // Decrease the padding inside the input itself
-                                                            },
-                                                            '& .MuiFilledInput-root:before': {
-                                                                borderBottom: 'none', // Remove the default inactive state bottom border
-                                                            },
-                                                            '& .MuiFilledInput-root:after': {
-                                                                borderBottom: 'none', // Remove the focused state bottom border
-                                                            },
-                                                            '& .MuiFilledInput-root:hover:before': {
-                                                                borderBottom: 'none', // Remove the hover state bottom border
-                                                            },
-                                                            '& .MuiFilledInput-root.Mui-focused:before': {
-                                                                borderBottom: 'none', // Ensure no border is shown when the field is focused
-                                                            }
-                                                        }}
-
-
-                                                    />
-                                                </div>
-                                                <div className='mt-6'>
-                                                    <button className='text-purple' style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter" }}>
-                                                        <u>
-                                                            Add New
-                                                        </u>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div> */}
                                     </div>
 
                                     {/* Code to make dynamic routes */}
@@ -796,13 +730,33 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         </div>
                                     </div>
 
+                                    {inputRows.every(row => row.productAmount && row.productName) ?
+                                        <div className='w-10/12'>
+                                            <Button onClick={handleContinue}
+                                                className='bg-purple hover:bg-purple text-white w-full mt-12'
+                                                style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
+                                                Continue
+                                            </Button>
+                                        </div>
+                                        :
+                                        <div className='w-10/12'>
+                                            <Button
+                                                disabled
+                                                // onClick={handleContinue}
+                                                className='bg-purple2 hover:bg-purple text-white w-full mt-12'
+                                                style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px", color: "white" }}>
+                                                Continue
+                                            </Button>
+                                        </div>
+                                    }
+                                    {/* 
                                     <div className='w-10/12'>
                                         <Button onClick={handleContinue}
                                             className='bg-purple hover:bg-purple text-white w-full mt-12'
                                             style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
                                             Continue
                                         </Button>
-                                    </div>
+                                    </div> */}
 
                                 </div>
                             </div>
@@ -873,7 +827,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                             }}
                                                             renderValue={(selected) => {
                                                                 if (selected.length === 0) {
-                                                                    return <em>Select Type</em>;
+                                                                    return <em>Product / Service</em>;
                                                                 }
                                                                 return selected;
                                                             }}
@@ -890,7 +844,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                             }}
                                                         >
                                                             <MenuItem value="none">
-                                                                <em>Select Type</em>
+                                                                <em>Product / Service</em>
                                                             </MenuItem>
                                                             {
                                                                 inputRows.map((item) => (
@@ -1038,7 +992,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         <div>
                                             <SetPrice handleContinue={handleBuildScript} />
                                         </div>
-                                        {
+                                        {/* {
                                             buildScriptErr &&
                                             <div>
                                                 <Snackbar
@@ -1077,7 +1031,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                     </Alert>
                                                 </Snackbar>
                                             </div>
-                                        }
+                                        } */}
                                     </div>
                                 </div>
                             </motion.div>
@@ -1109,7 +1063,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
                                             $97/ mo
                                         </div>
-                                        <button onClick={() => handleCardSelect(0)}>
+                                        <button onClick={() => handlePlanSelect(0)}>
                                             {
                                                 selectedPlan === 0 ?
                                                     <Image alt='selected' style={{ borderRadius: "50%" }} src='/assets/selected.png' height={27} width={27} /> :
@@ -1133,7 +1087,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                 </div>
                                             </div>
                                             <div className='flex flex-row gap-2 items-center'>
-                                                <button onClick={() => handleCardSelect(1)}>
+                                                <button onClick={() => handlePlanSelect(1)}>
                                                     {
                                                         selectedPlan === 1 ?
                                                             <Image alt='selected' style={{ borderRadius: "50%" }} src='/assets/selected.png' height={27} width={27} /> :
@@ -1144,7 +1098,9 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         </div>
                                     </div>
                                     <div className='w-8/12 flex justify-center' style={{ marginTop: 30 }}>
-                                        <button onClick={handleSubscribePlan} className='w-full py-3 text-white bg-purple' style={{ borderRadius: "50px" }}>
+                                        <button
+                                            onClick={handleSubscribePlan}
+                                            className='w-full py-3 text-white bg-purple' style={{ borderRadius: "50px" }}>
                                             {
                                                 subscribeLoader ?
                                                     <CircularProgress size={30} /> : "Continue"
@@ -1155,9 +1111,9 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
                                     {/* err msg when card noot added */}
                                     <Snackbar
-                                        open={AddCardErr}
+                                        open={selectPlanErr}
                                         autoHideDuration={2000}
-                                        onClose={() => setAddCardErr(false)}
+                                        onClose={() => setSelectPlanErr(false)}
                                         anchorOrigin={{
                                             vertical: 'top',
                                             horizontal: 'center',
@@ -1177,7 +1133,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         }}
                                     >
                                         <Alert
-                                            onClose={() => setAddCardErr(false)}
+                                            onClose={() => setSelectPlanErr(false)}
                                             severity="error"
                                             sx={{
                                                 width: '100%',
@@ -1214,10 +1170,9 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         <Elements stripe={stripePromise}>
                                             <AddCardDetails
                                                 subscribePlan={subscribePlan}
-                                                selectedPlan={selectedPlan}
                                                 fromBuildAiScreen={true}
-                                                stop={stop}
-                                                handleSubLoader={handleSubLoader} handleBuilScriptContinue={handleContinue}
+                                            // selectedPlan={selectedPlan}
+                                            // stop={stop}
                                             />
                                         </Elements>
                                     </div>

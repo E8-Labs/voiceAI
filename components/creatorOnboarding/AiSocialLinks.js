@@ -166,11 +166,21 @@ function AiSocialLinks({ handleContinue, handleBack }) {
                     </div>
                 </div>
                 <div>
-                    <Button onClick={handleContinueSocial}
-                        className='bg-purple hover:bg-purple text-white px-4 mt-2 w-4/12 py-2'
-                        style={{ fontSize: 15, fontWeight: "400", borderRadius: "50px" }}>
-                        Continue
-                    </Button>
+                    {
+                        fbUrl && youtubeUrl && appleProducts && twitterUrl && spotifyurl && instaUrl ?
+                            <Button onClick={handleContinueSocial}
+                                className='bg-purple hover:bg-purple text-white px-4 mt-2 w-4/12 py-2'
+                                style={{ fontSize: 15, fontWeight: "400", borderRadius: "50px" }}>
+                                Continue
+                            </Button> :
+                            <Button
+                                disabled
+                                // onClick={handleContinueSocial}
+                                className='bg-purple2 hover:bg-purple text-white px-4 mt-2 w-4/12 py-2'
+                                style={{ fontSize: 15, fontWeight: "400", borderRadius: "50px", color: "white" }}>
+                                Continue
+                            </Button>
+                    }
                 </div>
             </div>
         </div>
