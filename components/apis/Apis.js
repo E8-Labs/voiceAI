@@ -24,7 +24,11 @@ const Apis = {
     KnowledgeBaseApi: `${BasePath}api/ai/addKnowledgebase`,
     CreateSubscription: `${BasePath}api/user/subscribe`,
     CallsApi: `${BasePath}api/user/creator_calls`,
-    DashBoardApi: `${BasePath}api/user/creator_dashboard`
+    DashBoardApi: `${BasePath}api/user/creator_dashboard`,
+
+
+    //user profile apis
+    MyAiapi: `${BasePath}api/user/my_ai`
 
 
 }

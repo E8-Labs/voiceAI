@@ -990,7 +990,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         </button>
 
                                         <div>
-                                            <SetPrice handleContinue={handleBuildScript} />
+                                            <SetPrice buildScriptLoader={buildScriptLoader} handleContinue={handleBuildScript} />
                                         </div>
                                         {/* {
                                             buildScriptErr &&

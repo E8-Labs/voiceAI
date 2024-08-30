@@ -1,6 +1,7 @@
 import Apis from '@/components/apis/Apis';
 import { duration } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const Dashboard = () => {
     const [selectedDuration, setSelectedDuration] = useState(1);
@@ -53,7 +54,8 @@ const Dashboard = () => {
 
     const getDashboardData = async () => {
         try {
-            const Data = JSON.parse(LocalData);
+            const localData = localStorage.getItem('User');
+            const Data = JSON.parse(localData);
             console.log("Local data is", Data);
             const AuthToken = Data.data.token;
             console.log("Authtoken is", AuthToken);

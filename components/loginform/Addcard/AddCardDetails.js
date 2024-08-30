@@ -76,8 +76,8 @@ const AddCardDetails = ({
 
         const handleCustomEvent = (event) => {
             //console.log('Received event:', event.detail.message);
-            // handleAddCard()
-            subscribePlan();
+            handleAddCard()
+            // subscribePlan();
         };
 
         window.addEventListener('subscribePlan', handleCustomEvent);
@@ -150,7 +150,7 @@ const AddCardDetails = ({
                 //     handleSubLoader(true);
                 // }
                 // return
-                //console.log("Token generating for card number :", tok.token.id)
+                console.log("Token generating for card number :", tok.token.id)
                 const tokenId = tok.token.id;
 
                 const ApiPath = Apis.addCard;
@@ -358,7 +358,7 @@ const AddCardDetails = ({
                             setAddCardLoader(false);
                         }} severity="error"
                         sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}>
-                        Enter all Credientials.
+                        Add a payment source to continue
                     </Alert>
                 </Snackbar>
             </div>

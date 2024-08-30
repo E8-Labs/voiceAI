@@ -1,7 +1,66 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
+import Apis from '@/components/apis/Apis'
+import axios from 'axios'
 
 export const SocialKB = () => {
+
+  const [aiData, setAiData] = useState(null);
+  const [fbUrl, setFburl] = useState("");
+  const [youtubeUrl, setYoutubeurl] = useState("");
+  const [appleProducts, setAppleProducts] = useState("");
+  const [twitterUrl, setTwitterurl] = useState("");
+  const [spotifyurl, setSpotifyurl] = useState("");
+  const [instaUrl, setInstaurl] = useState("");
+
+  //calling my AI api
+  const getAiApi = async () => {
+    const ApiPath = Apis.MyAiapi;
+    const localData = localStorage.getItem('User');
+    const Data = JSON.parse(localData);
+    const AuthToken = Data.data.token;
+    console.log("Authtoken is", AuthToken);
+    console.log("Apipath is", ApiPath);
+
+    const response = await axios.get(ApiPath, {
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": "Bearer " + AuthToken
+      }
+    });
+    if (response) {
+      console.log("Response of getai api", response.data);
+      if (response.data) {
+        setAiData(response.data.data);
+        if (response.data.data.ai) {
+          if (response.data.data.ai.fbUrl) {
+            setFburl(response.data.data.ai.fbUrl);
+          }
+          if (response.data.data.ai.youtubeUrl) {
+            setYoutubeurl(response.data.data.ai.youtubeUrl);
+          }
+          if (response.data.data.ai.twitterUrl) {
+            setTwitterurl(response.data.data.ai.twitterUrl);
+          }
+          if (response.data.data.ai.discordUrl) {
+            setAppleProducts(response.data.data.ai.discordUrl);
+          }
+          if (response.data.data.ai.spotify_Url) {
+            setSpotifyurl(response.data.data.ai.spotify_Url);
+          }
+          if (response.data.data.ai.instaUrl) {
+            setInstaurl(response.data.data.ai.instaUrl);
+          }
+        }
+      }
+    }
+  }
+
+  useEffect(() => {
+    getAiApi()
+  }, [])
+
+
   const styles = {
     inputContainer: {
       marginTop: 30,
@@ -61,102 +120,120 @@ export const SocialKB = () => {
             <Image style={styles.image}
               src={'/assets/fbIcon.png'} alt='facebook'
               height={30} width={30} />
-            <button className='bg-grayBg w-full flex flex-row justify-between'
+            <div className='bg-grayBg w-full flex flex-row justify-between gap-2'
               style={styles.button}
             >
-              <div >
-                URL
+              <div className='w-full'>
+                <input className='w-full bg-transparent outline-none border-none'
+                  value={fbUrl}
+                  onChange={(e) => setFburl(e.target.value)}
+                  placeholder='URL' />
               </div>
-              <div className='text-purple'>
+              <button className='text-purple'>
                 Edit
-              </div>
+              </button>
 
-            </button>
+            </div>
           </div>
 
           <div className='flex flex-row gap-5 mb-5'>
             <Image style={styles.image}
               src={'/assets/youtubeIcon.png'} alt='Youtube'
               height={30} width={30} />
-            <button className='bg-grayBg w-full flex flex-row justify-between'
+            <div className='bg-grayBg w-full flex flex-row justify-between gap-2'
               style={styles.button}
             >
-              <div >
-                URL
+              <div className='w-full'>
+                <input className='w-full bg-transparent outline-none border-none'
+                  value={youtubeUrl}
+                  onChange={(e) => setYoutubeurl(e.target.value)}
+                  placeholder='URL' />
               </div>
-              <div className='text-purple'>
+              <button className='text-purple'>
                 Edit
-              </div>
+              </button>
 
-            </button>
+            </div>
           </div>
 
           <div className='flex flex-row gap-5 mb-5'>
             <Image style={styles.image}
-              src={'/assets/twitericon.png'} alt='Icon'
+              src={'/assets/twiterIcon.png'} alt='Icon'
               height={30} width={30} />
-            <button className='bg-grayBg w-full flex flex-row justify-between'
+            <div className='bg-grayBg w-full flex flex-row justify-between gap-2'
               style={styles.button}
             >
-              <div >
-                URL
+              <div className='w-full'>
+                <input className='w-full bg-transparent outline-none border-none'
+                  value={twitterUrl}
+                  onChange={(e) => setTwitterurl(e.target.value)}
+                  placeholder='URL' />
               </div>
-              <div className='text-purple'>
+              <button className='text-purple'>
                 Edit
-              </div>
+              </button>
 
-            </button>
+            </div>
           </div>
 
           <div className='flex flex-row gap-5 mb-5'>
             <Image style={styles.image}
               src={'/assets/appleProducts.png'} alt='appleProducts'
               height={30} width={30} />
-            <button className='bg-grayBg w-full flex flex-row justify-between'
+            <div className='bg-grayBg w-full flex flex-row justify-between gap-2'
               style={styles.button}
             >
-              <div >
-                URL
+              <div className='w-full'>
+                <input className='w-full bg-transparent outline-none border-none'
+                  value={appleProducts}
+                  onChange={(e) => setAppleProducts(e.target.value)}
+                  placeholder='URL' />
               </div>
-              <div className='text-purple'>
+              <button className='text-purple'>
                 Edit
-              </div>
+              </button>
 
-            </button>
+            </div>
           </div>
 
           <div className='flex flex-row gap-5 mb-5'>
             <Image style={styles.image}
               src={'/assets/spotify.png'} alt='spotifyIcon'
               height={30} width={30} />
-            <button className='bg-grayBg w-full flex flex-row justify-between'
+            <div className='bg-grayBg w-full flex flex-row justify-between gap-2'
               style={styles.button}
             >
-              <div >
-                URL
+              <div className='w-full'>
+                <input className='w-full bg-transparent outline-none border-none'
+                  value={spotifyurl}
+                  onChange={(e) => setSpotifyurl(e.target.value)}
+                  placeholder='URL' />
               </div>
-              <div className='text-purple'>
+              <button className='text-purple'>
                 Edit
-              </div>
+              </button>
 
-            </button>
+            </div>
           </div>
 
           <div className='flex flex-row gap-5 mb-5'>
             <Image style={styles.image}
               src={'/assets/instagram.png'} alt='insta'
               height={30} width={30} />
-            <button className='bg-grayBg w-full flex flex-row justify-between'
+            <div className='bg-grayBg w-full flex flex-row justify-between gap-2'
               style={styles.button}
             >
-              <div >
-                URL
+              <div className='w-full'>
+                <input className='w-full bg-transparent outline-none border-none'
+                  value={instaUrl}
+                  onChange={(e) => setInstaurl(e.target.value)}
+                  placeholder='URL' />
               </div>
-              <div className='text-purple'>
+              <button className='text-purple'>
                 Edit
-              </div>
+              </button>
 
-            </button>
+            </div>
           </div>
         </div>
 

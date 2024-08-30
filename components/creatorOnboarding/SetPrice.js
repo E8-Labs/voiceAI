@@ -2,23 +2,12 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { MenuItem, Select, InputLabel, FormControl, Switch, Button, CircularProgress } from '@mui/material'
 
-function SetPrice({ handleBack, handleContinue }) {
+function SetPrice({ handleBack, handleContinue, buildScriptLoader }) {
 
     const [toogleActive, setToogleActive] = useState(false);
-    const [buildScriptLoader, setBuildScriptLoader] = useState(false);
+    // const [buildScriptLoader, setBuildScriptLoader] = useState(false);
     const [callPrice, setCallPrice] = useState("");
 
-    const handleApiCall = () => {
-        try {
-            setBuildScriptLoader(true);
-            handleContinue()
-        } catch (error) {
-            console.log("error occured");
-
-        } finally {
-            setBuildScriptLoader(false)
-        }
-    }
 
     const styles = {
         inputContainer: {

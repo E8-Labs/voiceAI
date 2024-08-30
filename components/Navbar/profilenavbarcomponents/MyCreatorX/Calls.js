@@ -7,7 +7,7 @@ import Apis from '@/components/apis/Apis';
 
 const Calls = () => {
   const [open, setOpen] = useState('');
-  const [callsData, setCallsData] = useState({ calls: [] }); // Initialize with an empty array
+  const [callsData, setCallsData] = useState({ calls: [] });
 
   const styles = {
     inputContainer: {

@@ -825,7 +825,7 @@ const Page = () => {
             } */}
             <Snackbar
                 open={callErr}
-                autoHideDuration={2000}
+                autoHideDuration={5000}
                 onClose={() => setCallErr(false)}
                 anchorOrigin={{
                     vertical: 'top',
