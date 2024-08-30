@@ -116,7 +116,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
             const localData = localStorage.getItem('socialsUrl');
             if (localData) {
                 const Data = JSON.parse(localData);
-                //console.log("social inks data recieved", Data);
+                console.log("social inks data recieved", Data);
                 if (Data.discord_url) {
                     formData.append("discord_url", Data.discord_url)
                 }
@@ -160,10 +160,11 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                 formData.append(`products[${index}][name]`, row.productName);
                 formData.append(`products[${index}][productPrice]`, row.productAmount);
             });
-            //console.log('Data being sent to the API:');
+            console.log('Data being sent to the API:');
             for (let [key, value] of formData.entries()) {
-                //console.log(`${key}: ${value}`);
+                console.log(`${key}: ${value}`);
             }
+            // console.log("")
             // return
             const response = await axios.post(ApiPath, formData, {
                 headers: {
