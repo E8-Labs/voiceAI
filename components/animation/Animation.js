@@ -41,7 +41,7 @@ export default function Animation({ onChangeIndex }) {
     const [currentIndex, setCurrentIndex] = useState(2);
     const [direction, setDirection] = useState(2);
     const [userName, setUserName] = useState("");
-    const [checkUserNameData, set1checkUserNameData] = useState(null);
+    const [checkUserNameData, setCheckUserNameData] = useState(null);
     const [checkUserEmailData, setCheckUserEmailData] = useState(null);
     const [checkUserPhoneNumberData, setCheckUserPhoneNumberData] = useState(null);
     const [userEmail, setUserEmail] = useState("");
@@ -79,7 +79,7 @@ export default function Animation({ onChangeIndex }) {
 
             if (response.data) {
                 console.log("Response of check name api is", response.data);
-                set1checkUserNameData(response.data);
+                setCheckUserNameData(response.data);
             }
         } catch (error) {
             console.error("Error occured in checkusername api", error);
@@ -99,9 +99,10 @@ export default function Animation({ onChangeIndex }) {
 
     useEffect(() => {
         if (userName) {
-            setTimeout(() => {
+            const timeout = setTimeout(() => {
                 checkUserName();
             }, 2000);
+            return () => clearTimeout(timeout);
         }
     }, [userName]);
 
@@ -578,7 +579,7 @@ export default function Animation({ onChangeIndex }) {
                         >
                             <div className='w-full'>
                                 <div className='text-lightWhite' style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
-                                    Enter verification code sent to ****4319
+                                    Enter verification code sent to ****{signinVerificationNumber}
                                 </div>
                                 <div className='flex flex-row gap-4 mt-4'>
                                     <input
@@ -694,26 +695,58 @@ export default function Animation({ onChangeIndex }) {
                                             },
                                         }} /> */}
 
-                                    <TextField className=' w-9/12 mt-10'
+                                    {/* <div className='flex flex-row items-center mt-10'>
+                                        <div>
+                                            voice.ai/
+                                        </div>
+                                        <TextField className=' w-9/12'
+                                            autofill='off'
+                                            id="filled-basic"
+                                            value={userName}
+                                            onChange={(e) => setUserName(e.target.value)}
+                                            label="Name" variant="outlined"
+                                            placeholder='voice.ai'
+                                            sx={MuiFieldStyle}
+                                            inputProps={{
+                                                style: {
+                                                    color: 'black !important',  // Apply black color directly
+                                                },
+                                            }}
+                                            style={{ color: "black" }}
+                                        />
+                                    </div> */}
+
+                                    <TextField
+                                        className='w-9/12 mt-10'
                                         autofill='off'
                                         id="filled-basic"
                                         value={userName}
-                                        onChange={(e) => setUserName(e.target.value)}
-                                        label="Name" variant="outlined"
-                                        placeholder='voice.ai'
+                                        onChange={(e) => {
+                                            setUserName(e.target.value);
+                                            setCheckUserNameData(null);
+                                        }}
+                                        label="Name"
+                                        variant="outlined"
+                                        placeholder='name'
                                         sx={MuiFieldStyle}
-                                        inputProps={{
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start" style={{ color: 'blue', fontSize: '14px', fontWeight: 'bold' }}>
+                                                    voice.ai /
+                                                </InputAdornment>
+                                            ),
                                             style: {
-                                                color: 'black !important',  // Apply black color directly
+                                                color: 'black',  // Apply color to the input text
+                                                fontSize: '16px', // Apply font size to the input text
+                                                fontWeight: '400', // Apply font weight to the input text
                                             },
                                         }}
-                                        style={{ color: "black" }}
                                     />
 
                                     <div>
                                         {
                                             checkUserNameData && checkUserNameData.status === true &&
-                                            <div style={{ fontWeight: "400", fontSize: 14, color: "green" }}>
+                                            <div className='mt-2' style={{ fontWeight: "400", fontSize: 14, color: "green" }}>
                                                 {checkUserNameData.message}
                                             </div>
                                         }
@@ -722,8 +755,8 @@ export default function Animation({ onChangeIndex }) {
                                     <div>
                                         {
                                             checkUserNameData && checkUserNameData.status === false &&
-                                            <div style={{ fontWeight: "400", fontSize: 14, color: "red" }}>
-                                                {checkUserNameData.message}
+                                            <div className='text-red mt-2' style={{ fontWeight: "400", fontSize: 14 }}>
+                                                This username seems to be taken already... <br />Try something similar.
                                             </div>
                                         }
                                     </div>

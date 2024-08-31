@@ -1,4 +1,4 @@
-import { Button, CircularProgress, FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Button, CircularProgress, Fade, FormControl, FormHelperText, InputLabel, MenuItem, Select, Snackbar, TextField } from '@mui/material';
 import axios from 'axios';
 import Image from 'next/image';
 import React, { useState } from 'react'
@@ -186,7 +186,7 @@ const Knowledgebase = ({ handleContinue }) => {
             });
 
             if (response) {
-                console.log("Response of knowledge api is", response.data);
+                console.log("Response of knowledge api is", response.data.data);
                 if (response.data.status === true) {
                     // handleContinue()
                     listdata();
@@ -364,22 +364,21 @@ const Knowledgebase = ({ handleContinue }) => {
                 }
 
             </div>
-
-            <button className='w-full text-purple mt-10' onClick={handleKnowledgeClick} style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter", textAlign: "center" }}>
-                Save
-            </button>
+            {
+                loader ?
+                    <div className='mt-8 flex flex-row justify-center'>
+                        <CircularProgress size={30} />
+                    </div> :
+                    <button className='w-full text-purple mt-10' onClick={handleKnowledgeClick} style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter", textAlign: "center" }}>
+                        Save
+                    </button>
+            }
             <div className='w-full flex flex-row justify-center'>
-                {
-                    loader ?
-                        <div className='mt-8 flex flex-row justify-center'>
-                            <CircularProgress size={30} />
-                        </div> :
-                        <Button onClick={handleContinue}
-                            className='bg-purple hover:bg-purple text-white w-11/12 mt-8'
-                            style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
-                            Continue
-                        </Button>
-                }
+                <Button onClick={handleContinue}
+                    className='bg-purple hover:bg-purple text-white w-11/12 mt-8'
+                    style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
+                    Continue
+                </Button>
             </div>
 
             <div>
@@ -403,6 +402,37 @@ const Knowledgebase = ({ handleContinue }) => {
                     ))
                 }
             </div>
+
+            {/* Error snack message */}
+
+            {
+                showError &&
+                <Snackbar
+                    open={credentialsErr}
+                    autoHideDuration={3000}
+                    onClose={() => {
+                        setShowError(false)
+                    }}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center'
+                    }}
+                    TransitionComponent={Fade}
+                    TransitionProps={{
+                        direction: 'center'
+                    }}
+                >
+                    <Alert
+                        onClose={() => {
+                            setShowError(false)
+                        }} severity="error"
+                        sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}>
+                        
+                    </Alert>
+                </Snackbar>
+            }
+
+
         </div>
     )
 }

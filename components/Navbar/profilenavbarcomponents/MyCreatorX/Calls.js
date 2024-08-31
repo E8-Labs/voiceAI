@@ -11,10 +11,10 @@ const Calls = () => {
 
   const styles = {
     inputContainer: {
-      marginTop: 30,
+      // marginTop: 30,
       display: "flex",
       alignItems: "center",
-      backgroundColor: "#EDEDED40", /* Light grey background */
+      backgroundColor: "#00000006", /* Light grey background */
       borderRadius: 5, /* Rounded corners */
       padding: "8px 8px" /* Padding around input */
     },
@@ -83,6 +83,7 @@ const Calls = () => {
 
   const getCallsData = async () => {
     try {
+      const LocalData = localStorage.getItem('User');
       const Data = JSON.parse(LocalData);
       console.log("Local data is", Data);
       const AuthToken = Data.data.token;
@@ -118,10 +119,14 @@ const Calls = () => {
   return (
     <div className='w-full flex flex-col pl-10 pt-10'
       style={{ height: '90vh', overflow: "auto", scrollbarWidth: "none", msOverflowStyle: 'none', }}>
-      <div style={{ fontSize: 24, color: '#00000' }}>My Calls</div>
-      <div className='w-full flex flex-col'>
+
+      <div className='w-7/12 px-6 py-4 rounded-2xl' style={{ backgroundColor: "#ffffff40" }}>
+        <div style={{ fontSize: 24, color: '#00000' }}>
+          Cal Stat
+        </div>
+
         <div className='w-full flex flex-row justify-between items-center mt-10'>
-          <div className='w-4/12 pl-8'>
+          <div className='w-4/12 pl-4'>
             <div style={styles.text}>Total calls</div>
             <div style={{ fontSize: 30, color: '#000000' }}>{callsData.totalCalls}</div>
           </div>
@@ -129,7 +134,7 @@ const Calls = () => {
             <div style={{ fontSize: 12, color: '#00000090' }}>Total Talk Time</div>
             <div className='flex flex-row  items-center'>
               <div style={{ fontSize: 30, color: '#000000' }}>{callsData.totalMinutes}</div>
-              <div style={{ fontSize: 24, color: '#00000095', fontWeight: 200 }}>Mins</div>
+              <div style={{ fontSize: 15, color: '#00000095', fontWeight: 200 }}>Mins</div>
             </div>
           </div>
           <div className='w-4/12'>
@@ -139,8 +144,10 @@ const Calls = () => {
             </div>
           </div>
         </div>
+      </div>
 
-        <div className='w-6/12 flex flex-col items-center'>
+      <div className='w-7/12 mt-8 px-6 py-8 rounded-2xl' style={{ backgroundColor: "#ffffff40" }}>
+        <div className='w-full flex flex-row items-center justify-center gap-4'>
           <div className='w-full rounded' style={styles.inputContainer}>
             <input
               className='w-8/12'
@@ -149,6 +156,9 @@ const Calls = () => {
             />
             <Image src={"/assets/searchIcon.png"} width={20} height={20} />
           </div>
+          <button className='text-purple' style={{ fontWeight: "400", fontFamily: "inter", fontSize: 15 }}>
+            Filter
+          </button>
         </div>
 
         <div className='w-full flex flex-row justify-between mt-10'>
@@ -192,89 +202,91 @@ const Calls = () => {
           </div>
         )}
 
-        <div className='w-full'>
-          <Drawer
-            anchor="right"
-            open={open}
-            onClose={() => setOpen("")}
-            BackdropProps={{ style: { background: 'transparent' } }}
-          >
-            <div className='mr-5' style={{ width: "25vw", alignItems: 'center', padding: 20, marginTop: 20 }}>
-              <div className='w-full flex flex-col mt-8'>
-                <div style={{ fontSize: 14, fontWeight: 300, color: '#00000098' }}>
-                  {formateDate(open.createdAt)}
-                </div>
-                <div style={{ fontSize: 18, fontWeight: 400, color: '#000000' }}>
-                  {open && open.caller.name}
-                </div>
-                <div className='w-full flex flex-row mt-5'>
-                  <div className='w-6/12'>
-                    <div style={{ fontSize: 14, fontWeight: 300, color: '#00000080' }}>
-                      Total Spent
-                    </div>
-                  </div>
-                  <div className='w-6/12 flex-col'>
-                    <div style={{ textAlign: 'center', fontSize: 14, fontWeight: 300, color: '#000000' }}>
-                      ${open && open.caller.earned}
-                    </div>
+      </div>
+
+      <div className='w-full'>
+        <Drawer
+          anchor="right"
+          open={open}
+          onClose={() => setOpen("")}
+          BackdropProps={{ style: { background: 'transparent' } }}
+        >
+          <div className='mr-5' style={{ width: "25vw", alignItems: 'center', padding: 20, marginTop: 20 }}>
+            <div className='w-full flex flex-col mt-8'>
+              <div style={{ fontSize: 14, fontWeight: 300, color: '#00000098' }}>
+                {formateDate(open.createdAt)}
+              </div>
+              <div style={{ fontSize: 18, fontWeight: 400, color: '#000000' }}>
+                {open && open.caller.name}
+              </div>
+              <div className='w-full flex flex-row mt-5'>
+                <div className='w-6/12'>
+                  <div style={{ fontSize: 14, fontWeight: 300, color: '#00000080' }}>
+                    Total Spent
                   </div>
                 </div>
-                <div className='mt-5' style={{ fontSize: 18, fontWeight: 300, color: '#000000' }}>
-                  KYC
-                </div>
-                <div className='mt-5' style={{ fontSize: 14, fontWeight: 300, color: '#00000080' }}>
-                  Name
-                </div>
-                <div className='mt-3' style={{ fontSize: 14, fontWeight: 400, color: '#000000' }}>
-                  {open && open.caller.name}
-                </div>
-                <div className='mt-5' style={{ fontSize: 14, fontWeight: 300, color: '#00000080' }}>
-                  Age
-                </div>
-                <div className='mt-3' style={{ fontSize: 14, fontWeight: 400, color: '#000000' }}>
-                  23
-                </div>
-                <div className='mt-5' style={{ fontSize: 14, fontWeight: 300, color: '#00000080' }}>
-                  Favorite Quote
-                </div>
-                <div className='mt-3' style={{ fontSize: 14, fontWeight: 400, color: '#000000' }}>
-                  Lorem ipsum dolor sit amet consectetur. Volutpat sit condimentum purus lorem. Praesent odio morbi sit sem risus habitant vitae. Neque aliquam risus gravida vivamus non. Suscipit ut sed elementum ullamcorper varius integer. Sit penatibus posuere.
-                </div>
-                <div className='w-full flex flex-row items-center gap-2 mt-5'>
-                  <Image src={'/assets/playBtn.png'} alt='play'
-                    height={32} width={32}
-                  />
-                  <div className='' style={{ fontSize: 14, fontWeight: 400, color: '#000000' }}>
-                    Call recording 00102042024.mp4
+                <div className='w-6/12 flex-col'>
+                  <div style={{ textAlign: 'center', fontSize: 14, fontWeight: 300, color: '#000000' }}>
+                    ${open && open.caller.earned}
                   </div>
                 </div>
-                <div className='mt-5' style={{ fontSize: 14, fontWeight: 300, color: '#00000080' }}>
-                  Call log
+              </div>
+              <div className='mt-5' style={{ fontSize: 18, fontWeight: 300, color: '#000000' }}>
+                KYC
+              </div>
+              <div className='mt-5' style={{ fontSize: 14, fontWeight: 300, color: '#00000080' }}>
+                Name
+              </div>
+              <div className='mt-3' style={{ fontSize: 14, fontWeight: 400, color: '#000000' }}>
+                {open && open.caller.name}
+              </div>
+              <div className='mt-5' style={{ fontSize: 14, fontWeight: 300, color: '#00000080' }}>
+                Age
+              </div>
+              <div className='mt-3' style={{ fontSize: 14, fontWeight: 400, color: '#000000' }}>
+                23
+              </div>
+              <div className='mt-5' style={{ fontSize: 14, fontWeight: 300, color: '#00000080' }}>
+                Favorite Quote
+              </div>
+              <div className='mt-3' style={{ fontSize: 14, fontWeight: 400, color: '#000000' }}>
+                Lorem ipsum dolor sit amet consectetur. Volutpat sit condimentum purus lorem. Praesent odio morbi sit sem risus habitant vitae. Neque aliquam risus gravida vivamus non. Suscipit ut sed elementum ullamcorper varius integer. Sit penatibus posuere.
+              </div>
+              <div className='w-full flex flex-row items-center gap-2 mt-5'>
+                <Image src={'/assets/playBtn.png'} alt='play'
+                  height={32} width={32}
+                />
+                <div className='' style={{ fontSize: 14, fontWeight: 400, color: '#000000' }}>
+                  Call recording 00102042024.mp4
                 </div>
-                {
-                  callLogs.map((item) => (
-                    <div className='w-full flex flex-col mt-5'>
-                      <div key={item.id} className='w-full flex flex-row items-start gap-2'>
-                        <Image src={"/assets/callIcon.png"} alt='call'
-                          height={22} width={16}
-                        />
-                        <div className='flex flex-col'>
-                          <div className='' style={{ fontSize: 14, fontWeight: 400, color: '#000000' }}>
-                            {item.date}
-                          </div>
-                          <div className='' style={{ fontSize: 12, fontWeight: 400, color: '#000000' }}>
-                            {item.talkTime}
-                          </div>
+              </div>
+              <div className='mt-5' style={{ fontSize: 14, fontWeight: 300, color: '#00000080' }}>
+                Call log
+              </div>
+              {
+                callLogs.map((item) => (
+                  <div className='w-full flex flex-col mt-5'>
+                    <div key={item.id} className='w-full flex flex-row items-start gap-2'>
+                      <Image src={"/assets/callIcon.png"} alt='call'
+                        height={22} width={16}
+                      />
+                      <div className='flex flex-col'>
+                        <div className='' style={{ fontSize: 14, fontWeight: 400, color: '#000000' }}>
+                          {item.date}
+                        </div>
+                        <div className='' style={{ fontSize: 12, fontWeight: 400, color: '#000000' }}>
+                          {item.talkTime}
                         </div>
                       </div>
                     </div>
-                  ))
-                }
-              </div>
+                  </div>
+                ))
+              }
             </div>
-          </Drawer>
-        </div>
+          </div>
+        </Drawer>
       </div>
+
     </div>
   );
 };

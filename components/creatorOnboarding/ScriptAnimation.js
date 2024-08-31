@@ -47,6 +47,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
   const [talkAbout, setTalkAbout] = useState("");
   const [helpTagline, setHelpTagline] = useState("");
   const [buildAiLoader, setBuildAiLoader] = useState(false);
+  const [skipLoader, setSkipLoader] = useState(false);
   const [selectedAudio, setSelectedAudio] = useState(null);
   const [audioUrl, setAudioUrl] = useState(null);
   const [compressedAudioUrl, setCompressedAudioUrl] = useState(null);
@@ -89,9 +90,16 @@ export default function ScriptAnimation({ onChangeIndex }) {
 
   //calling api of ld your ai
 
-  const handleBuildAI = async () => {
+  const handleBuildAI = async (event) => {
+
     try {
-      setBuildAiLoader(true);
+
+      if (event) {
+        setSkipLoader(true);
+      } else {
+        setBuildAiLoader(true);
+      }
+
       const ApiPath = Apis.BuildAI;
       const LocalData = localStorage.getItem("User");
       const Data = JSON.parse(LocalData);
@@ -136,7 +144,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
           Authorization: "Bearer " + AuthToken,
         },
       });
-
+      // return
       if (response) {
         console.log("Response of create builai api is", response.data);
         if (response.data.status === true) {
@@ -151,6 +159,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
       console.error("ERror occured in build ai api", error);
     } finally {
       setBuildAiLoader(false);
+      setSkipLoader(false);
     }
   };
 
@@ -260,7 +269,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
               initial="enter"
               animate="center"
               exit="exit"
-              transition={{ duration: 1 }}
+              transition={{ duration: 0 }}
               style={styles}
             >
               <div className="w-full flex justify-center">
@@ -359,7 +368,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
               initial="enter"
               animate="center"
               exit="exit"
-              transition={{ duration: 1 }}
+              transition={{ duration: 0 }}
               style={styles}
             >
               <div className="w-full flex justify-center">
@@ -450,9 +459,9 @@ export default function ScriptAnimation({ onChangeIndex }) {
                         borderBottom: "none", // Remove the focused state bottom border
                       },
                       "& .MuiFilledInput-root:hover:not(.Mui-disabled):before":
-                        {
-                          borderBottom: "none", // Remove the hover state bottom border
-                        },
+                      {
+                        borderBottom: "none", // Remove the hover state bottom border
+                      },
                       "& .MuiFilledInput-root.Mui-focused:before": {
                         borderBottom: "none", // Ensure no border is shown when the field is focused
                       },
@@ -511,7 +520,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
               initial="enter"
               animate="center"
               exit="exit"
-              transition={{ duration: 1 }}
+              transition={{ duration: 0 }}
               style={styles}
             >
               <div className="w-full flex justify-center">
@@ -621,7 +630,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
               initial="enter"
               animate="center"
               exit="exit"
-              transition={{ duration: 1 }}
+              transition={{ duration: 0 }}
               style={styles}
             >
               <div className="w-full flex justify-center">
@@ -675,7 +684,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
               initial="enter"
               animate="center"
               exit="exit"
-              transition={{ duration: 1 }}
+              transition={{ duration: 0 }}
               style={styles}
             >
               <div className="w-full flex justify-center">
@@ -739,7 +748,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
               initial="enter"
               animate="center"
               exit="exit"
-              transition={{ duration: 1 }}
+              transition={{ duration: 0 }}
               style={styles}
             >
               <div className="w-full flex justify-center">
@@ -793,7 +802,8 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     <div className="flex flex-col items-center mt-6">
                       <input
                         type="file"
-                        accept="audio/*"
+                        // accept="audio/*"
+                        accept="audio/*,.mov,.mp3,.wav, .mp4/*"
                         ref={fileInputRef}
                         onChange={handleAudioChange}
                         className="hidden"
@@ -826,9 +836,13 @@ export default function ScriptAnimation({ onChangeIndex }) {
                           Upload
                         </Button>
                       </div>
-                      <button onClick={handleBuildAI}>
-                        <u>Skip</u>
-                      </button>
+                      {
+                        skipLoader ?
+                          <CircularProgress size={25} /> :
+                          <button onClick={(event) => handleBuildAI(event)}>
+                            <u>Skip</u>
+                          </button>
+                      }
                     </div>
                     <div className="w-full flex flex-row justify-end">
                       <div className="w-6/12">
@@ -869,7 +883,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
               initial="enter"
               animate="center"
               exit="exit"
-              transition={{ duration: 1 }}
+              transition={{ duration: 0 }}
               style={styles}
             >
               <div style={{ height: "auto" }}>
@@ -900,11 +914,11 @@ export default function ScriptAnimation({ onChangeIndex }) {
                   width={445}
                   layout="responsive"
                   objectFit="contain"
-                  // style={{
-                  //     aspectRatio: '3 / 2',
-                  //     maxWidth: '100%',
-                  //     height: 'auto'
-                  // }}
+                // style={{
+                //     aspectRatio: '3 / 2',
+                //     maxWidth: '100%',
+                //     height: 'auto'
+                // }}
                 />
                 <div className="flex flex-row mt-6 justify-center w-full gap-1">
                   <button style={{ fontSize: 11, fontWeight: "400" }}>

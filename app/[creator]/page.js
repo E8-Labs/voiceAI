@@ -720,6 +720,8 @@ const Page = () => {
                 </div>
             </div>
 
+            {/* Snack messages */}
+
             <Modal
                 open={openLoginModal}
                 // onClose={(() => setOpenLoginModal(false))}

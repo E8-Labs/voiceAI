@@ -12,7 +12,7 @@ const Page = () => {
 
   const styles = {
     buttonText: (item) => ({
-      fontSize: '2vh',
+      fontSize: 15,
       fontWeight: 400,
       color: selectedMenu === item.id ? "black" : "#00000060",
       // display: 'inline-block', // Ensure the text and purple bar are treated as inline-block elements
@@ -66,13 +66,13 @@ const Page = () => {
 
   return (
     <div className={navbarComponent}>
-      <div className='w-full flex flex-row justify-between pl-5 pt-10 pr-5' style={{ overflow: 'hidden' }}>
-        <div className='w-8/12'>
+      <div className='w-full flex flex-row justify-between pl-5 pt-10 pr-5 h-screen' style={{ overflow: 'hidden', backgroundColor: "#ffffff40" }}>
+        <div className='w-full'>
           <div className='w-full flex flex-col'>
-            <div className='w-full flex flex-row gap-4 '>
+            <div className='flex flex-row gap-4 '>
               {
                 manu.map((item) => (
-                  <div key={item.id} className='w-2/12 flex flex-col items-center'>
+                  <div key={item.id} className='flex flex-col items-center gap-2' style={{ backgroundColor: "" }}>
                     <button
                       style={styles.buttonText(item)}
                       onClick={() => {
@@ -105,7 +105,7 @@ const Page = () => {
             </div>
           </div>
         </div>
-        <div className='w-4/12 flex flex-col items-end pt-10'>
+        {/* <div className='w-4/12 flex flex-col items-end pt-10'>
           <div className='w-11/12 bg-white p-5 flex flex-col gap-10 items-center shadow  rounded'>
             <div style={{ fontSize: 17, fontWeight: 500 }}>
               Test Your AI
@@ -132,7 +132,7 @@ const Page = () => {
             </button>
 
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   )

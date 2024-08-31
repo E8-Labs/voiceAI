@@ -23,7 +23,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
     const [checkUserEmailData, setCheckUserEmailData] = useState(null);
 
     const handlePhoneNumber = (number) => {
-        console.log("Number is", number);
+        // console.log("Number is", number);
         setUserPhoneNumber(number);
     }
 

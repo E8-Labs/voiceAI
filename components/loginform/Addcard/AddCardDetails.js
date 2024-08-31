@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js'
 import { CardCvcElement, CardExpiryElement, CardNumberElement, useElements, useStripe } from '@stripe/react-stripe-js';
 // import { CardPostalCodeElement } from '@stripe/react-stripe-js';
-import { Alert, Button, CircularProgress, Slide, Snackbar } from '@mui/material'
+import { Alert, Button, CircularProgress, Fade, Slide, Snackbar } from '@mui/material'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 import Image from 'next/image';
@@ -10,7 +10,7 @@ import Apis from '@/components/apis/Apis';
 // import Apis from '../Apis/Apis';
 
 const AddCardDetails = ({
-    subscribePlan, fromBuildAiScreen = false, closeForm, selectedPlan }) => {
+    subscribePlan, fromBuildAiScreen = false, closeForm, selectedPlan, subscribeLoader }) => {
 
 
     const stripeReact = useStripe();
@@ -94,23 +94,6 @@ const AddCardDetails = ({
 
     const handleAddCard = async (e) => {
 
-        // Check if the event object is provided and prevent the default behavior
-        // if (selectedPlan) {
-        //     // selPlan = selectedPlan;
-        //     // setSelectedUserPlan(selectedPlan);
-        //     //console.log("selected plan is ", selectedPlan);
-        // }
-        //console.log("Pln status i have selecetd", selectedPlan);
-        // if (!selectedPlan) {
-        //     console.log("No plan selected Add Card Detail")
-        //     return
-        // }
-        // if (fromBuildAiScreen) {
-        //     //console.log("plan sending in api ", selectedUserPlan)
-        //     subscribePlan();
-        // }
-        // return
-        // return
         if (stop) {
             stop(false);
         }
@@ -138,6 +121,10 @@ const AddCardDetails = ({
         stripeReact.createToken(cardNumberElement).then(async function (tok) {
             if (tok.error) {
                 setCredentialsErr(true);
+                if (fromBuildAiScreen) {
+                    console.log("reached end");
+                    subscribeLoader(false);
+                }
                 toast.error(tok.error.code, {
                     position: "bottom-right",
                     pauseOnHover: true,
@@ -145,7 +132,9 @@ const AddCardDetails = ({
                     theme: "dark"
                 });
             } else if (tok.token.id) {
-                // setAddCardLoader(true);
+                if (!fromBuildAiScreen) {
+                    setAddCardLoader(true);
+                }
                 // if (handleSubLoader) {
                 //     handleSubLoader(true);
                 // }
@@ -203,7 +192,7 @@ const AddCardDetails = ({
                 } catch (error) {
                     console.error("Error occured in adding user card api is :", error);
                 } finally {
-                    // setAddCardLoader(false);
+                    setAddCardLoader(false);
                 }
             }
         })
@@ -345,11 +334,11 @@ const AddCardDetails = ({
                     }}
                     anchorOrigin={{
                         vertical: 'top',
-                        horizontal: 'right'
+                        horizontal: 'center'
                     }}
-                    TransitionComponent={Slide}
+                    TransitionComponent={Fade}
                     TransitionProps={{
-                        direction: 'left'
+                        direction: 'center'
                     }}
                 >
                     <Alert
@@ -371,11 +360,11 @@ const AddCardDetails = ({
                     }}
                     anchorOrigin={{
                         vertical: 'top',
-                        horizontal: 'right'
+                        horizontal: 'center'
                     }}
-                    TransitionComponent={Slide}
+                    TransitionComponent={Fade}
                     TransitionProps={{
-                        direction: 'left'
+                        direction: 'center'
                     }}
                 >
                     <Alert
@@ -397,11 +386,11 @@ const AddCardDetails = ({
                     }}
                     anchorOrigin={{
                         vertical: 'top',
-                        horizontal: 'right'
+                        horizontal: 'center'
                     }}
-                    TransitionComponent={Slide}
+                    TransitionComponent={Fade}
                     TransitionProps={{
-                        direction: 'left'
+                        direction: 'center'
                     }}
                 >
                     <Alert

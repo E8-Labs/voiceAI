@@ -52,7 +52,6 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
     const handleVerifyClick = async () => {
         // handleContinue();
         setVerifyLoader(true);
-        localStorage.removeItem('formData')
         console.log("Code sending is", data);
         // return
         try {
@@ -76,6 +75,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                             console.log("Response of signup api", response.data);
                             localStorage.setItem("User", JSON.stringify(response.data));
                             handleContinue();
+                            localStorage.removeItem('formData');
                         } else if (response.data.status === false) {
                             console.log("Response of api", response.data);
                             console.log("Signup api response not found");
@@ -107,7 +107,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                 Verify Phone Number
             </div>
             <div className='text-lightWhite' style={{ fontSize: 13, fontWeight: "400" }}>
-                6 digit code was sent to number ending with *9083
+                6 digit code was sent to number ending with ***{userLoginDetails.phone.slice(-4)}
             </div>
 
 

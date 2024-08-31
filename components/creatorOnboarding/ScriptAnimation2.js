@@ -334,6 +334,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
     const [cardAdded, setCardAdded] = useState(null);
     // //console.log("Card data added", setCardData);
     const [selectPlanErr, setSelectPlanErr] = useState(false);
+    const [subscribeFailureErr, setSubscribeFailureErr] = useState(null);
 
     const handleBuildScriptCont = (e) => {
         //console.log("Continue build script function");
@@ -348,6 +349,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
     const subscribePlan = async () => {
         const plan = selectedPlanRef.current;
+        // setsubscribeLoader(true);
         console.log("Subscribing user plan ", plan);
         if (plan == null) {
             console.log("Select plan is ", plan)
@@ -386,23 +388,29 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                     localStorage.removeItem("fromBuildScreen");
                     // handleSubLoader(false);
                     handleContinue();
+                } else {
+                    setsubscribeLoader(false);
+                    setSubscribeFailureErr(response.data.message);
                 }
             } else {
                 //console.log("api not responded");
             }
         } catch (error) {
             console.error("ERROR occured in subscribePlan Api", error);
-
         }
         finally {
-            // handleSubLoader(false);
+            setsubscribeLoader(false);
         }
+    }
+
+    const subscribeLoaderStatus = (e) => {
+        setsubscribeLoader(e)
     }
 
     const handleSubscribePlan = () => {
         //broadcast event
-        if(selectedPlan === null){
-            setSelectPlanErr(true)
+        if (selectedPlan === null) {
+            setSelectPlanErr(true);
             return
         }
         const event = new CustomEvent('subscribePlan', {
@@ -416,9 +424,6 @@ export default function ScriptAnimation2({ onChangeIndex }) {
         setsubscibe(e);
     }
 
-    const handleSubLoader = (e) => {
-        setsubscribeLoader(e);
-    }
 
 
 
@@ -435,7 +440,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             initial="enter"
                             animate="center"
                             exit="exit"
-                            transition={{ duration: 0.5 }}
+                            transition={{ duration: 0 }}
                             style={styles}
                         >
 
@@ -527,7 +532,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             initial="enter"
                             animate="center"
                             exit="exit"
-                            transition={{ duration: 0.5 }}
+                            transition={{ duration: 0 }}
                             style={styles}
                         >
                             <div className='w-full flex justify-center'>
@@ -608,7 +613,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             initial="enter"
                             animate="center"
                             exit="exit"
-                            transition={{ duration: 0.5 }}
+                            transition={{ duration: 0 }}
                             style={styles}>
                             <div className='w-full flex justify-center'>
                                 <div className='w-10/12'>
@@ -681,7 +686,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             initial="enter"
                             animate="center"
                             exit="exit"
-                            transition={{ duration: 0.5 }}
+                            transition={{ duration: 0 }}
                             style={styles}>
                             <div className='w-full flex justify-center'>
                                 <div className='w-10/12'>
@@ -773,7 +778,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             initial="enter"
                             animate="center"
                             exit="exit"
-                            transition={{ duration: 0.5 }}
+                            transition={{ duration: 0 }}
                             style={styles}>
                             <div className='w-full flex justify-center'>
                                 <div className='w-10/12'>
@@ -968,7 +973,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                 initial="enter"
                                 animate="center"
                                 exit="exit"
-                                transition={{ duration: 0.5 }}
+                                transition={{ duration: 0 }}
                                 style={styles}>
                                 <div className='w-full flex justify-center'>
                                     <div className='w-10/12'>
@@ -1048,7 +1053,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             initial="enter"
                             animate="center"
                             exit="exit"
-                            transition={{ duration: 0.5 }}
+                            transition={{ duration: 0 }}
                             style={styles}>
                             <div className='w-full flex flex-row' style={{ height: "auto" }}>
                                 <div className='w-6/12'>
@@ -1104,13 +1109,13 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                             className='w-full py-3 text-white bg-purple' style={{ borderRadius: "50px" }}>
                                             {
                                                 subscribeLoader ?
-                                                    <CircularProgress size={30} /> : "Continue"
+                                                    <CircularProgress size={25} /> : "Continue"
                                             }
                                         </button>
                                     </div>
 
 
-                                    {/* err msg when card noot added */}
+                                    {/* err msg when card not added */}
                                     <Snackbar
                                         open={selectPlanErr}
                                         autoHideDuration={2000}
@@ -1140,10 +1145,48 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                 width: '100%',
                                                 backgroundColor: 'white', // Set background color to white
                                                 color: 'black',
-                                                border: "2px solid grey"
+                                                border: "2px solid #EDEDED80"
                                             }}
                                         >
                                             Select plan to continue.
+                                        </Alert>
+                                    </Snackbar>
+
+                                    {/* Err msg when card not added */}
+
+                                    <Snackbar
+                                        open={subscribeFailureErr}
+                                        autoHideDuration={2000}
+                                        onClose={() => setSubscribeFailureErr(null)}
+                                        anchorOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'center',
+                                        }}
+                                        TransitionComponent={Fade}
+                                        TransitionProps={{
+                                            timeout: {
+                                                enter: 1000,
+                                                exit: 1000,
+                                            }
+                                        }}
+                                        sx={{
+                                            position: 'fixed', // Ensures it stays in place
+                                            top: 20, // Adjust as needed for spacing from the top
+                                            left: '50%', // Center horizontally
+                                            transform: 'translateX(-50%)', // Center horizontally
+                                        }}
+                                    >
+                                        <Alert
+                                            onClose={() => setSubscribeFailureErr(null)}
+                                            severity="error"
+                                            sx={{
+                                                width: '100%',
+                                                backgroundColor: 'white', // Set background color to white
+                                                color: 'black',
+                                                border: "2px solid #EDEDED80"
+                                            }}
+                                        >
+                                            {}
                                         </Alert>
                                     </Snackbar>
 
@@ -1172,6 +1215,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                             <AddCardDetails
                                                 subscribePlan={subscribePlan}
                                                 fromBuildAiScreen={true}
+                                                subscribeLoader={subscribeLoaderStatus}
                                             // selectedPlan={selectedPlan}
                                             // stop={stop}
                                             />
@@ -1193,7 +1237,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                 initial="enter"
                                 animate="center"
                                 exit="exit"
-                                transition={{ duration: 0.5 }}
+                                transition={{ duration: 0 }}
                                 style={styles}>
                                 <div className='w-full flex justify-center'>
                                     <div className='w-full flex flex-col justify-center items-center '>

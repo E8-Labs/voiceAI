@@ -149,14 +149,14 @@ const ProfileNav = () => {
             <div className='w-full'>
 
                 <div style={{ marginTop: 20 }}>
-                    <div className='px-4 flex gap-4 flex-row items-center'
-                        style={{ border: "2px solid #ffffff", borderRadius: 50 }}>
+                    <div className='px-4 flex gap-4 flex-row items-center py-1'
+                        style={{ borderRadius: 50, backgroundColor: "#ffffff30", width: "fit-content" }}>
                         <div className='flex flex-row items-center'>
                             <div style={{ border: "2px solid black", borderRadius: "50%" }}>
                                 {
                                     userDetails && userDetails.profile_image ?
                                         <Image src={userDetails.profile_image} alt='profilephoto' height={40} width={40} style={{ resize: "cover", padding: 2, borderRadius: "50%" }} /> :
-                                        <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={50} width={50} style={{ resize: "cover", padding: 2, borderRadius: "50%" }} />
+                                        <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={40} width={40} style={{ resize: "cover", padding: 2, borderRadius: "50%" }} />
                                 }
                             </div>
                             <div style={triangle} />
@@ -177,7 +177,7 @@ const ProfileNav = () => {
                                 }
 
                             </div>
-                            <div className='flex flex-row gap-4'>
+                            {/* <div className='flex flex-row gap-4'>
                                 <button>
                                     <Image
                                         // layout='responsive'
@@ -188,7 +188,7 @@ const ProfileNav = () => {
                                         // layout='responsive'
                                         objectFit='contain' src={"/assets/instagram.png"} alt='social' height={11} width={11} style={{ resize: "cover" }} />
                                 </button>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

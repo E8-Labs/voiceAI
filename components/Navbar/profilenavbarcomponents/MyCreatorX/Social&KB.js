@@ -66,7 +66,7 @@ export const SocialKB = () => {
       marginTop: 30,
       display: "flex",
       alignItems: "center",
-      backgroundColor: "#EDEDED40", /* Light grey background */
+      backgroundColor: "red", /* Light grey background */
       bordeRadius: 5, /* Rounded orners */
       padding: "8px 8px" /* Padding around input */
 
@@ -74,7 +74,7 @@ export const SocialKB = () => {
     inputContainer2: {
       marginTop: 10,
       display: "flex",
-      backgroundColor: "#EDEDED40", /* Light grey background */
+      backgroundColor: "transparent", /* Light grey background */
       bordeRadius: 5, /* Rounded orners */
       padding: "8px 8px" /* Padding around input */
 
@@ -110,132 +110,232 @@ export const SocialKB = () => {
       className='w-full flex flex-col p-15 pl-5 '
       style={{ height: '90vh', overflow: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none', marginTop: 20 }}
     >
-      <div className='w-6/12 flex flex-col'>
-        <div style={{ fontSize: 24, fontWeight: 300 }}>
-          Social
-        </div>
 
-        <div>
-          <div className='flex flex-row gap-5 mt-5 mb-5'>
-            <Image style={styles.image}
-              src={'/assets/fbIcon.png'} alt='facebook'
-              height={30} width={30} />
-            <div className='bg-grayBg w-full flex flex-row justify-between gap-2'
-              style={styles.button}
-            >
-              <div className='w-full'>
-                <input className='w-full bg-transparent outline-none border-none'
-                  value={fbUrl}
-                  onChange={(e) => setFburl(e.target.value)}
-                  placeholder='URL' />
-              </div>
-              <button className='text-purple'>
-                Edit
-              </button>
+      <div className='flex flex-row gap-6 w-full'>
 
-            </div>
+        <div className='w-4/12 px-8 py-4 rounded-2xl' style={{ backgroundColor: "#ffffff40" }}>
+          <div className='mt-4' style={{ fontSize: 24, fontWeight: 300 }}>
+            Social
           </div>
 
-          <div className='flex flex-row gap-5 mb-5'>
-            <Image style={styles.image}
-              src={'/assets/youtubeIcon.png'} alt='Youtube'
-              height={30} width={30} />
-            <div className='bg-grayBg w-full flex flex-row justify-between gap-2'
-              style={styles.button}
-            >
-              <div className='w-full'>
-                <input className='w-full bg-transparent outline-none border-none'
-                  value={youtubeUrl}
-                  onChange={(e) => setYoutubeurl(e.target.value)}
-                  placeholder='URL' />
-              </div>
-              <button className='text-purple'>
-                Edit
-              </button>
+          <div className='flex flex-col gap-4'>
+            <div className='flex flex-row gap-5 mt-7 mb-5'>
+              <Image style={styles.image}
+                src={'/assets/fbIcon.png'} alt='facebook'
+                height={30} width={30} />
+              <div className='bg-transparent w-full flex flex-row justify-between gap-2'
+                style={styles.button}
+              >
+                <div className='w-full'>
+                  <input className='w-full bg-transparent outline-none border-none'
+                    value={fbUrl}
+                    onChange={(e) => setFburl(e.target.value)}
+                    placeholder='URL' />
+                </div>
 
+              </div>
             </div>
-          </div>
 
-          <div className='flex flex-row gap-5 mb-5'>
-            <Image style={styles.image}
-              src={'/assets/twiterIcon.png'} alt='Icon'
-              height={30} width={30} />
-            <div className='bg-grayBg w-full flex flex-row justify-between gap-2'
-              style={styles.button}
-            >
-              <div className='w-full'>
-                <input className='w-full bg-transparent outline-none border-none'
-                  value={twitterUrl}
-                  onChange={(e) => setTwitterurl(e.target.value)}
-                  placeholder='URL' />
+            <div className='flex flex-row gap-5 mb-5'>
+              <Image style={styles.image}
+                src={'/assets/youtubeIcon.png'} alt='Youtube'
+                height={30} width={30} />
+              <div className='bg-transparent w-full flex flex-row justify-between gap-2'
+                style={styles.button}
+              >
+                <div className='w-full'>
+                  <input className='w-full bg-transparent outline-none border-none'
+                    value={youtubeUrl}
+                    onChange={(e) => setYoutubeurl(e.target.value)}
+                    placeholder='URL' />
+                </div>
+
               </div>
-              <button className='text-purple'>
-                Edit
-              </button>
-
             </div>
-          </div>
 
-          <div className='flex flex-row gap-5 mb-5'>
-            <Image style={styles.image}
-              src={'/assets/appleProducts.png'} alt='appleProducts'
-              height={30} width={30} />
-            <div className='bg-grayBg w-full flex flex-row justify-between gap-2'
-              style={styles.button}
-            >
-              <div className='w-full'>
-                <input className='w-full bg-transparent outline-none border-none'
-                  value={appleProducts}
-                  onChange={(e) => setAppleProducts(e.target.value)}
-                  placeholder='URL' />
+            <div className='flex flex-row gap-5 mb-5'>
+              <Image style={styles.image}
+                src={'/assets/twiterIcon.png'} alt='Icon'
+                height={30} width={30} />
+              <div className='bg-transparent w-full flex flex-row justify-between gap-2'
+                style={styles.button}
+              >
+                <div className='w-full'>
+                  <input className='w-full bg-transparent outline-none border-none'
+                    value={twitterUrl}
+                    onChange={(e) => setTwitterurl(e.target.value)}
+                    placeholder='URL' />
+                </div>
+
               </div>
-              <button className='text-purple'>
-                Edit
-              </button>
-
             </div>
-          </div>
 
-          <div className='flex flex-row gap-5 mb-5'>
-            <Image style={styles.image}
-              src={'/assets/spotify.png'} alt='spotifyIcon'
-              height={30} width={30} />
-            <div className='bg-grayBg w-full flex flex-row justify-between gap-2'
-              style={styles.button}
-            >
-              <div className='w-full'>
-                <input className='w-full bg-transparent outline-none border-none'
-                  value={spotifyurl}
-                  onChange={(e) => setSpotifyurl(e.target.value)}
-                  placeholder='URL' />
+            <div className='flex flex-row gap-5 mb-5'>
+              <Image style={styles.image}
+                src={'/assets/appleProducts.png'} alt='appleProducts'
+                height={30} width={30} />
+              <div className='bg-transparent w-full flex flex-row justify-between gap-2'
+                style={styles.button}
+              >
+                <div className='w-full'>
+                  <input className='w-full bg-transparent outline-none border-none'
+                    value={appleProducts}
+                    onChange={(e) => setAppleProducts(e.target.value)}
+                    placeholder='URL' />
+                </div>
+
               </div>
-              <button className='text-purple'>
-                Edit
-              </button>
-
             </div>
-          </div>
 
-          <div className='flex flex-row gap-5 mb-5'>
-            <Image style={styles.image}
-              src={'/assets/instagram.png'} alt='insta'
-              height={30} width={30} />
-            <div className='bg-grayBg w-full flex flex-row justify-between gap-2'
-              style={styles.button}
-            >
-              <div className='w-full'>
-                <input className='w-full bg-transparent outline-none border-none'
-                  value={instaUrl}
-                  onChange={(e) => setInstaurl(e.target.value)}
-                  placeholder='URL' />
+            <div className='flex flex-row gap-5 mb-5'>
+              <Image style={styles.image}
+                src={'/assets/spotify.png'} alt='spotifyIcon'
+                height={30} width={30} />
+              <div className='bg-transparent w-full flex flex-row justify-between gap-2'
+                style={styles.button}
+              >
+                <div className='w-full'>
+                  <input className='w-full bg-transparent outline-none border-none'
+                    value={spotifyurl}
+                    onChange={(e) => setSpotifyurl(e.target.value)}
+                    placeholder='URL' />
+                </div>
+
               </div>
-              <button className='text-purple'>
-                Edit
-              </button>
+            </div>
 
+            <div className='flex flex-row gap-5 mb-5'>
+              <Image style={styles.image}
+                src={'/assets/instagram.png'} alt='insta'
+                height={30} width={30} />
+              <div className='bg-transparent w-full flex flex-row justify-between gap-2'
+                style={styles.button}
+              >
+                <div className='w-full'>
+                  <input className='w-full bg-transparent outline-none border-none'
+                    value={instaUrl}
+                    onChange={(e) => setInstaurl(e.target.value)}
+                    placeholder='URL' />
+                </div>
+
+              </div>
             </div>
           </div>
         </div>
+
+        <div className='w-5/12 px-8 py-4 rounded-2xl' style={{ backgroundColor: "#ffffff40" }}>
+          <div style={{ fontSize: 24, fontWeight: 300 }}>
+            Social
+          </div>
+
+          <div>
+            <div className='flex flex-row gap-5 mt-5 mb-5'>
+              <Image style={styles.image}
+                src={'/assets/fbIcon.png'} alt='facebook'
+                height={30} width={30} />
+              <div className='bg-transparent w-full flex flex-row justify-between gap-2'
+                style={styles.button}
+              >
+                <div className='w-full' style={{ fontSize: 15, fontWeight: "400", fontFamily: "inter" }}>
+                  Facebook
+                </div>
+                <button className='text-white px-4 py-2 bg-purple' style={{ fontWeight: "400", fontSize: 15, fontFamily: "inter", borderRadius: "50px" }}>
+                  Connect
+                </button>
+
+              </div>
+            </div>
+
+            <div className='flex flex-row gap-5 mb-5'>
+              <Image style={styles.image}
+                src={'/assets/youtubeIcon.png'} alt='Youtube'
+                height={30} width={30} />
+              <div className='bg-transparent w-full flex flex-row justify-between gap-2'
+                style={styles.button}
+              >
+                <div className='w-full' style={{ fontSize: 15, fontWeight: "400", fontFamily: "inter" }}>
+                  Youtube
+                </div>
+                <button className='text-white px-4 py-2 bg-purple' style={{ fontWeight: "400", fontSize: 15, fontFamily: "inter", borderRadius: "50px" }}>
+                  Connect
+                </button>
+
+              </div>
+            </div>
+
+            <div className='flex flex-row gap-5 mb-5'>
+              <Image style={styles.image}
+                src={'/assets/twiterIcon.png'} alt='Icon'
+                height={30} width={30} />
+              <div className='bg-transparent w-full flex flex-row justify-between gap-2'
+                style={styles.button}
+              >
+                <div className='w-full' style={{ fontSize: 15, fontWeight: "400", fontFamily: "inter" }}>
+                  X (Formerly Twitter)
+                </div>
+                <button className='text-white px-4 py-2 bg-purple' style={{ fontWeight: "400", fontSize: 15, fontFamily: "inter", borderRadius: "50px" }}>
+                  Connect
+                </button>
+
+              </div>
+            </div>
+
+            <div className='flex flex-row gap-5 mb-5'>
+              <Image style={styles.image}
+                src={'/assets/appleProducts.png'} alt='appleProducts'
+                height={30} width={30} />
+              <div className='bg-transparent w-full flex flex-row justify-between gap-2'
+                style={styles.button}
+              >
+                <div className='w-full' style={{ fontSize: 15, fontWeight: "400", fontFamily: "inter" }}>
+                  Apple Podcast
+                </div>
+                <button className='text-white px-4 py-2 bg-purple' style={{ fontWeight: "400", fontSize: 15, fontFamily: "inter", borderRadius: "50px" }}>
+                  Connect
+                </button>
+
+              </div>
+            </div>
+
+            <div className='flex flex-row gap-5 mb-5'>
+              <Image style={styles.image}
+                src={'/assets/spotify.png'} alt='spotifyIcon'
+                height={30} width={30} />
+              <div className='bg-transparent w-full flex flex-row justify-between gap-2'
+                style={styles.button}
+              >
+                <div className='w-full' style={{ fontSize: 15, fontWeight: "400", fontFamily: "inter" }}>
+                  Spotify Podcast
+                </div>
+                <button className='text-white px-4 py-2 bg-purple' style={{ fontWeight: "400", fontSize: 15, fontFamily: "inter", borderRadius: "50px" }}>
+                  Connect
+                </button>
+
+              </div>
+            </div>
+
+            <div className='flex flex-row gap-5 mb-5'>
+              <Image style={styles.image}
+                src={'/assets/instagram.png'} alt='insta'
+                height={30} width={30} />
+              <div className='bg-transparent w-full flex flex-row justify-between gap-2'
+                style={styles.button}
+              >
+                <div className='w-full' style={{ fontSize: 15, fontWeight: "400", fontFamily: "inter" }}>
+                  Instagram
+                </div>
+                <button className='text-white px-4 py-2 bg-purple' style={{ fontWeight: "400", fontSize: 15, fontFamily: "inter", borderRadius: "50px" }}>
+                  Connect
+                </button>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div className='w-4/12 mt-4 px-6 rounded-2xl flex flex-col' style={{ backgroundColor: "#ffffff40" }}>
+
 
         <div style={{ fontSize: 24, fontWeight: 300, marginTop: 20 }}>
           Knowledge Base
@@ -246,10 +346,10 @@ export const SocialKB = () => {
             Sell a Product
           </div>
 
-          <div className='w-full bg-grayBg flex  flex-row items-start mt-2 rounded'
+          <div className='w-full bg-transparent flex  flex-row items-start mt-2 rounded'
             style={styles.inputContainer2}>
             <textarea
-              className="w-6/12"
+              className="w-full"
               style={{
                 border: 'none',
                 outline: 'none',
@@ -263,13 +363,11 @@ export const SocialKB = () => {
               rows={8} // Adjust the number of rows to set the height of the textarea
               multiple
             />
-            <button className='w-2/12 self-start'
-            // onClick={}
-            >
+            {/* <button className='w-2/12 self-start'>
               <div className='text-purple'>
                 Edit
               </div>
-            </button>
+            </button> */}
           </div>
 
           <div className='w-full flex flex-col mt-5 gap-5'>
