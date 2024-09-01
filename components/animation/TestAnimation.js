@@ -45,8 +45,8 @@ const CycleArray = ({ data, assistantData }) => {
                 <div>
                     {
                         data[currentIndex] && data[currentIndex].caller && data[currentIndex].caller.profile_image ?
-                            <Image src={data[currentIndex].caller.profile_image} alt='profile' height={31} width={31} style={{ borderRadius: "50%" }} /> :
-                            <Image src="/assets/placeholderImg.jpg" alt='profile' height={40} width={40} style={{ borderRadius: "50%" }} />
+                            <Image src={data[currentIndex].caller.profile_image} alt='live' height={31} width={31} style={{ borderRadius: "50%" }} /> :
+                            <Image src="/assets/placeholderImg.jpg" alt='12' height={40} width={40} style={{ borderRadius: "50%" }} />
                     }
                 </div>
                 <div>

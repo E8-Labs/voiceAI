@@ -1,7 +1,32 @@
 import Image from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
 
 export const AiDetails = () => {
+
+  //code for showing and hiding the questions
+  const [interactionQuestions, setInterractionQuestions] = useState([
+    {
+      id: 1,
+      title: "Question 1",
+      details: "Hello it is queston 1 how are you?"
+    },
+    {
+      id: 2,
+      title: "Question 2",
+      details: "Hello it is queston 2 what is your name?"
+    },
+    {
+      id: 3,
+      title: "Question 3",
+      details: "Hello it is queston 3 where are you from?"
+    },
+  ])
+  const [interactionQuestionsDetails, setInteractionQuestionsDetails] = useState(null);
+
+  const handleInterRactionQuestionDetails = (id) => {
+    setInteractionQuestionsDetails(interactionQuestionsDetails === id ? null : id);
+  }
+
   const styles = {
     inputContainer: {
       marginTop: 30,
@@ -369,11 +394,100 @@ export const AiDetails = () => {
               Interaction examples
             </div>
 
+            {
+              interactionQuestions.map((item) => (
+                <div key={item.id}>
+                  <div className='w-full flex flex-row items-center justify-between mt-4'>
+                    <div style={{ fontFamily: 'inter', fontSize: 13, fontWeight: '500' }}>
+                      {item.title}
+                    </div>
+                    <button onClick={() => handleInterRactionQuestionDetails(item.id)}>
+                      {
+                        interactionQuestionsDetails === item.id ?
+                          'less' :
+                          'more'
+                      }
+                      {/*<Image alt='up' height={} width={} />*/}
+                    </button>
+                  </div>
+                  {interactionQuestionsDetails === item.id &&
+                    <div>
+                      {item.details}
+                    </div>
+                  }
+                </div>
+              ))
+            }
+
+            <button className='mt-4 text-purple' style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 15 }}>
+              Add More
+            </button>
+
           </div>
           <div className='px-6 rounded-xl w-5/12 pb-4' style={{ backgroundColor: '#ffffff50', }}>
             <div className='mt-6' style={{ fontFamily: 'inter', fontSize: 15, fontWeight: '500' }}>
-              Head
+              Framework & Techniques
             </div>
+
+
+            {
+              interactionQuestions.map((item) => (
+                <div key={item.id}>
+                  <div className='w-full flex flex-row items-center justify-between mt-4'>
+                    <div style={{ fontFamily: 'inter', fontSize: 13, fontWeight: '500' }}>
+                      {item.title}
+                    </div>
+                    <button onClick={() => handleInterRactionQuestionDetails(item.id)}>
+                      {
+                        interactionQuestionsDetails === item.id ?
+                          'less' :
+                          'more'
+                      }
+                      {/*<Image alt='up' height={} width={} />*/}
+                    </button>
+                  </div>
+                  {interactionQuestionsDetails === item.id &&
+                    <div>
+                      {item.details}
+                    </div>
+                  }
+                </div>
+              ))
+            }
+
+            <button className='mt-4 text-purple' style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 15 }}>
+              Add More
+            </button>
+
+            <div className='mt-6' style={{ fontFamily: 'inter', fontSize: 15, fontWeight: '500' }}>
+              Expression examples
+            </div>
+
+            <div>
+              <input
+                className='w-full bg-transparent px-2 py-2 mt-4 outline-none border-none'
+                placeholder='First expression here'
+                style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 13, borderBottom: '2px solid #00000011', }} />
+              <input
+                className='w-full bg-transparent px-2 py-2 mt-4 outline-none border-none'
+                placeholder='Second expression here'
+                style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 13, borderBottom: '2px solid #00000011', }} />
+              <button className='mt-4 text-purple' style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 15 }}>
+                Add More
+              </button>
+            </div>
+
+            <div className='mt-6' style={{ fontFamily: 'inter', fontSize: 15, fontWeight: '500' }}>
+              Key Quotes
+            </div>
+
+            <div className='mt-4' style={{ fontFamily: 'inter', fontSize: 13, fontWeight: '400' }}>
+              Lorem ipsum dolor sit amet consectetur. Amet quis interdum ipsum non eu aliquam aliquet consequat et. Tincidunt pharetra quam ac viverra. Sit pellentesque faucibus non sit. Feugiat consequat ultrices erat est. Nulla.
+            </div>
+
+            <button className='mt-4 text-purple' style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 15 }}>
+              Add More
+            </button>
 
           </div>
         </div>

@@ -158,7 +158,7 @@ const Page = () => {
                 }
             });
             if (response) {
-                //console.log("respose of get recentcalls api", response.data);
+                console.log("respose of get recentcalls api", response.data);
                 setGetRecentCallsData(response.data.data);
             }
         } catch (error) {
