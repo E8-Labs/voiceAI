@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Drawer from '@mui/material/Drawer';
 import moment from 'moment';
 import Apis from '@/components/apis/Apis';
+import { FormControl, MenuItem, Select } from '@mui/material';
 
 const Calls = () => {
   const [open, setOpen] = useState('');
@@ -116,6 +117,18 @@ const Calls = () => {
     return formatedDate
   }
 
+  //open drawer
+  const [openFilterDrawer, setOpenFilterDrawer] = useState(false);
+  const [productType, setProductType] = useState('none');
+
+  const handleFilterDrawer = (status) => {
+    setOpenFilterDrawer(status);
+  };
+
+  const handleProductType = (e) => {
+    setProductType(e.target.value);
+  }
+
   return (
     <div className='w-full flex flex-col pl-10 pt-10'
       style={{ height: '90vh', overflow: "auto", scrollbarWidth: "none", msOverflowStyle: 'none', }}>
@@ -156,9 +169,84 @@ const Calls = () => {
             />
             <Image src={"/assets/searchIcon.png"} width={20} height={20} />
           </div>
-          <button className='text-purple' style={{ fontWeight: "400", fontFamily: "inter", fontSize: 15 }}>
+          <button onClick={() => handleFilterDrawer(true)} className='text-purple' style={{ fontWeight: "400", fontFamily: "inter", fontSize: 15 }}>
             Filter
           </button>
+          <Drawer open={openFilterDrawer} onClose={() => handleFilterDrawer(false)}
+            anchor='right'
+            sx={{ '& .MuiDrawer-paper': { width: '30%' } }}>
+            <div className='pt-6 px-8' style={{ backgroundColor: "#ffffff70", height: "100%" }}>
+              <div className='flex flex-row w-full justify-between items-center'>
+                <div style={{ color: 'black', fontWeight: '400', fontSize: 15, fontFamily: 'inter' }}>
+                  Filter
+                </div>
+                <div>
+                  <button onClick={() => handleFilterDrawer(false)}>
+                    Close
+                  </button>
+                </div>
+              </div>
+              <div className='mt-6' style={{ fontWeight: '600', fontSize: 11, fontFamily: 'inter' }}>
+                Range
+              </div>
+
+              <div className='mt-4 w-full'>
+                <input className='w-full bg-gray-200' type='text' placeholder='Start Date' />
+              </div>
+
+              <div className='mt-4 w-full'>
+                <input className='w-full bg-gray-200' type='text' placeholder='End Date' />
+              </div>
+
+              <div className='mt-6' style={{ fontWeight: '600', fontSize: 11, fontFamily: 'inter' }}>
+                Produt
+              </div>
+
+              {/* Dropdown for products */}
+              <div>
+                <FormControl className='w-full mt-4'>
+                  <Select
+                    className=' border-none rounded-md'
+                    displayEmpty
+                    value={productType}
+                    onChange={handleProductType}
+                    // renderValue={(selected) => {
+                    //   if (selected.length === 0) {
+                    //     return <em>Select Type</em>;
+                    //   }
+                    //   return selected;
+                    // }}
+                    sx={{
+                      backgroundColor: '#EDEDED80',
+                      '& .MuiOutlinedInput-notchedOutline': {
+                        border: 'none',
+                      },
+                    }}
+                    MenuProps={{
+                      PaperProps: {
+                        sx: { backgroundColor: '#ffffff' },
+                      },
+                    }}
+                  >
+                    <MenuItem value="none">
+                      <em>Select Product</em>
+                    </MenuItem>
+                    <MenuItem value="P1">Product 1</MenuItem>
+                    <MenuItem value="P2">Product 2</MenuItem>
+                    <MenuItem value="P3">Product 3</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+
+              <div className='w-full flex flex-row justify-center mt-12'>
+                <button className='w-full py-3 w-10/12 bg-purple'
+                  style={{ fontWeight: '400', fontSize: 15, fontFamily: 'inter', color: 'white', borderRadius: '50px' }}>
+                  Apply Filter
+                </button>
+              </div>
+
+            </div>
+          </Drawer>
         </div>
 
         <div className='w-full flex flex-row justify-between mt-10'>

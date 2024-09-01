@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import React from 'react'
 
 export const AiDetails = () => {
@@ -13,11 +14,12 @@ export const AiDetails = () => {
     input: {
       border: 'none',
       outline: 'none',
-      backgroundColor: 'transparent',
+      backgroundColor: '#EDEDED60',
       flexGrow: 1,
       fontSize: '16px',
       paddingLeft: '10px',
       color: '#000', // Ensure text is black
+      padding: 10
     },
     inputContainer2: {
       marginTop: 10,
@@ -34,7 +36,7 @@ export const AiDetails = () => {
       className='w-full flex flex-col p-15 pl-5'
       style={{ height: '90vh', overflow: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none', marginTop: 20 }}
     >
-      <div className='w-11/12 flex flex-col'>
+      {/*<div className='w-11/12 flex flex-col'>
         <div style={{ fontSize: 24, fontWeight: 300 }}>
           AI Persona
         </div>
@@ -244,6 +246,138 @@ export const AiDetails = () => {
             </div>
           </div>
         </div>
+                  </div>*/}
+
+      <div className='w-full'>
+        <div className='w-full flex flex-row items-start gap-4'>
+          <div className=' w-5/12 rounded-xl px-6 pb-4' style={{ backgroundColor: '#ffffff50', }}>
+            <div className='mt-8'
+              style={{ fontSize: 15, fontWeight: '500', fontFamily: 'inter' }}>
+              Values & Beliefs
+            </div>
+            <div className='mt-4'>
+              Lorem ipsum dolor sit amet consectetur. Amet quis interdum ipsum non eu aliquam aliquet consequat et. Tincidunt pharetra quam ac viverra. Sit pellentesque faucibus non sit. Feugiat consequat ultrices erat est. Nulla.
+            </div>
+            <button className='mt-4 text-purple'
+              style={{ fontSize: 15, fontWeight: '400', fontFamily: 'inter' }}>
+              Read More
+            </button>
+            {/* Code for the Voice user added */}
+
+            <div className='mt-8'
+              style={{ fontSize: 15, fontWeight: '500', fontFamily: 'inter' }}>
+              My Voice
+            </div>
+
+            <div className='w-full flex flex-row gap-4 mt-2 items-center'>
+              <div>
+                <Image src='/assets/playIcon.png' alt='ply' height={32} width={32} />
+              </div>
+              <div className='w-11/12 flex flex-row justify-between'>
+                <div>
+                  Audio name
+                </div>
+                <div>
+                  <button className='text-purple' style={{ fontSize: 13, fontWeight: '500', fontFamily: 'inter' }}>
+                    Change
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          {/*<div className='w-5/12 rounded-xl' style={{ backgroundColor: '#ffffff', }}>
+            Box 2
+                </div>*/}
+          <div className='w-4/12 flex flex-col items-end'>
+            <div className='w-11/12 bg-white p-5 flex flex-col gap-10 items-center shadow  rounded-xl'>
+              <div style={{ fontSize: 20, fontWeight: "700", fontFamily: 'inter' }}>
+                Test Your AI
+              </div>
+
+              <input
+                className='w-full'
+                style={styles.input}
+                placeholder="Name"
+              />
+
+              <input
+                className='w-full'
+                style={styles.input}
+                placeholder="Phone Number"
+              />
+
+              <button className='w-full py-3' style={{
+                backgroundColor: '#552AFF', borderRadius: 5, color: 'white', marginTop: 25, borderRadius: "50px"
+              }}
+              // onClick={handleContinue}
+              >
+                Test AI
+              </button>
+
+            </div>
+          </div>
+        </div>
+
+        <div className='w-full flex flex-row mt-4 mb-6 gap-6'>
+          <div className='px-6 rounded-xl w-5/12 pb-4' style={{ backgroundColor: '#ffffff50', }}>
+            <div className='mt-6' style={{ fontFamily: 'inter', fontSize: 15, fontWeight: '500' }}>
+              Personality Trait
+            </div>
+
+            <div className='mt-3' style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 13 }}>
+              Agressive
+            </div>
+            <div className='mt-2'>
+              Progressbar
+            </div>
+
+            <div className='mt-3' style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 13 }}>
+              Polite
+            </div>
+            <div className='mt-2'>
+              Progressbar
+            </div>
+
+            <div className='mt-3' style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 13 }}>
+              Positive
+            </div>
+            <div className='mt-2'>
+              Progressbar
+            </div>
+
+            <div className='mt-3' style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 13 }}>
+              Humor
+            </div>
+            <div className='mt-2'>
+              Progressbar
+            </div>
+
+            <div className='mt-6' style={{ fontFamily: 'inter', fontSize: 15, fontWeight: '500' }}>
+              Call Instruction
+            </div>
+
+            <div className='mt-2' style={{ fontWeight: '500', fontSize: 13, fontFamily: 'inter' }}>
+              Lorem ipsum dolor sit amet consectetur. Amet quis interdum ipsum non eu aliquam aliquet consequat et. Tincidunt pharetra quam ac viverra. Sit pellentesque faucibus non sit. Feugiat consequat ultrices erat est. Nulla.
+            </div>
+
+            <button className='mt-4 text-purple' style={{ fontWeight: '500', fontFamily: 'inter' }}>
+              Read More
+            </button>
+
+            <div className='mt-6' style={{ fontFamily: 'inter', fontSize: 15, fontWeight: '500' }}>
+              Interaction examples
+            </div>
+
+          </div>
+          <div className='px-6 rounded-xl w-5/12 pb-4' style={{ backgroundColor: '#ffffff50', }}>
+            <div className='mt-6' style={{ fontFamily: 'inter', fontSize: 15, fontWeight: '500' }}>
+              Head
+            </div>
+
+          </div>
+        </div>
+
       </div>
     </div>
 

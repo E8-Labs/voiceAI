@@ -64,6 +64,8 @@ export default function Animation({ onChangeIndex }) {
     const [VP3, setVP3] = useState("");
     const [VP4, setVP4] = useState("");
     const [VP5, setVP5] = useState("");
+    const [verifyLoader, setVerifyLoader] = useState(false);
+    const [verifyErr, setVerifyErr] = useState(false);
 
     const checkUserName = async () => {
         const ApiPath = Apis.checkUserName;
@@ -405,6 +407,7 @@ export default function Animation({ onChangeIndex }) {
         const modalName = D.modalName;
         // router.push(`/${modalName}`);
         try {
+            setVerifyLoader(true);
             const ApiPath = Apis.verifyCode;
             const data = {
                 code: VP1 + VP2 + VP3 + VP4 + VP5,
@@ -427,12 +430,17 @@ export default function Animation({ onChangeIndex }) {
                     // return
                     router.push(`/${modalName}`);
                     localStorage.removeItem('route');
+                } else {
+                    setVerifyErr(true);
                 }
             } else {
                 console.log("error");
             }
         } catch (error) {
             console.error("Error occured in loginverification code", error);
+        } finally {
+            setVerifyLoader(true);
+            setVerifyErr(false);
         }
     }
 
@@ -579,7 +587,7 @@ export default function Animation({ onChangeIndex }) {
                         >
                             <div className='w-full'>
                                 <div className='text-lightWhite' style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
-                                    Enter verification code sent to ****{signinVerificationNumber}
+                                    Enter verification code sent to ****{Number(signinVerificationNumber.slice(-4))}
                                 </div>
                                 <div className='flex flex-row gap-4 mt-4'>
                                     <input
@@ -629,10 +637,16 @@ export default function Animation({ onChangeIndex }) {
                                     />
                                 </div>
                                 <div className='mt-8 w-8/12' style={{ color: "white" }}>
-                                    <Button onClick={handleVerifyLoginCode} className='bg-purple hover:bg-purple2 text-white rounded w-full'
-                                        style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
-                                        Continue
-                                    </Button>
+                                    {
+                                        verifyLoader ?
+                                            <div className='w-full mt-4 flex flex-row justify-center'>
+                                                <CircularProgress size={30} />
+                                            </div> :
+                                            <Button onClick={handleVerifyLoginCode} className='bg-purple hover:bg-purple2 text-white rounded w-full'
+                                                style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
+                                                Continue
+                                            </Button>
+                                    }
                                 </div>
                                 <div className='mt-6 flex flex-row items-center gap-1'>
                                     <div style={{ fontSize: 12, fontWeight: "400" }}>
@@ -642,6 +656,7 @@ export default function Animation({ onChangeIndex }) {
                                         Signup
                                     </button>
                                 </div>
+                                {/* Err msg when not verified */}
                             </div>
                         </motion.div>
                     </div>
