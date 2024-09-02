@@ -18,8 +18,24 @@ export default function AnimatedButton({ snackMessage, error = false }) {
     //     }
     // }, [isExpanded]);
 
+    // useEffect(() => {
+    //     const localData = localStorage.getItem('User');
+    //     const Data = JSON.parse(localData);
+    // }, [])
+
+
     const handleProfileClick = () => {
-        router.push('/profile');
+        const localData = localStorage.getItem('User');
+        if (localData) {
+            const Data = JSON.parse(localData);
+            console.log("Data recieved is", Data);
+            if (Data.data.user.role === "caller") {
+                router.push('/callerProfile')
+            } else {
+                router.push('/profile');
+            }
+        }
+        // return
     }
 
     return (

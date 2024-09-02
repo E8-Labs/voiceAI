@@ -1,4 +1,4 @@
-const BasePath = 'https://www.blindcircle.com:444/voice/'//'https://www.blindcircle.com:444/voice/' //;'http://localhost:8005/'
+const BasePath = 'https://www.blindcircle.com:444/voice/' //'https://www.blindcircle.com:444/voice/' //;'http://localhost:8005/'
 
 const Apis = {
     //user flow apis
@@ -10,7 +10,7 @@ const Apis = {
     MakeCall: `${BasePath}api/calls/make_a_call`,
     Caller_to_Creator: `${BasePath}api/user/updateUserRole`,
     BuildAI: `${BasePath}api/ai/buildAi`,
-    BuildScript:`${BasePath}api/ai/buildAiScript`,
+    BuildScript: `${BasePath}api/ai/buildAiScript`,
 
 
     GetRecentCalls: `${BasePath}api/calls/get_recent_calls`,
@@ -28,7 +28,10 @@ const Apis = {
 
 
     //user profile apis
-    MyAiapi: `${BasePath}api/user/my_ai`
+    MyAiapi: `${BasePath}api/user/my_ai`,
+    CallerCallLogs: `${BasePath}api/user/call_logs`,
+    CallerInvoices: `${BasePath}api/user/invoices`,
+    GetCardList: `${BasePath}api/user/list_cards`
 
 
 }

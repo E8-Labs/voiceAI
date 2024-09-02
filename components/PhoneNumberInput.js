@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 
-const PhoneNumberInput = ({ phonenumber }) => {
+const PhoneNumberInput = ({ phonenumber, myCallerAccount }) => {
     const [phone, setPhone] = useState('');
     const [focus, setFocus] = useState(false);
     const [countryCode, setCountryCode] = useState('us');
@@ -17,8 +17,24 @@ const PhoneNumberInput = ({ phonenumber }) => {
             const timeOut = setTimeout(() => {
                 setPhone(Data.phonenumber)
             }, 1500);
-            return() => clearTimeout(timeOut);
+            return () => clearTimeout(timeOut);
         }
+
+
+        // const Data = JSON.parse(localData);
+        const timeOut = setTimeout(() => {
+            const localData = localStorage.getItem('User');
+            if (localData) {
+                const Data = JSON.parse(localData);
+                // console.log("user data is", Data);
+                if (Data.data.user.phone) {
+                    console.log("Recieving nummber", Data.data.user.phone);
+                    setPhone(Data.data.user.phone)
+                }
+            }
+        }, 1500);
+        return () => clearTimeout(timeOut);
+
     }, [])
 
     // Fetch user's current location
@@ -92,7 +108,7 @@ const PhoneNumberInput = ({ phonenumber }) => {
                     border: "#00000070", //data ? "none" : focus ? '2px solid #00000080' : "1px solid #00000070",
                     paddingLeft: '60px',
                     height: 50,
-                    backgroundColor: "#EDEDED", // data ? "#EDEDED" : "transparent"
+                    backgroundColor: myCallerAccount ? "transparent" : "#EDEDED", // data ? "#EDEDED" : "transparent"
                 }}
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}

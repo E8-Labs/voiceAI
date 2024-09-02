@@ -224,8 +224,8 @@ export const SocialKB = () => {
         </div>
 
         <div className='w-5/12 px-8 py-4 rounded-2xl' style={{ backgroundColor: "#ffffff40" }}>
-          <div style={{ fontSize: 24, fontWeight: 300 }}>
-            Social
+          <div className='mt-4' style={{ fontSize: 24, fontWeight: 300 }}>
+            O Auth
           </div>
 
           <div>
