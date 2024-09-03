@@ -31,7 +31,10 @@ const Apis = {
     MyAiapi: `${BasePath}api/user/my_ai`,
     CallerCallLogs: `${BasePath}api/user/call_logs`,
     CallerInvoices: `${BasePath}api/user/invoices`,
-    GetCardList: `${BasePath}api/user/list_cards`
+    GetCardList: `${BasePath}api/user/list_cards`,
+    CallerDashboard: `${BasePath}api/user/caller_dashboard`,
+    BuyProduct: `${BasePath}api/user/buy_product`,
+    makeDefaultCard: `${BasePath}api/user/make_default`
 
 
 }

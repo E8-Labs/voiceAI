@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.13.0",
     "@ffmpeg/ffmpeg": "^0.12.10",
     "@mui/material": "^5.16.7",
+    "@mui/x-date-pickers": "^7.15.0",
     "@stripe/react-stripe-js": "^2.7.3",
     "@stripe/stripe-js": "^4.2.0",
     "axios": "^1.7.3",

@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Apis from '@/components/apis/Apis';
 import axios from 'axios';
 import { CircularProgress } from '@mui/material';
+import moment from 'moment';
 
 const Page = () => {
 
@@ -51,8 +52,9 @@ const Page = () => {
 
     const styles = {
         text: {
-            fontSize: 12,
-            color: '#00000090'
+            fontSize: 14,
+            color: '#00000090',
+            fontWeight: '400'
         },
         text2: {
             textAlignLast: 'left',
@@ -100,7 +102,7 @@ const Page = () => {
                 </div>
 
                 <div className='w-full p-5 rounded-xl'
-                    style={{ backgroundColor: "#FFFFFF30" }}
+                    style={{ backgroundColor: "#FFFFFF40" }}
                 >
                     <div className='w-full flex flex-row justify-between'>
                         <div className='w-4/12'>
@@ -132,27 +134,46 @@ const Page = () => {
                                                 <>
                                                     <button className='w-full' //</>style={{}} onClick={() => { setOpen(item) }}
                                                     >
-                                                        <div className='w-full flex flex-row justify-between mt-10' key={item.id}>
-                                                            <div className='w-4/12 flex flex-row gap-2' style={{}}>
+                                                        <div className='w-full flex flex-row justify-between mt-10 items-center' key={item.id}>
+                                                            <div className='w-4/12 flex flex-row gap-2 items-center' style={{}}>
                                                                 {item.model.owner.profile_image ?
                                                                     <Image src={item.model.owner.profile_image} alt='profile'
                                                                         height={25} width={25}
                                                                     /> :
-                                                                    <Image src="/assets/placeholderImg.jpg" alt='profile'
-                                                                        height={25} width={25}
-                                                                    />
+                                                                    <div>
+                                                                        {
+                                                                            item.model.owner.name == "Tristan" ?
+                                                                                <img src="/tristan.png" alt='profile'
+                                                                                    // height={30} width={30} 
+                                                                                    style={{ borderRadius: "50%", objectFit: 'cover', height: "40px", width: '40px' }}
+                                                                                /> :
+                                                                                <img src="/andrew.webp" alt='profile'
+                                                                                    // height={30} width={40} 
+                                                                                    style={{ borderRadius: "50%", objectFit: 'contain', height: "40px", width: '40px' }}
+                                                                                />
+                                                                        }
+                                                                    </div>
                                                                 }
 
-                                                                <div style={styles.text2}>{item.model.owner.name}</div>
+                                                                <div style={styles.text2}>
+                                                                    {item.model.owner.name}
+                                                                </div>
                                                             </div>
                                                             <div className='w-2/12'>
-                                                                <div style={styles.text2}>{item.amount}</div>
+                                                                <div style={styles.text2}>
+                                                                    $ {Number(item.amount.toFixed(2))}
+                                                                </div>
                                                             </div>
                                                             <div className='w-3/12 '>
-                                                                <div style={styles.text2}>{item.durationString}</div>
+                                                                <div style={styles.text2}>
+                                                                    {item.durationString}
+                                                                </div>
                                                             </div>
                                                             <div className='w-2/12'>
-                                                                <div style={styles.text2}>{item.model.owner.assitant.createdAt}</div>
+                                                                <div style={styles.text2}>
+                                                                    {/* {item.model.owner.assitant.createdAt} */}
+                                                                    {moment(item.createdAt).format('MM/DD/YYYY')}
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div className='w-full h-0.5 rounded mt-2' style={{ backgroundColor: '#00000011' }}></div>

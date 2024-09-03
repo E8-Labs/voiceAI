@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Apis from '@/components/apis/Apis'
 import axios from 'axios'
-import { Box, Button, CircularProgress, Menu, MenuItem, Modal } from '@mui/material'
+import { Alert, Box, Button, CircularProgress, Fade, Menu, MenuItem, Modal, Snackbar } from '@mui/material'
 import { Elements } from '@stripe/react-stripe-js'
 import AddCardDetails from '@/components/loginform/Addcard/AddCardDetails'
 import { loadStripe } from '@stripe/stripe-js'
@@ -14,13 +14,15 @@ const Page = () => {
     //console.log("Public key is ", stripePublickKey)
     const stripePromise = loadStripe(stripePublickKey);
 
-    const [defaultCart, setDefaultCard] = useState(1)
+    const [defaultCart, setDefaultCard] = useState("");
     const [paymentHistory, setPaymentHistory] = useState([]);
     const [cardsListData, setCardsListData] = useState([]);
     const [cardLoader, setCardLoader] = useState(false);
     const [invoiceLoader, setInvoiceLoader] = useState(false);
     const [addCardPopup, setAddCardPopup] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [makeDefaultCardLoader, setMakeDefaultCardLoader] = useState(null);
+    const [snackMessage, setSnackMessage] = useState(false);
 
     const handleClosePopup = (e) => {
         setAddCardPopup(e);
@@ -29,8 +31,9 @@ const Page = () => {
 
     const styles = {
         text: {
-            fontSize: 12,
-            color: '#00000090'
+            fontSize: 14,
+            color: '#00000090',
+            fontWeight: '400'
         },
         text2: {
             textAlignLast: 'left',
@@ -52,22 +55,6 @@ const Page = () => {
             color: 'white'
         }
     }
-
-    const cards = [
-        {
-            id: 1,
-            number: '6543',
-            expDate: '10/2024',
-            // defaultCard:true
-        },
-
-        {
-            id: 2,
-            number: '6543',
-            expDate: '10/2024',
-            // defaultCard:true
-        },
-    ]
 
     const styleAddCardPopup = {
         height: 'auto',
@@ -91,7 +78,7 @@ const Page = () => {
                 setInvoiceLoader(true);
                 const Data = JSON.parse(localData);
                 const AuthToken = Data.data.token;
-                // console.log("Authtoken is", AuthToken);
+                console.log("Authtoken is", AuthToken);
                 const ApiPath = Apis.CallerInvoices;
                 console.log("Api Path iis", ApiPath);
                 const response = await axios.get(ApiPath, {
@@ -105,6 +92,7 @@ const Page = () => {
                         console.log("Response is", response.data.data);
                         setPaymentHistory(response.data.data);
                     } else {
+                        console.log("Not recieved data", response.data.message)
                         console.log("Status is", response.data.status);
                     }
                 }
@@ -151,6 +139,15 @@ const Page = () => {
         getCards();
     }, []);
 
+    useEffect(() => {
+        if (snackMessage) {
+            const timeout = setTimeout(() => {
+                setSnackMessage(null);
+            }, 2000);
+            return (() => clearTimeout(timeout));
+        }
+    }, [snackMessage])
+
     const handleOpenPdf = async (url) => {
         window.open(url, '_blank');
     }
@@ -159,9 +156,46 @@ const Page = () => {
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
+
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const handleMakeDefaultCard = async (id) => {
+        console.log("Card id is", id);
+        const localData = localStorage.getItem('User');
+        if (localData) {
+            try {
+                setMakeDefaultCardLoader(id);
+                const Data = JSON.parse(localData);
+                // const AuthToken = "sfdhiuhkajviqnlgh";
+                const AuthToken = Data.data.token;
+                // console.log("Authtoken is", AuthToken);
+                const ApiPath = Apis.makeDefaultCard;
+                console.log("Api Path iis", ApiPath);
+                const formData = new FormData();
+                formData.append('cardId', id);
+                const response = await axios.post(ApiPath, formData, {
+                    headers: {
+                        'Authorization': 'Bearer ' + AuthToken
+                    }
+                });
+                if (response) {
+                    if (response.data.status === true) {
+                        console.log("response of api", response.data.message);
+                        setSnackMessage(response.data);
+                        getCards();
+                    } else {
+                        setSnackMessage(response.data)
+                    }
+                }
+            } catch (error) {
+                console.error("Error occured in api", error);
+            } finally {
+                setMakeDefaultCardLoader(null);
+            }
+        }
+    }
 
 
 
@@ -171,7 +205,7 @@ const Page = () => {
 
 
                 <div className='w-full p-5 rounded-xl'
-                    style={{ backgroundColor: "#FFFFFF30" }}
+                    style={{ backgroundColor: "#FFFFFF40" }}
                 >
 
                     <div className='flex flex-row justify-between items-center'>
@@ -263,7 +297,7 @@ const Page = () => {
                                                                 </div>
                                                                 <div className='w-full flex flex-row justify-between items-end'>
                                                                     {
-                                                                        item.id === defaultCart ? (
+                                                                        item.isDefault === true ? (
                                                                             <div style={{ fontSize: 12, fontWeight: 400, fontFamily: 'inter' }}>
                                                                                 Default Card
                                                                             </div>
@@ -271,25 +305,30 @@ const Page = () => {
                                                                             <div></div>
                                                                         )
                                                                     }
-                                                                    <button onClick={() => {
-                                                                        setDefaultCard(item.id)
-                                                                    }}>
+                                                                    <div>
                                                                         {
-                                                                            item.id === defaultCart ? (
+                                                                            item.isDefault === true ? (
                                                                                 <Image src='/assets/selectedCircle.png' alt='icon'
                                                                                     height={18} width={18} style={{ objectFit: 'contain' }}
                                                                                 />
                                                                             ) : (
-                                                                                <div
-                                                                                    style={{
-                                                                                        height: 18, width: 18, borderRadius: '50%',
-                                                                                        border: "1px solid #ffffff"
-                                                                                    }} />
+                                                                                <div>
+                                                                                    {
+                                                                                        makeDefaultCardLoader === item.id ?
+                                                                                            <CircularProgress size={15} sx={{ color: "blue" }} /> :
+                                                                                            <button
+                                                                                                onClick={() => {
+                                                                                                    handleMakeDefaultCard(item.id)
+                                                                                                }}
+                                                                                                style={{
+                                                                                                    height: 18, width: 18, borderRadius: '50%',
+                                                                                                    border: "1px solid #ffffff"
+                                                                                                }} />
+                                                                                    }
+                                                                                </div>
                                                                             )
                                                                         }
-
-
-                                                                    </button>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -301,7 +340,7 @@ const Page = () => {
                                 </div>
                         }
                     </div>
-                    <div className='w-full rounded-xl p-8 mt-5' style={{ backgroundColor: '#ffffff30' }}>
+                    <div className='w-full rounded-xl p-8 mt-5' style={{ backgroundColor: '#ffffff40' }}>
                         <div style={{ fontSize: 20, fontWeight: 400, fontFamily: 'inter', }}>
                             Payment History
                         </div>
@@ -383,7 +422,7 @@ const Page = () => {
             {/* Modal to add card */}
             <Modal
                 open={addCardPopup}
-                // onClose={(() => setOpenLoginModal(false))}
+                onClose={(() => setAddCardPopup(false))}
                 closeAfterTransition
                 BackdropProps={{
                     timeout: 1000,
@@ -412,6 +451,32 @@ const Page = () => {
                     {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
                 </Box>
             </Modal>
+
+            {/* snack messages */}
+            <Snackbar
+                open={snackMessage}
+                // autoHideDuration={3000}
+                onClose={() => {
+                    setSnackMessage(null)
+                }}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center'
+                }}
+                TransitionComponent={Fade}
+                TransitionProps={{
+                    direction: 'center'
+                }}
+            >
+                <Alert
+                    onClose={() => {
+                        setSnackMessage(null);
+                    }} severity={snackMessage && snackMessage.status === true ? "success" : "error"}// "error"
+                    sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}>
+                    {/* {addCardDetails} */}
+                    {snackMessage && snackMessage.message}
+                </Alert>
+            </Snackbar>
 
         </div>
 

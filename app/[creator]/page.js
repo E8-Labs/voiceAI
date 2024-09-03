@@ -72,19 +72,6 @@ const Page = () => {
     }
 
 
-
-    //code for logoutbtn
-
-    const handleshowLogoutBtn = () => {
-        router.push("/profile")
-        // setShowLogoutBtn(!showLogoutBtn);
-    }
-
-    const handleLogout = () => {
-        localStorage.removeItem('User');
-        window.location.reload();
-    }
-
     const getUserData = async () => {
         // console.log("Username for testing", creator);
         const ApiPath = `${Apis.GetAssistantData}?username=${creator}`;
@@ -127,7 +114,7 @@ const Page = () => {
     useEffect(() => {
         const LocalData = localStorage.getItem('User');
         const D = JSON.parse(LocalData);
-        //console.log("Login details from localstorage", D);
+        console.log("Login details from localstorage", D);
         if (LocalData) {
             setShowProfileIcon(true);
             if (D.data.user.role === "caller") {
@@ -452,16 +439,19 @@ const Page = () => {
         <div style={backgroundImage} className='h-screen overflow-none' onMouseMove={handleMouseMove}>
             <div className='pt-8 ps-8'>
                 <div className='2xl:flex hidden w-full flex flex-row justify-between'>
-                    <div className='flex flex-col items-start'
-                    // style={{ border: "2px solid #ffffff", borderRadius: 50, backgroundColor: "#ffffff20" }}
-                    >
+                    <div className='flex flex-col items-start'>
                         <div className='px-6 py-2 flex gap-4 flex-row items-center' ref={buttonRef4}
                             style={{
                                 border: "2px solid #ffffff",
                                 // borderTopLeftRadius: 50, borderTopRightRadius: 50,
                                 // borderBottomRightRadius: 50,
-                                borderRadius: 50,
-                                backgroundColor: "#ffffff20"
+                                // borderRadiusTopright: 50,
+                                // borderRadiusTopright : 50,
+                                borderTopLeftRadius: 50,
+                                borderBottomRightRadius: 50,
+                                borderTopRightRadius: 50,
+                                backgroundColor: "#ffffff20",
+                                zIndex: 1
                             }}>
                             <div className='flex flex-col items-center'>
                                 <div className='relative'>
@@ -552,10 +542,12 @@ const Page = () => {
                             </div>
                         </div>
                         {/* code for socials */}
-                        <div className='flex flex-row items-center justify-center pb-6 px-3 ms-6 mt-2' ref={buttonRef3}
+                        <div className='flex flex-row items-center justify-center pb-6 px-6' ref={buttonRef3}
                             style={{
-                                border: "2px solid #ffffff", borderBottomLeftRadius: 50,
-                                borderBottomRightRadius: 50,
+                                border: "2px solid #ffffff", borderTop: "8px solid #e7f3fe",
+                                borderBottomLeftRadius: 50,
+                                borderBottomRightRadius: 50, marginTop: "-4px",
+                                zIndex: 2, backgroundColor: "#ffffff20",
                             }}>
                             <div className='flex flex-col gap-4' style={{ marginTop: 10 }}>
                                 <button>
@@ -709,7 +701,12 @@ const Page = () => {
                         showCreatorBtn &&
                         <button className='flex flex-row p-4 items-center gap-4'>
                             <Image src={"/assets/stars.png"} alt='phone' height={20} width={20} />
-                            <div onClick={handleCreatorXClick} className='text-white' style={{ fontSize: 17, fontWeight: "600" }}>
+                            <div onClick={
+                                // handleCreatorXClick
+                                () => {
+                                    window.open('https://form.jotform.com/noahdeveloperr/creatorX', "_blank")
+                                }
+                            } className='text-white' style={{ fontSize: 17, fontWeight: "600" }}>
                                 Build Your CreatorX
                             </div>
                         </button>

@@ -55,7 +55,7 @@ const Page = () => {
                     My Account
                 </div>
                 <div className='w-8/12 py-10 px-8 mt-3 flex flex-col gap-5' style={{
-                    backgroundColor: '#FFFFFF30', borderRadius: 10
+                    backgroundColor: '#FFFFFF40', borderRadius: 10
                 }}>
                     <div style={{ fontSize: 20, fontWeight: 400, fontFamily: "inter" }}>
                         Basics

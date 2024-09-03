@@ -4,7 +4,11 @@ import Image from 'next/image';
 import Drawer from '@mui/material/Drawer';
 import moment from 'moment';
 import Apis from '@/components/apis/Apis';
-import { FormControl, MenuItem, Select } from '@mui/material';
+// import { FormControl, MenuItem, Select } from '@mui/material';
+// import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 const Calls = () => {
   const [open, setOpen] = useState('');
@@ -182,7 +186,7 @@ const Calls = () => {
                 </div>
                 <div>
                   <button onClick={() => handleFilterDrawer(false)}>
-                    Close
+                    <Image src="/assets/crossBtn2.png" alt='cross' height={15} width={15} />
                   </button>
                 </div>
               </div>
@@ -193,6 +197,12 @@ const Calls = () => {
               <div className='mt-4 w-full'>
                 <input className='w-full bg-gray-200' type='text' placeholder='Start Date' />
               </div>
+
+              {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={['DatePicker']}>
+                  <DatePicker label="Basic date picker" />
+                </DemoContainer>
+              </LocalizationProvider> */}
 
               <div className='mt-4 w-full'>
                 <input className='w-full bg-gray-200' type='text' placeholder='End Date' />

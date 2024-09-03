@@ -142,11 +142,13 @@ const AddCardDetails = ({
                 // return
                 console.log("Token generating for card number :", tok.token.id)
                 const tokenId = tok.token.id;
+                console.log("card number :")
 
                 const ApiPath = Apis.addCard;
                 const AddCardData = {
                     source: tokenId
                 }
+                console.log("Data for card number :", AddCardData);
                 try {
                     const LocalData = localStorage.getItem('User');
                     const D = JSON.parse(LocalData);
@@ -197,6 +199,10 @@ const AddCardDetails = ({
                     console.error("Error occured in adding user card api is :", error);
                 } finally {
                     setAddCardLoader(false);
+                    if (fromBuildAiScreen) {
+                        console.log("reached end");
+                        subscribeLoader(false);
+                    }
                 }
             }
         })

@@ -14,7 +14,7 @@ import { useRouter } from 'next/navigation';
 import AddCardDetails from '../loginform/Addcard/AddCardDetails';
 
 import { loadStripe } from '@stripe/stripe-js'
-import { CardCvcElement, CardExpiryElement, CardNumberElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js'
+import { Elements } from '@stripe/react-stripe-js'
 
 
 

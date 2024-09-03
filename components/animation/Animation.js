@@ -66,6 +66,7 @@ export default function Animation({ onChangeIndex }) {
     const [VP5, setVP5] = useState("");
     const [verifyLoader, setVerifyLoader] = useState(false);
     const [verifyErr, setVerifyErr] = useState(false);
+    const [creatorLoader, setCreatorLoader] = useState(false);
 
     const checkUserName = async () => {
         const ApiPath = Apis.checkUserName;
@@ -214,8 +215,10 @@ export default function Animation({ onChangeIndex }) {
     const handleCreatorClick = async () => {
         const LocalData = localStorage.getItem('User');
         if (LocalData) {
+            setCreatorLoader(true);
             const Data = JSON.parse(LocalData);
-            console.log("Local data is", Data);
+            console.log("Local data is", Data.data.user);
+            // return
             const AuthToken = Data.data.token;
             console.log("Authtoken is", AuthToken);
             const ApiPath = Apis.Caller_to_Creator;
@@ -232,8 +235,11 @@ export default function Animation({ onChangeIndex }) {
                     }
                 });
                 if (response) {
-                    console.log("Response of caller_to_creator api is", response.data);
+                    console.log("Response of caller_to_creator api is", response.data.data);
+                    // return
                     if (response.data.status === true) {
+                        Data.data.user = response.data.data;
+                        localStorage.setItem('User', JSON.stringify(Data));
                         handleCaller_toCreator_Continue();
                     }
                 } else {
@@ -241,6 +247,8 @@ export default function Animation({ onChangeIndex }) {
                 }
             } catch (error) {
                 console.error("Error occured in api is", error);
+            } finally {
+                setCreatorLoader(false);
             }
         } else {
             handleContinue()
@@ -490,7 +498,7 @@ export default function Animation({ onChangeIndex }) {
                             initial="enter"
                             animate="center"
                             exit="exit"
-                            transition={{ duration: 1 }}
+                            transition={{ duration: 0 }}
                             style={styles}
                         >
                             <div className='w-full'>
@@ -582,7 +590,7 @@ export default function Animation({ onChangeIndex }) {
                             initial="enter"
                             animate="center"
                             exit="exit"
-                            transition={{ duration: 1 }}
+                            transition={{ duration: 0 }}
                             style={styles}
                         >
                             <div className='w-full'>
@@ -670,7 +678,7 @@ export default function Animation({ onChangeIndex }) {
                             initial="enter"
                             animate="center"
                             exit="exit"
-                            transition={{ duration: 1 }}
+                            transition={{ duration: 0 }}
                             style={styles}
                         >
                             <div className='w-full flex justify-center'>
@@ -785,11 +793,17 @@ export default function Animation({ onChangeIndex }) {
                                         {
                                             checkUserNameData && checkUserNameData.status === true ?
                                                 <div style={{ fontWeight: "400", fontSize: 14, color: "green" }}>
-                                                    <Button onClick={handleCreatorClick}
-                                                        className='bg-purple hover:bg-purple text-white w-full mt-12'
-                                                        style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
-                                                        Continue
-                                                    </Button>
+                                                    {
+                                                        creatorLoader ?
+                                                            <div className='w-full mt-12 flex flex-row justify-center'>
+                                                                <CircularProgress size={25} />
+                                                            </div> :
+                                                            <Button onClick={handleCreatorClick}
+                                                                className='bg-purple hover:bg-purple text-white w-full mt-12'
+                                                                style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
+                                                                Continue
+                                                            </Button>
+                                                    }
                                                 </div> :
                                                 <div style={{ fontWeight: "400", fontSize: 14, color: "green" }}>
                                                     <Button
@@ -825,7 +839,7 @@ export default function Animation({ onChangeIndex }) {
                             initial="enter"
                             animate="center"
                             exit="exit"
-                            transition={{ duration: 1 }}
+                            transition={{ duration: 0 }}
                             style={styles}>
                             <div className='w-full flex justify-center'>
                                 <div className='w-10/12'>
@@ -959,7 +973,7 @@ export default function Animation({ onChangeIndex }) {
                             initial="enter"
                             animate="center"
                             exit="exit"
-                            transition={{ duration: 1 }}
+                            transition={{ duration: 0 }}
                             style={styles}>
                             <div className='w-full flex justify-center'>
                                 <div className='w-10/12'>
@@ -1083,7 +1097,7 @@ export default function Animation({ onChangeIndex }) {
                             initial="enter"
                             animate="center"
                             exit="exit"
-                            transition={{ duration: 1 }}
+                            transition={{ duration: 0 }}
                             style={styles}>
                             <div className='w-full flex justify-center'>
                                 <div className='w-10/12'>
@@ -1155,7 +1169,7 @@ export default function Animation({ onChangeIndex }) {
                                 initial="enter"
                                 animate="center"
                                 exit="exit"
-                                transition={{ duration: 1 }}
+                                transition={{ duration: 0 }}
                                 style={styles}>
                                 <div className='w-full flex justify-center'>
                                     <div className='w-10/12'>
@@ -1285,7 +1299,7 @@ export default function Animation({ onChangeIndex }) {
                             initial="enter"
                             animate="center"
                             exit="exit"
-                            transition={{ duration: 1 }}
+                            transition={{ duration: 0 }}
                             style={styles}>
                             <div style={{ height: "auto" }}>
                                 <div style={{ height: 14 }}>
