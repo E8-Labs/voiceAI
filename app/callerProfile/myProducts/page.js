@@ -660,7 +660,9 @@ const Page = () => {
                                                     <div style={styles.text2}>{item.name}</div>
                                                 </div>
                                                 <div className='w-2/12'>
-                                                    <div style={styles.text2}>{item.productPrice}</div>
+                                                    <div style={styles.text2}>
+                                                        ${item.productPrice}
+                                                    </div>
                                                 </div>
                                                 <div className='w-3/12 '>
                                                     <div style={styles.text2}>

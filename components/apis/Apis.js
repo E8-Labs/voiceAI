@@ -34,9 +34,8 @@ const Apis = {
     GetCardList: `${BasePath}api/user/list_cards`,
     CallerDashboard: `${BasePath}api/user/caller_dashboard`,
     BuyProduct: `${BasePath}api/user/buy_product`,
-    makeDefaultCard: `${BasePath}api/user/make_default`
-
-
+    makeDefaultCard: `${BasePath}api/user/make_default`,
+    updateProfile: `${BasePath}api/user/updateProfile`
 }
 
 export default Apis;

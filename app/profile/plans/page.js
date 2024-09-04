@@ -32,9 +32,7 @@ const Page = () => {
                 </div>
                 <div className='mt-6 w-full flex flex-row gap-4' style={{ backgroundColor: '#ffffff50' }}>
                     <div className='w-6/12 flex flex-col items-center'>
-                        <div className='w-10/12'
-                            // style={{ border: '2px solid red' }}
-                        >
+                        <div className='w-10/12' style={{ border: '2px solid red' }}>
                             <div className='flex flex-row items-center w-full px-6 rounded-xl justify-between' style={{ height: "70px", border: "1px solid #EFEFEF" }}>
                                 <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
                                     $97/ mo
@@ -95,7 +93,7 @@ const Page = () => {
                             </div>
 
                             <div>
-
+                                        
                             </div>
 
 
@@ -176,7 +174,7 @@ const Page = () => {
 
                         </div>
                     </div>
-                    <div className='w-6/12'>
+                    <div className='w-6/12 bg-red'>
                         <div className='w-full'>
                             <div style={{ fontSize: 20, fontWeight: '400', fontFamily: 'inter', marginTop: 40 }}>
                                 Make Payment
