@@ -52,10 +52,16 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
     const handleVerifyClick = async () => {
         // handleContinue();
         setVerifyLoader(true);
-        console.log("Code sending is", data);
+        // console.log("Code sending is", data);
+        // console.log("Login details are", userLoginDetails);
+        const mergedData = {
+            ...data,
+            ...userLoginDetails,
+        };
+        console.log("Merged data is:", mergedData);
         // return
         try {
-            const response = await axios.post(Apis.verifyCode, data, {
+            const response = await axios.post(Apis.verifyCode, mergedData, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -63,28 +69,11 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
             if (response) {
                 console.log("response of check code ", response.data);
                 if (response.data.status === true) {
-                    // handleContinue();
-                    const SignUpApiPath = Apis.SignUp;
-                    try {
-                        const response = await axios.post(SignUpApiPath, userLoginDetails, {
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        });
-                        if (response.data.status === true) {
-                            console.log("Response of signup api", response.data);
-                            localStorage.setItem("User", JSON.stringify(response.data));
-                            handleContinue();
-                            localStorage.removeItem('formData');
-                        } else if (response.data.status === false) {
-                            console.log("Response of api", response.data);
-                            console.log("Signup api response not found");
-                        }
-                    } catch (error) {
-                        console.error("Error in login api is", error);
-                    } finally {
-                        setVerifyLoader(false);
-                    }
+                    console.log("Response of signup api", response.data);
+                    localStorage.setItem("User", JSON.stringify(response.data));
+                    // return
+                    handleContinue();
+                    localStorage.removeItem('formData');
                 } else {
                     setShowError(response.data.message);
                 }
@@ -175,7 +164,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
             <div className='flex flex-row justify-between items-center mt-8'>
                 <div>
                     <button onClick={handleBackClick}>
-                        <Image src={"/assets/backArrow.png"} alt='backArrow' height={9} width={13} />
+                        <Image src={"/assets/backarrow.png"} alt='backArrow' height={9} width={13} />
                     </button>
                 </div>
                 <div>

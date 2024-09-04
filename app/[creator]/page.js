@@ -1,5 +1,5 @@
 "use client"
-import { useState, useCallback, useEffect, useRef } from 'react';  // useRef added
+import { useState, useCallback, useEffect, useRef } from 'react'; // useRef added
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { Box, Drawer, Modal, Snackbar, Alert, Slide, Fade } from '@mui/material';
@@ -40,8 +40,8 @@ const Page = () => {
     const [showCreatorBtn, setShowCreatorBtn] = useState(false);
     const [showProfileIcon, setShowProfileIcon] = useState(false);
 
-    const [boxVisible, setBoxVisible] = useState(false);  // Animation state
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });  // Mouse position state
+    const [boxVisible, setBoxVisible] = useState(false); // Animation state
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 }); // Mouse position state
     const { creator } = useParams();
     const [getRecentCallData, setGetRecentCallsData] = useState([]);
     const [getAssistantData, setGetAssistantData] = useState(null);
@@ -52,6 +52,19 @@ const Page = () => {
     // for side animation
     const [isVisible, setisVisible] = useState(true);
     const [callErr, setCallErr] = useState(false);
+
+    useEffect(() => {
+        const needsReload = localStorage.getItem('needsReload');
+
+        if (needsReload === 'true') {
+            // Clear the flag so the page doesn't keep reloading
+            localStorage.removeItem('needsReload');
+
+            // Reload the page
+            window.location.reload();
+        }
+    }, []);
+
 
     useEffect(() => {
         const handleResize = () => {
@@ -96,7 +109,7 @@ const Page = () => {
     }
 
     useEffect(() => {
-        getUserData()
+        getUserData();
     }, []);
     useEffect(() => {
         console.log("Get assistant data chagned ", getAssistantData)
@@ -224,39 +237,39 @@ const Page = () => {
 
     // Animation handler
     // const handleMouseMove = (event) => {
-    //     const centerX = window.innerWidth / 2;
-    //     const centerY = window.innerHeight / 2;
-    //     const x = event.clientX;
-    //     const y = event.clientY;
+    // const centerX = window.innerWidth / 2;
+    // const centerY = window.innerHeight / 2;
+    // const x = event.clientX;
+    // const y = event.clientY;
 
-    //     setMousePosition({ x, y });
+    // setMousePosition({ x, y });
 
-    //     // Check if the mouse is within 100px of the center
-    //     if (Math.abs(x - centerX) <= 150 && Math.abs(y - centerY) <= 150) {
-    //         setBoxVisible(false); // Hide the box
-    //     } else {
-    //         // Check if the mouse is over the button
-    //         if (buttonRef.current) {
-    //             const rect = buttonRef.current.getBoundingClientRect();
-    //             if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
-    //                 setBoxVisible(false);  // Hide the animation when hovering over the button
-    //             } else {
-    //                 setBoxVisible(true);   // Show the animation otherwise
-    //             }
-    //         } else {
-    //             setBoxVisible(true);  // Show the box if the button ref is not available
-    //         }
-    //         if (buttonRef2.current) {
-    //             const rect = buttonRef2.current.getBoundingClientRect();
-    //             if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
-    //                 setBoxVisible(false);  // Hide the animation when hovering over the button
-    //             } else {
-    //                 setBoxVisible(true);   // Show the animation otherwise
-    //             }
-    //         } else {
-    //             setBoxVisible(true);  // Show the box if the button ref is not available
-    //         }
-    //     }
+    // // Check if the mouse is within 100px of the center
+    // if (Math.abs(x - centerX) <= 150 && Math.abs(y - centerY) <= 150) {
+    // setBoxVisible(false); // Hide the box
+    // } else {
+    // // Check if the mouse is over the button
+    // if (buttonRef.current) {
+    // const rect = buttonRef.current.getBoundingClientRect();
+    // if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+    // setBoxVisible(false); // Hide the animation when hovering over the button
+    // } else {
+    // setBoxVisible(true); // Show the animation otherwise
+    // }
+    // } else {
+    // setBoxVisible(true); // Show the box if the button ref is not available
+    // }
+    // if (buttonRef2.current) {
+    // const rect = buttonRef2.current.getBoundingClientRect();
+    // if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+    // setBoxVisible(false); // Hide the animation when hovering over the button
+    // } else {
+    // setBoxVisible(true); // Show the animation otherwise
+    // }
+    // } else {
+    // setBoxVisible(true); // Show the box if the button ref is not available
+    // }
+    // }
     // };
 
 
@@ -278,7 +291,7 @@ const Page = () => {
         if (buttonRef.current) {
             const rect = buttonRef.current.getBoundingClientRect();
             if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
-                setBoxVisible(false);  // Hide the animation when hovering over buttonRef
+                setBoxVisible(false); // Hide the animation when hovering over buttonRef
                 return;
             }
         }
@@ -287,7 +300,7 @@ const Page = () => {
         if (buttonRef2.current) {
             const rect = buttonRef2.current.getBoundingClientRect();
             if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
-                setBoxVisible(false);  // Hide the animation when hovering over buttonRef2
+                setBoxVisible(false); // Hide the animation when hovering over buttonRef2
                 return;
             }
         }
@@ -295,7 +308,7 @@ const Page = () => {
         if (buttonRef3.current) {
             const rect = buttonRef3.current.getBoundingClientRect();
             if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
-                setBoxVisible(false);  // Hide the animation when hovering over buttonRef3
+                setBoxVisible(false); // Hide the animation when hovering over buttonRef3
                 return;
             }
         }
@@ -316,6 +329,8 @@ const Page = () => {
     //code for apicall
     const handleTalktoBlandy = async () => {
         setLoading(true);
+        setSnackMessage(true);
+        // return
         const LocalData = localStorage.getItem('User');
         let D = null;
         if (LocalData) {
@@ -362,7 +377,6 @@ const Page = () => {
                     console.log(JSON.stringify(response.data));
                     localStorage.removeItem('callStatus');
                     console.log("Data of call removed");
-                    setSnackMessage(true);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -380,7 +394,7 @@ const Page = () => {
     useEffect(() => {
         if (snackMessage === true) {
             setTimeout(() => {
-                setSnackMessage(false)
+                setSnackMessage(false);
             }, 2000);
         }
     }, [snackMessage]);
@@ -402,9 +416,9 @@ const Page = () => {
     }, [isVisible])
 
     // useEffect(() => {
-    //     setTimeout(() => {
-    //         setSnackMessage(true);
-    //     }, 1000);
+    // setTimeout(() => {
+    // setSnackMessage(true);
+    // }, 1000);
     // },[])
 
     //code to make triangle
@@ -464,9 +478,9 @@ const Page = () => {
                                             {/* Claim Button */}
                                             <div className='absolute top-0 -left-2' style={{ backgroundColor: "transparent" }}>
                                                 {/* <Image onClick={() => {
-                                                    console.log("Sary gama pada na ri sa");
-                                                }} src="/assets/claimLogo.png" alt='claimbtn' height={35} width={35}
-                                                    style={{ cursor: "pointer", backgroundColor: "" }} /> */}
+ console.log("Sary gama pada na ri sa");
+ }} src="/assets/claimLogo.png" alt='claimbtn' height={35} width={35}
+ style={{ cursor: "pointer", backgroundColor: "" }} /> */}
                                                 <div style={{ height: "30px", width: "30px", backgroundColor: "transparent" }}>
                                                     <Image onClick={() => {
                                                         console.log("Sary gama pada na ri sa");
@@ -607,7 +621,7 @@ const Page = () => {
                         src="/borderedAppLogo.png"
                         alt="Animating Image"
                         animate={{
-                            width: isWideScreen ? ["830px", "650px", "830px"] : ["600px", "400px", "600px"],  // Keyframes for width
+                            width: isWideScreen ? ["830px", "650px", "830px"] : ["600px", "400px", "600px"], // Keyframes for width
                             height: isWideScreen ? ["830px", "650px", "830px"] : ["600px", "400px", "600px"], // Keyframes for height
                         }}
                         transition={{
@@ -643,7 +657,7 @@ const Page = () => {
                         src="/borderedAppLogo.png"
                         alt="Animating Image"
                         animate={{
-                            width: ["380px", "200px", "380px"],  // Keyframes for width
+                            width: ["380px", "200px", "380px"], // Keyframes for width
                             height: ["380px", "200px", "380px"], // Keyframes for height
                         }}
                         transition={{
@@ -808,20 +822,20 @@ const Page = () => {
                 </div>
             </Drawer>
             {/* {
-                snackMessage &&
-                <div style={{ width: '280px', height: '80px', padding: 15, borderRadius: 20, border: '2px solid white', backgroundColor: '#ffffff60', position: 'absolute', top: 10, right: 12 }}>
-                    <div>
-                        <div style={{ fontSize: 15, fontWeight: '500', fontFamily: 'inter' }}>
-                            🎉Congratulations
-                        </div>
-                        <div>
-                        </div>
-                    </div>
-                    <div style={{ fontSize: 13, fontWeight: '400', fontFamily: 'inter' }}>
-                        Your call has been initiated successfully
-                    </div>
-                </div>
-            } */}
+ snackMessage &&
+ <div style={{ width: '280px', height: '80px', padding: 15, borderRadius: 20, border: '2px solid white', backgroundColor: '#ffffff60', position: 'absolute', top: 10, right: 12 }}>
+ <div>
+ <div style={{ fontSize: 15, fontWeight: '500', fontFamily: 'inter' }}>
+ 🎉Congratulations
+ </div>
+ <div>
+ </div>
+ </div>
+ <div style={{ fontSize: 13, fontWeight: '400', fontFamily: 'inter' }}>
+ Your call has been initiated successfully
+ </div>
+ </div>
+ } */}
             <Snackbar
                 open={callErr}
                 autoHideDuration={5000}

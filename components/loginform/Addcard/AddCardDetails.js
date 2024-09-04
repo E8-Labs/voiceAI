@@ -76,7 +76,7 @@ const AddCardDetails = ({
         // setfromBuildAiScreen(Data);
 
         const handleCustomEvent = (event) => {
-            //console.log('Received event:', event.detail.message);
+            console.log('Received event:', event.detail.message);
             handleAddCard()
             // subscribePlan();
         };
@@ -152,9 +152,9 @@ const AddCardDetails = ({
                 try {
                     const LocalData = localStorage.getItem('User');
                     const D = JSON.parse(LocalData);
-                    // //console.log("Local data is", D);
+                    console.log("Local data is", D);
                     const AuthToken = D.data.token;
-                    //console.log("Token for add card ", D.data.token);
+                    console.log("Token for add card ", D.data.token);
                     // return
                     //console.log('Data sending in api is :', AddCardData);
                     const response = await axios.post(ApiPath, AddCardData, {

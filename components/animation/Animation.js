@@ -410,6 +410,11 @@ export default function Animation({ onChangeIndex }) {
     };
 
     const handleVerifyLoginCode = async () => {
+
+        const fromBuyStatus = localStorage.getItem('fromBuyScreen');
+        console.log("Data of akdsfiuhifh", JSON.parse(fromBuyStatus));
+        // return
+
         const LocalData = localStorage.getItem('route');
         const D = JSON.parse(LocalData);
         const modalName = D.modalName;
@@ -432,13 +437,19 @@ export default function Animation({ onChangeIndex }) {
                 console.log("Response of ", response.data);
 
                 if (response.data.status === true) {
+                    if (fromBuyStatus) {
+                        const Data = JSON.parse(fromBuyStatus);
+                        window.open(`/buyproduct/${Data.id}`);
+                        localStorage.removeItem("fromBuyScreen");
+                    }
                     console.log("Response of login verification code", response.data.data);
                     localStorage.setItem('User', JSON.stringify(response.data));
                     // router.push(`/${}`)
                     // return
                     router.push(`/${modalName}`);
                     localStorage.removeItem('route');
-                } else {
+                } else if (response.data.status === false) {
+                    console.log("Error errrrrrrr");
                     setVerifyErr(true);
                 }
             } else {
@@ -447,8 +458,8 @@ export default function Animation({ onChangeIndex }) {
         } catch (error) {
             console.error("Error occured in loginverification code", error);
         } finally {
-            setVerifyLoader(true);
-            setVerifyErr(false);
+            setVerifyLoader(false);
+            // setVerifyErr(false);
         }
     }
 
@@ -602,7 +613,10 @@ export default function Animation({ onChangeIndex }) {
                                         id="P1"
                                         type='text'
                                         value={VP1}
-                                        onChange={(e) => handleInputChange2(e, setVP1, "P2")}
+                                        onChange={(e) => {
+                                            handleInputChange2(e, setVP1, "P2");
+                                            setVerifyErr(false);
+                                        }}
                                         maxLength={1}
                                         style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
                                         onKeyDown={(e) => handleBackspace2(e, setVP1, null)}
@@ -611,7 +625,10 @@ export default function Animation({ onChangeIndex }) {
                                         id="P2"
                                         type='text'
                                         value={VP2}
-                                        onChange={(e) => handleInputChange2(e, setVP2, "P3")}
+                                        onChange={(e) => {
+                                            handleInputChange2(e, setVP2, "P3");
+                                            setVerifyErr(false);
+                                        }}
                                         maxLength={1}
                                         style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
                                         onKeyDown={(e) => handleBackspace2(e, setVP2, "P1")}
@@ -620,7 +637,10 @@ export default function Animation({ onChangeIndex }) {
                                         id="P3"
                                         type='text'
                                         value={VP3}
-                                        onChange={(e) => handleInputChange2(e, setVP3, "P4")}
+                                        onChange={(e) => {
+                                            handleInputChange2(e, setVP3, "P4");
+                                            setVerifyErr(false);
+                                        }}
                                         maxLength={1}
                                         style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
                                         onKeyDown={(e) => handleBackspace2(e, setVP3, "P2")}
@@ -629,7 +649,10 @@ export default function Animation({ onChangeIndex }) {
                                         id="P4"
                                         type='text'
                                         value={VP4}
-                                        onChange={(e) => handleInputChange2(e, setVP4, "P5")}
+                                        onChange={(e) => {
+                                            handleInputChange2(e, setVP4, "P5");
+                                            setVerifyErr(false);
+                                        }}
                                         maxLength={1}
                                         style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
                                         onKeyDown={(e) => handleBackspace2(e, setVP4, "P3")}
@@ -638,12 +661,26 @@ export default function Animation({ onChangeIndex }) {
                                         id="P5"
                                         type='text'
                                         value={VP5}
-                                        onChange={(e) => handleInputChange2(e, setVP5, null)}
+                                        onChange={(e) => {
+                                            handleInputChange2(e, setVP5, null);
+                                            setVerifyErr(false);
+                                        }}
                                         maxLength={1}
                                         style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
                                         onKeyDown={(e) => handleBackspace2(e, setVP5, "P4")}
                                     />
                                 </div>
+
+                                <div>
+                                    {
+                                        verifyErr && (
+                                            <div className='mt-2' style={{ fontWeight: "400", fontFamily: "inter", color: "#FF0100" }}>
+                                                Invalid Code
+                                            </div>
+                                        )
+                                    }
+                                </div>
+
                                 <div className='mt-8 w-8/12' style={{ color: "white" }}>
                                     {
                                         verifyLoader ?
