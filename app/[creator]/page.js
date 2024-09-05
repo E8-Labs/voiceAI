@@ -21,7 +21,7 @@ const backgroundImage = {
 }
 
 const gifBackgroundImage = {
-    backgroundImage: 'url("/assets/appLogo2.png")', // Ensure the correct path
+    backgroundImage: 'url("/assets/applogo2.png")', // Ensure the correct path
     backgroundSize: "cover",
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
