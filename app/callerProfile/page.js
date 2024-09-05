@@ -72,7 +72,8 @@ const Page = () => {
                     <div className='w-7/12 flex flex-row items-start justify-between'>
                         <div className='flex flex-row items-start gap-4'>
                             <div>
-                                <Image src="/assets/placeholderImg.jpg" alt='profile' height={70} width={70} style={{ borderRadius: '50%' }} />
+                                <Image src="/assets/placeholderImg.jpg" alt='profile' height={70} width={70}
+                                    style={{ borderRadius: '50%' }} />
                             </div>
                             <div>
                                 <div style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 15 }}>
