@@ -2,7 +2,7 @@
 import { Button, CircularProgress, IconButton, InputAdornment, TextField, Visibility, VisibilityOff } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PhoneNumberInput from '../PhoneNumberInput';
 import Apis from '../apis/Apis';
 import axios from 'axios';
@@ -26,6 +26,7 @@ const boxVariants = {
 export default function Animation({ onChangeIndex }) {
 
     const router = useRouter();
+    const inputFocusRef = useRef(null);
 
     useEffect(() => {
         const LocalData = localStorage.getItem('route');
@@ -36,7 +37,7 @@ export default function Animation({ onChangeIndex }) {
             setCurrentIndex(2);
             setDirection(2);
         }
-    }, [])
+    }, []);
 
     const [currentIndex, setCurrentIndex] = useState(2);
     const [direction, setDirection] = useState(2);
@@ -67,6 +68,7 @@ export default function Animation({ onChangeIndex }) {
     const [verifyLoader, setVerifyLoader] = useState(false);
     const [verifyErr, setVerifyErr] = useState(false);
     const [creatorLoader, setCreatorLoader] = useState(false);
+    const [index1Loader, setIndex1Loader] = useState(false);
 
     const checkUserName = async () => {
         const ApiPath = Apis.checkUserName;
@@ -89,6 +91,15 @@ export default function Animation({ onChangeIndex }) {
 
         }
     }
+
+    useEffect(() => {
+        if (currentIndex === 1 && inputFocusRef.current) {
+            // Using a small timeout to ensure rendering of the input after animation
+            setTimeout(() => {
+                inputFocusRef.current.focus();
+            }, 300); // Adjust this delay according to the animation timing
+        }
+    }, [currentIndex]);
 
     const SignInNumber = (number) => {
         setSigninVerificationNumber(number);
@@ -173,6 +184,7 @@ export default function Animation({ onChangeIndex }) {
     //code for login back
     const handleLogin = async () => {
         try {
+            setIndex1Loader(true);
             const ApiPath = Apis.sendVerificationCode;
             // const LocalData = localStorage.getItem('route');
             // const D = JSON.parse(LocalData);
@@ -191,11 +203,29 @@ export default function Animation({ onChangeIndex }) {
             if (response) {
                 console.log("Response of login api is", response);
                 if (response.data.status === true) {
-                    handleContinue()
+                    handleContinue();
                 }
             }
         } catch (error) {
             console.error("Error occured in login api", error);
+        } finally {
+            setIndex1Loader(false);
+        }
+    }
+
+    //signup click
+    const handleSignUpContinue = () => {
+        const LocalData = localStorage.getItem('route');
+        if (LocalData) {
+            const Data = JSON.parse(LocalData);
+            const path = Data.modalName
+            console.log("Data from main screen", path);
+
+            router.push(`/${path}`);
+            localStorage.removeItem('route');
+        } else {
+            setDirection(2);
+            setCurrentIndex((prevIndex) => prevIndex + 2);
         }
     }
 
@@ -441,12 +471,16 @@ export default function Animation({ onChangeIndex }) {
                         const Data = JSON.parse(fromBuyStatus);
                         window.open(`/buyproduct/${Data.id}`);
                         localStorage.removeItem("fromBuyScreen");
+                        localStorage.setItem('User', JSON.stringify(response.data));
+                        router.push(`/${modalName}`);
+                    }
+                    else {
+                        localStorage.setItem('User', JSON.stringify(response.data));
+                        router.push(`/${modalName}`);
                     }
                     console.log("Response of login verification code", response.data.data);
-                    localStorage.setItem('User', JSON.stringify(response.data));
                     // router.push(`/${}`)
                     // return
-                    router.push(`/${modalName}`);
                     localStorage.removeItem('route');
                 } else if (response.data.status === false) {
                     console.log("Error errrrrrrr");
@@ -519,7 +553,7 @@ export default function Animation({ onChangeIndex }) {
                                 <div className='text-lightWhite' style={{ fontSize: 13, fontWeight: "400" }}>
                                     Good to have you back!
                                 </div>
-                                <div className='w-8/12 flex flex-row gap-6 mt-8'>
+                                <div className='w-full md:w-8/12 flex flex-row gap-6 mt-8'>
                                     {/* <TextField className=' w-5/12'
                                         autofill='off'
                                         id="filled-basic"
@@ -574,17 +608,23 @@ export default function Animation({ onChangeIndex }) {
                                         </u>
                                     </button>
                                 </div> */}
-                                <div className='mt-8 w-8/12' style={{ color: "white" }}>
-                                    <Button className='bg-purple hover:bg-purple2 text-white w-full' onClick={handleLogin}
-                                        style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
-                                        Continue
-                                    </Button>
+                                <div className='mt-8 w-full md:w-8/12' style={{ color: "white" }}>
+                                    {
+                                        index1Loader ?
+                                            <div className='w-full flex flex-row justify-center'>
+                                                <CircularProgress size={25} />
+                                            </div> :
+                                            <Button className='bg-purple hover:bg-purple2 text-white w-full' onClick={handleLogin}
+                                                style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
+                                                Continue
+                                            </Button>
+                                    }
                                 </div>
                                 <div className='mt-6 flex flex-row items-center gap-1'>
                                     <div style={{ fontSize: 12, fontWeight: "400" }}>
                                         Or
                                     </div>
-                                    <button onClick={handleBack} style={{ fontSize: 15, fontWeight: "500" }}>
+                                    <button onClick={handleSignUpContinue} style={{ fontSize: 15, fontWeight: "500" }}>
                                         Signup
                                     </button>
                                 </div>
@@ -611,6 +651,7 @@ export default function Animation({ onChangeIndex }) {
                                 <div className='flex flex-row gap-4 mt-4'>
                                     <input
                                         id="P1"
+                                        ref={inputFocusRef}
                                         type='text'
                                         value={VP1}
                                         onChange={(e) => {
@@ -681,7 +722,7 @@ export default function Animation({ onChangeIndex }) {
                                     }
                                 </div>
 
-                                <div className='mt-8 w-8/12' style={{ color: "white" }}>
+                                <div className='mt-8 w-full md:w-8/12' style={{ color: "white" }}>
                                     {
                                         verifyLoader ?
                                             <div className='w-full mt-4 flex flex-row justify-center'>
@@ -777,7 +818,7 @@ export default function Animation({ onChangeIndex }) {
                                     </div> */}
 
                                     <TextField
-                                        className='w-9/12 mt-10'
+                                        className='w-full md:w-9/12 mt-10'
                                         autofill='off'
                                         id="filled-basic"
                                         value={userName}

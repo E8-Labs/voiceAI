@@ -20,6 +20,17 @@ const backgroundImage = {
     height: '100vh',
 }
 
+const gifBackgroundImage = {
+    backgroundImage: 'url("/assets/appLogo2.png")', // Ensure the correct path
+    backgroundSize: "cover",
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    width: '700px',
+    height: '700px',
+    borderRadius: "50%",
+    resize: "cover"
+}
+
 const Page = () => {
     const router = useRouter();
     const buttonRef = useRef(null);
@@ -52,10 +63,22 @@ const Page = () => {
     // for side animation
     const [isVisible, setisVisible] = useState(true);
     const [callErr, setCallErr] = useState(false);
+    const [profileData, setProfileData] = useState(null);
 
+    // useEffect(() => {
+    //     const localData = localStorage.getItem('User');
+    //     if (localData) {
+    //         const Data = JSON.parse(localData);
+    //         setProfileData(Data.data.user);
+    //     }
+    // }, []);
     useEffect(() => {
         const needsReload = localStorage.getItem('needsReload');
-
+        const localData = localStorage.getItem('User');
+        if (localData) {
+            const Data = JSON.parse(localData);
+            setProfileData(Data.data.user);
+        }
         if (needsReload === 'true') {
             // Clear the flag so the page doesn't keep reloading
             localStorage.removeItem('needsReload');
@@ -471,9 +494,20 @@ const Page = () => {
                                 <div className='relative'>
                                     {/* Profile Image with Claim Button */}
                                     <div className='flex flex-row items-center'>
-                                        <div style={{ position: 'relative' }}>
+                                        <button
+                                            onClick={() => {
+                                                // console.log("Sary gama pada na ri sa");
+                                                setOpenClaimPopup(true);
+                                            }}
+                                            style={{ position: 'relative' }}>
                                             <div style={{ border: "2px solid black", borderRadius: "50%" }}>
-                                                <Image src={"/assets/profile.png"} alt='profilephoto' height={50} width={50} style={{ padding: 4 }} />
+                                                {
+                                                    getAssistantData && getAssistantData.profile_image ?
+                                                        <Image src={getAssistantData.profile_image} alt='profilephoto' height={50} width={50}
+                                                            style={{ padding: 4, borderRadius: "50%" }} /> :
+                                                        <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={50} width={50}
+                                                            style={{ padding: 4, borderRadius: "50%" }} />
+                                                }
                                             </div>
                                             {/* Claim Button */}
                                             <div className='absolute top-0 -left-2' style={{ backgroundColor: "transparent" }}>
@@ -489,7 +523,7 @@ const Page = () => {
                                                         style={{ cursor: "pointer", backgroundColor: "transparent" }} />
                                                 </div>
                                             </div>
-                                        </div>
+                                        </button>
                                         <div style={triangle} />
                                     </div>
                                 </div>
@@ -519,15 +553,15 @@ const Page = () => {
                                     <div style={{ fontSize: 12, color: "grey", fontWeight: "400", fontFamily: "inter" }}>
                                         Calls:
                                     </div>
-                                    <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
+                                    <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 12 }}>
                                         {
                                             getAssistantData &&
                                             <div>
                                                 {getAssistantData.calls ?
-                                                    <div className='ms-1' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
+                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
                                                         {getAssistantData.calls}
                                                     </div> :
-                                                    <div className='ms-1' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
+                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
                                                         0
                                                     </div>
                                                 }
@@ -542,10 +576,10 @@ const Page = () => {
                                             getAssistantData &&
                                             <div>
                                                 {getAssistantData.earned ?
-                                                    <div className='ms-1' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
+                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
                                                         $ {Number(getAssistantData.earned.toFixed(2))}
                                                     </div> :
-                                                    <div className='ms-1' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
+                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
                                                         $ 0
                                                     </div>
                                                 }
@@ -610,14 +644,18 @@ const Page = () => {
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
             }} className='flex w-9/12 justify-center items-center md:flex hidden'>
-                <button className='flex items-center justify-center flex-1 '
+                <button className='flex items-center justify-center flex-1'
                     style={{
                         cursor: "pointer",
                         outline: "none",
                         border: "none",
                         backgroundColor: "transparent",
                     }}>
-                    <motion.img onClick={handleContinue}
+                    <div className='flex flex-row items-center justify-center' style={gifBackgroundImage}>
+                        <Image onClick={handleContinue} src="/mainAppGif.gif" alt='gif' style={{ backgroundColor: "", borderRadius: "50%" }} height={600} width={600} />
+                    </div>
+
+                    {/* <motion.img onClick={handleContinue}
                         src="/borderedAppLogo.png"
                         alt="Animating Image"
                         animate={{
@@ -636,7 +674,7 @@ const Page = () => {
                             width: isWideScreen ? "830px" : "600px", // Initial width
                             height: isWideScreen ? "830px" : "600px", // Initial height
                         }}
-                    />
+                    /> */}
                 </button>
             </div>
 
@@ -647,13 +685,16 @@ const Page = () => {
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
             }} className='w-full flex justify-center items-center md:hidden'>
-                <button className='flex items-center justify-center flex-1' onClick={handleContinue}
+                <button className='flex items-center justify-center flex-1'
                     style={{
                         cursor: "pointer",
                         outline: "none",
                         border: "none",
                     }}>
-                    <motion.img
+                    <div className='flex flex-row items-center justify-center' style={gifBackgroundImage}>
+                        <Image src="/mainAppGif.gif" onClick={handleContinue} alt='gif' style={{ backgroundColor: "red", borderRadius: "50%" }} height={600} width={600} />
+                    </div>
+                    {/* <motion.img
                         src="/borderedAppLogo.png"
                         alt="Animating Image"
                         animate={{
@@ -672,7 +713,7 @@ const Page = () => {
                             width: "380px", // Initial width
                             height: "380px", // Initial height
                         }}
-                    />
+                    /> */}
                 </button>
             </div>
 
@@ -711,20 +752,31 @@ const Page = () => {
             {/* Button and Calls array */}
             <div style={{ position: "absolute", bottom: 10 }} className='w-full flex items-end justify-between mb-12 rounded'>
                 <div ref={buttonRef} className='flex items-end ms-8 px-4' style={{ backgroundColor: "#620FEB66", width: "fit-content", borderRadius: "70px" }}>
-                    {
+                    {/* {
                         showCreatorBtn &&
                         <button className='flex flex-row p-4 items-center gap-4'>
                             <Image src={"/assets/stars.png"} alt='phone' height={20} width={20} />
                             <div onClick={
                                 // handleCreatorXClick
                                 () => {
-                                    window.open('https://form.jotform.com/noahdeveloperr/creatorX', "_blank")
+                                    window.open('https://www.jotform.com/form/242259184814461', "_blank")
                                 }
                             } className='text-white' style={{ fontSize: 17, fontWeight: "600" }}>
                                 Build Your CreatorX
                             </div>
                         </button>
-                    }
+                    } */}
+                    <button className='flex flex-row p-4 items-center gap-4'>
+                        <Image src={"/assets/stars.png"} alt='phone' height={20} width={20} />
+                        <div onClick={
+                            // handleCreatorXClick
+                            () => {
+                                window.open('https://www.jotform.com/form/242259184814461', "_blank")
+                            }
+                        } className='text-white' style={{ fontSize: 17, fontWeight: "600" }}>
+                            Build Your CreatorX
+                        </div>
+                    </button>
                 </div>
                 <div className='me-8 md:flex hidden'>
                     <CycleArray data={getRecentCallData} assistantData={getAssistantData} />
@@ -821,21 +873,51 @@ const Page = () => {
                     </div>
                 </div>
             </Drawer>
-            {/* {
- snackMessage &&
- <div style={{ width: '280px', height: '80px', padding: 15, borderRadius: 20, border: '2px solid white', backgroundColor: '#ffffff60', position: 'absolute', top: 10, right: 12 }}>
- <div>
- <div style={{ fontSize: 15, fontWeight: '500', fontFamily: 'inter' }}>
- 🎉Congratulations
- </div>
- <div>
- </div>
- </div>
- <div style={{ fontSize: 13, fontWeight: '400', fontFamily: 'inter' }}>
- Your call has been initiated successfully
- </div>
- </div>
- } */}
+
+            {/* <div className=''>
+                <Snackbar
+                    open={callErr}
+                    autoHideDuration={5000}
+                    onClose={() => setCallErr(false)}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center',
+                    }}
+                    TransitionComponent={Fade}
+                    TransitionProps={{
+                        timeout: {
+                            enter: 1000,
+                            exit: 1000,
+                        }
+                    }}
+                    sx={{
+                        position: 'fixed', // Ensures it stays in place
+                        top: 20, // Adjust as needed for spacing from the top
+                        left: '50%', // Center horizontally
+                        transform: 'translateX(-50%)', // Center horizontally
+                        border: "2px solid red",
+                        width: "500px"
+                    }}
+                >
+                    <Alert
+                        // onClose={() => setCallErr(false)}
+                        severity="error"
+                        sx={{
+                            width: '309px',
+                            backgroundColor: 'white', // Set background color to white
+                            color: 'black',
+                            width: "300px",
+                            borderRadius: "20px"
+                            // border: "2px solid grey"
+                        }}
+                    >
+                        <div>
+                            Unfortunately, we were unable to process your payment method on file, please update your payment method to start a call.
+                        </div>
+                    </Alert>
+                </Snackbar>
+            </div> */}
+
             <Snackbar
                 open={callErr}
                 autoHideDuration={5000}
@@ -856,23 +938,30 @@ const Page = () => {
                     top: 20, // Adjust as needed for spacing from the top
                     left: '50%', // Center horizontally
                     transform: 'translateX(-50%)', // Center horizontally
+                    width: '400px', // Set width to 309px
+                    // border: "2px solid red",
                 }}
             >
                 <Alert
-                    // onClose={() => setCallErr(false)}
                     severity="error"
                     sx={{
-                        width: '100%',
-                        backgroundColor: 'white', // Set background color to white
+                        width: '100%', // Ensures the Alert takes up the full width of the Snackbar
+                        backgroundColor: 'white',
                         color: 'black',
-                        width: "300px",
-                        borderRadius: "20px"
-                        // border: "2px solid grey"
+                        borderRadius: "20px",
                     }}
                 >
-                    Unfortunately, we were unable to process your payment method on file, please update your payment method to start a call.
+                    <div>
+                        <div style={{ color: "#FF543E", fontWeight: "bold", fontSize: 11 }}>
+                            Error
+                        </div>
+                        <div>
+                            We were unable to process your payment method, please update to start a call.
+                        </div>
+                    </div>
                 </Alert>
             </Snackbar>
+
         </div>
     );
 }

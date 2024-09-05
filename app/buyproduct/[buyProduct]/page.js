@@ -142,13 +142,16 @@ const Page = () => {
                     },
                 }}
             >
-                <Box className="lg:w-3/12 md:w-4/12 sm:w-6/12 w-8/12"
+                <Box className="lg:w-3/12 md:w-4/12 sm:w-6/12 w-9/12"
                     sx={ModalCss}
                 >
                     <div className='w-full'>
                         <div className='flex flex-col w-full items-center justify-center' style={{ backgroundColor: 'white', padding: 20, borderRadius: 3, paddingBottom: 60 }}>
                             <div className='mt-10'>
-                                <Image src="/assets/placeholderImg.jpg" alt='profile' height={60} width={60} />
+                                {productDetails && productDetails.user.profile_image ?
+                                    <Image src={productDetails.user.profile_image} style={{ borderRadius: "50%" }} alt='profile' height={60} width={60} /> :
+                                    <Image src="/assets/placeholderImg.jpg" style={{ borderRadius: "50%" }} alt='profile' height={60} width={60} />
+                                }
                             </div>
                             <div className='mt-3' style={{ fontWeight: "400", fontFamily: "inter", fontSize: 15 }}>
                                 {productDetails && productDetails.user.name}

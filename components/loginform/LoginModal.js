@@ -176,7 +176,8 @@ const LoginModal = ({ closeForm, creator, assistantData }) => {
                                     <div style={{ fontWeight: '700', fontSize: 24, fontFamily: 'inter' }}>
                                         First 5 minutes are on us!
                                     </div>
-                                    <div className='text-lightWhite' style={{ fontWeight: "800", fontSize: 13, fontFamily: "inter", marginTop: 10 }}>
+                                    <div className='text-lightWhite'
+                                        style={{ fontWeight: "bold", fontSize: 13, fontFamily: "inter", marginTop: 10, color: "#050A0895" }}>
                                         We have got your first 5 minutes covered! Anything more is just $1 per minute to get some of the best advice of your life.
                                         <br /> <br />You are only charged for minutes talked. We add 10 minutes to your account when it drops below 2 minutes.
                                         <br /><br />Enjoy!

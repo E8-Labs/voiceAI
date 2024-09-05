@@ -243,10 +243,28 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
 
     return (
         <div>
-            <div className='w-full flex flex-row justify-between items-center' style={{ marginTop: 18 }}>
-                <div />
+            <div className='flex flex-row w-full justify-end'>
+                <button onClick={handleCloseForm}>
+                    <Image src="/assets/croseBtn.png" alt='cross' height={25} width={25} />
+                </button>
+            </div>
+            <div className='w-full flex flex-row justify-center' style={{ marginTop: 10 }}>
+
                 <div style={{ fontWeight: "600", fontSize: 28, textAlign: "center" }}>
-                    {
+                    <div style={{ fontWeight: "600", fontSize: 24, textAlign: "center" }}>
+                        {modalData &&
+                            <div>
+                                {modalData.name ?
+                                    <div>
+                                        {modalData.name}
+                                    </div> :
+                                    <div style={{ fontWeight: "600", fontSize: 28, textAlign: "center" }}>
+                                        {modalData.assitant.name}
+                                    </div>}
+                            </div>
+                        }
+                    </div>
+                    {/* {
                         loginLoader ?
                             <CircularProgress size={20} /> :
                             <div style={{ fontWeight: "600", fontSize: 24, textAlign: "center" }}>
@@ -262,13 +280,9 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                                     </div>
                                 }
                             </div>
-                    }
+                    } */}
                 </div>
-                <div>
-                    <button onClick={handleCloseForm}>
-                        <Image src="/assets/croseBtn.png" alt='cross' height={25} width={25} />
-                    </button>
-                </div>
+
             </div>
             <TextField className=' w-full mt-10'
                 autofill='off'
@@ -276,7 +290,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
                 label="First Name" variant="outlined"
-                placeholder='First name.'
+                placeholder='First name'
                 sx={MuiFieldStyle}
                 inputProps={{
                     style: {
@@ -292,7 +306,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                 value={userLastName}
                 onChange={(e) => setUserLastName(e.target.value)}
                 label="Last Name" variant="outlined"
-                placeholder='Last name.'
+                placeholder='Last name'
                 sx={MuiFieldStyle}
             />
             <TextField className=' w-full mt-8'
@@ -304,16 +318,16 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                     setCheckUserEmailData(null);
                 }}
                 label="Email" variant="outlined"
-                placeholder='Address.'
+                placeholder='Email Address'
                 sx={MuiFieldStyle}
             />
             {
                 checkUserEmailData && checkUserEmailData.status === true ?
                     <div className='mt-2 ms-3' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "green" }}>
-                        {checkUserEmailData.message}
+                        Email available
                     </div> :
                     <div className='mt-2 ms-3' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100" }}>
-                        {checkUserEmailData && checkUserEmailData.message}
+                        {checkUserEmailData && checkUserEmailData.status === false && "Email already taken"}
                     </div>
             }
             {/* <TextField className='mt-4' id="outlined-basic" label="Outlined" variant="outlined" sx={MuiFieldStyle} /> */}
@@ -322,10 +336,10 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
             </div>
             {
                 phoneNumberErr && phoneNumberErr.status === true ?
-                    <div style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "green" }}>
+                    <div className='mt-2 ms-3' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "green" }}>
                         {phoneNumberErr.message}
                     </div> :
-                    <div style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100" }}>
+                    <div className='mt-2 ms-3' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100" }}>
                         {phoneNumberErr && phoneNumberErr.message}
                     </div>
             }
@@ -377,7 +391,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
             </div>
             <div className='w-full flex justify-center mt-8'>
                 {
-                    userEmail && userName && userPhoneNumber && termsCheck && checkUserEmailData && checkUserEmailData.status === true ?
+                    userEmail && userName && userPhoneNumber && termsCheck && checkUserEmailData && checkUserEmailData.status === true && phoneNumberErr && phoneNumberErr.status === true ?
                         <button onClick={handleLogin} className='bg-purple w-full px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15, borderRadius: "50px" }}>
                             {
                                 loginLoader ?
@@ -387,17 +401,17 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                                             <div>
                                                 {modalData.name ?
                                                     <div>
-                                                        {modalData.name}
+                                                        Call {modalData.name}
                                                     </div> :
                                                     <div>
-                                                        {modalData.assitant.name}
+                                                        Call {modalData.assitant.name}
                                                     </div>}
                                             </div>
                                         }
                                     </div>
                             }
                         </button> :
-                        <button className='bg-light-blue w-full px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15, borderRadius: "50px" }}>
+                        <button className='bg-purple2 w-full px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15, borderRadius: "50px" }}>
                             {
                                 loginLoader ?
                                     <CircularProgress size={20} /> :

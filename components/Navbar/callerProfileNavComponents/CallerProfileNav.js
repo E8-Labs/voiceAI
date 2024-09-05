@@ -32,14 +32,14 @@ const callerProfileNav = () => {
         },
         {
             id: 3,
-            name: 'My Products',
+            name: 'Products',
             href: '/callerProfile/myProducts',
             image: '/assets/selectedCreatorIcon.png',
             unSelectedImg: '/assets/unselectedCreatorIcon.png'
         },
         {
             id: 4,
-            name: 'Payment Methods',
+            name: 'Payment Method',
             href: '/callerProfile/plans',
             image: '/assets/selectedPlansIcon.png',
             unSelectedImg: '/assets/plansI.png'
@@ -54,7 +54,7 @@ const callerProfileNav = () => {
         {
             id: 6,
             name: 'Terms & Condition',
-            href: '',
+            href: '/callerProfile/termsandconditions',
             image: '/assets/selectedtermsIcon.png',
             unSelectedImg: '/assets/terms.png'
         }
@@ -130,11 +130,6 @@ const callerProfileNav = () => {
         router.push(link);
     }
 
-    const handleLogout = () => {
-        localStorage.removeItem('User');
-        router.push("/tate")
-    }
-
 
     const triangle = {
         width: 5,
@@ -160,12 +155,12 @@ const callerProfileNav = () => {
                                 style={{ borderRadius: 50, backgroundColor: "#ffffff30", width: "fit-content" }}>
                                 <div className='flex flex-row items-center'>
                                     <div style={{ border: "2px solid black", borderRadius: "50%" }}>
-                                        <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={40} width={40} style={{ resize: "cover", padding: 2, borderRadius: "50%" }} />
-                                        {/* {
+                                        {/* <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={40} width={40} style={{ resize: "cover", padding: 2, borderRadius: "50%" }} /> */}
+                                        {
                                             userDetails && userDetails.profile_image ?
                                                 <Image src={userDetails.profile_image} alt='profilephoto' height={40} width={40} style={{ resize: "cover", padding: 2, borderRadius: "50%" }} /> :
                                                 <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={40} width={40} style={{ resize: "cover", padding: 2, borderRadius: "50%" }} />
-                                        } */}
+                                        }
                                     </div>
                                     <div style={triangle} />
                                 </div>
@@ -237,13 +232,6 @@ const callerProfileNav = () => {
                                     )
                                 })
                             }
-                        </div>
-
-                        <div>
-                            <button className='px-4 py-1' onClick={handleLogout}
-                                style={{ backgroundColor: '#FF424250', fontWeight: '400', fontFamily: 'inter', color: '#FF4242', cursor: "pointer", borderRadius: '25px' }}>
-                                Logout
-                            </button>
                         </div>
 
                     </div>

@@ -182,6 +182,9 @@ const Page = () => {
     const [openBuyProductDrawer, setOpenBuyProductDrawer] = useState(null);
     const [buyProductLoader, setBuyProductLoader] = useState(null);
     const [buyProductSuccess, setBuyProductSuccess] = useState(null);
+    const [creatorsLoader, setCreatorsLoader] = useState(false);
+    const [purchasedProductLoader, setPurchasedProductLoaderLoader] = useState(false);
+
 
     const styles = {
         text: {
@@ -246,6 +249,8 @@ const Page = () => {
         const localData = localStorage.getItem("User");
         if (localData) {
             try {
+                setCreatorsLoader(true);
+                setPurchasedProductLoaderLoader(true);
                 const Data = JSON.parse(localData);
                 const AuthToken = Data.data.token;
                 const ApiPath = Apis.CallerDashboard;
@@ -259,6 +264,7 @@ const Page = () => {
                     console.log("Response of callerdashboard api is", response.data.data);
                     if (response.data.status === true) {
                         setCallerDashboardData(response.data.data.callersDashboardData);
+                        setOpenProducts(response.data.data.callersDashboardData[0]);
                         setBuyedProducts(response.data.data.products);
                     } else {
                         console.log("Status is", response.data.message);
@@ -268,6 +274,10 @@ const Page = () => {
             } catch (error) {
                 console.error("Eror ocured in api", error);
 
+            }
+            finally {
+                setCreatorsLoader(false);
+                setPurchasedProductLoaderLoader(false);
             }
         }
     }
@@ -361,34 +371,59 @@ const Page = () => {
                                 <Image src="/assets/searchIcon.png" height={24} width={24} alt='search' />
                             </button>
                         </div>
-                        {
-                            callerDashboardData.map((item) => (
-                                <div key={item.profile.id} className='w-full rounded-xl flex flex-row mt-2'
-                                // style={{ backgroundColor: "#FFFFFF30" }}
-                                >
-                                    <button onClick={() => handleOpenProducts(item)}
-                                        className='w-full flex flex-row gap-2 p-2'
-                                        style={{ backgroundColor: openProducts === item ? '#ffffff' : "transparent" }}>
-                                        <div className='w-full flex flex-row gap-2' style={{ height: 'fit-content' }}>
-                                            <Image src="/assets/placeholderImg.jpg" alt='profile'
-                                                height={50} width={50} style={{ borderRadius: "50%", height: "fit-content" }}
-                                            />
-                                            <div className='flex flex-col' style={{ textAlign: "start" }}>
-                                                <div style={{ fontSize: 18, fontWeight: 400, fontFamily: 'inter', }}>
-                                                    {item.profile.name}
-                                                </div>
-                                                <div style={{ fontSize: 14, fontWeight: 400, fontFamily: 'inter', color: '#00000090', }}>
-                                                    {item.products.length} {
-                                                        item.products.length === 0 ? "Product" : "Products"
-                                                    }
 
+                        <div>
+                            {
+                                creatorsLoader ?
+                                    <div className='mt-4 w-full flex flex-row justify-center'>
+                                        <CircularProgress size={30} />
+                                    </div> :
+                                    <div>
+                                        {
+                                            callerDashboardData === null && openProducts.length === 0 ?
+                                                <div className='ms-4 mt-2' style={{ fontWeight: '500', fontFamily: 'inter', fontSize: 15, }}>
+                                                    No caller dashoboard
+                                                </div> :
+                                                <div style={{ maxHeight: '30vh', overflow: "auto", scrollbarWidth: "none" }}>
+                                                    {
+                                                        callerDashboardData.map((item) => (
+                                                            <div key={item.profile.id} className='w-full rounded-xl flex flex-row mt-2'
+                                                            // style={{ backgroundColor: "#FFFFFF30" }}
+                                                            >
+                                                                <button onClick={() => handleOpenProducts(item)}
+                                                                    className='w-full flex flex-row gap-2 p-2'
+                                                                    style={{ backgroundColor: openProducts === item ? '#ffffff69' : "transparent" }}>
+                                                                    <div className='w-full flex flex-row gap-2' style={{ height: 'fit-content' }}>
+                                                                        {item.profile.profile_image ?
+                                                                            <Image src={item.profile.profile_image} alt='profile'
+                                                                                height={50} width={50} style={{ borderRadius: "50%", height: "fit-content" }}
+                                                                            /> :
+                                                                            <Image src="/assets/placeholderImg.jpg" alt='profile'
+                                                                                height={50} width={50} style={{ borderRadius: "50%", height: "fit-content" }}
+                                                                            />
+                                                                        }
+                                                                        <div className='flex flex-col' style={{ textAlign: "start" }}>
+                                                                            <div style={{ fontSize: 18, fontWeight: 400, fontFamily: 'inter', }}>
+                                                                                {item.profile.name}
+                                                                            </div>
+                                                                            <div style={{ fontSize: 14, fontWeight: 400, fontFamily: 'inter', color: '#00000090', }}>
+                                                                                {item.products.length} {
+                                                                                    item.products.length < 2 ? "Product" : "Products"
+                                                                                }
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </button>
+                                                            </div>
+                                                        ))
+                                                    }
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </button>
-                                </div>
-                            ))
-                        }
+                                        }
+                                    </div>
+                            }
+                        </div>
+
                     </div>
 
                     <div className='w-6/12'>
@@ -402,7 +437,8 @@ const Page = () => {
 
                                         </div> :
                                         <div>
-                                            <div className='w-full flex flex-col gap-5 bg-white px-4 pb-4'>
+                                            <div className='w-full flex flex-col gap-5 px-4 pb-4'
+                                                style={{ maxHeight: "30vh", overflow: "auto", scrollbarWidth: "none", backgroundColor: "#ffffff69" }}>
                                                 <div className='mt-6' style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
                                                     {openProducts.profile.name}'s Products
                                                 </div>
@@ -476,210 +512,96 @@ const Page = () => {
                         }
                     </div>
 
-                    {/* <div className='w-6/12 p-5 rounded-xl'
-                        style={{ backgroundColor: "#FFFFFF30" }}
-                    >
-                        <div className='flex flex-row gap-2'>
-                            <Image src="/assets/placeholderImg.jpg" alt='profile'
-                                height={50} width={50} style={{ borderRadius: "50%" }}
-                            />
-                            <div className='flex flex-col'>
-                                <div style={{ fontSize: 18, fontWeight: 400, fontFamily: 'inter' }}>
-                                    Andrew Tate
-                                </div>
-                                <div style={{ fontSize: 15, fontWeight: 400, fontFamily: 'inter', color: '#00000090' }}>
-                                    3 products
-                                </div>
-                            </div>
-                        </div>
-                        <div className='w-full flex flex-col gap-5'>
-                            {
-                                products.map((item) => (
-                                    <div key={item.id} className='w-full flex flex-col'>
-                                        <div className='flex flex-row justify-between items-start'>
-                                            <div className='flex flex-col'>
-                                                <div className='w-10/12'
-                                                    style={{ fontSize: 14, fontWeight: 400, fontFamily: 'inter' }}>
-                                                    {item.disc}
-                                                </div>
-                                                <div style={{ fontSize: 16, fontWeight: 400, fontFamily: 'inter' }}>
-                                                    {item.price}
-                                                </div>
-                                            </div>
-
-                                            <button className='px-3 py-2'
-                                                style={{ color: 'white', backgroundColor: '#552AFF', borderRadius: 20, fontSize: 14 }}>
-                                                Buy
-                                            </button>
-                                        </div>
-                                    </div>
-                                ))
-                            }
-                        </div>
-                    </div> */}
-
                 </div>
 
-                <div className='w-full flex flex-row gap-2'>
-
-                    {/* <div className='w-6/12 p-5 rounded-xl'
-                        style={{ backgroundColor: "#FFFFFF30" }}
-                    >
-                        <div className='flex flex-row gap-2'>
-                            <Image src="/assets/placeholderImg.jpg" alt='profile'
-                                height={50} width={50} style={{ borderRadius: "50%" }}
-                            />
-                            <div className='flex flex-col'>
-                                <div style={{ fontSize: 18, fontWeight: 400, fontFamily: 'inter' }}>
-                                    Andrew Tate
-                                </div>
-                                <div style={{ fontSize: 15, fontWeight: 400, fontFamily: 'inter', color: '#00000090' }}>
-                                    3 products
-                                </div>
-                            </div>
-                        </div>
-                        <div className='w-full flex flex-col gap-5'>
-                            {
-                                products.map((item) => (
-                                    <div key={item.id} className='w-full flex flex-col'>
-                                        <div className='flex flex-row justify-between items-start'>
-                                            <div className='flex flex-col'>
-                                                <div className='w-10/12'
-                                                    style={{ fontSize: 14, fontWeight: 400, fontFamily: 'inter' }}>
-                                                    {item.disc}
-                                                </div>
-                                                <div style={{ fontSize: 16, fontWeight: 400, fontFamily: 'inter' }}>
-                                                    {item.price}
-                                                </div>
-                                            </div>
-
-                                            <button className='px-3 py-2'
-                                                style={{ color: 'white', backgroundColor: '#552AFF', borderRadius: 20, fontSize: 14 }}>
-                                                Buy
-                                            </button>
-                                        </div>
-                                    </div>
-                                ))
-                            }
-                        </div>
-                    </div>
-
-                    <div className='w-6/12 p-5 rounded-xl'
-                        style={{ backgroundColor: "#FFFFFF30" }}
-                    >
-                        <div className='flex flex-row gap-2'>
-                            <Image src="/assets/placeholderImg.jpg" alt='profile'
-                                height={50} width={50} style={{ borderRadius: "50%" }}
-                            />
-                            <div className='flex flex-col'>
-                                <div style={{ fontSize: 18, fontWeight: 400, fontFamily: 'inter' }}>
-                                    Andrew Tate
-                                </div>
-                                <div style={{ fontSize: 15, fontWeight: 400, fontFamily: 'inter', color: '#00000090' }}>
-                                    3 products
-                                </div>
-                            </div>
-                        </div>
-                        <div className='w-full flex flex-col gap-5'>
-                            {
-                                products.map((item) => (
-                                    <div key={item.id} className='w-full flex flex-col'>
-                                        <div className='flex flex-row justify-between items-start'>
-                                            <div className='flex flex-col'>
-                                                <div className='w-10/12'
-                                                    style={{ fontSize: 14, fontWeight: 400, fontFamily: 'inter' }}>
-                                                    {item.disc}
-                                                </div>
-                                                <div style={{ fontSize: 16, fontWeight: 400, fontFamily: 'inter' }}>
-                                                    {item.price}
-                                                </div>
-                                            </div>
-
-                                            <button className='px-3 py-2'
-                                                style={{ color: 'white', backgroundColor: '#552AFF', borderRadius: 20, fontSize: 14 }}>
-                                                Buy
-                                            </button>
-                                        </div>
-                                    </div>
-                                ))
-                            }
-                        </div>
-                    </div> */}
-
-                </div>
-
-                <div className='w-full p-8 rounded-xl' style={{ backgroundColor: '#FFFFFF40' }}>
-                    <div className='w-full flex flex-row justify-between'>
-                        <div style={{ fontSize: 18, fontWeight: 400, fontFamily: 'inter' }}>
-                            Purchased Products
-                        </div>
-                        {
-                            showAll ?
-                                <button
-                                    onClick={() => setShowAll(false)}
-                                    className='px-3 py-2'
-                                    style={{ color: 'white', backgroundColor: '#552AFF', borderRadius: 20, fontSize: 14 }}>
-                                    View Less
-                                </button> :
-                                <button
-                                    onClick={() => setShowAll(true)}
-                                    className='px-3 py-2'
-                                    style={{ color: 'white', backgroundColor: '#552AFF', borderRadius: 20, fontSize: 14 }}>
-                                    View All
-                                </button>
-                        }
-                    </div>
-
-                    <div className='w-full flex flex-row justify-between mt-10'>
-                        <div className='w-4/12'>
-                            <div style={styles.text}>Name</div>
-                        </div>
-                        <div className='w-2/12 '>
-                            <div style={styles.text}>Amount</div>
-                        </div>
-                        <div className='w-3/12'>
-                            <div style={styles.text}>Creator</div>
-                        </div>
-                        <div className='w-2/12'>
-                            <div style={styles.text}>Date</div>
-                        </div>
-                    </div>
-
+                {/* buyedProducts === null && buyedProducts.length === 0 ? */}
+                <div>
                     {
-                        buyedProducts === null || buyedProducts.length === 0 ?
-                            <div className='mt-10' style={{ fontWeight: '500', fontFamily: 'inter', fontSize: 15, textAlign: 'center' }}>
-                                No Product
+                        purchasedProductLoader ?
+                            <div className='w-full flex flex-row justify-center mt-6'>
+                                <CircularProgress size={30} />
                             </div> :
-                            <div className='w-full'>
-                                {itemsToDisplay.map((item) => (
-                                    <div key={item.id}>
-                                        <button className='w-full' //</>style={{}} onClick={() => { setOpen(item) }}
-                                        >
-                                            <div className='w-full flex flex-row justify-between mt-10' key={item.id}>
-                                                <div className='w-4/12' style={{}}>
-                                                    <div style={styles.text2}>{item.name}</div>
+                            <div>
+                                {
+                                    buyedProducts === null && buyedProducts.length === 0 ?
+                                        <div className='w-full p-8 rounded-xl flex flex-col justify-center mt-4'
+                                            style={{
+                                                fontWeight: '500', fontFamily: 'inter', fontSize: 18, textAlign: 'center',
+                                                backgroundColor: '#FFFFFF40', height: '20vh'
+                                            }}>
+                                            No Product Purchased
+                                        </div> :
+                                        <div className='w-full p-8 mb-10 mt-4 rounded-xl' style={{ backgroundColor: '#FFFFFF40', maxHeight: '60vh', overflow: "auto", scrollbarWidth: "none" }}>
+                                            <div className='w-full flex flex-row justify-between'>
+                                                <div style={{ fontSize: 18, fontWeight: 400, fontFamily: 'inter' }}>
+                                                    Purchased Products
+                                                </div>
+                                                {
+                                                    showAll ?
+                                                        <button
+                                                            onClick={() => setShowAll(false)}
+                                                            className='px-3 py-2'
+                                                            style={{ color: 'white', backgroundColor: '#552AFF', borderRadius: 20, fontSize: 14 }}>
+                                                            View Less
+                                                        </button> :
+                                                        <button
+                                                            onClick={() => setShowAll(true)}
+                                                            className='px-3 py-2'
+                                                            style={{ color: 'white', backgroundColor: '#552AFF', borderRadius: 20, fontSize: 14 }}>
+                                                            View All
+                                                        </button>
+                                                }
+                                            </div>
+
+                                            <div className='w-full flex flex-row justify-between mt-10'>
+                                                <div className='w-4/12'>
+                                                    <div style={styles.text}>Name</div>
+                                                </div>
+                                                <div className='w-2/12 '>
+                                                    <div style={styles.text}>Amount</div>
+                                                </div>
+                                                <div className='w-3/12'>
+                                                    <div style={styles.text}>Creator</div>
                                                 </div>
                                                 <div className='w-2/12'>
-                                                    <div style={styles.text2}>
-                                                        ${item.productPrice}
-                                                    </div>
-                                                </div>
-                                                <div className='w-3/12 '>
-                                                    <div style={styles.text2}>
-                                                        {item.user.name}
-                                                    </div>
-                                                </div>
-                                                <div className='w-2/12'>
-                                                    <div style={styles.text2}>{moment(item.createdAt).format('MM/DD/YYYY')}</div>
+                                                    <div style={styles.text}>Date</div>
                                                 </div>
                                             </div>
-                                            <div className='w-full h-0.5 rounded mt-2' style={{ backgroundColor: '#00000011' }}></div>
-                                        </button>
-                                    </div>
-                                ))}
+
+
+                                            <div className='w-full'>
+                                                {itemsToDisplay.map((item) => (
+                                                    <div key={item.id}>
+                                                        <button className='w-full' //</>style={{}} onClick={() => { setOpen(item) }}
+                                                        >
+                                                            <div className='w-full flex flex-row justify-between mt-10' key={item.id}>
+                                                                <div className='w-4/12' style={{}}>
+                                                                    <div style={styles.text2}>{item.name}</div>
+                                                                </div>
+                                                                <div className='w-2/12'>
+                                                                    <div style={styles.text2}>
+                                                                        ${item.productPrice}
+                                                                    </div>
+                                                                </div>
+                                                                <div className='w-3/12 '>
+                                                                    <div style={styles.text2}>
+                                                                        {item.user.name}
+                                                                    </div>
+                                                                </div>
+                                                                <div className='w-2/12'>
+                                                                    <div style={styles.text2}>{moment(item.createdAt).format('MM/DD/YYYY')}</div>
+                                                                </div>
+                                                            </div>
+                                                            <div className='w-full h-0.5 rounded mt-2' style={{ backgroundColor: '#00000011' }}></div>
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                            </div>
+
+                                        </div>
+                                }
                             </div>
                     }
-
                 </div>
 
             </div>

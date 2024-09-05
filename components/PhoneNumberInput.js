@@ -15,27 +15,23 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount }) => {
         if (localData) {
             const Data = JSON.parse(localData);
             const timeOut = setTimeout(() => {
-                setPhone(Data.phonenumber)
+                setPhone(Data.phonenumber);
             }, 1500);
             return () => clearTimeout(timeOut);
         }
 
-
-        // const Data = JSON.parse(localData);
         const timeOut = setTimeout(() => {
             const localData = localStorage.getItem('User');
             if (localData) {
                 const Data = JSON.parse(localData);
-                // console.log("user data is", Data);
                 if (Data.data.user.phone) {
-                    console.log("Recieving nummber", Data.data.user.phone);
-                    setPhone(Data.data.user.phone)
+                    console.log("Receiving number", Data.data.user.phone);
+                    setPhone(Data.data.user.phone);
                 }
             }
         }, 1500);
         return () => clearTimeout(timeOut);
-
-    }, [])
+    }, []);
 
     // Fetch user's current location
     useEffect(() => {
@@ -104,11 +100,11 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount }) => {
                 inputStyle={{
                     width: '100%',
                     fontSize: '16px',
-                    borderRadius: "10px", // data ? "10px" : "20px",
-                    border: "#00000070", //data ? "none" : focus ? '2px solid #00000080' : "1px solid #00000070",
+                    borderRadius: '10px',
+                    border: '#00000070',
                     paddingLeft: '60px',
                     height: 50,
-                    backgroundColor: myCallerAccount ? "transparent" : "#EDEDED", // data ? "#EDEDED" : "transparent"
+                    backgroundColor: myCallerAccount ? 'transparent' : '#EDEDED',
                 }}
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}
@@ -116,23 +112,38 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount }) => {
                     marginBottom: '15px',
                 }}
                 buttonStyle={{
-                    background: '#ffffff00',
+                    background: 'transparent', // Make button background transparent
                     border: 'none',
                     marginRight: '-38px',
                     zIndex: 10,
                     outline: 'none',
                     boxShadow: 'none',
+                    cursor: 'pointer',
                 }}
                 dropdownStyle={{
                     marginTop: '5px',
                     zIndex: 20,
+                    background: '#fff', // Dropdown menu background
                 }}
                 flagStyle={{
                     display: 'none',
                 }}
-                countryCodeEditable={false}
+                countryCodeEditable={true}  // Allow users to edit country code
                 enableSearch={true}
+                searchStyle={{
+                    backgroundColor: 'transparent',
+                }}
             />
+
+            {/* Add CSS for hover effect */}
+            <style jsx global>{`
+                .flag-dropdown:hover .selected-flag {
+                    background-color: transparent !important;  // Make hover background transparent
+                }
+                .flag-dropdown .selected-flag {
+                    background-color: transparent !important;  // Make the default background transparent
+                }
+            `}</style>
         </div>
     );
 };

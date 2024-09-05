@@ -17,6 +17,7 @@
     "@stripe/react-stripe-js": "^2.7.3",
     "@stripe/stripe-js": "^4.2.0",
     "axios": "^1.7.3",
+    "browser-image-compression": "^2.0.2",
     "framer-motion": "^11.3.24",
     "jszip": "^3.10.1",
     "moment": "^2.30.1",

@@ -137,9 +137,10 @@ const Page = () => {
                                                         <div className='w-full flex flex-row justify-between mt-10 items-center' key={item.id}>
                                                             <div className='w-4/12 flex flex-row gap-2 items-center' style={{}}>
                                                                 {item.model.owner.profile_image ?
-                                                                    <Image src={item.model.owner.profile_image} alt='profile'
+                                                                    <img src={item.model.owner.profile_image} alt='profile' style={{ borderRadius: "50%" }}
                                                                         height={25} width={25}
-                                                                    /> :
+                                                                    />
+                                                                    :
                                                                     <div>
                                                                         {
                                                                             item.model.owner.name == "Tristan" ?
@@ -161,7 +162,7 @@ const Page = () => {
                                                             </div>
                                                             <div className='w-2/12'>
                                                                 <div style={styles.text2}>
-                                                                    $ {Number(item.amount.toFixed(2))}
+                                                                    ${Number(item.amount.toFixed(2))}
                                                                 </div>
                                                             </div>
                                                             <div className='w-3/12 '>

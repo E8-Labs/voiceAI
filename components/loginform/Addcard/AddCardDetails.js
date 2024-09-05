@@ -164,11 +164,11 @@ const AddCardDetails = ({
                         }
                     });
                     if (response) {
-                        //console.log("Response of add card api is", response.data);
+                        console.log("Response of add card api is", response.data);
                     }
                     if (response.status === 200) {
                         // setAddCardDetails(response.data.message);
-                        if (response.data.message === "Card not added") {
+                        if (response.data.status === false) {
                             setAddCardFailure(true);
                         } else {
                             //console.log("Here in subscribe plan else", fromBuildAiScreen)
@@ -326,10 +326,13 @@ const AddCardDetails = ({
                         <div className='flex flex-row justify-end items-center mt-8 w-full'>
                             <div>
                                 {
-                                    !fromBuildAiScreen &&
-                                    <button onClick={handleAddCard} className='bg-purple rounded px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15, borderRadius: "50px" }}>
-                                        Start call
-                                    </button>
+                                    !fromBuildAiScreen && fromMYPlansScreen ?
+                                        <button onClick={handleAddCard} className='bg-purple rounded px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15, borderRadius: "50px" }}>
+                                            Add payment method
+                                        </button> :
+                                        <button onClick={handleAddCard} className='bg-purple rounded px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15, borderRadius: "50px" }}>
+                                            Start call
+                                        </button>
                                 }
                                 {/* <button onClick={handleAddCard} className='bg-purple rounded px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15, borderRadius: "50px" }}>
                                     {
