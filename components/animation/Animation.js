@@ -221,7 +221,7 @@ export default function Animation({ onChangeIndex }) {
             const path = Data.modalName
             console.log("Data from main screen", path);
 
-            router.push(`/${path}`);
+            router.push(`/${path}?from=signin`);
             localStorage.removeItem('route');
         } else {
             setDirection(2);

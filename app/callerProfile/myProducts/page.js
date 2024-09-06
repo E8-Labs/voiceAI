@@ -526,10 +526,10 @@ const Page = () => {
                                     buyedProducts === null && buyedProducts.length === 0 ?
                                         <div className='w-full p-8 rounded-xl flex flex-col justify-center mt-4'
                                             style={{
-                                                fontWeight: '500', fontFamily: 'inter', fontSize: 18, textAlign: 'center',
+                                                fontWeight: '500', fontFamily: 'inter', fontSize: 22, textAlign: 'center',
                                                 backgroundColor: '#FFFFFF40', height: '20vh'
                                             }}>
-                                            No Product Purchased
+                                            No Products Purchased
                                         </div> :
                                         <div className='w-full p-8 mb-10 mt-4 rounded-xl' style={{ backgroundColor: '#FFFFFF40', maxHeight: '60vh', overflow: "auto", scrollbarWidth: "none" }}>
                                             <div className='w-full flex flex-row justify-between'>

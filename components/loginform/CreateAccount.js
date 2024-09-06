@@ -248,7 +248,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                     <Image src="/assets/croseBtn.png" alt='cross' height={25} width={25} />
                 </button>
             </div>
-            <div className='w-full flex flex-row justify-center' style={{ marginTop: 10 }}>
+            <div className='w-full flex flex-row justify-center' style={{ marginTop: 8 }}>
 
                 <div style={{ fontWeight: "600", fontSize: 28, textAlign: "center" }}>
                     <div style={{ fontWeight: "600", fontSize: 24, textAlign: "center" }}>
@@ -284,7 +284,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                 </div>
 
             </div>
-            <TextField className=' w-full mt-10'
+            <TextField className=' w-full mt-8'
                 autofill='off'
                 id="filled-basic"
                 value={userName}
@@ -300,7 +300,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                 style={{ color: "black" }}
             />
 
-            <TextField className=' w-full mt-8'
+            <TextField className=' w-full mt-6'
                 autofill='off'
                 id="filled-basic"
                 value={userLastName}
@@ -309,7 +309,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                 placeholder='Last name'
                 sx={MuiFieldStyle}
             />
-            <TextField className=' w-full mt-8'
+            <TextField className=' w-full mt-6'
                 autofill='off'
                 id="filled-basic"
                 value={userEmail}
@@ -323,23 +323,23 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
             />
             {
                 checkUserEmailData && checkUserEmailData.status === true ?
-                    <div className='mt-2 ms-3' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "green" }}>
+                    <div className='mt-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "green", height: 13 }}>
                         Email available
                     </div> :
-                    <div className='mt-2 ms-3' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100" }}>
+                    <div className='mt-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100", height: 13 }}>
                         {checkUserEmailData && checkUserEmailData.status === false && "Email already taken"}
                     </div>
             }
             {/* <TextField className='mt-4' id="outlined-basic" label="Outlined" variant="outlined" sx={MuiFieldStyle} /> */}
-            <div className='mt-8'>
+            <div className='mt-6'>
                 <PhoneNumberInput phonenumber={handlePhoneNumber} />
             </div>
             {
                 phoneNumberErr && phoneNumberErr.status === true ?
-                    <div className='mt-2 ms-3' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "green" }}>
+                    <div className='mt-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "green", height: 13 }}>
                         {phoneNumberErr.message}
                     </div> :
-                    <div className='mt-2 ms-3' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100" }}>
+                    <div className='mt-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100", height: 13 }}>
                         {phoneNumberErr && phoneNumberErr.message}
                     </div>
             }
@@ -370,7 +370,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                         },
                     },
                 }} /> */}
-            <div className='flex flex-row gap-2 items-center mt-10'>
+            <div className='flex flex-row gap-2 items-center mt-8'>
                 {
                     termsCheck ?
                         <button onClick={handleTermsCheckBtn}>
@@ -383,7 +383,8 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                 <div style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter" }}>
                     I agree to the
                     <button onClick={() => {
-                        window.open('https://docs.google.com/document/d/1TdicVwsq3TTUp9tKyIONcPXBcGgKxFgkFPyE9hBapBg/edit#heading=h.wcbyg6d9eki4', '_blank');
+                        // window.open('https://docs.google.com/document/d/1TdicVwsq3TTUp9tKyIONcPXBcGgKxFgkFPyE9hBapBg/edit#heading=h.wcbyg6d9eki4', '_blank');
+                        window.open('/buyproduct/terms', '_blank');
                     }} className='text-purple ms-1'>
                         Terms & Conditions
                     </button>

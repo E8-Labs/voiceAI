@@ -11,7 +11,7 @@ const ProfileAnimation = ({ creator }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [getAssistantData, setGetAssistantData] = useState(null);
     // console.log("Creator on profile animation  is", creator);
-    
+
 
     const handleClick = () => {
         setIsOpen(!isOpen);
@@ -57,8 +57,13 @@ const ProfileAnimation = ({ creator }) => {
             <Box position="relative" display="inline-block">
                 <button onClick={handleClick}>
                     <div style={{ border: "2px solid black", borderRadius: "50%", padding: 4 }}>
-                        <Image src={"/assets/profile.png"} alt='profilephoto' height={40} width={40}
-                            style={{ resize: "cover" }} />
+                        {
+                            getAssistantData && getAssistantData.profile_image ?
+                                <Image src={getAssistantData.profile_image} alt='profilephoto' height={40} width={40}
+                                    style={{ resize: "cover", borderRadius: "50%" }} /> :
+                                <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={40} width={40}
+                                    style={{ resize: "cover", borderRadius: "50%" }} />
+                        }
                     </div>
                 </button>
 
@@ -77,23 +82,65 @@ const ProfileAnimation = ({ creator }) => {
                                     left: '100%',
                                     // transform: 'translateY(-50%)',
                                     // marginLeft: '0px',
-                                    whiteSpace: 'nowrap'
+                                    whiteSpace: 'nowrap',
+                                    // backgroundColor: "red",
+                                    // height: 40
                                 }}
                             >
-                                <div style={{ fontSize: 15, fontWeight: "400" }}>
-                                    {getAssistantData &&
-                                        <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                <div>
+                                    <div style={{ fontSize: 15, fontWeight: "400" }}>
+                                        {getAssistantData &&
+                                            <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                                {
+                                                    getAssistantData.name ?
+                                                        <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                                            {getAssistantData.name}
+                                                        </div> :
+                                                        <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                                            {getAssistantData.assitant.name}
+                                                        </div>
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                    {/* <div className='flex flex-row'>
+                                        <div style={{ fontSize: 12, color: "grey", fontWeight: "400", fontFamily: "inter" }}>
+                                            Calls:
+                                        </div>
+                                        <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 12 }}>
                                             {
-                                                getAssistantData.name ?
-                                                    <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                        {getAssistantData.name}
-                                                    </div> :
-                                                    <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                        {getAssistantData.assitant.name}
-                                                    </div>
+                                                getAssistantData &&
+                                                <div>
+                                                    {getAssistantData.calls ?
+                                                        <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
+                                                            {getAssistantData.calls}
+                                                        </div> :
+                                                        <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
+                                                            0
+                                                        </div>
+                                                    }
+                                                </div>
                                             }
                                         </div>
-                                    }
+                                        <div className='ms-2' style={{ fontSize: 12, color: "grey", fontWeight: "400", fontFamily: "inter" }}>
+                                            Earned:
+                                        </div>
+                                        <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
+                                            {
+                                                getAssistantData &&
+                                                <div>
+                                                    {getAssistantData.earned ?
+                                                        <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
+                                                            ${Number(getAssistantData.earned).toFixed(2)}
+                                                        </div> :
+                                                        <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
+                                                            $ 0
+                                                        </div>
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                    </div> */}
                                 </div>
                             </motion.div>
 

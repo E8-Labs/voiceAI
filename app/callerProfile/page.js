@@ -6,12 +6,13 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import imageCompression from 'browser-image-compression';
-import { CircularProgress } from '@mui/material';
+import { Alert, CircularProgress, Fade, Snackbar } from '@mui/material';
 
 const Page = () => {
 
     const fileInputRef = useRef(null);
     const router = useRouter();
+    const [accessDenied, setAccessDenied] = useState("not allowed");
     const [userDetails, setUserDetails] = useState(null);
     const [userName, setUserName] = useState("");
     const [userEmail, setUserEmail] = useState("");
@@ -22,18 +23,18 @@ const Page = () => {
     const [imageUrl, setImageUrl] = useState(null);
     const [imageLoader, setImageLoader] = useState(null);
     const [nameLoader, setNameLoader] = useState(null);
+    const [showSaveBtn, setShowSaveBtn] = useState(false);
+    const [successSnack, setSuccessSnack] = useState(false);
 
-    // useEffect(() => {
-    //     const localData = localStorage.getItem('User');
-    //     if (localData) {
-    //         const Data = JSON.parse(localData);
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setSuccessSnack(false);
+        }, 3000);
 
-    //     }
-    // }, []);
+        // Cleanup the timeout on component unmount
+        return () => clearTimeout(timer);
+    }, [successSnack]);
 
-    const getPhoneNumber = (number) => {
-        setPhoneNumber(number)
-    }
 
     // console.log("Getting nuber", phoneNumber);
     useEffect(() => {
@@ -48,11 +49,15 @@ const Page = () => {
             console.log("user data is", Data);
             setUserDetails(Data.data.user);
             if (Data.data.user.name) {
-                setUserName(Data.data.user.name)
+                setUserName(Data.data.user.name);
             }
             if (Data.data.user.email) {
                 setUserEmail(Data.data.user.email)
             }
+            if (Data.data.user.phone) {
+                setPhoneNumber(Data.data.user.phone)
+            }
+
         }
         // if (Data.data.user.phone) {
         //     console.log("Recieving nummber", Data.data.user.phone);
@@ -126,6 +131,11 @@ const Page = () => {
         if (selectedImage) {
             formData.append("media", selectedImage);
         }
+        // else if (profileData.profile_image) {
+        //     console.log("sending profile");
+        //     formData.append("media", profileData.profile_image);
+        //     console.log("Image sending", profileData.profile_image);
+        // }
         try {
             const response = await axios.post(ApiPath, formData, {
                 headers: {
@@ -135,8 +145,18 @@ const Page = () => {
             if (response) {
                 console.log("Response of update api is :", response.data.data);
                 if (response.data.status === true) {
-                    Data.data.user = response.data.data
+                    Data.data.user = response.data.data;
                     localStorage.setItem('User', JSON.stringify(Data));
+                    setShowSaveBtn(false);
+                    setSuccessSnack(true);
+                    const event = new CustomEvent('updateProfile', {
+                        detail: {
+                            message: "Event created for profile update"
+                        }
+                    });
+
+                    window.dispatchEvent(event);
+
                 } else {
                     console.log("Could not update", response.data.message);
                     setUpdateErr(true);
@@ -157,6 +177,10 @@ const Page = () => {
         }
     };
 
+    const getPhoneNumber = (number) => {
+        setPhoneNumber(number)
+    }
+
     return (
         <div className='h-screen w-full' style={{ backgroundColor: "#ffffff30", }}>
             <div className='w-full py-10 px-5' style={{}}>
@@ -173,8 +197,8 @@ const Page = () => {
                         </button>
                     </div>
 
-                    <div className='w-7/12 flex flex-row items-start justify-between'>
-                        <div className='flex flex-row items-start gap-4'>
+                    <div className='w-7/12 flex flex-row items-center justify-between'>
+                        <div className='flex flex-row items-center gap-4'>
                             <div>
                                 {imageUrl ?
                                     <button onClick={handleUploadClick}>
@@ -217,12 +241,16 @@ const Page = () => {
                             className="hidden"
                         />
 
-                        {imageLoader ?
+                        <button onClick={handleUploadClick} className='text-purple'>
+                            Upload
+                        </button>
+
+                        {/* {imageLoader ?
                             <CircularProgress size={25} /> :
-                            <button onClick={handleEditProfile} className='text-purple'>
+                            <button onClick={handleUploadClick} className='text-purple'>
                                 Upload
                             </button>
-                        }
+                        } */}
 
                     </div>
 
@@ -231,31 +259,44 @@ const Page = () => {
                             className='w-full '
                             placeholder='Name'
                             value={userName}
-                            onChange={(e) => setUserName(e.target.value)}
+                            onChange={(e) => {
+                                setUserName(e.target.value);
+                                setShowSaveBtn(true);
+                            }}
                             style={styles.input}
                         />
-
-                        {
-                            nameLoader ?
-                                <CircularProgress size={25} /> :
-                                <button onClick={handleEditProfile} className='text-purple'>
-                                    Edit
-                                </button>
-                        }
                     </div>
 
-                    <div className='flex flex-row justify-between w-7/12 pe-4'>
+                    <div className='w-7/12 pe-4'>
                         <input
                             className='w-full '
                             placeholder='Email address'
                             value={userEmail}
-                            onChange={(e) => setUserEmail(e.target.value)}
+                            onChange={(e) => {
+                                setUserEmail(e.target.value);
+                            }}
                             style={styles.input}
                         />
-                        {/* <button className='text-purple'>
-                            Edit
-                        </button> */}
+                        {/* <div style={styles.input} className='flex flex-row justify-between w-full mt-4 pe-4'>
+                            {phoneNumber}
+                        </div> */}
                     </div>
+
+                    <PhoneNumberInput editAccess={accessDenied} phonenumber={getPhoneNumber} myCallerAccount={myCallerAccountStatus} />
+
+                    {
+                        showSaveBtn && userName || selectedImage ?
+                            <div className='w-full flex flex-row justify-end text-purple' style={{ fontWeight: '500' }}>
+                                {
+                                    nameLoader ?
+                                        <CircularProgress size={25} /> :
+                                        <button onClick={handleEditProfile}>
+                                            Save
+                                        </button>
+                                }
+                            </div> :
+                            ""
+                    }
 
 
 
@@ -265,12 +306,57 @@ const Page = () => {
                         style={styles.input}
                     /> */}
 
-                    <PhoneNumberInput phonenumber={getPhoneNumber} myCallerAccount={myCallerAccountStatus} />
 
 
 
                 </div>
             </div>
+
+            {/* code for snack message */}
+            <Snackbar
+                open={successSnack}
+                autoHideDuration={5000}
+                onClose={() => setSuccessSnack(false)}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                }}
+                TransitionComponent={Fade}
+                TransitionProps={{
+                    timeout: {
+                        enter: 1000,
+                        exit: 1000,
+                    }
+                }}
+                sx={{
+                    position: 'fixed', // Ensures it stays in place
+                    top: 20, // Adjust as needed for spacing from the top
+                    left: '50%', // Center horizontally
+                    transform: 'translateX(-50%)', // Center horizontally
+                    // width: '400px', // Set width to 309px
+                    // border: "2px solid red",
+                }}
+            >
+                <Alert
+                    severity="success"
+                    sx={{
+                        width: '100%', // Ensures the Alert takes up the full width of the Snackbar
+                        backgroundColor: 'white',
+                        color: 'black',
+                        borderRadius: "10px",
+                    }}
+                >
+                    <div>
+                        {/* <div style={{ color: "#FF543E", fontWeight: "bold", fontSize: 11 }}>
+                            Error
+                        </div> */}
+                        <div>
+                            Profile updated.
+                        </div>
+                    </div>
+                </Alert>
+            </Snackbar>
+
         </div>
     )
 }

@@ -2,22 +2,38 @@
 import React, { useEffect, useState } from 'react';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
-const PhoneNumberInput = ({ phonenumber, myCallerAccount }) => {
+const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess }) => {
     const [phone, setPhone] = useState('');
     const [focus, setFocus] = useState(false);
-    const [countryCode, setCountryCode] = useState('us');
-    const [error, setError] = useState(false);
+    const [countryCode, setCountryCode] = useState('us'); // Default to US
+    const [selectedCountry, setSelectedCountry] = useState('us'); // Track the selected country
+    const [error, setError] = useState('');
     const [data, setData] = useState(null);
 
     useEffect(() => {
         const localData = localStorage.getItem('formData');
+        // if (!editAccess) {
+        //     // console.log("Edit  Access", editAccess);
+        //     setCountryCode('us');
+        //     setSelectedCountry('us');
+        // }
         if (localData) {
-            const Data = JSON.parse(localData);
-            const timeOut = setTimeout(() => {
+            if (editAccess) {
+                const Data = JSON.parse(localData);
                 setPhone(Data.phonenumber);
-            }, 1500);
-            return () => clearTimeout(timeOut);
+                // const timeOut = setTimeout(() => {
+                //     setPhone(Data.phonenumber);
+                // }, 100);
+                // return () => clearTimeout(timeOut);
+            } else {
+                const Data = JSON.parse(localData);
+                const timeOut = setTimeout(() => {
+                    setPhone(Data.phonenumber);
+                }, 1500);
+                return () => clearTimeout(timeOut);
+            }
         }
 
         const timeOut = setTimeout(() => {
@@ -33,8 +49,9 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount }) => {
         return () => clearTimeout(timeOut);
     }, []);
 
-    // Fetch user's current location
-    useEffect(() => {
+    //getting user location
+
+    const getGeoLocation = () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 async (position) => {
@@ -56,24 +73,25 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount }) => {
                 }
             );
         }
+    }
+
+    useEffect(() => {
+        if (!editAccess) {
+            getGeoLocation();
+        } else {
+            console.log("Acess denied");
+        }
     }, []);
 
-    // Update phone number in parent component
-    useEffect(() => {
-        phonenumber(phone);
-    }, [phone, phonenumber]);
-
-    // Validate phone number with a timeout
     useEffect(() => {
         if (phone) {
             const timer = setTimeout(() => {
-                validatePhoneNumber(phone);
-            }, 2000);
+                validatePhoneNumber(phone, selectedCountry);
+            }, 1000);
             return () => clearTimeout(timer);
         }
-    }, [phone]);
+    }, [phone, selectedCountry]);
 
-    // Only run once to fetch local data
     useEffect(() => {
         const LocalData = localStorage.getItem('route');
         const Data = JSON.parse(LocalData);
@@ -82,21 +100,31 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount }) => {
         setData(Data);
     }, []);
 
-    const validatePhoneNumber = (phone) => {
-        const phoneNumberPattern = /^\+[1-9]\d{1,14}$/;
-        if (!phoneNumberPattern.test(`+${phone}`)) {
-            setError(true);
-        } else {
-            setError(false);
+    const validatePhoneNumber = (phone, countryCode) => {
+        try {
+            const phoneNumber = parsePhoneNumberFromString(`+${phone}`, countryCode.toUpperCase());
+            if (!phoneNumber || !phoneNumber.isValid()) {
+                setError('Please enter a valid phone number');
+                return;
+            }
+
+            setError('');
+            phonenumber(phone); // Pass valid phone number up to parent
+        } catch (error) {
+            setError('Please enter a valid phone number');
         }
     };
 
     return (
         <div className='w-full'>
             <PhoneInput
-                country={countryCode}
+                country={countryCode} // Default country for phone input
                 value={phone}
-                onChange={(phone) => setPhone(phone)}
+                onChange={(phone, countryData) => {
+                    setPhone(phone);
+                    setSelectedCountry(countryData.countryCode); // Capture the selected country's code
+                    setError(false);
+                }}
                 inputStyle={{
                     width: '100%',
                     fontSize: '16px',
@@ -109,10 +137,10 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount }) => {
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}
                 containerStyle={{
-                    marginBottom: '15px',
+                    // marginBottom: '15px',
                 }}
                 buttonStyle={{
-                    background: 'transparent', // Make button background transparent
+                    background: 'transparent',
                     border: 'none',
                     marginRight: '-38px',
                     zIndex: 10,
@@ -123,25 +151,35 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount }) => {
                 dropdownStyle={{
                     marginTop: '5px',
                     zIndex: 20,
-                    background: '#fff', // Dropdown menu background
+                    background: '#fff',
                 }}
                 flagStyle={{
                     display: 'none',
                 }}
-                countryCodeEditable={true}  // Allow users to edit country code
+                countryCodeEditable={true}
                 enableSearch={true}
                 searchStyle={{
                     backgroundColor: 'transparent',
                 }}
+                inputProps={{
+                    readOnly: editAccess ? true : false,
+                }}
             />
 
-            {/* Add CSS for hover effect */}
+            <div>
+                {error && (
+                    <div style={{ color: 'red', fontSize: 14, height: 15 }}>
+                        {error}
+                    </div>
+                )}
+            </div>
+
             <style jsx global>{`
                 .flag-dropdown:hover .selected-flag {
-                    background-color: transparent !important;  // Make hover background transparent
+                    background-color: transparent !important;
                 }
                 .flag-dropdown .selected-flag {
-                    background-color: transparent !important;  // Make the default background transparent
+                    background-color: transparent !important;
                 }
             `}</style>
         </div>

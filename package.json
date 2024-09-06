@@ -20,6 +20,7 @@
     "browser-image-compression": "^2.0.2",
     "framer-motion": "^11.3.24",
     "jszip": "^3.10.1",
+    "libphonenumber-js": "^1.11.7",
     "moment": "^2.30.1",
     "next": "14.2.5",
     "react": "^18",

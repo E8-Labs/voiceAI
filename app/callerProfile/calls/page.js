@@ -162,7 +162,7 @@ const Page = () => {
                                                             </div>
                                                             <div className='w-2/12'>
                                                                 <div style={styles.text2}>
-                                                                    ${Number(item.amount.toFixed(2))}
+                                                                    $ {Number(item.amount).toFixed(2)}
                                                                 </div>
                                                             </div>
                                                             <div className='w-3/12 '>

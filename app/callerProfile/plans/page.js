@@ -23,6 +23,7 @@ const Page = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [makeDefaultCardLoader, setMakeDefaultCardLoader] = useState(null);
     const [snackMessage, setSnackMessage] = useState(false);
+    const [DelCardLoader, setDelCardLoader] = useState(false);
 
     const handleClosePopup = (e) => {
         setAddCardPopup(e);
@@ -197,6 +198,43 @@ const Page = () => {
         }
     }
 
+    const handleDeleteCard = async (cardId) => {
+        console.log("Card id is", cardId);
+        const localData = localStorage.getItem('User');
+        if (localData) {
+            setDelCardLoader(true);
+            try {
+                const Data = JSON.parse(localData);
+                const ApiPath = Apis.DeleteCard;
+                // const AuthToken = "sfdhiuhkajviqnlgh";
+                const AuthToken = Data.data.token;
+                // console.log("Authtoken is", AuthToken);
+                const cardData = {
+                    cardId: cardId
+                }
+                console.log("Card is sending in api", cardData);
+                // return
+                const response = await axios.post(ApiPath, cardData, {
+                    headers: {
+                        'Authorization': 'Bearer ' + AuthToken,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (response.data) {
+                    if (response.data.status === true) {
+                        getCards();
+                        handleClose();
+                    } else {
+                        console.log("Error occurd in api", response.data.message);
+                    }
+                }
+            } catch (error) {
+                console.error("Error occured in delete card api", error);
+            } finally {
+                setDelCardLoader(false);
+            }
+        }
+    }
 
 
     return (
@@ -284,9 +322,15 @@ const Page = () => {
                                                                                 },
                                                                             }}
                                                                         >
-                                                                            <MenuItem onClick={handleClose}
+                                                                            <MenuItem
                                                                                 style={{ fontWeight: '400', fontFamily: 'Inter', fontSize: 13, color: "#FF124B" }}>
-                                                                                Delete
+                                                                                <button onClick={() => handleDeleteCard(item.id)}>
+                                                                                    {
+                                                                                        DelCardLoader ?
+                                                                                            <CircularProgress size={25} /> :
+                                                                                            "Delete"
+                                                                                    }
+                                                                                </button>
                                                                             </MenuItem>
                                                                         </Menu>
 

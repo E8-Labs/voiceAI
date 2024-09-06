@@ -3,7 +3,7 @@ import { useState, useCallback, useEffect, useRef } from 'react'; // useRef adde
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { Box, Drawer, Modal, Snackbar, Alert, Slide, Fade } from '@mui/material';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import ProfileAnimation from '@/components/animation/ProfileAnimation';
 import LoginModal from '@/components/loginform/LoginModal';
 import axios from 'axios';
@@ -37,6 +37,8 @@ const Page = () => {
     const buttonRef2 = useRef(null);
     const buttonRef3 = useRef(null);
     const buttonRef4 = useRef(null);
+    const buttonRef5 = useRef(null);
+    const buttonRef6 = useRef(null);
 
     const [isSmallScreen, setIsSmallScreen] = useState(false);
     const [open, setOpen] = useState(false);
@@ -54,6 +56,8 @@ const Page = () => {
     const [boxVisible, setBoxVisible] = useState(false); // Animation state
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 }); // Mouse position state
     const { creator } = useParams();
+    const searchParams = useSearchParams();
+    const from = searchParams.get('from');
     const [getRecentCallData, setGetRecentCallsData] = useState([]);
     const [getAssistantData, setGetAssistantData] = useState(null);
     const [showLogoutBtn, setShowLogoutBtn] = useState(false);
@@ -64,7 +68,7 @@ const Page = () => {
     const [isVisible, setisVisible] = useState(true);
     const [callErr, setCallErr] = useState(false);
     const [profileData, setProfileData] = useState(null);
-
+    const [assistantDataErr, setAssistantDataErr] = useState(null);
     // useEffect(() => {
     //     const localData = localStorage.getItem('User');
     //     if (localData) {
@@ -73,6 +77,17 @@ const Page = () => {
     //     }
     // }, []);
     useEffect(() => {
+        if (from) {
+            console.log("From akdsjfhiuwqfh", from);
+            if (window.matchMedia('(min-width: 768px)').matches) {
+                // Large screen (1024px and above)
+                setOpenLoginModal(true);
+            } else {
+                // Small screen (below 1024px)
+                setOpenLoginModalDrawer(true);
+            }
+            router.replace(window.location.pathname);
+        }
         const needsReload = localStorage.getItem('needsReload');
         const localData = localStorage.getItem('User');
         if (localData) {
@@ -119,10 +134,14 @@ const Page = () => {
                 }
             });
             if (getResponse) {
-                console.log("Response of getassistant data", getResponse.data.data);
-                const AssistantData = getResponse.data.data;
-                localStorage.setItem('assistantData', JSON.stringify(AssistantData));
-                setGetAssistantData(getResponse.data.data);
+                if (getResponse.data.status === true) {
+                    console.log("Response of getassistant data", getResponse.data.data);
+                    const AssistantData = getResponse.data.data;
+                    localStorage.setItem('assistantData', JSON.stringify(AssistantData));
+                    setGetAssistantData(getResponse.data.data);
+                } else {
+                    setAssistantDataErr(true);
+                }
             } else {
                 console.log("Error occured");
             }
@@ -344,6 +363,22 @@ const Page = () => {
             }
         }
 
+        // if (buttonRef5) {
+        //     const rect = buttonRef5.current.getBoundingClientRect();
+        //     if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+        //         setBoxVisible(false);
+        //         return;
+        //     }
+        // }
+
+        // if (buttonRef6) {
+        //     const rect = buttonRef6.current.getBoundingClientRect();
+        //     if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+        //         setBoxVisible(false);
+        //         return;
+        //     }
+        // }
+
         // If none of the conditions are met, show the box
         setBoxVisible(true);
     };
@@ -473,495 +508,591 @@ const Page = () => {
 
 
     return (
-        <div style={backgroundImage} className='h-screen overflow-none' onMouseMove={handleMouseMove}>
-            <div className='pt-8 ps-8'>
-                <div className='2xl:flex hidden w-full flex flex-row justify-between'>
-                    <div className='flex flex-col items-start'>
-                        <div className='px-6 py-2 flex gap-4 flex-row items-center' ref={buttonRef4}
-                            style={{
-                                border: "2px solid #ffffff",
-                                // borderTopLeftRadius: 50, borderTopRightRadius: 50,
-                                // borderBottomRightRadius: 50,
-                                // borderRadiusTopright: 50,
-                                // borderRadiusTopright : 50,
-                                borderTopLeftRadius: 50,
-                                borderBottomRightRadius: 50,
-                                borderTopRightRadius: 50,
-                                backgroundColor: "#ffffff20",
-                                zIndex: 1
-                            }}>
-                            <div className='flex flex-col items-center'>
-                                <div className='relative'>
-                                    {/* Profile Image with Claim Button */}
-                                    <div className='flex flex-row items-center'>
-                                        <button
-                                            onClick={() => {
-                                                // console.log("Sary gama pada na ri sa");
-                                                setOpenClaimPopup(true);
-                                            }}
-                                            style={{ position: 'relative' }}>
-                                            <div style={{ border: "2px solid black", borderRadius: "50%" }}>
-                                                {
-                                                    getAssistantData && getAssistantData.profile_image ?
-                                                        <Image src={getAssistantData.profile_image} alt='profilephoto' height={50} width={50}
-                                                            style={{ padding: 4, borderRadius: "50%" }} /> :
-                                                        <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={50} width={50}
-                                                            style={{ padding: 4, borderRadius: "50%" }} />
-                                                }
-                                            </div>
-                                            {/* Claim Button */}
-                                            <div className='absolute top-0 -left-2' style={{ backgroundColor: "transparent" }}>
-                                                {/* <Image onClick={() => {
- console.log("Sary gama pada na ri sa");
- }} src="/assets/claimLogo.png" alt='claimbtn' height={35} width={35}
- style={{ cursor: "pointer", backgroundColor: "" }} /> */}
-                                                <div style={{ height: "30px", width: "30px", backgroundColor: "transparent" }}>
-                                                    <Image onClick={() => {
-                                                        console.log("Sary gama pada na ri sa");
-                                                        setOpenClaimPopup(true);
-                                                    }} src="/assets/claimLogo.png" alt='claimbtn' height={40} width={40}
-                                                        style={{ cursor: "pointer", backgroundColor: "transparent" }} />
+        <div className='h-screen overflow-none'>
+            {
+                assistantDataErr ?
+                    <div style={backgroundImage} className='h-screen overflow-none'>
+                        <div style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                        }} className='flex w-9/12 justify-center items-center md:flex hidden'>
+                            <button className='flex items-center justify-center flex-1'
+                                style={{
+                                    cursor: "pointer",
+                                    outline: "none",
+                                    border: "none",
+                                    backgroundColor: "transparent",
+                                }}>
+                                {/* <div className='flex flex-row items-center justify-center' style={gifBackgroundImage}>
+                                    <Image onClick={handleContinue} src="/mainAppGif.gif" alt='gif' style={{ backgroundColor: "red", borderRadius: "50%" }} height={600} width={600} />
+                                </div> */}
+
+                                <motion.div
+                                    // src="/assets/applogo2.png"
+                                    // alt="Animating Image"
+                                    className='flex flex-row items-center justify-center'
+                                    animate={{
+                                        width: isWideScreen ? ["830px", "650px", "830px"] : ["600px", "400px", "600px"], // Keyframes for width
+                                        height: isWideScreen ? ["830px", "650px", "830px"] : ["600px", "400px", "600px"], // Keyframes for height
+                                    }}
+                                    transition={{
+                                        duration: 5,
+                                        repeat: Infinity,
+                                        repeatType: "loop",
+                                        ease: "easeInOut",
+                                    }}
+                                    style={
+                                        gifBackgroundImage
+                                        // {
+                                        //     // margin: "auto",
+                                        //     display: "block",
+                                        //     width: isWideScreen ? "830px" : "600px", // Initial width
+                                        //     height: isWideScreen ? "830px" : "600px", // Initial height
+                                        // }
+                                    }
+                                >
+                                    <Image src="/mainAppGif.gif" alt='gif' style={{ backgroundColor: "", borderRadius: "50%" }} height={600} width={600} />
+                                </motion.div>
+                            </button>
+                        </div>
+                    </div> :
+                    <div style={backgroundImage} className='h-screen overflow-none' onMouseMove={handleMouseMove}>
+                        <div className='pt-8 ps-8'>
+                            <div className='2xl:flex hidden w-full flex flex-row justify-between'>
+                                <div className='flex flex-col items-start'>
+                                    <div className='px-6 py-2 flex gap-4 flex-row items-center' ref={buttonRef4}
+                                        style={{
+                                            border: "2px solid #ffffff",
+                                            // borderTopLeftRadius: 50, borderTopRightRadius: 50,
+                                            // borderBottomRightRadius: 50,
+                                            // borderRadiusTopright: 50,
+                                            // borderRadiusTopright : 50,
+                                            borderTopLeftRadius: 50,
+                                            borderBottomRightRadius: 50,
+                                            borderTopRightRadius: 50,
+                                            backgroundColor: "#ffffff20",
+                                            zIndex: 1
+                                        }}>
+                                        <div className='flex flex-col items-center'>
+                                            <div className='relative'>
+                                                {/* Profile Image with Claim Button */}
+                                                <div className='flex flex-row items-center'>
+                                                    <button
+                                                        onClick={() => {
+                                                            // console.log("Sary gama pada na ri sa");
+                                                            setOpenClaimPopup(true);
+                                                        }}
+                                                        style={{ position: 'relative' }}>
+                                                        <div style={{ border: "2px solid black", borderRadius: "50%" }}>
+                                                            {
+                                                                getAssistantData && getAssistantData.profile_image ?
+                                                                    <Image src={getAssistantData.profile_image} alt='profilephoto' height={50} width={50}
+                                                                        style={{ padding: 4, borderRadius: "50%" }} /> :
+                                                                    <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={50} width={50}
+                                                                        style={{ padding: 4, borderRadius: "50%" }} />
+                                                            }
+                                                        </div>
+                                                        {/* Claim Button */}
+                                                        <div className='absolute top-0 -left-2' style={{ backgroundColor: "transparent" }}>
+                                                            {/* <Image onClick={() => {
+     console.log("Sary gama pada na ri sa");
+     }} src="/assets/claimLogo.png" alt='claimbtn' height={35} width={35}
+     style={{ cursor: "pointer", backgroundColor: "" }} /> */}
+                                                            <div style={{ height: "30px", width: "30px", backgroundColor: "transparent" }}>
+                                                                <Image onClick={() => {
+                                                                    console.log("Sary gama pada na ri sa");
+                                                                    setOpenClaimPopup(true);
+                                                                }} src="/assets/claimLogo.png" alt='claimbtn' height={40} width={40}
+                                                                    style={{ cursor: "pointer", backgroundColor: "transparent" }} />
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                    <div style={triangle} />
                                                 </div>
                                             </div>
-                                        </button>
-                                        <div style={triangle} />
-                                    </div>
-                                </div>
-                            </div>
+                                        </div>
 
 
-                            <div>
-                                {/* code for assistant name and calls */}
-                                <div className='flex flex-row items-center gap-8'>
-                                    <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                        {getAssistantData &&
-                                            <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                {
-                                                    getAssistantData.name ?
+                                        <div>
+                                            {/* code for assistant name and calls */}
+                                            <div className='flex flex-row items-center gap-8'>
+                                                <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                                    {getAssistantData &&
                                                         <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                            {getAssistantData.name}
-                                                        </div> :
-                                                        <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                            {getAssistantData.assitant.name}
+                                                            {
+                                                                getAssistantData.name ?
+                                                                    <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                                                        {getAssistantData.name}
+                                                                    </div> :
+                                                                    <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                                                        {getAssistantData.assitant.name}
+                                                                    </div>
+                                                            }
                                                         </div>
-                                                }
+                                                    }
+                                                </div>
                                             </div>
-                                        }
+                                            <div className='flex flex-row'>
+                                                <div style={{ fontSize: 12, color: "grey", fontWeight: "400", fontFamily: "inter" }}>
+                                                    Calls:
+                                                </div>
+                                                <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 12 }}>
+                                                    {
+                                                        getAssistantData &&
+                                                        <div>
+                                                            {getAssistantData.calls ?
+                                                                <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
+                                                                    {getAssistantData.calls}
+                                                                </div> :
+                                                                <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
+                                                                    0
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    }
+                                                </div>
+                                                <div className='ms-2' style={{ fontSize: 12, color: "grey", fontWeight: "400", fontFamily: "inter" }}>
+                                                    Earned:
+                                                </div>
+                                                <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
+                                                    {
+                                                        getAssistantData &&
+                                                        <div>
+                                                            {getAssistantData.earned ?
+                                                                <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
+                                                                    ${Number(getAssistantData.earned).toFixed(2)}
+                                                                </div> :
+                                                                <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
+                                                                    $ 0
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {/* code for socials */}
+                                    <div className='flex flex-row items-center justify-center pb-6 px-6' ref={buttonRef3}
+                                        style={{
+                                            border: "2px solid #ffffff", borderTop: "8px solid #e7f3fe",
+                                            borderBottomLeftRadius: 50,
+                                            borderBottomRightRadius: 50, marginTop: "-4px",
+                                            zIndex: 2, backgroundColor: "#ffffff20",
+                                        }}>
+                                        <div className='flex flex-col gap-4' style={{ marginTop: 10 }}>
+                                            <button>
+                                                <Image
+                                                    // layout='responsive'
+                                                    objectFit='contain' src={"/assets/instagram.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
+                                            </button>
+                                            <button>
+                                                <Image
+                                                    // layout='responsive'
+                                                    objectFit='contain' src={"/assets/twitter.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className='flex flex-row'>
-                                    <div style={{ fontSize: 12, color: "grey", fontWeight: "400", fontFamily: "inter" }}>
-                                        Calls:
+
+                                {
+                                    showProfileIcon &&
+                                    <div ref={buttonRef2} style={{ width: "8%" }}>
+
+                                        <AnimatedButton snackMessage={snackMessage} />
+
+                                        <div className='flex flex-row gap-4 items-center'>
+                                        </div>
                                     </div>
-                                    <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 12 }}>
-                                        {
-                                            getAssistantData &&
-                                            <div>
-                                                {getAssistantData.calls ?
-                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
-                                                        {getAssistantData.calls}
-                                                    </div> :
-                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
-                                                        0
-                                                    </div>
-                                                }
-                                            </div>
-                                        }
-                                    </div>
-                                    <div className='ms-2' style={{ fontSize: 12, color: "grey", fontWeight: "400", fontFamily: "inter" }}>
-                                        Earned:
-                                    </div>
-                                    <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
-                                        {
-                                            getAssistantData &&
-                                            <div>
-                                                {getAssistantData.earned ?
-                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
-                                                        $ {Number(getAssistantData.earned.toFixed(2))}
-                                                    </div> :
-                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
-                                                        $ 0
-                                                    </div>
-                                                }
-                                            </div>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {/* code for socials */}
-                        <div className='flex flex-row items-center justify-center pb-6 px-6' ref={buttonRef3}
-                            style={{
-                                border: "2px solid #ffffff", borderTop: "8px solid #e7f3fe",
-                                borderBottomLeftRadius: 50,
-                                borderBottomRightRadius: 50, marginTop: "-4px",
-                                zIndex: 2, backgroundColor: "#ffffff20",
-                            }}>
-                            <div className='flex flex-col gap-4' style={{ marginTop: 10 }}>
-                                <button>
-                                    <Image
-                                        // layout='responsive'
-                                        objectFit='contain' src={"/assets/instagram.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
-                                </button>
-                                <button>
-                                    <Image
-                                        // layout='responsive'
-                                        objectFit='contain' src={"/assets/twitter.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    {
-                        showProfileIcon &&
-                        <div ref={buttonRef2} style={{ width: "10%" }}>
-
-                            <AnimatedButton snackMessage={snackMessage} />
-
-                            <div className='flex flex-row gap-4 items-center'>
-                            </div>
-                        </div>
-                    }
-
-                </div>
-                <div className='2xl:hidden flex items-center justify-between'>
-                    <ProfileAnimation creator={creator} />
-                    {
-                        showProfileIcon &&
-                        <div className='flex flex-row gap-4 items-center'>
-                            <div className='me-8'>
-                                <AnimatedButton snackMessage={snackMessage} />
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-
-            {/* Animating Image */}
-            <div style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-            }} className='flex w-9/12 justify-center items-center md:flex hidden'>
-                <button className='flex items-center justify-center flex-1'
-                    style={{
-                        cursor: "pointer",
-                        outline: "none",
-                        border: "none",
-                        backgroundColor: "transparent",
-                    }}>
-                    <div className='flex flex-row items-center justify-center' style={gifBackgroundImage}>
-                        <Image onClick={handleContinue} src="/mainAppGif.gif" alt='gif' style={{ backgroundColor: "", borderRadius: "50%" }} height={600} width={600} />
-                    </div>
-
-                    {/* <motion.img onClick={handleContinue}
-                        src="/borderedAppLogo.png"
-                        alt="Animating Image"
-                        animate={{
-                            width: isWideScreen ? ["830px", "650px", "830px"] : ["600px", "400px", "600px"], // Keyframes for width
-                            height: isWideScreen ? ["830px", "650px", "830px"] : ["600px", "400px", "600px"], // Keyframes for height
-                        }}
-                        transition={{
-                            duration: 7,
-                            repeat: Infinity,
-                            repeatType: "loop",
-                            ease: "easeInOut",
-                        }}
-                        style={{
-                            // margin: "auto",
-                            display: "block",
-                            width: isWideScreen ? "830px" : "600px", // Initial width
-                            height: isWideScreen ? "830px" : "600px", // Initial height
-                        }}
-                    /> */}
-                </button>
-            </div>
-
-            {/* visible on small screens only */}
-            <div style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-            }} className='w-full flex justify-center items-center md:hidden'>
-                <button className='flex items-center justify-center flex-1'
-                    style={{
-                        cursor: "pointer",
-                        outline: "none",
-                        border: "none",
-                    }}>
-                    <div className='flex flex-row items-center justify-center' style={gifBackgroundImage}>
-                        <Image src="/mainAppGif.gif" onClick={handleContinue} alt='gif' style={{ backgroundColor: "red", borderRadius: "50%" }} height={600} width={600} />
-                    </div>
-                    {/* <motion.img
-                        src="/borderedAppLogo.png"
-                        alt="Animating Image"
-                        animate={{
-                            width: ["380px", "200px", "380px"], // Keyframes for width
-                            height: ["380px", "200px", "380px"], // Keyframes for height
-                        }}
-                        transition={{
-                            duration: 7,
-                            repeat: Infinity,
-                            repeatType: "loop",
-                            ease: "easeInOut",
-                        }}
-                        style={{
-                            // margin: "auto",
-                            display: "block",
-                            width: "380px", // Initial width
-                            height: "380px", // Initial height
-                        }}
-                    /> */}
-                </button>
-            </div>
-
-            {/* Mouse Following Box Animation */}
-            <div className='lg:flex hidden'>
-                <AnimatePresence>
-                    {boxVisible && (
-                        <motion.div
-                            style={{
-                                position: 'absolute',
-                                top: mousePosition.y - 25,
-                                left: mousePosition.x - 25,
-                                width: 100,
-                                height: 100,
-                                backgroundColor: '#ffffff60',
-                                borderRadius: "50%",
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                            }}
-                            initial={{ opacity: 0, scale: 0.5 }}
-                            animate={{ opacity: 1, scale: 1.2 }}
-                            exit={{ opacity: 0, scale: 0.5 }}
-                            transition={{ duration: 0.3 }}
-                        >
-                            <div style={{ color: 'black' }}>
-                                Tap to call
-                            </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </div>
-
-
-            {/* Button and Calls array */}
-            <div style={{ position: "absolute", bottom: 10 }} className='w-full flex items-end justify-between mb-12 rounded'>
-                <div ref={buttonRef} className='flex items-end ms-8 px-4' style={{ backgroundColor: "#620FEB66", width: "fit-content", borderRadius: "70px" }}>
-                    {/* {
-                        showCreatorBtn &&
-                        <button className='flex flex-row p-4 items-center gap-4'>
-                            <Image src={"/assets/stars.png"} alt='phone' height={20} width={20} />
-                            <div onClick={
-                                // handleCreatorXClick
-                                () => {
-                                    window.open('https://www.jotform.com/form/242259184814461', "_blank")
                                 }
-                            } className='text-white' style={{ fontSize: 17, fontWeight: "600" }}>
-                                Build Your CreatorX
+
                             </div>
-                        </button>
-                    } */}
-                    <button className='flex flex-row p-4 items-center gap-4'>
-                        <Image src={"/assets/stars.png"} alt='phone' height={20} width={20} />
-                        <div onClick={
-                            // handleCreatorXClick
-                            () => {
-                                window.open('https://www.jotform.com/form/242259184814461', "_blank")
-                            }
-                        } className='text-white' style={{ fontSize: 17, fontWeight: "600" }}>
-                            Build Your CreatorX
+
+                            {/* Profile icon for small screens */}
+                            <div className='2xl:hidden flex items-center justify-between'>
+                                <div style={{ zIndex: 2 }}>
+                                    <ProfileAnimation creator={creator} />
+                                </div>
+                                {
+                                    showProfileIcon &&
+                                    <div className='flex flex-row gap-4 items-center'>
+                                        <div className='me-8' style={{ zIndex: 2 }}>
+                                            <AnimatedButton snackMessage={snackMessage} />
+                                        </div>
+                                    </div>
+                                }
+                            </div>
                         </div>
-                    </button>
-                </div>
-                <div className='me-8 md:flex hidden'>
-                    <CycleArray data={getRecentCallData} assistantData={getAssistantData} />
-                </div>
-            </div>
 
-            {/* Snack messages */}
+                        {/* Animating Image */}
+                        <div style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                        }} className='flex w-9/12 justify-center items-center md:flex hidden'>
+                            <button className='flex items-center justify-center flex-1'
+                                style={{
+                                    cursor: "pointer",
+                                    outline: "none",
+                                    border: "none",
+                                    backgroundColor: "transparent",
+                                }}>
+                                {/* <div className='flex flex-row items-center justify-center' style={gifBackgroundImage}>
+                                    <Image onClick={handleContinue} src="/mainAppGif.gif" alt='gif' style={{ backgroundColor: "red", borderRadius: "50%" }} height={600} width={600} />
+                                </div> */}
 
-            <Modal
-                open={openLoginModal}
-                // onClose={(() => setOpenLoginModal(false))}
-                closeAfterTransition
-                BackdropProps={{
-                    timeout: 1000,
-                    sx: {
-                        backgroundColor: 'transparent',
-                        backdropFilter: 'blur(40px)',
-                    },
-                }}
-            >
-                <Box className="lg:w-5/12 sm:w-7/12"
-                    sx={styleLoginModal}
-                >
-                    <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} />
-                </Box>
-            </Modal>
+                                <motion.div
+                                    onClick={handleContinue}
+                                    // src="/assets/applogo2.png"
+                                    // alt="Animating Image"
+                                    className='flex flex-row items-center justify-center'
+                                    animate={{
+                                        width: isWideScreen ? ["830px", "650px", "830px"] : ["600px", "400px", "600px"], // Keyframes for width
+                                        height: isWideScreen ? ["830px", "650px", "830px"] : ["600px", "400px", "600px"], // Keyframes for height
+                                    }}
+                                    transition={{
+                                        duration: 5,
+                                        repeat: Infinity,
+                                        repeatType: "loop",
+                                        ease: "easeInOut",
+                                    }}
+                                    style={
+                                        gifBackgroundImage
+                                        // {
+                                        //     // margin: "auto",
+                                        //     display: "block",
+                                        //     width: isWideScreen ? "830px" : "600px", // Initial width
+                                        //     height: isWideScreen ? "830px" : "600px", // Initial height
+                                        // }
+                                    }
+                                >
+                                    <Image onClick={handleContinue} src="/mainAppGif.gif" alt='gif' style={{ backgroundColor: "", borderRadius: "50%" }} height={600} width={600} />
+                                </motion.div>
+                            </button>
+                        </div>
 
-            <Modal
-                open={openClaimPopup}
-                onClose={(() => setOpenClaimPopup(false))}
-                closeAfterTransition
-                BackdropProps={{
-                    timeout: 1000,
-                    sx: {
-                        backgroundColor: 'transparent',
-                        backdropFilter: 'blur(40px)',
-                    },
-                }}
-            >
-                <Box className="lg:w-5/12 sm:w-7/12"
-                    sx={styleLoginModal}
-                >
-                    {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
-                    <div className='flex flex-row justify-center'>
-                        <div className='w-7/12' style={{ backgroundColor: "#ffffff23", padding: 20, borderRadius: 10 }}>
-                            {/* <AddCard handleBack={handleBack} closeForm={closeForm} /> */}
-                            <div style={{ backgroundColor: 'white', padding: 18, borderRadius: 10 }}>
-                                <div className='mt-4'>
-                                    <Image src="/assets/claimIcon.png" alt='claimimg' height={24} width={24} />
+                        {/* visible on small screens only */}
+                        <div style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                        }} className='w-full flex justify-center items-center md:hidden'>
+                            <button className='flex items-center justify-center flex-1'
+                                style={{
+                                    cursor: "pointer",
+                                    outline: "none",
+                                    border: "none",
+                                }}>
+                                {/* <div className='flex flex-row items-center justify-center' style={gifBackgroundImage}>
+                                    <Image src="/mainAppGif.gif" onClick={handleContinue} alt='gif' style={{ backgroundColor: "red", borderRadius: "50%", zIndex: 0 }} height={600} width={600} />
+                                </div> */}
+                                <motion.div
+                                    // src="/borderedAppLogo.png"
+                                    // alt="Animating Image"
+                                    animate={{
+                                        width: ["380px", "200px", "380px"], // Keyframes for width
+                                        height: ["380px", "200px", "380px"], // Keyframes for height
+                                    }}
+                                    transition={{
+                                        duration: 7,
+                                        repeat: Infinity,
+                                        repeatType: "loop",
+                                        ease: "easeInOut",
+                                    }}
+                                    style={
+                                        gifBackgroundImage
+                                        // {
+                                        //     // margin: "auto",
+                                        //     display: "block",
+                                        //     width: "380px", // Initial width
+                                        //     height: "380px", // Initial height
+                                        // }
+                                    }
+                                >
+                                    <Image src="/mainAppGif.gif" onClick={handleContinue} alt='gif' style={{ backgroundColor: "", borderRadius: "50%", zIndex: 0 }} height={600} width={600} />
+                                </motion.div>
+                            </button>
+                        </div>
+
+                        {/* Mouse Following Box Animation */}
+                        <div className='lg:flex hidden'>
+                            <AnimatePresence>
+                                {boxVisible && (
+                                    // <motion.div
+                                    //     style={{
+                                    //         position: 'absolute',
+                                    //         top: mousePosition.y - 25,
+                                    //         left: mousePosition.x - 25,
+                                    //         width: 100,
+                                    //         height: 100,
+                                    //         backgroundColor: '#ffffff60',
+                                    //         borderRadius: "50%",
+                                    //         cursor: 'pointer',
+                                    //         display: 'flex',
+                                    //         alignItems: 'center',
+                                    //         justifyContent: 'center',
+                                    //     }}
+                                    //     initial={{ opacity: 0, scale: 0.5 }}
+                                    //     animate={{ opacity: 1, scale: 1.2 }}
+                                    //     exit={{ opacity: 0, scale: 0.5 }}
+                                    //     transition={{ duration: 0.3 }}
+                                    // >
+                                    //     <div style={{ color: 'black' }}>
+                                    //         Tap to call
+                                    //     </div>
+                                    // </motion.div>
+                                    <motion.div
+                                        style={{
+                                            position: 'absolute',
+                                            top: Math.min(Math.max(mousePosition.y - 50, 0), window.innerHeight - 120), // Ensures the box stays within the viewport height
+                                            left: Math.min(Math.max(mousePosition.x - 50, 0), window.innerWidth - 120), // Ensures the box stays within the viewport width
+                                            width: 100,
+                                            height: 100,
+                                            backgroundColor: '#ffffff60',
+                                            borderRadius: "50%",
+                                            cursor: 'pointer',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                        }}
+                                        initial={{ opacity: 0, scale: 0.5 }}
+                                        animate={{ opacity: 1, scale: 1.2 }}
+                                        exit={{ opacity: 0, scale: 0.5 }}
+                                        transition={{ duration: 0.3 }}
+                                    >
+                                        <div style={{ color: 'black' }}>
+                                            Tap to call
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+
+
+                        {/* Button and Calls array */}
+                        <div style={{ position: "absolute", bottom: 10 }} className='w-full flex items-end justify-between mb-12 rounded'>
+                            <div ref={buttonRef} className='flex items-end ms-8 px-4' style={{ backgroundColor: "#620FEB66", width: "fit-content", borderRadius: "70px" }}>
+                                {/* {
+                            showCreatorBtn &&
+                            <button className='flex flex-row p-4 items-center gap-4'>
+                                <Image src={"/assets/stars.png"} alt='phone' height={20} width={20} />
+                                <div onClick={
+                                    // handleCreatorXClick
+                                    () => {
+                                        window.open('https://www.jotform.com/form/242259184814461', "_blank")
+                                    }
+                                } className='text-white' style={{ fontSize: 17, fontWeight: "600" }}>
+                                    Build Your CreatorX
                                 </div>
-                                <div className='mt-8' style={{ fontWeight: '600', fontSize: 24, fontFamily: 'inter' }}>
-                                    Claim Account
-                                </div>
-                                <div className='text-black' style={{ fontWeight: "400", fontSize: 15, fontFamily: "inter", marginTop: 10 }}>
-                                    This account hasn't been claimed by its creator. In order to claim this creator, you must be the real creator and verify your identity.
-                                </div>
-                                <div className='flex flex-row justify-start mt-4 w-full' style={{ marginTop: 30 }}>
-                                    <div>
-                                        <button
-                                            onClick={() => {
-                                                window.open("https://www.youtube.com", '_blank')
-                                            }} className='bg-purple px-6 py-2 text-white'
-                                            style={{ fontWeight: "400", fontFamily: "inter", fontSize: 15, borderRadius: "50px" }}>
-                                            Verify Identity
-                                        </button>
+                            </button>
+                        } */}
+                                <button className='flex flex-row p-4 items-center gap-4'>
+                                    <Image src={"/assets/stars.png"} alt='phone' height={20} width={20} />
+                                    <div onClick={
+                                        // handleCreatorXClick
+                                        () => {
+                                            window.open('https://www.jotform.com/form/242259184814461', "_blank")
+                                        }
+                                    } className='text-white' style={{ fontSize: 17, fontWeight: "600" }}>
+                                        Build Your CreatorX
+                                    </div>
+                                </button>
+                            </div>
+                            <div className='me-8 md:flex hidden'>
+                                <CycleArray data={getRecentCallData} assistantData={getAssistantData} />
+                            </div>
+                        </div>
+
+                        {/* Code to hide box on sides */}
+                        {/* <div className='h-screen' ref={buttonRef5} style={{ border: "2px solid red", width: "2px", position: "absolute", right: 0, top: 0 }} />
+                        <div className='w-screen' ref={buttonRef6} style={{ border: "2px solid red", height: "2px", position: "absolute", right: 0, bottom: 0 }} /> */}
+
+                        {/* Snack messages */}
+
+
+                        <Modal
+                            open={openLoginModal}
+                            // onClose={(() => setOpenLoginModal(false))}
+                            closeAfterTransition
+                            BackdropProps={{
+                                timeout: 1000,
+                                sx: {
+                                    backgroundColor: 'transparent',
+                                    backdropFilter: 'blur(40px)',
+                                },
+                            }}
+                        >
+                            <Box className="lg:w-5/12 sm:w-7/12"
+                                sx={styleLoginModal}
+                            >
+                                <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} />
+                            </Box>
+                        </Modal>
+
+                        <Modal
+                            open={openClaimPopup}
+                            onClose={(() => setOpenClaimPopup(false))}
+                            closeAfterTransition
+                            BackdropProps={{
+                                timeout: 1000,
+                                sx: {
+                                    backgroundColor: 'transparent',
+                                    backdropFilter: 'blur(40px)',
+                                },
+                            }}
+                        >
+                            <Box className="lg:w-5/12 sm:w-7/12"
+                                sx={styleLoginModal}
+                            >
+                                {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
+                                <div className='flex flex-row justify-center'>
+                                    <div className='w-7/12' style={{ backgroundColor: "#ffffff23", padding: 20, borderRadius: 10 }}>
+                                        {/* <AddCard handleBack={handleBack} closeForm={closeForm} /> */}
+                                        <div style={{ backgroundColor: 'white', padding: 18, borderRadius: 10 }}>
+                                            <div className='mt-4'>
+                                                <Image src="/assets/claimIcon.png" alt='claimimg' height={24} width={24} />
+                                            </div>
+                                            <div className='mt-8' style={{ fontWeight: '600', fontSize: 24, fontFamily: 'inter' }}>
+                                                Claim Account
+                                            </div>
+                                            <div className='text-black' style={{ fontWeight: "400", fontSize: 15, fontFamily: "inter", marginTop: 10 }}>
+                                                This account hasn't been claimed by its creator. In order to claim this creator, you must be the real creator and verify your identity.
+                                            </div>
+                                            <div className='flex flex-row justify-start mt-4 w-full' style={{ marginTop: 30 }}>
+                                                <div>
+                                                    <button
+                                                        onClick={() => {
+                                                            window.open("https://www.youtube.com", '_blank')
+                                                        }} className='bg-purple px-6 py-2 text-white'
+                                                        style={{ fontWeight: "400", fontFamily: "inter", fontSize: 15, borderRadius: "50px" }}>
+                                                        Verify Identity
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                            </Box>
+                        </Modal>
+
+                        <Drawer
+                            open={openBottomForm}
+                            // onClose={() => setOpenLoginModalDrawer(false)}
+                            anchor='bottom'
+                            BackdropProps={{
+                                timeout: 1000,
+                                sx: {
+                                    backgroundColor: 'transparent',
+                                    backdropFilter: 'blur(40px)',
+                                },
+                            }}
+                            sx={{
+                                '& .MuiDrawer-paper': {
+                                    height: 'auto',
+                                    padding: 2,
+                                }
+                            }}>
+                            <div>
+                                <div className='w-full'>
+                                    <LoginModal creator={creator} assistantData={getAssistantData} closeForm={hideBottom} />
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </Box>
-            </Modal>
+                        </Drawer>
 
-            <Drawer
-                open={openBottomForm}
-                // onClose={() => setOpenLoginModalDrawer(false)}
-                anchor='bottom'
-                BackdropProps={{
-                    timeout: 1000,
-                    sx: {
-                        backgroundColor: 'transparent',
-                        backdropFilter: 'blur(40px)',
-                    },
-                }}
-                sx={{
-                    '& .MuiDrawer-paper': {
-                        height: 'auto',
-                        padding: 2,
-                    }
-                }}>
-                <div>
-                    <div className='w-full'>
-                        <LoginModal creator={creator} assistantData={getAssistantData} closeForm={hideBottom} />
-                    </div>
-                </div>
-            </Drawer>
-
-            {/* <div className=''>
-                <Snackbar
-                    open={callErr}
-                    autoHideDuration={5000}
-                    onClose={() => setCallErr(false)}
-                    anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'center',
-                    }}
-                    TransitionComponent={Fade}
-                    TransitionProps={{
-                        timeout: {
-                            enter: 1000,
-                            exit: 1000,
-                        }
-                    }}
-                    sx={{
-                        position: 'fixed', // Ensures it stays in place
-                        top: 20, // Adjust as needed for spacing from the top
-                        left: '50%', // Center horizontally
-                        transform: 'translateX(-50%)', // Center horizontally
-                        border: "2px solid red",
-                        width: "500px"
-                    }}
-                >
-                    <Alert
-                        // onClose={() => setCallErr(false)}
-                        severity="error"
+                        {/* <div className=''>
+                    <Snackbar
+                        open={callErr}
+                        autoHideDuration={5000}
+                        onClose={() => setCallErr(false)}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'center',
+                        }}
+                        TransitionComponent={Fade}
+                        TransitionProps={{
+                            timeout: {
+                                enter: 1000,
+                                exit: 1000,
+                            }
+                        }}
                         sx={{
-                            width: '309px',
-                            backgroundColor: 'white', // Set background color to white
-                            color: 'black',
-                            width: "300px",
-                            borderRadius: "20px"
-                            // border: "2px solid grey"
+                            position: 'fixed', // Ensures it stays in place
+                            top: 20, // Adjust as needed for spacing from the top
+                            left: '50%', // Center horizontally
+                            transform: 'translateX(-50%)', // Center horizontally
+                            border: "2px solid red",
+                            width: "500px"
                         }}
                     >
-                        <div>
-                            Unfortunately, we were unable to process your payment method on file, please update your payment method to start a call.
-                        </div>
-                    </Alert>
-                </Snackbar>
-            </div> */}
+                        <Alert
+                            // onClose={() => setCallErr(false)}
+                            severity="error"
+                            sx={{
+                                width: '309px',
+                                backgroundColor: 'white', // Set background color to white
+                                color: 'black',
+                                width: "300px",
+                                borderRadius: "20px"
+                                // border: "2px solid grey"
+                            }}
+                        >
+                            <div>
+                                Unfortunately, we were unable to process your payment method on file, please update your payment method to start a call.
+                            </div>
+                        </Alert>
+                    </Snackbar>
+                </div> */}
 
-            <Snackbar
-                open={callErr}
-                autoHideDuration={5000}
-                onClose={() => setCallErr(false)}
-                anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'center',
-                }}
-                TransitionComponent={Fade}
-                TransitionProps={{
-                    timeout: {
-                        enter: 1000,
-                        exit: 1000,
-                    }
-                }}
-                sx={{
-                    position: 'fixed', // Ensures it stays in place
-                    top: 20, // Adjust as needed for spacing from the top
-                    left: '50%', // Center horizontally
-                    transform: 'translateX(-50%)', // Center horizontally
-                    width: '400px', // Set width to 309px
-                    // border: "2px solid red",
-                }}
-            >
-                <Alert
-                    severity="error"
-                    sx={{
-                        width: '100%', // Ensures the Alert takes up the full width of the Snackbar
-                        backgroundColor: 'white',
-                        color: 'black',
-                        borderRadius: "20px",
-                    }}
-                >
-                    <div>
-                        <div style={{ color: "#FF543E", fontWeight: "bold", fontSize: 11 }}>
-                            Error
-                        </div>
-                        <div>
-                            We were unable to process your payment method, please update to start a call.
-                        </div>
+                        <Snackbar
+                            open={callErr}
+                            autoHideDuration={5000}
+                            onClose={() => setCallErr(false)}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'center',
+                            }}
+                            TransitionComponent={Fade}
+                            TransitionProps={{
+                                timeout: {
+                                    enter: 1000,
+                                    exit: 1000,
+                                }
+                            }}
+                            sx={{
+                                position: 'fixed', // Ensures it stays in place
+                                top: 20, // Adjust as needed for spacing from the top
+                                left: '50%', // Center horizontally
+                                transform: 'translateX(-50%)', // Center horizontally
+                                width: '400px', // Set width to 309px
+                                // border: "2px solid red",
+                            }}
+                        >
+                            <Alert
+                                severity="error"
+                                sx={{
+                                    width: '100%', // Ensures the Alert takes up the full width of the Snackbar
+                                    backgroundColor: 'white',
+                                    color: 'black',
+                                    borderRadius: "20px",
+                                }}
+                            >
+                                <div>
+                                    <div style={{ color: "#FF543E", fontWeight: "bold", fontSize: 11 }}>
+                                        Error
+                                    </div>
+                                    <div>
+                                        We were unable to process your payment method, please update to start a call.
+                                    </div>
+                                </div>
+                            </Alert>
+                        </Snackbar>
+
                     </div>
-                </Alert>
-            </Snackbar>
-
+            }
         </div>
     );
 }

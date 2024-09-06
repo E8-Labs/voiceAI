@@ -3,7 +3,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react'
 // import Apis from '../Apis/Apis';
 import Image from 'next/image';
-import { Link } from '@mui/material';
+import { Alert, Fade, Link, Snackbar } from '@mui/material';
 
 const callerProfileNav = () => {
     const router = useRouter();
@@ -13,6 +13,7 @@ const callerProfileNav = () => {
     const [separateLetters, setSeparateLetters] = useState('');
     const [getAssistantData, setGetAssistantData] = useState(null);
     const [userDetails, setUserDetails] = useState(null);
+
 
     const links = [
         {
@@ -65,6 +66,19 @@ const callerProfileNav = () => {
         const data = JSON.parse(localData);
         console.log("Get user details", data.data.user);
         setUserDetails(data.data.user);
+
+        //code for recieving event listener
+        const handleEvent = (event) => {
+            console.log('Received event:', event.detail.message);
+            window.location.reload();
+        }
+
+        window.addEventListener('updateProfile', handleEvent);
+
+        return () => {
+            window.removeEventListener('updateProfile', handleEvent);
+        };
+
     }, []);
 
     useEffect(() => {
@@ -122,7 +136,6 @@ const callerProfileNav = () => {
             return
         }
 
-
     }, []);
 
     const handleSideBtnsClick = (e, link) => {
@@ -158,7 +171,7 @@ const callerProfileNav = () => {
                                         {/* <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={40} width={40} style={{ resize: "cover", padding: 2, borderRadius: "50%" }} /> */}
                                         {
                                             userDetails && userDetails.profile_image ?
-                                                <Image src={userDetails.profile_image} alt='profilephoto' height={40} width={40} style={{ resize: "cover", padding: 2, borderRadius: "50%" }} /> :
+                                                <img src={userDetails.profile_image} alt='profilephoto' style={{ resize: "cover", padding: 2, borderRadius: "50%", height: 40, width: 40 }} /> :
                                                 <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={40} width={40} style={{ resize: "cover", padding: 2, borderRadius: "50%" }} />
                                         }
                                     </div>
@@ -237,6 +250,8 @@ const callerProfileNav = () => {
                     </div>
                 </div>
             </div>
+
+
         </div>
     )
 }
