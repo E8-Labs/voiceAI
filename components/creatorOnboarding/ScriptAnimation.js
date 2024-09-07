@@ -1,11 +1,13 @@
 "use client";
 import {
   Alert,
+  Box,
   Button,
   CircularProgress,
   Fade,
   IconButton,
   InputAdornment,
+  Modal,
   Snackbar,
   TextField,
   Visibility,
@@ -253,6 +255,34 @@ export default function ScriptAnimation({ onChangeIndex }) {
       },
     },
   };
+
+  const styleLoginModal = {
+    height: 'auto',
+    bgcolor: 'white',
+    p: 2,
+    mx: 'auto',
+    my: '50vh',
+    transform: 'translateY(-50%)',
+    borderRadius: 2,
+    border: "none",
+    outline: "none",
+    // border: "2px solid green"
+  };
+
+  const handleCloseModal = (status) => {
+    setKnowledgeModal(status)
+  }
+
+  const getknowledgeData = (data) => {
+    setKnowledgeData(data)
+  }
+
+  const handleDelAddedData = (itemId) => {
+    setKnowledgeData(knowledgeData.filter(knowledgeData => knowledgeData.id !== itemId));
+  }
+
+  const [knowledgeModal, setKnowledgeModal] = useState(false);
+  const [knowledgeData, setKnowledgeData] = useState([]);
 
   return (
     <div style={containerStyles}>
@@ -700,15 +730,48 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     </button>
                   </div>
                   <div
-                    className="mt-6"
+                    className="mt-6 flex flex-row w-full justify-between items-center"
                     style={{
                       fontSize: 24,
                       fontWeight: "600",
                       fontFamily: "inter",
                     }}
                   >
-                    Knowledge base
+                    <div
+                      // className="mt-6"
+                      style={{
+                        fontSize: 24,
+                        fontWeight: "600",
+                        fontFamily: "inter",
+                      }}
+                    >
+                      Knowledge base
+                    </div>
+                    <button onClick={() => { setKnowledgeModal(true) }} className="bg-purple px-2 py-2 " style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 15, color: 'white', borderRadius: "50px" }}>
+                      Add Knowledge
+                    </button>
                   </div>
+                  <Modal
+                    open={knowledgeModal}
+                    onClose={(() => setKnowledgeModal(false))}
+                    closeAfterTransition
+                    BackdropProps={{
+                      timeout: 1000,
+                      sx: {
+                        backgroundColor: 'transparent',
+                        backdropFilter: 'blur(30px)',
+                      },
+                    }} //style={{ backgroundColor: "red" }}
+                  >
+                    <Box className="lg:w-3/12 md:w-5/12 sm:w-7/12"
+                      sx={styleLoginModal}
+                    >
+                      {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
+                      <div className='flex flex-row justify-center'>
+                        <Knowledgebase closeModal={handleCloseModal} getknowledgeData={getknowledgeData} />
+                      </div>
+                    </Box>
+                  </Modal>
                   <div
                     className="text-lightWhite mt-2"
                     style={{
@@ -721,16 +784,39 @@ export default function ScriptAnimation({ onChangeIndex }) {
                   </div>
 
                   <div className="mt-8">
-                    <Knowledgebase handleContinue={handleContinue} />
+                    {/* <Knowledgebase handleContinue={handleContinue} /> */}
+                    <div style={{ maxHeight: "50vh", overflow: "auto", scrollbarWidth: "none" }}>
+                      {
+                        knowledgeData.map((item) => (
+                          <div key={item.id} className='border-2 mt-8 p-4 rounded-lg'>
+                            <div className='flex flex-row w-full justify-between items-center'>
+                              <div>
+                                {item.type}
+                              </div>
+                              <div>
+                                <button
+                                  onClick={() => handleDelAddedData(item.id)}
+                                >
+                                  <Image src="/assets/delIcon.png" height={20} width={20} alt='del' />
+                                </button>
+                              </div>
+                            </div>
+                            <div className='w-full'>
+                              {item.content}
+                            </div>
+                          </div>
+                        ))
+                      }
+                    </div>
                   </div>
 
-                  {/* <div className='w-10/12'>
-                                        <Button onClick={handleContinue}
-                                            className='bg-purple hover:bg-purple text-white w-full mt-12'
-                                            style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
-                                            Continue
-                                        </Button>
-                                    </div> */}
+                  <div className='w-10/12'>
+                    <Button onClick={handleContinue}
+                      className='bg-purple hover:bg-purple text-white w-full mt-12'
+                      style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
+                      Continue
+                    </Button>
+                  </div>
                 </div>
               </div>
             </motion.div>

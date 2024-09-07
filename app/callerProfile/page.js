@@ -77,13 +77,20 @@ const Page = () => {
     }
 
     const handleLogout = () => {
+        const modalData = localStorage.getItem('assistantName');
+        const LocalData = JSON.parse(modalData);
+        console.log("assistant name", LocalData);
+
+        // return
         localStorage.removeItem('User');
-        router.push("/tate")
+        // router.push("/tate")
+        window.open(`/${LocalData}`, '_blank')
     }
 
     //code to add img
 
     const handleImageChange = async (event) => {
+        setShowSaveBtn(true);
         const file = event.target.files[0];
         // if (file) {
         //     setSelectedImage(file);
@@ -126,6 +133,7 @@ const Page = () => {
         const AuthToken = Data.data.token;
         const formData = new FormData();
         formData.append("name", userName);
+        formData.append("email", userEmail);
         setImageLoader(true);
         setNameLoader(true);
         if (selectedImage) {
@@ -183,21 +191,27 @@ const Page = () => {
 
     return (
         <div className='h-screen w-full' style={{ backgroundColor: "#ffffff30", }}>
-            <div className='w-full py-10 px-5' style={{}}>
-                <div style={{ fontSize: 20, fontWeight: "bold", fontFamily: 'inter', paddingLeft: 10 }} >
-                    My Account
+            <div className='w-full py-10 px-2 lg:px-5' style={{}}>
+                <div className='flex flex-row justify-between items-center pe-4'>
+                    <div style={{ fontSize: 20, fontWeight: "bold", fontFamily: 'inter', paddingLeft: 10 }} >
+                        My Account
+                    </div>
+                    <button className='lg:hidden px-4 py-1' onClick={handleLogout}
+                        style={{ backgroundColor: '#FF424250', fontWeight: '400', fontFamily: 'inter', color: '#FF4242', cursor: "pointer", borderRadius: '25px' }}>
+                        Logout
+                    </button>
                 </div>
-                <div className='w-8/12 py-6 px-8 mt-3 flex flex-col gap-5' style={{
+                <div className='w-full pe-4 lg:w-8/12 py-6 px-8 mt-3 flex flex-col gap-5' style={{
                     backgroundColor: '#FFFFFF40', borderRadius: 10
                 }}>
                     <div className='w-full flex flex-row justify-end'>
-                        <button className='px-4 py-1' onClick={handleLogout}
+                        <button className='lg:flex hidden px-4 py-1' onClick={handleLogout}
                             style={{ backgroundColor: '#FF424250', fontWeight: '400', fontFamily: 'inter', color: '#FF4242', cursor: "pointer", borderRadius: '25px' }}>
                             Logout
                         </button>
                     </div>
 
-                    <div className='w-7/12 flex flex-row items-center justify-between'>
+                    <div className='lg:w-7/12 flex flex-row items-center justify-between'>
                         <div className='flex flex-row items-center gap-4'>
                             <div>
                                 {imageUrl ?
@@ -210,7 +224,7 @@ const Page = () => {
                                         {profileData && profileData.profile_image ?
                                             <button onClick={handleUploadClick}>
                                                 <img src={profileData.profile_image} alt='profile'// height={70} width={70}
-                                                    style={{ backgroundColor: "", height: "70px", width: "70px", borderRadius: "50%" }} />
+                                                    style={{ backgroundColor: "", height: "70px", width: "70px", borderRadius: "50%", resize: "cover" }} />
                                             </button> :
                                             <button onClick={handleUploadClick}>
                                                 <Image src="/assets/placeholderImg.jpg" alt='profile' height={70} width={70}
@@ -254,7 +268,7 @@ const Page = () => {
 
                     </div>
 
-                    <div className='flex flex-row justify-between w-7/12 pe-4'>
+                    <div className='flex flex-row justify-between lg:w-7/12 pe-4'>
                         <input
                             className='w-full '
                             placeholder='Name'
@@ -267,13 +281,14 @@ const Page = () => {
                         />
                     </div>
 
-                    <div className='w-7/12 pe-4'>
+                    <div className='lg:w-7/12 pe-4'>
                         <input
                             className='w-full '
                             placeholder='Email address'
                             value={userEmail}
                             onChange={(e) => {
                                 setUserEmail(e.target.value);
+                                setShowSaveBtn(true);
                             }}
                             style={styles.input}
                         />
@@ -285,7 +300,7 @@ const Page = () => {
                     <PhoneNumberInput editAccess={accessDenied} phonenumber={getPhoneNumber} myCallerAccount={myCallerAccountStatus} />
 
                     {
-                        showSaveBtn && userName || selectedImage ?
+                        showSaveBtn && (userName || selectedImage || userEmail) ?
                             <div className='w-full flex flex-row justify-end text-purple' style={{ fontWeight: '500' }}>
                                 {
                                     nameLoader ?

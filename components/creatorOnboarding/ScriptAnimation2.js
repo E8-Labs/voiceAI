@@ -696,7 +696,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         </button>
                                     </div>
                                     <div className='mt-6' style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
-                                        Do you sell any products or services that {name} can offer to qualified callers?
+                                        Do you sell any products or services that can offer to qualified callers?
                                     </div>
 
                                     {/* Code to make dynamic routes */}
@@ -1263,9 +1263,9 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                 <button className='w-5/12 mt-5' style={{
                                                     height: 40, backgroundColor: '#552AFF', borderRadius: 5, color: 'white', borderRadius: "50px"
                                                 }}
-                                                    onClick={() => {
-                                                        router.push("/profile")
-                                                    }}
+                                                    // onClick={() => {
+                                                    //     router.push("/profile")
+                                                    // }}
                                                 >
                                                     {/* <div className='text-red'> */}
                                                     Countinue
@@ -1273,7 +1273,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                 </button>
                                                 <button className='w-3/12 mt-5'
                                                     onClick={() => {
-                                                        router.push("/profile")
+                                                        router.push("/tate")
                                                     }}
                                                 >
                                                     {/* <div className='text-red'> */}

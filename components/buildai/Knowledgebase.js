@@ -1,11 +1,11 @@
 import { Button, CircularProgress, Fade, FormControl, FormHelperText, InputLabel, MenuItem, Select, Snackbar, TextField } from '@mui/material';
 import axios from 'axios';
 import Image from 'next/image';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Apis from '../apis/Apis';
 import JSZip from 'jszip';
 
-const Knowledgebase = ({ handleContinue }) => {
+const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
 
     const [questionType, setQuestionType] = useState('');
     const [showDocument, setShowDocument] = useState(false);
@@ -22,9 +22,55 @@ const Knowledgebase = ({ handleContinue }) => {
     const [urlData, setUrlData] = useState("");
     const [loader, setLoader] = useState(false);
     const [showError, setShowError] = useState(false);
+    const [aiData, setAiData] = useState([]);
+    const [aiLoader, setAiLoader] = useState(false);
 
     //code for list
     const [userSelectedData, setUserSelectedData] = useState([]);
+
+    //ai data
+    const getAiData = async () => {
+        const localData = localStorage.getItem('User');
+        const Data = JSON.parse(localData);
+        setAiLoader(true);
+        // console.log("Data from local for nowledge", Data);
+        const AuthToken = Data.data.token;
+        console.log("Auth token is", AuthToken);
+        try {
+            const response = await axios.get(Apis.MyAiapi, {
+                headers: {
+                    'Authorization': 'Bearer ' + AuthToken,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response) {
+                console.log("Response of myai api is", response.data.data);
+                if (response.data.status === true) {
+                    // setAiData(response.data.data.kb);
+                    setUserSelectedData(response.data.data.kb);
+                    getknowledgeData(response.data.data.kb);
+                    closeModal(false);
+                    // localStorage('KnowledgeBase', JSON.stringify(response.data.data.kb));
+                } else {
+                    console.error("Status of kb api", response.data.message);
+                }
+            }
+        } catch (error) {
+            console.error("Error occured in kb", error);
+        } finally {
+            setAiLoader(false);
+        }
+
+    }
+
+    // useEffect(() => {
+    //     const data = localStorage.getItem("KnowledgeBase");
+    //     if (data) {
+    //         const LocalData = JSON.parse(data);
+    //         setAiData(LocalData)
+    //     }
+    // }, [])
 
     //code for adding data in list
     const listdata = () => {
@@ -42,6 +88,9 @@ const Knowledgebase = ({ handleContinue }) => {
             content: content
         };
         setUserSelectedData([...userSelectedData, newData]);
+        getAiData();
+        // const dataTostore = [...userSelectedData, newData];
+        // localStorage.setItem('knowledgebase')
     }
 
     const handleDelAddedData = (itemId) => {
@@ -190,6 +239,10 @@ const Knowledgebase = ({ handleContinue }) => {
                 if (response.data.status === true) {
                     // handleContinue()
                     listdata();
+                    setTextData("");
+                    setDocumentName("");
+                    setDocumentDescription("");
+                    setUrlData("");
                 } else {
                     setShowError(true);
                 }
@@ -214,7 +267,13 @@ const Knowledgebase = ({ handleContinue }) => {
                         className=' border-none rounded-md'
                         displayEmpty
                         value={questionType}
-                        onChange={handleChange}
+                        onChange={(e) => {
+                            handleChange(e);
+                            setTextData("");
+                            setDocumentName("");
+                            setDocumentDescription("");
+                            setUrlData("");
+                        }}
                         renderValue={(selected) => {
                             if (selected.length === 0) {
                                 return <em>Select Type</em>;
@@ -305,8 +364,8 @@ const Knowledgebase = ({ handleContinue }) => {
                                 onChange={handleFileChange}
                             />
                             {fileName && (
-                                <div className="flex items-center text-gray-700 p-4 rounded gap-2" style={{ backgroundColor: "#EDEDED80" }}>
-                                    <span>Selected Document: {fileName}</span>
+                                <div className="flex items-center text-gray-700 p-4 rounded gap-2" style={{ backgroundColor: "#EDEDED80", fontSize: 13, fontFamily: "inter" }}>
+                                    <span>{fileName}</span>
                                     <button
                                         onClick={handleDeselect}
                                     >
@@ -374,34 +433,40 @@ const Knowledgebase = ({ handleContinue }) => {
                     </button>
             }
             <div className='w-full flex flex-row justify-center'>
-                <Button onClick={handleContinue}
+                {/* <Button onClick={handleContinue}
                     className='bg-purple hover:bg-purple text-white w-11/12 mt-8'
                     style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
                     Continue
-                </Button>
+                </Button> */}
             </div>
 
-            <div>
-                {
-                    userSelectedData.map((item) => (
-                        <div key={item.id} className='bg-gray-200 mt-8 p-4 rounded-lg'>
-                            <div className='flex flex-row w-full justify-between items-center'>
-                                <div>
-                                    {item.title}
+            {
+                aiLoader ?
+                    <div className='w-full flex flex-row justify-center mt-8'>
+                        <CircularProgress size={25} />
+                    </div> :
+                    <div>
+                        {/* {
+                            userSelectedData.map((item) => (
+                                <div key={item.id} className='bg-gray-200 mt-8 p-4 rounded-lg'>
+                                    <div className='flex flex-row w-full justify-between items-center'>
+                                        <div>
+                                            {item.type}
+                                        </div>
+                                        <div>
+                                            <button onClick={() => handleDelAddedData(item.id)}>
+                                                <Image src="/assets/delIcon.png" height={20} width={20} alt='del' />
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div className='w-full'>
+                                        {item.content}
+                                    </div>
                                 </div>
-                                <div>
-                                    <button onClick={() => handleDelAddedData(item.id)}>
-                                        <Image src="/assets/delIcon.png" height={20} width={20} alt='del' />
-                                    </button>
-                                </div>
-                            </div>
-                            <div className='w-full'>
-                                {item.content}
-                            </div>
-                        </div>
-                    ))
-                }
-            </div>
+                            ))
+                        } */}
+                    </div>
+            }
 
             {/* Error snack message */}
 
@@ -427,7 +492,7 @@ const Knowledgebase = ({ handleContinue }) => {
                             setShowError(false)
                         }} severity="error"
                         sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}>
-                        
+
                     </Alert>
                 </Snackbar>
             }

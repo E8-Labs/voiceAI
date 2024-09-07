@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 
-export default function AnimatedButton({ snackMessage, error = false }) {
+export default function AnimatedButton({ snackMessage, error = false, profileData }) {
 
     const router = useRouter();
 
@@ -48,7 +48,13 @@ export default function AnimatedButton({ snackMessage, error = false }) {
             >
                 <div className="flex items-center justify-start">
                     <span className="material-icons">
-                        <Image onClick={handleProfileClick} src="/assets/placeholderImg.jpg" alt='profile' height={40} width={40} style={{ borderRadius: "50%" }} />
+                        {
+                            profileData && profileData.profile_image ?
+                                <img onClick={handleProfileClick} src={profileData.profile_image} alt='profile'
+                                    // height={40} width={40} 
+                                    style={{ borderRadius: "50%", height: 40, width: 40 }} /> :
+                                <Image onClick={handleProfileClick} src="/assets/placeholderImg.jpg" alt='profile' height={40} width={40} style={{ borderRadius: "50%" }} />
+                        }
                     </span>
                     {/* Replace with your icon */}
                 </div>

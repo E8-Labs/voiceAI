@@ -36,7 +36,8 @@ const Apis = {
     BuyProduct: `${BasePath}api/user/buy_product`,
     makeDefaultCard: `${BasePath}api/user/make_default`,
     updateProfile: `${BasePath}api/user/updateProfile`,
-    DeleteCard: `${BasePath}api/user/delete_card`
+    DeleteCard: `${BasePath}api/user/delete_card`,
+    verifyEmail: `${BasePath}api/user/verifyEmail`
 }
 
 export default Apis;

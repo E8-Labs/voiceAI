@@ -4,8 +4,9 @@ import React, { useEffect, useRef, useState } from 'react'
 // import Apis from '../Apis/Apis';
 import Image from 'next/image';
 import { Alert, Fade, Link, Snackbar } from '@mui/material';
+import CallerMenu from '../CallerMenu';
 
-const callerProfileNav = () => {
+const CallerProfileNav = ({ handleCloseMenu }) => {
     const router = useRouter();
     const pathName = usePathname();
     const [formattedName, setformattedName] = useState('');
@@ -56,7 +57,7 @@ const callerProfileNav = () => {
             id: 6,
             name: 'Terms & Condition',
             href: '/callerProfile/termsandconditions',
-            image: '/assets/selectedtermsIcon.png',
+            image: '/assets/selectedTermsIcon.png',
             unSelectedImg: '/assets/terms.png'
         }
     ]
@@ -156,44 +157,45 @@ const callerProfileNav = () => {
 
 
     return (
-        <div className='w-full flex flex-flex-col justify-center' style={{ height: '100%' }}>
-            <div className='w-full'>
+        <div className='w-full'>
+            <div className='w-full flex flex-flex-col justify-center' style={{ height: '100%' }}>
+                <div className='w-full'>
 
 
-                <div className='flex flex-col items-start w-full items-center' style={{ marginTop: 10 }}>
-                    <div className='flex flex-col gap-3 items-start w-11/12'>
+                    <div className='flex flex-col items-start w-full items-center' style={{ marginTop: 10 }}>
+                        <div className='flex flex-col gap-3 items-start md:w-11/12'>
 
-                        <div style={{ marginTop: 20 }}>
-                            <div className='px-4 flex gap-4 flex-row items-center py-1'
-                                style={{ borderRadius: 50, backgroundColor: "#ffffff30", width: "fit-content" }}>
-                                <div className='flex flex-row items-center'>
-                                    <div style={{ border: "2px solid black", borderRadius: "50%" }}>
-                                        {/* <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={40} width={40} style={{ resize: "cover", padding: 2, borderRadius: "50%" }} /> */}
-                                        {
-                                            userDetails && userDetails.profile_image ?
-                                                <img src={userDetails.profile_image} alt='profilephoto' style={{ resize: "cover", padding: 2, borderRadius: "50%", height: 40, width: 40 }} /> :
-                                                <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={40} width={40} style={{ resize: "cover", padding: 2, borderRadius: "50%" }} />
-                                        }
+                            <div style={{ marginTop: 20 }}>
+                                <div className='px-4 flex gap-4 flex-row items-center py-1'
+                                    style={{ borderRadius: 50, backgroundColor: "#ffffff30", width: "fit-content" }}>
+                                    <div className='flex flex-row items-center'>
+                                        <div style={{ border: "2px solid black", borderRadius: "50%" }}>
+                                            {/* <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={40} width={40} style={{ resize: "cover", padding: 2, borderRadius: "50%" }} /> */}
+                                            {
+                                                userDetails && userDetails.profile_image ?
+                                                    <img src={userDetails.profile_image} alt='profilephoto' style={{ resize: "cover", padding: 2, borderRadius: "50%", height: 40, width: 40 }} /> :
+                                                    <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={40} width={40} style={{ resize: "cover", padding: 2, borderRadius: "50%" }} />
+                                            }
+                                        </div>
+                                        <div style={triangle} />
                                     </div>
-                                    <div style={triangle} />
-                                </div>
-                                <div>
-                                    <div className='flex flex-row items-center gap-8' style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                        {/* Hamza */}
-                                        {
-                                            userDetails && userDetails.name ?
-                                                <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                    {formattedName}
-                                                </div> :
-                                                <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                    {/* {userDetails &&
+                                    <div>
+                                        <div className='flex flex-row items-center gap-8' style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                            {/* Hamza */}
+                                            {
+                                                userDetails && userDetails.name ?
+                                                    <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                                        {formattedName}
+                                                    </div> :
+                                                    <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                                        {/* {userDetails &&
                                                         { formattedEmail }
                                                     } */}
-                                                </div>
-                                        }
+                                                    </div>
+                                            }
 
-                                    </div>
-                                    {/* <div className='flex flex-row gap-4'>
+                                        </div>
+                                        {/* <div className='flex flex-row gap-4'>
                                 <button>
                                     <Image
                                         // layout='responsive'
@@ -205,55 +207,64 @@ const callerProfileNav = () => {
                                         objectFit='contain' src={"/assets/instagram.png"} alt='social' height={11} width={11} style={{ resize: "cover" }} />
                                 </button>
                             </div> */}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div>
-                            {
-                                links.map((link) => {
-                                    return (
-                                        <div key={link.id} className='mt-3'>
-                                            <Link className='flex flex-row gap-4 items-center py-2' sx={{ textDecoration: 'none', cursor: "pointer", color: "black" }}
-                                                key={link.name}
-                                                href={link.href}
-                                                onClick={(e) => handleSideBtnsClick(e, link.href)}
-                                                style={{
-                                                    fontWeight: '400', fontSize: 13, fontFamily: 'inter',
-                                                    color: pathName === link.href ? 'white' : '#00000070',
-                                                    backgroundColor: pathName === link.href ? 'blue' : '',
-                                                    // padding: pathName === link.href ? 6 : "", 
-                                                    borderRadius: "50px",
-                                                    paddingInline: 10
-                                                }}> {/* 2548FD40 */}
-                                                <Image src={pathName === link.href ? link.image : link.unSelectedImg}
-                                                    height={20} width={20} alt='icon'
-                                                />
-                                                <div
+                            <div>
+                                {
+                                    links.map((link) => {
+                                        return (
+                                            <div key={link.id} className='mt-3'>
+                                                <Link className='flex flex-row gap-4 items-center py-2' sx={{ textDecoration: 'none', cursor: "pointer", color: "black" }}
+                                                    key={link.name}
+                                                    href={link.href}
+                                                    onClick={(e) => {
+                                                        handleSideBtnsClick(e, link.href);
+                                                        if (handleCloseMenu) {
+                                                            handleCloseMenu(false);
+                                                        }
+                                                    }}
                                                     style={{
                                                         fontWeight: '400', fontSize: 13, fontFamily: 'inter',
                                                         color: pathName === link.href ? 'white' : '#00000070',
                                                         backgroundColor: pathName === link.href ? 'blue' : '',
-                                                        // padding: pathName === link.href ? 6 : "",
+                                                        // padding: pathName === link.href ? 6 : "", 
                                                         borderRadius: "50px",
-                                                        // paddingInline: pathName === link.href ? 20 : ""
-                                                    }}>
-                                                    {link.name}
-                                                </div>
-                                            </Link>
-                                        </div>
-                                    )
-                                })
-                            }
-                        </div>
+                                                        paddingInline: 10
+                                                    }}> {/* 2548FD40 */}
+                                                    <Image src={pathName === link.href ? link.image : link.unSelectedImg}
+                                                        height={20} width={20} alt='icon'
+                                                    />
+                                                    <div
+                                                        style={{
+                                                            fontWeight: '400', fontSize: 13, fontFamily: 'inter',
+                                                            color: pathName === link.href ? 'white' : '#00000070',
+                                                            backgroundColor: pathName === link.href ? 'blue' : '',
+                                                            // padding: pathName === link.href ? 6 : "",
+                                                            borderRadius: "50px",
+                                                            // paddingInline: pathName === link.href ? 20 : ""
+                                                        }}>
+                                                        {link.name}
+                                                    </div>
+                                                </Link>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
 
+                        </div>
                     </div>
                 </div>
+
+
             </div>
-
-
+            {/* <div className='lg:hidden' style={{ overflowY: 'hidden' }}>
+                <CallerMenu />
+            </div> */}
         </div>
     )
 }
 
-export default callerProfileNav
+export default CallerProfileNav;

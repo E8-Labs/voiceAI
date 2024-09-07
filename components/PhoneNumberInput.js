@@ -4,7 +4,7 @@ import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
-const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess }) => {
+const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr, fromCreateAccount, fromSignIn }) => {
     const [phone, setPhone] = useState('');
     const [focus, setFocus] = useState(false);
     const [countryCode, setCountryCode] = useState('us'); // Default to US
@@ -104,14 +104,25 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess }) => {
         try {
             const phoneNumber = parsePhoneNumberFromString(`+${phone}`, countryCode.toUpperCase());
             if (!phoneNumber || !phoneNumber.isValid()) {
-                setError('Please enter a valid phone number');
+                if (fromCreateAccount === true) {
+                    formatErr('Enter valid phone number');
+                } else if (fromSignIn === true) {
+                    formatErr('Enter valid phone number');
+                }
+                // setError('Enter valid phone number');
                 return;
+            } else {
+                // setError('');
+                formatErr('');
             }
-
-            setError('');
             phonenumber(phone); // Pass valid phone number up to parent
         } catch (error) {
-            setError('Please enter a valid phone number');
+            if (fromCreateAccount === true) {
+                formatErr('Enter valid phone number');
+            } else if (fromSignIn === true) {
+                formatErr('Enter valid phone number');
+            }
+            // setError('Enter valid phone number');
         }
     };
 
@@ -123,7 +134,8 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess }) => {
                 onChange={(phone, countryData) => {
                     setPhone(phone);
                     setSelectedCountry(countryData.countryCode); // Capture the selected country's code
-                    setError(false);
+                    // setError(null);
+                    formatErr('');
                 }}
                 inputStyle={{
                     width: '100%',
@@ -167,11 +179,11 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess }) => {
             />
 
             <div>
-                {error && (
-                    <div style={{ color: 'red', fontSize: 14, height: 15 }}>
+                {/* {error && (
+                    <div className='mt-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100", height: 13 }}>
                         {error}
                     </div>
-                )}
+                )} */}
             </div>
 
             <style jsx global>{`

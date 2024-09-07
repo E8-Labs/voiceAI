@@ -184,6 +184,7 @@ const Page = () => {
     const [buyProductSuccess, setBuyProductSuccess] = useState(null);
     const [creatorsLoader, setCreatorsLoader] = useState(false);
     const [purchasedProductLoader, setPurchasedProductLoaderLoader] = useState(false);
+    const [apiData, setApiData] = useState(false);
 
 
     const styles = {
@@ -199,7 +200,8 @@ const Page = () => {
             fontWeight: 300,
             whiteSpace: 'nowrap',  // Prevent text from wrapping
             overflow: 'hidden',    // Hide overflow text
-            textOverflow: 'ellipsis'  // Add ellipsis for overflow text
+            textOverflow: 'ellipsis',  // Add ellipsis for overflow text
+            // border: "2px solid red"
         }
     }
 
@@ -261,11 +263,15 @@ const Page = () => {
                     }
                 });
                 if (response) {
-                    console.log("Response of callerdashboard api is", response.data.data);
+                    console.log("Response of callerdashboard api is", response.data);
                     if (response.data.status === true) {
-                        setCallerDashboardData(response.data.data.callersDashboardData);
-                        setOpenProducts(response.data.data.callersDashboardData[0]);
-                        setBuyedProducts(response.data.data.products);
+                        if (response.data === null) {
+                            setApiData(true);
+                        } else {
+                            setCallerDashboardData(response.data.data.callersDashboardData);
+                            setOpenProducts(response.data.data.callersDashboardData[0]);
+                            setBuyedProducts(response.data.data.products);
+                        }
                     } else {
                         console.log("Status is", response.data.message);
                         console.log("Status is", response.data.status);
@@ -356,253 +362,269 @@ const Page = () => {
 
     return (
         <div className='h-screen w-full' style={{ backgroundColor: "#ffffff40", overflow: 'auto', scrollbarWidth: 0, }}>
-            <div className='w-10/12 flex flex-col gap-2 pt-10 ps-10'>
+            <div className='w-full pe-4 lgw-10/12 flex flex-col gap-2 pt-10 ps-2 lg:ps-10'>
                 <div style={{ fontSize: 20, fontWeight: 400, fontFamily: 'inter' }}>
                     Products
                 </div>
-                <div className='w-full flex flex-row p-4 rounded-xl' style={{ backgroundColor: "#ffffff40" }}>
 
-                    <div className='w-6/12'>
-                        <div className='flex flex-row justify-between items-center mt-4 px-4'>
-                            <div>
-                                Creators
-                            </div>
-                            <button>
-                                <Image src="/assets/searchIcon.png" height={24} width={24} alt='search' />
-                            </button>
-                        </div>
-
+                {
+                    apiData ?
+                        <div className='w-full p-8 rounded-xl flex flex-col justify-center mt-4'
+                            style={{
+                                fontWeight: '500', fontFamily: 'inter', fontSize: 22, textAlign: 'center',
+                                backgroundColor: '#FFFFFF40', height: '20vh'
+                            }}>
+                            No Creator
+                        </div> :
                         <div>
-                            {
-                                creatorsLoader ?
-                                    <div className='mt-4 w-full flex flex-row justify-center'>
-                                        <CircularProgress size={30} />
-                                    </div> :
+                            <div className='w-full flex flex-row p-4 rounded-xl' style={{ backgroundColor: "#ffffff40" }}>
+
+                                <div className='w-6/12'>
+                                    <div className='flex flex-row justify-between items-center mt-4 px-4'>
+                                        <div>
+                                            Creators
+                                        </div>
+                                        <button>
+                                            <Image src="/assets/searchIcon.png" height={24} width={24} alt='search' />
+                                        </button>
+                                    </div>
+
                                     <div>
                                         {
-                                            callerDashboardData === null && openProducts.length === 0 ?
-                                                <div className='ms-4 mt-2' style={{ fontWeight: '500', fontFamily: 'inter', fontSize: 15, }}>
-                                                    No caller dashoboard
+                                            creatorsLoader ?
+                                                <div className='mt-4 w-full flex flex-row justify-center'>
+                                                    <CircularProgress size={30} />
                                                 </div> :
-                                                <div style={{ maxHeight: '30vh', overflow: "auto", scrollbarWidth: "none" }}>
+                                                <div>
                                                     {
-                                                        callerDashboardData.map((item) => (
-                                                            <div key={item.profile.id} className='w-full rounded-xl flex flex-row mt-2'
-                                                            // style={{ backgroundColor: "#FFFFFF30" }}
-                                                            >
-                                                                <button onClick={() => handleOpenProducts(item)}
-                                                                    className='w-full flex flex-row gap-2 p-2'
-                                                                    style={{ backgroundColor: openProducts === item ? '#ffffff69' : "transparent" }}>
-                                                                    <div className='w-full flex flex-row gap-2' style={{ height: 'fit-content' }}>
-                                                                        {item.profile.profile_image ?
-                                                                            <Image src={item.profile.profile_image} alt='profile'
-                                                                                height={50} width={50} style={{ borderRadius: "50%", height: "fit-content" }}
-                                                                            /> :
-                                                                            <Image src="/assets/placeholderImg.jpg" alt='profile'
-                                                                                height={50} width={50} style={{ borderRadius: "50%", height: "fit-content" }}
-                                                                            />
-                                                                        }
-                                                                        <div className='flex flex-col' style={{ textAlign: "start" }}>
-                                                                            <div style={{ fontSize: 18, fontWeight: 400, fontFamily: 'inter', }}>
-                                                                                {item.profile.name}
-                                                                            </div>
-                                                                            <div style={{ fontSize: 14, fontWeight: 400, fontFamily: 'inter', color: '#00000090', }}>
-                                                                                {item.products.length} {
-                                                                                    item.products.length < 2 ? "Product" : "Products"
-                                                                                }
+                                                        callerDashboardData === null || openProducts.length < 1 ?
+                                                            <div className='ms-4 mt-2' style={{ fontWeight: '500', fontFamily: 'inter', fontSize: 15, }}>
+                                                                No caller dashoboard
+                                                            </div> :
+                                                            <div style={{ maxHeight: '30vh', overflow: "auto", scrollbarWidth: "none" }}>
+                                                                {
+                                                                    callerDashboardData.map((item) => (
+                                                                        <div key={item.profile.id} className='w-full rounded-xl flex flex-row mt-2'
+                                                                        // style={{ backgroundColor: "#FFFFFF30" }}
+                                                                        >
+                                                                            <button onClick={() => handleOpenProducts(item)}
+                                                                                className='w-full flex flex-row gap-2 p-2'
+                                                                                style={{ backgroundColor: openProducts === item ? '#ffffff69' : "transparent" }}>
+                                                                                <div className='w-full flex flex-row gap-2' style={{ height: 'fit-content' }}>
+                                                                                    {item.profile.profile_image ?
+                                                                                        <Image src={item.profile.profile_image} alt='profile'
+                                                                                            height={50} width={50} style={{ borderRadius: "50%", height: "fit-content" }}
+                                                                                        /> :
+                                                                                        <Image src="/assets/placeholderImg.jpg" alt='profile'
+                                                                                            height={50} width={50} style={{ borderRadius: "50%", height: "fit-content" }}
+                                                                                        />
+                                                                                    }
+                                                                                    <div className='flex flex-col' style={{ textAlign: "start" }}>
+                                                                                        <div style={{ fontSize: 18, fontWeight: 400, fontFamily: 'inter', }}>
+                                                                                            {item.profile.name}
+                                                                                        </div>
+                                                                                        <div style={{ fontSize: 14, fontWeight: 400, fontFamily: 'inter', color: '#00000090', }}>
+                                                                                            {item.products.length} {
+                                                                                                item.products.length < 2 ? "Product" : "Products"
+                                                                                            }
 
-                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </button>
                                                                         </div>
-                                                                    </div>
-                                                                </button>
+                                                                    ))
+                                                                }
                                                             </div>
-                                                        ))
                                                     }
                                                 </div>
                                         }
                                     </div>
-                            }
-                        </div>
 
-                    </div>
+                                </div>
 
-                    <div className='w-6/12'>
-                        {
-                            openProducts &&
-                            <div className='w-full'>
+                                <div className='w-6/12'>
+                                    {
+                                        openProducts &&
+                                        <div className='w-full'>
 
-                                {
-                                    openProducts === null || openProducts.length === 0 ?
-                                        <div className='mt-2'>
+                                            {
+                                                openProducts === null || openProducts.length === 0 ?
+                                                    <div className='mt-2'>
 
-                                        </div> :
-                                        <div>
-                                            <div className='w-full flex flex-col gap-5 px-4 pb-4'
-                                                style={{ maxHeight: "30vh", overflow: "auto", scrollbarWidth: "none", backgroundColor: "#ffffff69" }}>
-                                                <div className='mt-6' style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
-                                                    {openProducts.profile.name}'s Products
-                                                </div>
-                                                {
-                                                    openProducts.products.map((product) => (
-                                                        <div key={product.id} className='w-full flex flex-col'>
-                                                            <div className='flex flex-row justify-between items-start'>
-                                                                <div className='flex flex-col'>
-                                                                    <div
-                                                                        style={{ fontSize: 13, fontWeight: "400", fontFamily: 'inter' }}>
-                                                                        {/* {item.disc} */}
-                                                                        {product.name}
-                                                                    </div>
-                                                                    <div style={{ fontSize: 20, fontWeight: "500", fontFamily: 'inter' }}>
-                                                                        {/* {item.price} */}
-                                                                        ${product.productPrice}
-                                                                    </div>
-                                                                </div>
-
-                                                                {/* <button className='px-3'
-                                                                    onClick={() => {
-                                                                        console.log("Product sendding in api", product);
-                                                                        // return
-                                                                        // setOpenBuyProductDrawer(product);
-                                                                        // router.push(`/callerProfile/myProducts/${product.id}`);
-                                                                        console.log("product id is", product.id);
-                                                                        //add event listener here
-                                                                        const event = new CustomEvent('buyProduct', {
-                                                                            detail: {
-                                                                                message: "Hello, this is a buy product event"
-                                                                            }
-                                                                        });
-                                                                        window.dispatchEvent(event);
-                                                                        console.log("Event dispatched:", event);
-                                                                        console.log("Event added");
-
-                                                                        setTimeout(() => {
-                                                                            window.open(`/buyproduct/${product.id}`, '_blank');
-                                                                        }, 500);
-
-                                                                        return
-                                                                        window.open(`/buyproduct/${product.id}`, '_blank');
-                                                                    }}
-                                                                    style={{
-                                                                        color: 'white', backgroundColor: '#552AFF', borderRadius: 20, fontSize: 14,
-                                                                        paddingTop: "2px", paddingBottom: "2px"
-                                                                    }}>
-                                                                    Buy
-                                                                </button> */}
-
-                                                                <button className='px-3'
-                                                                    onClick={() => {
-                                                                        handleBuyProductClick(product);
-                                                                    }}
-                                                                    style={{
-                                                                        color: 'white', backgroundColor: '#552AFF', borderRadius: 20, fontSize: 14,
-                                                                        paddingTop: "2px", paddingBottom: "2px"
-                                                                    }}>
-                                                                    Buy
-                                                                </button>
-
-
+                                                    </div> :
+                                                    <div>
+                                                        <div className='w-full flex flex-col gap-5 px-4 pb-4'
+                                                            style={{ maxHeight: "30vh", overflow: "auto", scrollbarWidth: "none", backgroundColor: "#ffffff69" }}>
+                                                            <div className='mt-6' style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
+                                                                {openProducts.profile.name}'s Products
                                                             </div>
+                                                            {
+                                                                openProducts.products.map((product) => (
+                                                                    <div key={product.id} className='w-full flex flex-col'>
+                                                                        <div className='flex flex-row justify-between items-start'>
+                                                                            <div className='flex flex-col'>
+                                                                                <div
+                                                                                    style={{ fontSize: 13, fontWeight: "400", fontFamily: 'inter' }}>
+                                                                                    {/* {item.disc} */}
+                                                                                    {product.name}
+                                                                                </div>
+                                                                                <div style={{ fontSize: 20, fontWeight: "500", fontFamily: 'inter' }}>
+                                                                                    {/* {item.price} */}
+                                                                                    ${product.productPrice}
+                                                                                </div>
+                                                                            </div>
+
+                                                                            {/* <button className='px-3'
+                                                    onClick={() => {
+                                                        console.log("Product sendding in api", product);
+                                                        // return
+                                                        // setOpenBuyProductDrawer(product);
+                                                        // router.push(`/callerProfile/myProducts/${product.id}`);
+                                                        console.log("product id is", product.id);
+                                                        //add event listener here
+                                                        const event = new CustomEvent('buyProduct', {
+                                                            detail: {
+                                                                message: "Hello, this is a buy product event"
+                                                            }
+                                                        });
+                                                        window.dispatchEvent(event);
+                                                        console.log("Event dispatched:", event);
+                                                        console.log("Event added");
+    
+                                                        setTimeout(() => {
+                                                            window.open(`/buyproduct/${product.id}`, '_blank');
+                                                        }, 500);
+    
+                                                        return
+                                                        window.open(`/buyproduct/${product.id}`, '_blank');
+                                                    }}
+                                                    style={{
+                                                        color: 'white', backgroundColor: '#552AFF', borderRadius: 20, fontSize: 14,
+                                                        paddingTop: "2px", paddingBottom: "2px"
+                                                    }}>
+                                                    Buy
+                                                </button> */}
+
+                                                                            <button className='px-3'
+                                                                                onClick={() => {
+                                                                                    handleBuyProductClick(product);
+                                                                                }}
+                                                                                style={{
+                                                                                    color: 'white', backgroundColor: '#552AFF', borderRadius: 20, fontSize: 14,
+                                                                                    paddingTop: "2px", paddingBottom: "2px"
+                                                                                }}>
+                                                                                Buy
+                                                                            </button>
+
+
+                                                                        </div>
+                                                                    </div>
+                                                                ))
+                                                            }
                                                         </div>
-                                                    ))
-                                                }
-                                            </div>
+                                                    </div>
+                                            }
                                         </div>
-                                }
+                                    }
+                                </div>
+
                             </div>
-                        }
-                    </div>
 
-                </div>
-
-                {/* buyedProducts === null && buyedProducts.length === 0 ? */}
-                <div>
-                    {
-                        purchasedProductLoader ?
-                            <div className='w-full flex flex-row justify-center mt-6'>
-                                <CircularProgress size={30} />
-                            </div> :
+                            {/* buyedProducts === null && buyedProducts.length === 0 ? */}
                             <div>
                                 {
-                                    buyedProducts === null && buyedProducts.length === 0 ?
-                                        <div className='w-full p-8 rounded-xl flex flex-col justify-center mt-4'
-                                            style={{
-                                                fontWeight: '500', fontFamily: 'inter', fontSize: 22, textAlign: 'center',
-                                                backgroundColor: '#FFFFFF40', height: '20vh'
-                                            }}>
-                                            No Products Purchased
+                                    purchasedProductLoader ?
+                                        <div className='w-full flex flex-row justify-center mt-6'>
+                                            <CircularProgress size={30} />
                                         </div> :
-                                        <div className='w-full p-8 mb-10 mt-4 rounded-xl' style={{ backgroundColor: '#FFFFFF40', maxHeight: '60vh', overflow: "auto", scrollbarWidth: "none" }}>
-                                            <div className='w-full flex flex-row justify-between'>
-                                                <div style={{ fontSize: 18, fontWeight: 400, fontFamily: 'inter' }}>
-                                                    Purchased Products
-                                                </div>
-                                                {
-                                                    showAll ?
-                                                        <button
-                                                            onClick={() => setShowAll(false)}
-                                                            className='px-3 py-2'
-                                                            style={{ color: 'white', backgroundColor: '#552AFF', borderRadius: 20, fontSize: 14 }}>
-                                                            View Less
-                                                        </button> :
-                                                        <button
-                                                            onClick={() => setShowAll(true)}
-                                                            className='px-3 py-2'
-                                                            style={{ color: 'white', backgroundColor: '#552AFF', borderRadius: 20, fontSize: 14 }}>
-                                                            View All
-                                                        </button>
-                                                }
-                                            </div>
-
-                                            <div className='w-full flex flex-row justify-between mt-10'>
-                                                <div className='w-4/12'>
-                                                    <div style={styles.text}>Name</div>
-                                                </div>
-                                                <div className='w-2/12 '>
-                                                    <div style={styles.text}>Amount</div>
-                                                </div>
-                                                <div className='w-3/12'>
-                                                    <div style={styles.text}>Creator</div>
-                                                </div>
-                                                <div className='w-2/12'>
-                                                    <div style={styles.text}>Date</div>
-                                                </div>
-                                            </div>
-
-
-                                            <div className='w-full'>
-                                                {itemsToDisplay.map((item) => (
-                                                    <div key={item.id}>
-                                                        <button className='w-full' //</>style={{}} onClick={() => { setOpen(item) }}
-                                                        >
-                                                            <div className='w-full flex flex-row justify-between mt-10' key={item.id}>
-                                                                <div className='w-4/12' style={{}}>
-                                                                    <div style={styles.text2}>{item.name}</div>
-                                                                </div>
-                                                                <div className='w-2/12'>
-                                                                    <div style={styles.text2}>
-                                                                        ${item.productPrice}
-                                                                    </div>
-                                                                </div>
-                                                                <div className='w-3/12 '>
-                                                                    <div style={styles.text2}>
-                                                                        {item.user.name}
-                                                                    </div>
-                                                                </div>
-                                                                <div className='w-2/12'>
-                                                                    <div style={styles.text2}>{moment(item.createdAt).format('MM/DD/YYYY')}</div>
-                                                                </div>
+                                        <div>
+                                            {
+                                                buyedProducts === null || buyedProducts.length < 1 ?
+                                                    <div className='w-full p-8 rounded-xl flex flex-col justify-center mt-4'
+                                                        style={{
+                                                            fontWeight: '500', fontFamily: 'inter', fontSize: 22, textAlign: 'center',
+                                                            backgroundColor: '#FFFFFF40', //height: '20vh'
+                                                        }}>
+                                                        No Products Purchased
+                                                    </div> :
+                                                    <div className='w-full p-8 mb-10 mt-4 rounded-xl' style={{ backgroundColor: '#FFFFFF40' }}>
+                                                        <div className='w-full flex flex-row justify-between'>
+                                                            <div style={{ fontSize: 18, fontWeight: 400, fontFamily: 'inter' }}>
+                                                                Purchased Products
                                                             </div>
-                                                            <div className='w-full h-0.5 rounded mt-2' style={{ backgroundColor: '#00000011' }}></div>
-                                                        </button>
-                                                    </div>
-                                                ))}
-                                            </div>
+                                                            {
+                                                                showAll ?
+                                                                    <button
+                                                                        onClick={() => setShowAll(false)}
+                                                                        className='px-3 py-2'
+                                                                        style={{ color: 'white', backgroundColor: '#552AFF', borderRadius: 20, fontSize: 14 }}>
+                                                                        View Less
+                                                                    </button> :
+                                                                    <button
+                                                                        onClick={() => setShowAll(true)}
+                                                                        className='px-3 py-2'
+                                                                        style={{ color: 'white', backgroundColor: '#552AFF', borderRadius: 20, fontSize: 14 }}>
+                                                                        View All
+                                                                    </button>
+                                                            }
+                                                        </div>
 
+                                                        <div className='w-full flex flex-row justify-between mt-10'>
+                                                            <div className='w-4/12'>
+                                                                <div style={styles.text}>Name</div>
+                                                            </div>
+                                                            <div className='w-2/12 '>
+                                                                <div style={styles.text}>Amount</div>
+                                                            </div>
+                                                            <div className='w-3/12'>
+                                                                <div style={styles.text}>Creator</div>
+                                                            </div>
+                                                            <div className='w-2/12'>
+                                                                <div style={styles.text}>Date</div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div className='w-full'>
+                                                            {itemsToDisplay.map((item) => (
+                                                                <div key={item.id}>
+                                                                    <button className='w-full' //</>style={{}} onClick={() => { setOpen(item) }}
+                                                                    >
+                                                                        <div className='w-full flex flex-row justify-between mt-10' key={item.id}>
+                                                                            <div className='w-4/12' style={{}}>
+                                                                                <div style={styles.text2}>
+                                                                                    {item.name.slice(0, 6)}
+                                                                                    {/* {item.name} */}
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className='w-2/12'>
+                                                                                <div style={styles.text2}>
+                                                                                    ${item.productPrice}
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className='w-3/12 '>
+                                                                                <div style={styles.text2}>
+                                                                                    {item.user.name}
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className='w-2/12'>
+                                                                                <div style={styles.text2}>{moment(item.createdAt).format('MM/DD/YYYY')}</div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className='w-full h-0.5 rounded mt-2' style={{ backgroundColor: '#00000011' }}></div>
+                                                                    </button>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+
+                                                    </div>
+                                            }
                                         </div>
                                 }
                             </div>
-                    }
-                </div>
+                        </div>
+                }
 
             </div>
 

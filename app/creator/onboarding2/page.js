@@ -1,5 +1,6 @@
 'use client'
 import Animation from '@/components/animation/Animation';
+import GroupImages from '@/components/creatorOnboarding/GroupImages';
 import ImagesFile from '@/components/imagesfile/ImagesFile';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
@@ -66,16 +67,18 @@ export default function Home() {
                 </div>
                 {
                     currentIndex === 0 &&
-                    <div className='w-7/12 flex md:flex hidden justify-center' style={{ height: "100%" }}>
-                        <img src="/assets/groupImages.png" alt='app' style={{ height: "850px", width: "100%", resize: "cover", objectFit: "contain" }} />
+                    <div className='w-7/12 flex md:flex hidden justify-center h-screen'>
+                        {/* <img src="/assets/groupImages.png" alt='app' style={{ height: "850px", width: "100%", resize: "cover", objectFit: "contain" }} /> */}
                         {/* <ImagesFile /> */}
+                        <GroupImages />
                     </div>
                 }
                 {
                     currentIndex === 1 &&
-                    <div className='w-7/12 flex md:flex hidden justify-center' style={{ height: "100%" }}>
-                        <img src="/assets/groupImages.png" alt='app' style={{ height: "850px", width: "100%", resize: "cover", objectFit: "contain" }} />
+                    <div className='w-7/12 flex md:flex hidden justify-center h-screen' style={{  }}>
+                        {/* <img src="/assets/groupImages.png" alt='app' style={{ height: "850px", width: "100%", resize: "cover", objectFit: "contain" }} /> */}
                         {/* <ImagesFile /> */}
+                        <GroupImages />
                     </div>
                 }
                 {

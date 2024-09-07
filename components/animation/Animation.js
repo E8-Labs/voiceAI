@@ -57,6 +57,7 @@ export default function Animation({ onChangeIndex }) {
     const [EmailP2, setEmailP2] = useState("");
     const [EmailP3, setEmailP3] = useState("");
     const [EmailP4, setEmailP4] = useState("");
+    const [EmailP5, setEmailP5] = useState("");
     const [signinVerificationNumber, setSigninVerificationNumber] = useState(null);
 
     //code for sending verification code when signIn
@@ -69,6 +70,8 @@ export default function Animation({ onChangeIndex }) {
     const [verifyErr, setVerifyErr] = useState(false);
     const [creatorLoader, setCreatorLoader] = useState(false);
     const [index1Loader, setIndex1Loader] = useState(false);
+    const [numberFormatErr, setNumberFormatErr] = useState(null);
+    const [verifyEmailLoader, setVerifyEmailLoader] = useState(false);
 
     const checkUserName = async () => {
         const ApiPath = Apis.checkUserName;
@@ -104,6 +107,39 @@ export default function Animation({ onChangeIndex }) {
     const SignInNumber = (number) => {
         setSigninVerificationNumber(number);
         console.log("Number is", number);
+    }
+
+    //code for email verification
+    const handleVerifyEmail = async () => {
+        setVerifyEmailLoader(true);
+        try {
+            const ApiPath = Apis.verifyEmail;
+            const data = {
+                email: userEmail,
+                code: P1 + P2 + P3 + P4 + P5
+            }
+            console.log("Data sending in verify code email", data);
+            const response = await axios.post(ApiPath, data, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (response) {
+                console.log("Api response of verify code api", response.data);
+            } else {
+                console.log("No response");
+            }
+        } catch (error) {
+            console.error("Error occured in api", error);
+        } finally {
+            setVerifyEmailLoader(true);
+        }
+    }
+
+    //code to show number format err
+    const handleErr = (err) => {
+        console.log("Err", err);
+        setNumberFormatErr(err);
     }
 
     //code for navigating to 3rd flow from congrats
@@ -195,6 +231,7 @@ export default function Animation({ onChangeIndex }) {
                 // status: "true"
                 login: "true"
             }
+            console.log("Data sending in api", data);
             const response = await axios.post(ApiPath, data, {
                 headers: {
                     'Content-Type': "application/json"
@@ -353,7 +390,7 @@ export default function Animation({ onChangeIndex }) {
     //code for handleVerifyPhoneCode
     const handleVerifyPhoneCode = async () => {
         const data = {
-            code: P1 + P2 + P3 + P4,
+            code: EmailP1 + EmailP2 + EmailP3 + EmailP4 + EmailP5,
             phone: userPhoneNumber
         }
         const ApiPath = Apis.verifyCode;
@@ -553,7 +590,7 @@ export default function Animation({ onChangeIndex }) {
                                 <div className='text-lightWhite' style={{ fontSize: 13, fontWeight: "400" }}>
                                     Good to have you back!
                                 </div>
-                                <div className='w-full md:w-8/12 flex flex-row gap-6 mt-8'>
+                                <div className='w-full lg:w-8/12 flex flex-row gap-6 mt-8'>
                                     {/* <TextField className=' w-5/12'
                                         autofill='off'
                                         id="filled-basic"
@@ -598,9 +635,18 @@ export default function Animation({ onChangeIndex }) {
                                             },
                                         }} /> */}
 
-                                    <PhoneNumberInput phonenumber={SignInNumber} />
+                                    <PhoneNumberInput fromSignIn={true} formatErr={handleErr} phonenumber={SignInNumber} />
 
                                 </div>
+
+                                {
+                                    numberFormatErr ?
+                                        <div className='mt-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100", height: 13 }}>
+                                            {numberFormatErr}
+                                        </div> : ""
+                                }
+
+
                                 {/* <div className='mt-2'>
                                     <button style={{ color: "#552AFF", fontSize: 13, fontWeight: "400" }}>
                                         <u>
@@ -608,7 +654,7 @@ export default function Animation({ onChangeIndex }) {
                                         </u>
                                     </button>
                                 </div> */}
-                                <div className='mt-8 w-full md:w-8/12' style={{ color: "white" }}>
+                                <div className='mt-8 w-full lg:w-8/12' style={{ color: "white" }}>
                                     {
                                         index1Loader ?
                                             <div className='w-full flex flex-row justify-center'>
@@ -930,7 +976,7 @@ export default function Animation({ onChangeIndex }) {
                                         voice.ai/tate is all yours!
                                     </div>
                                     <div className='mt-6' style={{ fontSize: 24, fontWeight: "600" }}>
-                                        Now, create your account.
+                                        Now, create your account
                                     </div>
                                     <div className='w-full flex flex-row gap-6 mt-8'>
                                         <TextField
@@ -990,13 +1036,13 @@ export default function Animation({ onChangeIndex }) {
                                     <div>
                                         {
                                             checkUserEmailData && checkUserEmailData.status === true &&
-                                            <div style={{ fontWeight: "400", fontSize: 14, color: "green" }}>
+                                            <div style={{ fontWeight: "400", fontSize: 14, color: "green", height: 14 }}>
                                                 {checkUserEmailData.message}
                                             </div>
                                         }
                                         {
                                             checkUserEmailData && checkUserEmailData.status === false &&
-                                            <div style={{ fontWeight: "400", fontSize: 14, color: "red" }}>
+                                            <div style={{ fontWeight: "400", fontSize: 14, color: "red", height: 14 }}>
                                                 {checkUserEmailData.message}
                                             </div>
                                         }
@@ -1006,10 +1052,10 @@ export default function Animation({ onChangeIndex }) {
                                             checkUserEmailData && checkUserEmailData.status === true ?
                                                 <div style={{ fontWeight: "400", fontSize: 14, color: "green" }}>
                                                     <Button
-                                                        onClick={handleContinue}
+                                                        onClick={handleVerifyEmail}
                                                         sx={{ textDecoration: "none" }}
                                                         className='bg-purple hover:bg-purple2 w-full mt-8'
-                                                        style={{ fontSize: 15, fontWeight: "400", color: "white", height: "51px" }}>
+                                                        style={{ fontSize: 15, fontWeight: "400", color: "white", height: "51px", borderRadius: "50px" }}>
                                                         Continue
                                                     </Button>
                                                 </div> :
@@ -1019,7 +1065,7 @@ export default function Animation({ onChangeIndex }) {
                                                         // onClick={handleContinue}
                                                         sx={{ textDecoration: "none" }}
                                                         className='bg-placeholderColor w-full mt-8'
-                                                        style={{ fontSize: 15, fontWeight: "400", color: "white", height: "51px" }}>
+                                                        style={{ fontSize: 15, fontWeight: "400", color: "white", height: "51px", borderRadius: "50px" }}>
                                                         Continue
                                                     </Button>
                                                 </div>
@@ -1033,7 +1079,7 @@ export default function Animation({ onChangeIndex }) {
                                             // onClick={handleContinue}
                                             sx={{ textDecoration: "none" }}
                                             className='bg-light-blue hover:bg-light-blue w-full mt-8'
-                                            style={{ fontSize: 15, fontWeight: "400", color: "white", height: "51px" }}>
+                                            style={{ fontSize: 15, fontWeight: "400", color: "white", borderRadius: "50px" }}>
                                             Sign up with Google
                                         </Button>
                                     </div>
@@ -1066,50 +1112,8 @@ export default function Animation({ onChangeIndex }) {
                                     <div className='text-lightWhite mt-1' style={{ fontSize: 13, fontWeight: "400" }}>
                                         code was sent to tat*********@gmail.com
                                     </div>
-                                    {/* <div className='flex flex-row gap-6 mt-8'>
-                                        <input
-                                            maxLength={1}
-                                            type='password'
-                                            style={{
-                                                height: 50, width: 50, borderRadius: 10, border: "none",
-                                                outline: "none", textAlign: "center", backgroundColor: "#EDEDEDC7",
-                                            }}
-                                        />
-                                        <input
-                                            maxLength={1}
-                                            type='password'
-                                            style={{
-                                                height: 50, width: 50, borderRadius: 10, border: "none",
-                                                outline: "none", textAlign: "center", backgroundColor: "#EDEDEDC7",
-                                            }}
-                                        />
-                                        <input
-                                            maxLength={1}
-                                            type='password'
-                                            style={{
-                                                height: 50, width: 50, borderRadius: 10, border: "none",
-                                                outline: "none", textAlign: "center", backgroundColor: "#EDEDEDC7",
-                                            }}
-                                        />
-                                        <input
-                                            maxLength={1}
-                                            type='password'
-                                            style={{
-                                                height: 50, width: 50, borderRadius: 10, border: "none",
-                                                outline: "none", textAlign: "center", backgroundColor: "#EDEDEDC7",
-                                            }}
-                                        />
-                                        <input
-                                            maxLength={1}
-                                            type='password'
-                                            style={{
-                                                height: 50, width: 50, borderRadius: 10, border: "none",
-                                                outline: "none", textAlign: "center", backgroundColor: "#EDEDEDC7",
-                                            }}
-                                        />
-                                    </div> */}
 
-                                    <div className='flex flex-row gap-4 mt-8'>
+                                    {/* <div className='flex flex-row gap-4 mt-8'>
                                         <input
                                             id="P1"
                                             type='text'
@@ -1141,10 +1145,83 @@ export default function Animation({ onChangeIndex }) {
                                             id="P4"
                                             type='text'
                                             value={EmailP4}
-                                            onChange={(e) => handleInputChange(e, setEmailP4, null)}
+                                            onChange={(e) => handleInputChange(e, setEmailP4, "P5")}
                                             maxLength={1}
                                             style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
                                             onKeyDown={(e) => handleBackspace(e, setEmailP4, "P3")}
+                                        />
+                                        <inpu
+                                            id="P5"
+                                            type='text'
+                                            value={EmailP5}
+                                            onChange={(e) => handleInputChange(e, setEmailP5, null)}
+                                            maxLength={1}
+                                            style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                                            onKeyDown={(e) => handleBackspace(e, setEmailP5, "P4")}
+                                        />
+                                    </div> */}
+
+                                    <div className='flex flex-row gap-4 mt-4'>
+                                        <input
+                                            id="P1"
+                                            ref={inputFocusRef}
+                                            type='text'
+                                            value={EmailP1}
+                                            onChange={(e) => {
+                                                handleInputChange2(e, setEmailP1, "P2");
+                                                setVerifyErr(false);
+                                            }}
+                                            maxLength={1}
+                                            style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                                            onKeyDown={(e) => handleBackspace2(e, setEmailP1, null)}
+                                        />
+                                        <input
+                                            id="P2"
+                                            type='text'
+                                            value={EmailP2}
+                                            onChange={(e) => {
+                                                handleInputChange2(e, setEmailP2, "P3");
+                                                setVerifyErr(false);
+                                            }}
+                                            maxLength={1}
+                                            style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                                            onKeyDown={(e) => handleBackspace2(e, setEmailP2, "P1")}
+                                        />
+                                        <input
+                                            id="P3"
+                                            type='text'
+                                            value={EmailP3}
+                                            onChange={(e) => {
+                                                handleInputChange2(e, setEmailP3, "P4");
+                                                setVerifyErr(false);
+                                            }}
+                                            maxLength={1}
+                                            style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                                            onKeyDown={(e) => handleBackspace2(e, setEmailP3, "P2")}
+                                        />
+                                        <input
+                                            id="P4"
+                                            type='text'
+                                            value={EmailP4}
+                                            onChange={(e) => {
+                                                handleInputChange2(e, setEmailP4, "P5");
+                                                setVerifyErr(false);
+                                            }}
+                                            maxLength={1}
+                                            style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                                            onKeyDown={(e) => handleBackspace2(e, setEmailP4, "P3")}
+                                        />
+                                        <input
+                                            id="P5"
+                                            type='text'
+                                            value={EmailP5}
+                                            onChange={(e) => {
+                                                handleInputChange2(e, setEmailP5, null);
+                                                setVerifyErr(false);
+                                            }}
+                                            maxLength={1}
+                                            style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                                            onKeyDown={(e) => handleBackspace2(e, setEmailP5, "P4")}
                                         />
                                     </div>
 
@@ -1159,7 +1236,11 @@ export default function Animation({ onChangeIndex }) {
                                     <Button onClick={handleContinue}
                                         className='w-full bg-purple hover:bg-purple2 text-white mt-8'
                                         style={{ fontWeight: "400", fontSize: 15, height: 50 }}>
-                                        Verify
+                                        {
+                                            verifyEmailLoader ?
+                                                <CircularProgress size={25} /> :
+                                                "Verify"
+                                        }
                                     </Button>
                                 </div>
                             </div>

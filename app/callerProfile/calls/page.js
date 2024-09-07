@@ -96,7 +96,7 @@ const Page = () => {
 
     return (
         <div className='h-screen w-full' style={{ backgroundColor: "#ffffff40", overflow: 'auto', scrollbarWidth: 0, }}>
-            <div className='w-9/12 flex flex-col gap-2 pt-10 ps-10'>
+            <div className='w-full pe-4 lg:w-9/12 flex flex-col gap-2 pt-10 ps-2 lg:ps-10' style={{ maxHeight: '90vh', overflow: "auto", scrollbarWidth: "none", border: "2px solid red" }}>
                 <div style={{ fontSize: 20, fontWeight: 400, fontFamily: 'inter' }}>
                     Calls Logs
                 </div>
@@ -108,13 +108,13 @@ const Page = () => {
                         <div className='w-4/12'>
                             <div style={styles.text}>Spoke to</div>
                         </div>
-                        <div className='w-2/12 '>
+                        <div className='w-3/12 lg:w-2/12 '>
                             <div style={styles.text}>Amount</div>
                         </div>
-                        <div className='w-3/12'>
+                        <div className='w-3/12 lg:w-3/12'>
                             <div style={styles.text}>Duration</div>
                         </div>
-                        <div className='w-2/12'>
+                        <div className='w-3/12 lg:w-2/12'>
                             <div style={styles.text}>Date</div>
                         </div>
                     </div>
@@ -160,17 +160,17 @@ const Page = () => {
                                                                     {item.model.owner.name}
                                                                 </div>
                                                             </div>
-                                                            <div className='w-2/12'>
+                                                            <div className='w-3/12 lg:w-2/12'>
                                                                 <div style={styles.text2}>
                                                                     $ {Number(item.amount).toFixed(2)}
                                                                 </div>
                                                             </div>
-                                                            <div className='w-3/12 '>
+                                                            <div className='w-3/12 lg:w-3/12 '>
                                                                 <div style={styles.text2}>
                                                                     {item.durationString}
                                                                 </div>
                                                             </div>
-                                                            <div className='w-2/12'>
+                                                            <div className='w-3/12 lg:w-2/12'>
                                                                 <div style={styles.text2}>
                                                                     {/* {item.model.owner.assitant.createdAt} */}
                                                                     {moment(item.createdAt).format('MM/DD/YYYY')}
@@ -187,7 +187,7 @@ const Page = () => {
                     }
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

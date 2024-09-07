@@ -1,6 +1,6 @@
 "use client"
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Apis from '../apis/Apis'
 import axios from 'axios'
 import { CircularProgress } from '@mui/material'
@@ -8,6 +8,7 @@ import { CircularProgress } from '@mui/material'
 const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handleSignin }) => {
 
 
+    const inputFocusRef = useRef(null);
     const [P1, setP1] = useState("")
     const [P2, setP2] = useState("")
     const [P3, setP3] = useState("")
@@ -20,6 +21,16 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
         code: P1 + P2 + P3 + P4 + P5,
         phone: userLoginDetails.phone,
     }
+
+    useEffect(() => {
+        inputFocusRef.current.focus();
+        // if (currentIndex === 1 && inputFocusRef.current) {
+        //     // Using a small timeout to ensure rendering of the input after animation
+        //     setTimeout(() => {
+        //         inputFocusRef.current.focus();
+        //     }, 300); // Adjust this delay according to the animation timing
+        // }
+    }, []);
 
     useEffect(() => {
         console.log("User details are", userLoginDetails);
@@ -69,7 +80,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
             if (response) {
                 console.log("response of check code ", response.data);
                 if (response.data.status === true) {
-                    console.log("Response of signup api", response.data);
+                    console.log("Response of signup", response.data);
                     localStorage.setItem("User", JSON.stringify(response.data));
                     // return
                     handleContinue();
@@ -105,6 +116,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                 <input
                     id="P1"
                     type='text'
+                    ref={inputFocusRef}
                     value={P1}
                     onChange={(e) => handleInputChange(e, setP1, "P2")}
                     maxLength={1}

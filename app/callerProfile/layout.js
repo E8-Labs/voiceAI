@@ -1,6 +1,10 @@
 // import ProfileNav from "@/components/Navbar/ProfileNav";
 // import CallerProfileNav from "@/creatorProfileComponents/callerProfileNav/CallerProfileNav";
+// import CallerMenu from "@/components/Navbar/callerProfileNavComponents/CallerMenu";
+import CallerMenu from "@/components/Navbar/CallerMenu";
 import CallerProfileNav from "@/components/Navbar/callerProfileNavComponents/CallerProfileNav";
+// import CallerProfileNav from "@/components/Navbar/callerProfileNavComponents/CallerProfileNav";
+import { Drawer } from "@mui/material";
 import { Inter } from "next/font/google";
 // import "./globals.css";
 
@@ -27,16 +31,22 @@ export default function RootLayout({ children }) {
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
                 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
-            </head> */}
+            </head> flex-col lg:flex-row*/}
             <body className={inter.className}>
                 <div className="flex flex-row w-full" style={backgroundImage}>
-                    <div className="w-2/12 h-screen">
+                    <div className="lg:flex hidden w-2/12 h-screen">
                         {/* <CallerProfileNav /> */}
                         <CallerProfileNav />
                     </div>
-                    <div className="w-10/12">
+                    <div className="lg:hidden" style={{ backgroundColor: "#ffffff30" }}>
+                        <div>
+                            <CallerMenu />
+                        </div>
+                    </div>
+                    <div className="lg:w-10/12 w-full">
                         {children}
                     </div>
+                    
                 </div>
             </body>
         </html>

@@ -18,13 +18,18 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
     const [userPassword, setUserPassword] = useState("");
     const [loginLoader, setLoginLoader] = useState(false);
     const [phoneNumberErr, setPhoneNumberErr] = useState(null);
-    const [numberFormatError, setNumberFormatError] = useState(false);
+    const [numberFormatError, setNumberFormatError] = useState(null);
     const [termsCheck, setTermsCheck] = useState(false);
     const [checkUserEmailData, setCheckUserEmailData] = useState(null);
+    const [emailValidationError, setEmailValidationError] = useState(false);
 
     const handlePhoneNumber = (number) => {
         // console.log("Number is", number);
         setUserPhoneNumber(number);
+    }
+
+    const handleNumberFormatErr = (status) => {
+        setNumberFormatError(status);
     }
 
     //call emailValidation api
@@ -32,7 +37,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
         if (userEmail) {
             const timeOut = setTimeout(() => {
                 checkUserEmail();
-            }, 2000);
+            }, 500);
             return () => clearTimeout(timeOut);
         }
     }, [userEmail]);
@@ -77,7 +82,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
         if (userPhoneNumber) {
             const timeOut = setTimeout(() => {
                 checkPhoneNumber();
-            }, 2000);
+            }, 500);
             return () => clearTimeout(timeOut)
         }
     }, [userPhoneNumber]);
@@ -239,6 +244,12 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
         closeForm();
     }
 
+    //code to validate email
+    const validateEmail = (email) => { // Accept email directly as a string
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return emailPattern.test(email); // Test the email string directly
+    };
+
 
 
     return (
@@ -290,7 +301,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
                 label="First Name" variant="outlined"
-                placeholder='First name'
+                placeholder='First Name'
                 sx={MuiFieldStyle}
                 inputProps={{
                     style: {
@@ -306,7 +317,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                 value={userLastName}
                 onChange={(e) => setUserLastName(e.target.value)}
                 label="Last Name" variant="outlined"
-                placeholder='Last name'
+                placeholder='Last Name'
                 sx={MuiFieldStyle}
             />
             <TextField className=' w-full mt-6'
@@ -316,31 +327,53 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                 onChange={(e) => {
                     setUserEmail(e.target.value);
                     setCheckUserEmailData(null);
+                    const value = e.target.value;
+                    if (!validateEmail(value)) {
+                        setEmailValidationError(true);
+                    } else {
+                        setEmailValidationError(false);
+                    }
                 }}
                 label="Email" variant="outlined"
                 placeholder='Email Address'
                 sx={MuiFieldStyle}
             />
             {
-                checkUserEmailData && checkUserEmailData.status === true ?
-                    <div className='mt-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "green", height: 13 }}>
-                        Email available
-                    </div> :
+                emailValidationError ?
                     <div className='mt-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100", height: 13 }}>
-                        {checkUserEmailData && checkUserEmailData.status === false && "Email already taken"}
+                        Enter valid email
+                    </div> :
+                    <div>
+                        {
+                            checkUserEmailData && checkUserEmailData.status === true ?
+                                <div className='mt-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "green", height: 13 }}>
+                                    Email available
+                                </div> :
+                                <div className='mt-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100", height: 13 }}>
+                                    {checkUserEmailData && checkUserEmailData.status === false && "Email already taken"}
+                                </div>
+                        }
                     </div>
             }
             {/* <TextField className='mt-4' id="outlined-basic" label="Outlined" variant="outlined" sx={MuiFieldStyle} /> */}
             <div className='mt-6'>
-                <PhoneNumberInput phonenumber={handlePhoneNumber} />
+                <PhoneNumberInput phonenumber={handlePhoneNumber} fromCreateAccount={true} formatErr={handleNumberFormatErr} />
             </div>
             {
-                phoneNumberErr && phoneNumberErr.status === true ?
-                    <div className='mt-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "green", height: 13 }}>
-                        {phoneNumberErr.message}
-                    </div> :
+                numberFormatError ?
                     <div className='mt-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100", height: 13 }}>
-                        {phoneNumberErr && phoneNumberErr.message}
+                        Enter valid number
+                    </div> :
+                    <div>
+                        {
+                            phoneNumberErr && phoneNumberErr.status === true ?
+                                <div className='mt-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "green", height: 13 }}>
+                                    {phoneNumberErr.message}
+                                </div> :
+                                <div className='mt-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100", height: 13 }}>
+                                    {phoneNumberErr && phoneNumberErr.message}
+                                </div>
+                        }
                     </div>
             }
             {/* <TextField className=' w-full mt-4'

@@ -69,6 +69,7 @@ const Page = () => {
     const [callErr, setCallErr] = useState(false);
     const [profileData, setProfileData] = useState(null);
     const [assistantDataErr, setAssistantDataErr] = useState(null);
+    const [creatorErr, setCreatorErr] = useState(true);
     // useEffect(() => {
     //     const localData = localStorage.getItem('User');
     //     if (localData) {
@@ -135,6 +136,8 @@ const Page = () => {
             });
             if (getResponse) {
                 if (getResponse.data.status === true) {
+                    const AssistanName = creator;
+                    localStorage.setItem('assistantName', JSON.stringify(AssistanName));
                     console.log("Response of getassistant data", getResponse.data.data);
                     const AssistantData = getResponse.data.data;
                     localStorage.setItem('assistantData', JSON.stringify(AssistantData));
@@ -425,16 +428,20 @@ const Page = () => {
                 url: Apis.MakeCall,
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer 1716566901317x213622515056508930'
+                    // 'Authorization': 'Bearer 1716566901317x213622515056508930'
                 },
                 data: data
             };
 
             axios.request(config)
                 .then((response) => {
+                    console.log("Response of caller api");
                     console.log(JSON.stringify(response.data));
                     localStorage.removeItem('callStatus');
                     console.log("Data of call removed");
+                    if (response.data.status === false) {
+                        setCallErr(true);
+                    }
                 })
                 .catch((error) => {
                     console.log(error);
@@ -538,7 +545,7 @@ const Page = () => {
                                         height: isWideScreen ? ["830px", "650px", "830px"] : ["600px", "400px", "600px"], // Keyframes for height
                                     }}
                                     transition={{
-                                        duration: 5,
+                                        duration: 4,
                                         repeat: Infinity,
                                         repeatType: "loop",
                                         ease: "easeInOut",
@@ -557,6 +564,95 @@ const Page = () => {
                                 </motion.div>
                             </button>
                         </div>
+
+                        {/* Visible on small screens only */}
+                        <div style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                        }} className='w-full flex justify-center items-center md:hidden'>
+                            <button className='flex items-center justify-center flex-1'
+                                style={{
+                                    cursor: "pointer",
+                                    outline: "none",
+                                    border: "none",
+                                }}>
+                                {/* <div className='flex flex-row items-center justify-center' style={gifBackgroundImage}>
+                                    <Image src="/mainAppGif.gif" onClick={handleContinue} alt='gif' style={{ backgroundColor: "red", borderRadius: "50%", zIndex: 0 }} height={600} width={600} />
+                                </div> */}
+                                <motion.div
+                                    // src="/borderedAppLogo.png"
+                                    // alt="Animating Image"
+                                    animate={{
+                                        width: ["380px", "200px", "380px"], // Keyframes for width
+                                        height: ["380px", "200px", "380px"], // Keyframes for height
+                                    }}
+                                    transition={{
+                                        duration: 7,
+                                        repeat: Infinity,
+                                        repeatType: "loop",
+                                        ease: "easeInOut",
+                                    }}
+                                    style={
+                                        gifBackgroundImage
+                                        // {
+                                        //     // margin: "auto",
+                                        //     display: "block",
+                                        //     width: "380px", // Initial width
+                                        //     height: "380px", // Initial height
+                                        // }
+                                    }
+                                >
+                                    <Image src="/mainAppGif.gif" onClick={handleContinue} alt='gif' style={{ backgroundColor: "", borderRadius: "50%", zIndex: 0 }} height={600} width={600} />
+                                </motion.div>
+                            </button>
+                        </div>
+
+                        <Snackbar
+                            open={creatorErr}
+                            autoHideDuration={5000}
+                            // onClose={() => setCreatorErr(false)}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'center',
+                            }}
+                            TransitionComponent={Fade}
+                            TransitionProps={{
+                                timeout: {
+                                    enter: 1000,
+                                    exit: 1000,
+                                }
+                            }}
+                            sx={{
+                                position: 'fixed', // Ensures it stays in place
+                                top: 20, // Adjust as needed for spacing from the top
+                                left: '50%', // Center horizontally
+                                transform: 'translateX(-50%)', // Center horizontally
+                                // width: '400px', // Set width to 309px
+                                // border: "2px solid red",
+                            }}
+                        >
+                            <Alert
+                                severity="error"
+                                sx={{
+                                    width: '100%', // Ensures the Alert takes up the full width of the Snackbar
+                                    backgroundColor: 'white',
+                                    color: 'black',
+                                    borderRadius: "20px",
+                                }}
+                            >
+                                <div>
+                                    <div style={{ color: "#FF543E", fontWeight: "bold", fontSize: 11 }}>
+                                        Error
+                                    </div>
+                                    <div>
+                                        The creator is no longer active
+                                    </div>
+                                </div>
+                            </Alert>
+                        </Snackbar>
+
                     </div> :
                     <div style={backgroundImage} className='h-screen overflow-none' onMouseMove={handleMouseMove}>
                         <div className='pt-8 ps-8'>
@@ -701,7 +797,7 @@ const Page = () => {
                                     showProfileIcon &&
                                     <div ref={buttonRef2} style={{ width: "8%" }}>
 
-                                        <AnimatedButton snackMessage={snackMessage} />
+                                        <AnimatedButton snackMessage={snackMessage} profileData={profileData} />
 
                                         <div className='flex flex-row gap-4 items-center'>
                                         </div>
@@ -719,7 +815,7 @@ const Page = () => {
                                     showProfileIcon &&
                                     <div className='flex flex-row gap-4 items-center'>
                                         <div className='me-8' style={{ zIndex: 2 }}>
-                                            <AnimatedButton snackMessage={snackMessage} />
+                                            <AnimatedButton snackMessage={snackMessage} profileData={profileData} />
                                         </div>
                                     </div>
                                 }

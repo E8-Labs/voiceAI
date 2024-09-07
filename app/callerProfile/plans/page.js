@@ -24,9 +24,11 @@ const Page = () => {
     const [makeDefaultCardLoader, setMakeDefaultCardLoader] = useState(null);
     const [snackMessage, setSnackMessage] = useState(false);
     const [DelCardLoader, setDelCardLoader] = useState(false);
+    const [cardSuccess, setCardSuccess] = useState(false);
 
     const handleClosePopup = (e) => {
         setAddCardPopup(e);
+        setCardSuccess(true);
         getCards();
     }
 
@@ -50,8 +52,8 @@ const Page = () => {
             backgroundSize: "cover",
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
-            width: 550,
-            height: 150,
+            // width: 550,
+            // height: 150,
             borderRadius: 10,
             color: 'white'
         }
@@ -238,8 +240,8 @@ const Page = () => {
 
 
     return (
-        <div className='h-screen w-full' style={{ backgroundColor: "#ffffff40", overflow: 'auto', scrollbarWidth: 0, }}>
-            <div className='w-9/12 flex flex-col gap-2 pt-10 ps-10'>
+        <div className='h-screen w-full' style={{ backgroundColor: "#ffffff40", overflow: 'hidden', scrollbarWidth: 0, }}>
+            <div className='w-full pe-4 lg:w-9/12 flex flex-col gap-2 pt-10 ps-4 lg:ps-10'>
 
 
                 <div className='w-full p-5 rounded-xl'
@@ -284,7 +286,7 @@ const Page = () => {
                                             }}>
                                                 {
                                                     cardsListData.map((item) => (
-                                                        <div className='w-4/12 flex flex-row gap-4' key={item.id}>
+                                                        <div className='flex flex-row gap-4' key={item.id}>
                                                             <div className='flex flex-col justify-between p-5' style={styles.backgroundImage}>
                                                                 <div className='w-full'>
                                                                     <div className='w-full flex flex-row justify-between items-start'>
@@ -384,25 +386,25 @@ const Page = () => {
                                 </div>
                         }
                     </div>
-                    <div className='w-full rounded-xl p-8 mt-5' style={{ backgroundColor: '#ffffff40' }}>
+                    <div className='w-full rounded-xl px-2 py-2 lg:p-8 mt-6' style={{ backgroundColor: '#ffffff60', maxHeight: '60vh', overflow: "auto", scrollbarWidth: "none" }}>
                         <div style={{ fontSize: 20, fontWeight: 400, fontFamily: 'inter', }}>
                             Payment History
                         </div>
-                        <div className='w-full flex flex-row justify-between mt-5'>
-                            <div className='w-2/12'>
+                        <div className='w-full flex flex-row justify-between mt-5 gap-2'>
+                            <div className='w-3/12 lg:w-2/12'>
                                 <div style={styles.text}>ID</div>
                             </div>
-                            <div className='w-4/12 '>
+                            <div className='w-3/12 lg:w-4/12 '>
                                 <div style={styles.text}>Purchases</div>
                             </div>
-                            <div className='w-2/12'>
+                            <div className='w-3/12 lg:w-2/12'>
                                 <div style={styles.text}>Amount</div>
                             </div>
-                            <div className='w-2/12'>
+                            <div className='w-3/12 lg:w-2/12'>
                                 <div style={styles.text}>Date</div>
                             </div>
-                            <div className='w-2/12'>
-                                <div style={styles.text}>Action</div>
+                            <div className='w-3/12 lg:w-2/12'>
+                                {/* <div style={styles.text}>Action</div> */}
                             </div>
                         </div>
                         {
@@ -418,42 +420,41 @@ const Page = () => {
                                             </div> :
                                             <div>
                                                 {paymentHistory.map((item) => (
-                                                    <>
-                                                        {/* <button className='w-full' //</>style={{}} onClick={() => { setOpen(item) }}
-                            > */}
-                                                        <div className='w-full flex flex-row justify-between mt-10' key={item.invoice_id}>
-                                                            <div className='w-2/12'>
+                                                    <div>
+                                                        {/* <button className='w-full' //</>style={{}} onClick={() => { setOpen(item) }}> */}
+                                                        <div className='w-full flex flex-row justify-between mt-10 gap-2' key={item.invoice_id}>
+                                                            <div className='w-3/12 lg:w-2/12'>
                                                                 <div style={styles.text2}>
-                                                                    {item.invoice_id}
+                                                                    {item.payment_intent_id.slice(0, 6)}
                                                                 </div>
                                                             </div>
-                                                            <div className='w-4/12'>
+                                                            <div className='w-3/12 lg:w-4/12'>
                                                                 <div style={styles.text2}>
-                                                                    {item.name}
+                                                                    {item.description.slice(0, 6)}
                                                                 </div>
                                                             </div>
-                                                            <div className='w-2/12 ms-2'>
+                                                            <div className='w-3/12 lg:w-2/12 ms-2'>
                                                                 <div style={styles.text2}>
-                                                                    {item.invoice_amount}
+                                                                    {item.payment_amount}
                                                                 </div>
                                                             </div>
-                                                            <div className='w-2/12'>
+                                                            <div className='w-3/12 lg:w-2/12'>
                                                                 <div style={styles.text2}>
-                                                                    {item.invoice_date}
+                                                                    {item.payment_date}
                                                                 </div>
                                                             </div>
-                                                            <div className='w-2/12'>
+                                                            {/* <div className='w-2/12'>
                                                                 <button onClick={() => handleOpenPdf(item.pdf_url)} style={{
                                                                     fontSize: 12, textDecoration: 'underline', fontWeight: 400, fontFamily: 'inter',
                                                                     color: '#2548FD'
                                                                 }}>
                                                                     PDF
                                                                 </button>
-                                                            </div>
+                                                            </div> */}
                                                         </div>
                                                         <div className='w-full h-0.5 rounded mt-2' style={{ backgroundColor: '#00000011' }}></div>
                                                         {/* </button> */}
-                                                    </>
+                                                    </div>
                                                 ))}
                                             </div>
                                     }
@@ -519,6 +520,33 @@ const Page = () => {
                     sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}>
                     {/* {addCardDetails} */}
                     {snackMessage && snackMessage.message}
+                </Alert>
+            </Snackbar>
+
+            {/* add card success */}
+
+            <Snackbar
+                open={cardSuccess}
+                // autoHideDuration={3000}
+                onClose={() => {
+                    setCardSuccess(false);
+                }}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center'
+                }}
+                TransitionComponent={Fade}
+                TransitionProps={{
+                    direction: 'center'
+                }}
+            >
+                <Alert
+                    onClose={() => {
+                        setCardSuccess(false);
+                    }} severity="success"
+                    sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}>
+                    {/* {addCardDetails} */}
+                    Card added successfully
                 </Alert>
             </Snackbar>
 
