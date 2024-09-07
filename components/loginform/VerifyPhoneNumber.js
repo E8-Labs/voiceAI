@@ -117,6 +117,8 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                     id="P1"
                     type='text'
                     ref={inputFocusRef}
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     value={P1}
                     onChange={(e) => handleInputChange(e, setP1, "P2")}
                     maxLength={1}
@@ -127,6 +129,8 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                     id="P2"
                     type='text'
                     value={P2}
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     onChange={(e) => handleInputChange(e, setP2, "P3")}
                     maxLength={1}
                     style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
@@ -136,6 +140,8 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                     id="P3"
                     type='text'
                     value={P3}
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     onChange={(e) => handleInputChange(e, setP3, "P4")}
                     maxLength={1}
                     style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
@@ -145,6 +151,8 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                     id="P4"
                     type='text'
                     value={P4}
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     onChange={(e) => handleInputChange(e, setP4, "P5")}
                     maxLength={1}
                     style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
@@ -154,6 +162,8 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                     id="P5"
                     type='text'
                     value={P5}
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     onChange={(e) => handleInputChange(e, setP5, null)}
                     maxLength={1}
                     style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}

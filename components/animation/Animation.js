@@ -707,6 +707,8 @@ export default function Animation({ onChangeIndex }) {
                                     <input
                                         id="P1"
                                         ref={inputFocusRef}
+                                        inputMode="numeric"
+                                        pattern="[0-9]*"
                                         type='text'
                                         value={VP1}
                                         onChange={(e) => {
@@ -721,6 +723,8 @@ export default function Animation({ onChangeIndex }) {
                                         id="P2"
                                         type='text'
                                         value={VP2}
+                                        inputMode="numeric"
+                                        pattern="[0-9]*"
                                         onChange={(e) => {
                                             handleInputChange2(e, setVP2, "P3");
                                             setVerifyErr(false);
@@ -732,6 +736,8 @@ export default function Animation({ onChangeIndex }) {
                                     <input
                                         id="P3"
                                         type='text'
+                                        inputMode="numeric"
+                                        pattern="[0-9]*"
                                         value={VP3}
                                         onChange={(e) => {
                                             handleInputChange2(e, setVP3, "P4");
@@ -744,6 +750,8 @@ export default function Animation({ onChangeIndex }) {
                                     <input
                                         id="P4"
                                         type='text'
+                                        inputMode="numeric"
+                                        pattern="[0-9]*"
                                         value={VP4}
                                         onChange={(e) => {
                                             handleInputChange2(e, setVP4, "P5");
@@ -756,6 +764,8 @@ export default function Animation({ onChangeIndex }) {
                                     <input
                                         id="P5"
                                         type='text'
+                                        inputMode="numeric"
+                                        pattern="[0-9]*"
                                         value={VP5}
                                         onChange={(e) => {
                                             handleInputChange2(e, setVP5, null);
