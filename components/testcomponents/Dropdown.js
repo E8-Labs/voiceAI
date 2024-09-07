@@ -50,9 +50,11 @@ export default function AnimatedButton({ snackMessage, error = false, profileDat
                     <span className="material-icons">
                         {
                             profileData && profileData.profile_image ?
-                                <img onClick={handleProfileClick} src={profileData.profile_image} alt='profile'
-                                    // height={40} width={40} 
-                                    style={{ borderRadius: "50%", height: 40, width: 40 }} /> :
+                                <div className='flex flex-row justify-center items-center p-2' style={{ borderRadius: "50%", height: 54, width: 54, backgroundColor: "white" }}>
+                                    <img onClick={handleProfileClick} src={profileData.profile_image} alt='profile'
+                                        // height={40} width={40} 
+                                        style={{ borderRadius: "50%", height: 48, width: 48 }} />
+                                </div> :
                                 <Image onClick={handleProfileClick} src="/assets/placeholderImg.jpg" alt='profile' height={40} width={40} style={{ borderRadius: "50%" }} />
                         }
                     </span>

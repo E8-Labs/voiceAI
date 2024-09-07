@@ -18,7 +18,7 @@ const CallerMenu = () => {
 
     return (
         <div className='w-full' style={{ backgroundColor: "#ffffff30" }}>
-            <button onClick={handleOpenMenu} className='ps-2 mt-6 border-none outline-none'>
+            <button onClick={handleOpenMenu} className='ps-2 mt-12 border-none outline-none'>
                 {/* <Image src="/assets/menuIcon.jpeg" alt='menu' height={20} width={40} /> */}
                 <div className='rounded-2xl' style={{ height: "3px", width: "18px", backgroundColor: "black", marginTop: "2px" }} />
                 <div className='rounded-2xl' style={{ height: "3px", width: "18px", backgroundColor: "black", marginTop: "2px" }} />

@@ -660,10 +660,19 @@ export default function Animation({ onChangeIndex }) {
                                             <div className='w-full flex flex-row justify-center'>
                                                 <CircularProgress size={25} />
                                             </div> :
-                                            <Button className='bg-purple hover:bg-purple2 text-white w-full' onClick={handleLogin}
-                                                style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
-                                                Continue
-                                            </Button>
+                                            <div>
+                                                {
+                                                    numberFormatErr ?
+                                                        <button className='bg-purple2 text-white w-full' //onClick={handleLogin}
+                                                            style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
+                                                            Continue
+                                                        </button> :
+                                                        <button className='bg-purple hover:bg-purple2 text-white w-full' onClick={handleLogin}
+                                                            style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
+                                                            Continue
+                                                        </button>
+                                                }
+                                            </div>
                                     }
                                 </div>
                                 <div className='mt-6 flex flex-row items-center gap-1'>
@@ -774,10 +783,13 @@ export default function Animation({ onChangeIndex }) {
                                             <div className='w-full mt-4 flex flex-row justify-center'>
                                                 <CircularProgress size={30} />
                                             </div> :
-                                            <Button onClick={handleVerifyLoginCode} className='bg-purple hover:bg-purple2 text-white rounded w-full'
-                                                style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
-                                                Continue
-                                            </Button>
+                                            <div>
+                                                {/* {VP} */}
+                                                <Button onClick={handleVerifyLoginCode} className='bg-purple hover:bg-purple2 text-white rounded w-full'
+                                                    style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
+                                                    Continue
+                                                </Button>
+                                            </div>
                                     }
                                 </div>
                                 <div className='mt-6 flex flex-row items-center gap-1'>

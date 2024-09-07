@@ -545,7 +545,7 @@ const Page = () => {
                                         height: isWideScreen ? ["830px", "650px", "830px"] : ["600px", "400px", "600px"], // Keyframes for height
                                     }}
                                     transition={{
-                                        duration: 4,
+                                        duration: 4.5,
                                         repeat: Infinity,
                                         repeatType: "loop",
                                         ease: "easeInOut",
@@ -604,7 +604,7 @@ const Page = () => {
                                         // }
                                     }
                                 >
-                                    <Image src="/mainAppGif.gif" onClick={handleContinue} alt='gif' style={{ backgroundColor: "", borderRadius: "50%", zIndex: 0 }} height={600} width={600} />
+                                    <Image src="/mainAppGif.gif" onClick={handleContinue} alt='gif' style={{ backgroundColor: "", borderRadius: "50%", zIndex: 0 }} height={900} width={900} />
                                 </motion.div>
                             </button>
                         </div>
@@ -865,7 +865,7 @@ const Page = () => {
                                         // }
                                     }
                                 >
-                                    <Image onClick={handleContinue} src="/mainAppGif.gif" alt='gif' style={{ backgroundColor: "", borderRadius: "50%" }} height={600} width={600} />
+                                    <Image onClick={handleContinue} src="/mainAppGif.gif" alt='gif' style={{ backgroundColor: "", borderRadius: "50%" }} height={600} width={800} />
                                 </motion.div>
                             </button>
                         </div>

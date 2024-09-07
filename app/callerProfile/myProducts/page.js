@@ -362,7 +362,7 @@ const Page = () => {
 
     return (
         <div className='h-screen w-full' style={{ backgroundColor: "#ffffff40", overflow: 'auto', scrollbarWidth: 0, }}>
-            <div className='w-full pe-4 lgw-10/12 flex flex-col gap-2 pt-10 ps-2 lg:ps-10'>
+            <div className='w-11/12 pe-4 lg:w-10/12 flex flex-col gap-2 pt-10 ps-2 lg:ps-10'>
                 <div style={{ fontSize: 20, fontWeight: 400, fontFamily: 'inter' }}>
                     Products
                 </div>
@@ -593,8 +593,12 @@ const Page = () => {
                                                                     >
                                                                         <div className='w-full flex flex-row justify-between mt-10' key={item.id}>
                                                                             <div className='w-4/12' style={{}}>
-                                                                                <div style={styles.text2}>
+                                                                                <div className='lg:hidden' style={styles.text2}>
                                                                                     {item.name.slice(0, 6)}
+                                                                                    {/* {item.name} */}
+                                                                                </div>
+                                                                                <div className='lg:flex hidden' style={styles.text2}>
+                                                                                    {item.name}
                                                                                     {/* {item.name} */}
                                                                                 </div>
                                                                             </div>

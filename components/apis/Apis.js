@@ -26,7 +26,7 @@ const Apis = {
     CallsApi: `${BasePath}api/user/creator_calls`,
     DashBoardApi: `${BasePath}api/user/creator_dashboard`,
 
-
+    DelKnowledgeBase: `${BasePath}api/ai/deleteKb`,
     //user profile apis
     MyAiapi: `${BasePath}api/user/my_ai`,
     CallerCallLogs: `${BasePath}api/user/call_logs`,

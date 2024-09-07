@@ -188,6 +188,7 @@ const Page = () => {
                         console.log("response of api", response.data.message);
                         setSnackMessage(response.data);
                         getCards();
+                        handleClose();
                     } else {
                         setSnackMessage(response.data)
                     }
@@ -241,7 +242,7 @@ const Page = () => {
 
     return (
         <div className='h-screen w-full' style={{ backgroundColor: "#ffffff40", overflow: 'hidden', scrollbarWidth: 0, }}>
-            <div className='w-full pe-4 lg:w-9/12 flex flex-col gap-2 pt-10 ps-4 lg:ps-10'>
+            <div className='w-11/12 pe-4 lg:w-9/12 flex flex-col gap-2 pt-10 ps-4 lg:ps-10'>
 
 
                 <div className='w-full p-5 rounded-xl'
@@ -287,9 +288,9 @@ const Page = () => {
                                                 {
                                                     cardsListData.map((item) => (
                                                         <div className='flex flex-row gap-4' key={item.id}>
-                                                            <div className='flex flex-col justify-between p-5' style={styles.backgroundImage}>
+                                                            <div className='flex flex-col justify-between p-5 lg:w-[300px] lg:h-[150px]' style={styles.backgroundImage}>
                                                                 <div className='w-full'>
-                                                                    <div className='w-full flex flex-row justify-between items-start'>
+                                                                    <div className='w-full flex flex-row justify-between items-end'>
                                                                         <div style={{ fontSize: 14, fontWeight: 400, fontFamily: 'inter' }}>
                                                                             **** **** **** {item.last4}
                                                                         </div>
@@ -299,44 +300,59 @@ const Page = () => {
                                                                             aria-haspopup="true"
                                                                             aria-expanded={open ? 'true' : undefined}
                                                                             onClick={handleClick}
-                                                                            style={{ fontSize: 20, fontWeight: "900" }}>
-                                                                            ...
+                                                                            style={{ fontSize: 20, fontWeight: "900", }}>
+                                                                            <Image src="/3dot.png" height={10} width={30} alt='3dot' />
                                                                         </button>
-                                                                        <Menu
-                                                                            id="basic-menu"
-                                                                            anchorEl={anchorEl}
-                                                                            open={open}
-                                                                            onClose={handleClose}
-                                                                            MenuListProps={{
-                                                                                'aria-labelledby': 'basic-button',
-                                                                            }}
-                                                                            anchorOrigin={{
-                                                                                vertical: 'bottom',
-                                                                                horizontal: 'right',
-                                                                            }}
-                                                                            transformOrigin={{
-                                                                                vertical: 'top',
-                                                                                horizontal: 'right',
-                                                                            }}
-                                                                            sx={{
-                                                                                '& .MuiPaper-root': {
-                                                                                    boxShadow: 'none', // Remove the shadow
-                                                                                },
-                                                                            }}
-                                                                        >
-                                                                            <MenuItem
-                                                                                style={{ fontWeight: '400', fontFamily: 'Inter', fontSize: 13, color: "#FF124B" }}>
-                                                                                <button onClick={() => handleDeleteCard(item.id)}>
-                                                                                    {
-                                                                                        DelCardLoader ?
-                                                                                            <CircularProgress size={25} /> :
-                                                                                            "Delete"
-                                                                                    }
-                                                                                </button>
-                                                                            </MenuItem>
-                                                                        </Menu>
-
                                                                     </div>
+                                                                    <Menu
+                                                                        id="basic-menu"
+                                                                        anchorEl={anchorEl}
+                                                                        open={open}
+                                                                        onClose={handleClose}
+                                                                        MenuListProps={{
+                                                                            'aria-labelledby': 'basic-button',
+                                                                        }}
+                                                                        anchorOrigin={{
+                                                                            vertical: 'bottom',
+                                                                            horizontal: 'right',
+                                                                        }}
+                                                                        transformOrigin={{
+                                                                            vertical: 'top',
+                                                                            horizontal: 'right',
+                                                                        }}
+                                                                        sx={{
+                                                                            '& .MuiPaper-root': {
+                                                                                boxShadow: 'none', // Remove the shadow
+                                                                                // paddingTop: "0px", paddingBottom: "0px",
+                                                                            },
+                                                                        }}
+                                                                    >
+                                                                        {/* {
+                                                                                item.isDefault !== true ?
+                                                                                    <div>
+                                                                                    </div> :
+                                                                                    <MenuItem
+                                                                                        style={{ fontWeight: '400', fontFamily: 'Inter', fontSize: 13, color: "#000000" }}>
+                                                                                        <button onClick={() => handleMakeDefaultCard(item.id)}>
+                                                                                            {
+                                                                                                makeDefaultCardLoader ?
+                                                                                                    <CircularProgress size={25} /> :
+                                                                                                    "Make default card"
+                                                                                            }
+                                                                                        </button>
+                                                                                    </MenuItem>
+                                                                            } */}
+                                                                        <MenuItem className='py-'
+                                                                            style={{ fontWeight: '400', fontFamily: 'Inter', fontSize: 13, color: "#FF124B" }}>
+                                                                            <button onClick={() => handleDeleteCard(item.id)}>
+                                                                                {
+                                                                                    DelCardLoader ?
+                                                                                        <CircularProgress size={25} /> :
+                                                                                        "Delete"
+                                                                                }
+                                                                            </button>
+                                                                        </MenuItem>
+                                                                    </Menu>
                                                                     <div style={{ fontSize: 12, fontWeight: 400, fontFamily: 'inter' }}>
                                                                         Expiry {item.exp_month} / {item.exp_year}
                                                                     </div>
@@ -403,9 +419,9 @@ const Page = () => {
                             <div className='w-3/12 lg:w-2/12'>
                                 <div style={styles.text}>Date</div>
                             </div>
-                            <div className='w-3/12 lg:w-2/12'>
-                                {/* <div style={styles.text}>Action</div> */}
-                            </div>
+                            {/* <div className='w-3/12 lg:w-2/12'>
+                                <div style={styles.text}>Action</div>
+                            </div> */}
                         </div>
                         {
                             invoiceLoader ?
@@ -424,18 +440,24 @@ const Page = () => {
                                                         {/* <button className='w-full' //</>style={{}} onClick={() => { setOpen(item) }}> */}
                                                         <div className='w-full flex flex-row justify-between mt-10 gap-2' key={item.invoice_id}>
                                                             <div className='w-3/12 lg:w-2/12'>
-                                                                <div style={styles.text2}>
+                                                                <div className='lg:hidden' style={styles.text2}>
                                                                     {item.payment_intent_id.slice(0, 6)}
+                                                                </div>
+                                                                <div className='lg:flex hidden' style={styles.text2}>
+                                                                    {item.payment_intent_id}
                                                                 </div>
                                                             </div>
                                                             <div className='w-3/12 lg:w-4/12'>
-                                                                <div style={styles.text2}>
-                                                                    {item.description.slice(0, 6)}
+                                                                <div className='lg:hidden' style={styles.text2}>
+                                                                    {item.product_name.slice(0, 6)}
+                                                                </div>
+                                                                <div className='lg:flex hidden' style={styles.text2}>
+                                                                    {item.product_name}
                                                                 </div>
                                                             </div>
                                                             <div className='w-3/12 lg:w-2/12 ms-2'>
                                                                 <div style={styles.text2}>
-                                                                    {item.payment_amount}
+                                                                    ${item.payment_amount}
                                                                 </div>
                                                             </div>
                                                             <div className='w-3/12 lg:w-2/12'>

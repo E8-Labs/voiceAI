@@ -277,12 +277,46 @@ export default function ScriptAnimation({ onChangeIndex }) {
     setKnowledgeData(data)
   }
 
-  const handleDelAddedData = (itemId) => {
-    setKnowledgeData(knowledgeData.filter(knowledgeData => knowledgeData.id !== itemId));
+  const handleDelAddedData = async (itemId) => {
+    const localData = localStorage.getItem('User');
+    if (localData) {
+      setDelKBLoader(itemId);
+      const Data = JSON.parse(localData);
+      const AuthToken = Data.data.token;
+      const ApiPath = Apis.DelKnowledgeBase;
+      console.log("Authtoken", ApiPath, AuthToken);
+      const apiData = {
+        kbId: itemId
+      }
+      console.log("Kb id sending in api", apiData);
+      try {
+        const response = await axios.post(ApiPath, apiData, {
+          headers: {
+            'Authorization': 'Bearer ' + AuthToken,
+            'Content-Type': 'application/json'
+          }
+        });
+        if (response) {
+          console.log("Response of api is", response.data);
+          if (response.data.status === true) {
+            console.log("Response of api is", response.data);
+          } else {
+            console.log("Response of api is", response.data.message);
+          }
+        }
+      } catch (error) {
+        console.error("Error occured in api", error);
+      } finally {
+        setDelKBLoader(null);
+        setKnowledgeData(knowledgeData.filter(knowledgeData => knowledgeData.id !== itemId));
+      }
+
+    }
   }
 
   const [knowledgeModal, setKnowledgeModal] = useState(false);
   const [knowledgeData, setKnowledgeData] = useState([]);
+  const [delKBLoader, setDelKBLoader] = useState(null);
 
   return (
     <div style={containerStyles}>
@@ -794,11 +828,15 @@ export default function ScriptAnimation({ onChangeIndex }) {
                                 {item.type}
                               </div>
                               <div>
-                                <button
-                                  onClick={() => handleDelAddedData(item.id)}
-                                >
-                                  <Image src="/assets/delIcon.png" height={20} width={20} alt='del' />
-                                </button>
+                                {
+                                  delKBLoader === item.id ?
+                                    <CircularProgress size={20} /> :
+                                    <button
+                                      onClick={() => handleDelAddedData(item.id)}
+                                    >
+                                      <Image src="/assets/delIcon.png" height={20} width={20} alt='del' />
+                                    </button>
+                                }
                               </div>
                             </div>
                             <div className='w-full'>

@@ -25,6 +25,8 @@ const Page = () => {
     const [nameLoader, setNameLoader] = useState(null);
     const [showSaveBtn, setShowSaveBtn] = useState(false);
     const [successSnack, setSuccessSnack] = useState(false);
+    const [checkUserEmailData, setCheckUserEmailData] = useState(null);
+    const [emailValidationError, setEmailValidationError] = useState(false);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -34,6 +36,41 @@ const Page = () => {
         // Cleanup the timeout on component unmount
         return () => clearTimeout(timer);
     }, [successSnack]);
+
+    // useEffect(() => {
+    //     if (userEmail) {
+    //         const timeOut = setTimeout(() => {
+    //             checkUserEmail();
+    //         }, 500);
+    //         return () => clearTimeout(timeOut);
+    //     }
+    // }, [userEmail]);
+
+    const checkUserEmail = async () => {
+        const ApiPath = Apis.checkUserEmail;
+        const data = {
+            email: userEmail
+        }
+        try {
+            const response = await axios.post(ApiPath, data, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            if (response) {
+                if (response.data) {
+                    console.log("Response of checkemail", response.data);
+                    setCheckUserEmailData(response.data);
+                    if (response.data.status === true) {
+                        setShowSaveBtn(true);
+                    }
+                }
+            }
+        } catch (error) {
+            console.error("Error occured in checkuseremail api", error);
+
+        }
+    }
 
 
     // console.log("Getting nuber", phoneNumber);
@@ -83,8 +120,8 @@ const Page = () => {
 
         // return
         localStorage.removeItem('User');
-        // router.push("/tate")
-        window.open(`/${LocalData}`, '_blank')
+        router.push(`/${LocalData}`);
+        // window.open(`/${LocalData}`, '_blank')
     }
 
     //code to add img
@@ -189,19 +226,30 @@ const Page = () => {
         setPhoneNumber(number)
     }
 
+    //code to validate email
+    const validateEmail = (email) => { // Accept email directly as a string
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return emailPattern.test(email); // Test the email string directly
+    };
+
     return (
         <div className='h-screen w-full' style={{ backgroundColor: "#ffffff30", }}>
             <div className='w-full py-10 px-2 lg:px-5' style={{}}>
-                <div className='flex flex-row justify-between items-center pe-4'>
+                <div className='flex flex-row justify-between items-center'>
                     <div style={{ fontSize: 20, fontWeight: "bold", fontFamily: 'inter', paddingLeft: 10 }} >
                         My Account
                     </div>
-                    <button className='lg:hidden px-4 py-1' onClick={handleLogout}
-                        style={{ backgroundColor: '#FF424250', fontWeight: '400', fontFamily: 'inter', color: '#FF4242', cursor: "pointer", borderRadius: '25px' }}>
+                    <button className='lg:hidden px-2 ' onClick={handleLogout}
+                        style={{
+                            // backgroundColor: '#FF424250',
+                            backgroundColor: '#ffffff',
+                            fontWeight: '400', fontFamily: 'inter',
+                            color: '#FF4242', cursor: "pointer", borderRadius: '25px',
+                        }}>
                         Logout
                     </button>
                 </div>
-                <div className='w-full pe-4 lg:w-8/12 py-6 px-8 mt-3 flex flex-col gap-5' style={{
+                <div className='w-11/12 pe-4 lg:w-8/12 py-6 px-8 mt-3 flex flex-col gap-5' style={{
                     backgroundColor: '#FFFFFF40', borderRadius: 10
                 }}>
                     <div className='w-full flex flex-row justify-end'>
@@ -288,10 +336,38 @@ const Page = () => {
                             value={userEmail}
                             onChange={(e) => {
                                 setUserEmail(e.target.value);
-                                setShowSaveBtn(true);
+                                // setShowSaveBtn(true);
+                                setCheckUserEmailData(null);
+                                const value = e.target.value;
+                                if (!validateEmail(value)) {
+                                    setEmailValidationError(true);
+                                    setShowSaveBtn(false);
+                                } else {
+                                    checkUserEmail();
+                                    setEmailValidationError(false);
+                                }
                             }}
                             style={styles.input}
                         />
+
+                        {
+                            emailValidationError ?
+                                <div className='mt-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100", height: 13 }}>
+                                    Enter valid email
+                                </div> :
+                                <div>
+                                    {
+                                        checkUserEmailData && checkUserEmailData.status === true ?
+                                            <div className='mt-2 ms-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "green", height: 13 }}>
+                                                Email available
+                                            </div> :
+                                            <div className='mt-2 ms-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100", height: 13 }}>
+                                                {checkUserEmailData && checkUserEmailData.status === false && "Email already taken"}
+                                            </div>
+                                    }
+                                </div>
+                        }
+
                         {/* <div style={styles.input} className='flex flex-row justify-between w-full mt-4 pe-4'>
                             {phoneNumber}
                         </div> */}
@@ -300,7 +376,7 @@ const Page = () => {
                     <PhoneNumberInput editAccess={accessDenied} phonenumber={getPhoneNumber} myCallerAccount={myCallerAccountStatus} />
 
                     {
-                        showSaveBtn && (userName || selectedImage || userEmail) ?
+                        showSaveBtn && (userName || selectedImage) ?
                             <div className='w-full flex flex-row justify-end text-purple' style={{ fontWeight: '500' }}>
                                 {
                                     nameLoader ?

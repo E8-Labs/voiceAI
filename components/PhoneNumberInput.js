@@ -7,8 +7,8 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js';
 const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr, fromCreateAccount, fromSignIn }) => {
     const [phone, setPhone] = useState('');
     const [focus, setFocus] = useState(false);
-    const [countryCode, setCountryCode] = useState('us'); // Default to US
-    const [selectedCountry, setSelectedCountry] = useState('us'); // Track the selected country
+    const [countryCode, setCountryCode] = useState(''); // Default to US
+    const [selectedCountry, setSelectedCountry] = useState(''); // Track the selected country
     const [error, setError] = useState('');
     const [data, setData] = useState(null);
 
@@ -76,10 +76,22 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
     }
 
     useEffect(() => {
-        if (!editAccess) {
-            getGeoLocation();
-        } else {
+        if (editAccess) {
+            setCountryCode("");
+            setSelectedCountry("");
+            const localData = localStorage.getItem('User');
+            if (localData) {
+                const Data = JSON.parse(localData);
+                if (Data.data.user.phone) {
+                    console.log("Receiving number", Data.data.user.phone);
+                    setPhone(Data.data.user.phone);
+                }
+            }
             console.log("Acess denied");
+        } else {
+            setCountryCode("us");
+            setSelectedCountry("us");
+            getGeoLocation();
         }
     }, []);
 
