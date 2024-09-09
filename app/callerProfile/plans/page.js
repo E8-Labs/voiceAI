@@ -185,7 +185,7 @@ const Page = () => {
                 });
                 if (response) {
                     if (response.data.status === true) {
-                        console.log("response of api", response.data.message);
+                        console.log("response of api", response.data);
                         setSnackMessage(response.data);
                         getCards();
                         handleClose();
@@ -534,7 +534,7 @@ const Page = () => {
                                 Card set as default
                             </div> :
                             <div style={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}>
-                                {snackMessage.message}
+                                {snackMessage && snackMessage.message}
                             </div>
                     }
                 </Alert>
