@@ -258,7 +258,7 @@ const Page = () => {
                         </button>
                     </div>
                     <div className='w-full flex flex-row gap-3 mt-4' style={{
-                        paddingLeft: 10,
+                        // paddingLeft: 10,
                         overflowX: "auto",
                         whiteSpace: "nowrap",
                         scrollbarWidth: 'none'
@@ -269,10 +269,10 @@ const Page = () => {
                                     <CircularProgress size={35} />
                                 </div> :
                                 <div className='w-full flex flex-row gap-3 mt-4' style={{
-                                    paddingLeft: 10,
-                                    overflowX: "auto",
-                                    whiteSpace: "nowrap",
-                                    scrollbarWidth: 'none'
+                                    // paddingLeft: 10,
+                                    // overflowX: "auto",
+                                    // whiteSpace: "nowrap",
+                                    // scrollbarWidth: 'none'
                                 }}>
                                     {
                                         cardsListData === null || cardsListData.length === 0 ?
@@ -283,13 +283,14 @@ const Page = () => {
                                                 paddingLeft: 10,
                                                 overflowX: "auto",
                                                 whiteSpace: "nowrap",
-                                                scrollbarWidth: 'none'
+                                                scrollbarWidth: 'none',
+                                                // border: "2px solid red"
                                             }}>
                                                 {
                                                     cardsListData.map((item) => (
                                                         <div className='flex flex-row gap-4' key={item.id}>
                                                             <div className='flex flex-col justify-between p-5 lg:w-[300px] lg:h-[150px]' style={styles.backgroundImage}>
-                                                                <div className='w-full'>
+                                                                <div className=''>
                                                                     <div className='w-full flex flex-row justify-between items-end'>
                                                                         <div style={{ fontSize: 14, fontWeight: 400, fontFamily: 'inter' }}>
                                                                             **** **** **** {item.last4}
@@ -301,7 +302,8 @@ const Page = () => {
                                                                             aria-expanded={open ? 'true' : undefined}
                                                                             onClick={handleClick}
                                                                             style={{ fontSize: 20, fontWeight: "900", }}>
-                                                                            <Image src="/3dot.png" height={10} width={30} alt='3dot' />
+                                                                            <Image className='lg:flex hidden' src="/3dot.png" height={10} width={30} alt='3dot' />
+                                                                            <div className='lg:hidden' style={{ fontSize: 20, fontWeight: "900", }}>...</div>
                                                                         </button>
                                                                     </div>
                                                                     <Menu
@@ -327,21 +329,6 @@ const Page = () => {
                                                                             },
                                                                         }}
                                                                     >
-                                                                        {/* {
-                                                                                item.isDefault !== true ?
-                                                                                    <div>
-                                                                                    </div> :
-                                                                                    <MenuItem
-                                                                                        style={{ fontWeight: '400', fontFamily: 'Inter', fontSize: 13, color: "#000000" }}>
-                                                                                        <button onClick={() => handleMakeDefaultCard(item.id)}>
-                                                                                            {
-                                                                                                makeDefaultCardLoader ?
-                                                                                                    <CircularProgress size={25} /> :
-                                                                                                    "Make default card"
-                                                                                            }
-                                                                                        </button>
-                                                                                    </MenuItem>
-                                                                            } */}
                                                                         <MenuItem className='py-'
                                                                             style={{ fontWeight: '400', fontFamily: 'Inter', fontSize: 13, color: "#FF124B" }}>
                                                                             <button onClick={() => handleDeleteCard(item.id)}>
@@ -541,7 +528,15 @@ const Page = () => {
                     }} severity={snackMessage && snackMessage.status === true ? "success" : "error"}// "error"
                     sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}>
                     {/* {addCardDetails} */}
-                    {snackMessage && snackMessage.message}
+                    {
+                        snackMessage && snackMessage.status === true ?
+                            <div style={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}>
+                                Card set as default
+                            </div> :
+                            <div style={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}>
+                                {snackMessage.message}
+                            </div>
+                    }
                 </Alert>
             </Snackbar>
 

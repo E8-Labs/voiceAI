@@ -23,7 +23,7 @@ const CallerProfileNav = ({ handleCloseMenu }) => {
             href: '/callerProfile',
             // href: '/callerProfile',
             image: '/assets/about.png',
-            unSelectedImg: '/unselectedAccountIcon.png'
+            unSelectedImg: '/profileIcon.png'
         },
         {
             id: 2,
@@ -185,7 +185,8 @@ const CallerProfileNav = ({ handleCloseMenu }) => {
                                             {
                                                 userDetails && userDetails.name ?
                                                     <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                        {formattedName}
+                                                        {/* {formattedName} */}
+                                                        {formattedName.charAt(0).toUpperCase() + formattedName.slice(1)}
                                                     </div> :
                                                     <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
                                                         {/* {userDetails &&
@@ -235,6 +236,7 @@ const CallerProfileNav = ({ handleCloseMenu }) => {
                                                     }}> {/* 2548FD40 */}
                                                     <Image src={pathName === link.href ? link.image : link.unSelectedImg}
                                                         height={20} width={20} alt='icon'
+                                                        style={{ objectFit: 'contain' }}
                                                     />
                                                     <div
                                                         style={{

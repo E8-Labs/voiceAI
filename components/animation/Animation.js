@@ -773,7 +773,12 @@ export default function Animation({ onChangeIndex }) {
                                         }}
                                         maxLength={1}
                                         style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
-                                        onKeyDown={(e) => handleBackspace2(e, setVP5, "P4")}
+                                        onKeyDown={(e) => {
+                                            handleBackspace2(e, setVP5, "P4");
+                                            if (e.key === 'Enter') {
+                                                handleVerifyLoginCode();
+                                            }
+                                        }}
                                     />
                                 </div>
 

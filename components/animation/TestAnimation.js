@@ -65,7 +65,7 @@ const CycleArray = ({ data, assistantData }) => {
                         <div style={{ fontWeight: "300", fontSize: 15 }}>
                             {
                                 data[currentIndex] &&
-                                data[currentIndex].message
+                                data[currentIndex].message.charAt(0).toUpperCase() + data[currentIndex].message.slice(1)
                             }
                         </div>
                     </div>

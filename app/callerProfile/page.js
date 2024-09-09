@@ -27,6 +27,7 @@ const Page = () => {
     const [successSnack, setSuccessSnack] = useState(false);
     const [checkUserEmailData, setCheckUserEmailData] = useState(null);
     const [emailValidationError, setEmailValidationError] = useState(false);
+    const [debounceTimeout, setDebounceTimeout] = useState(null);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -46,11 +47,12 @@ const Page = () => {
     //     }
     // }, [userEmail]);
 
-    const checkUserEmail = async () => {
+    const checkUserEmail = async (emailValue) => {
         const ApiPath = Apis.checkUserEmail;
         const data = {
-            email: userEmail
+            email: emailValue
         }
+        console.log("Email sending in api", data);
         try {
             const response = await axios.post(ApiPath, data, {
                 headers: {
@@ -61,9 +63,12 @@ const Page = () => {
                 if (response.data) {
                     console.log("Response of checkemail", response.data);
                     setCheckUserEmailData(response.data);
-                    if (response.data.status === true) {
+                    if (response.data.status === false) {
                         setShowSaveBtn(true);
-                    }
+                    } else
+                        if (response.data.status === true) {
+                            setShowSaveBtn(true);
+                        }
                 }
             }
         } catch (error) {
@@ -86,7 +91,8 @@ const Page = () => {
             console.log("user data is", Data);
             setUserDetails(Data.data.user);
             if (Data.data.user.name) {
-                setUserName(Data.data.user.name);
+                const name = Data.data.user.name;
+                setUserName(name.charAt(0).toUpperCase() + name.slice(1));
             }
             if (Data.data.user.email) {
                 setUserEmail(Data.data.user.email)
@@ -241,8 +247,8 @@ const Page = () => {
                     </div>
                     <button className='lg:hidden px-2 ' onClick={handleLogout}
                         style={{
-                            // backgroundColor: '#FF424250',
-                            backgroundColor: '#ffffff',
+                            backgroundColor: '#FF424250',
+                            // backgroundColor: '#ffffff',
                             fontWeight: '400', fontFamily: 'inter',
                             color: '#FF4242', cursor: "pointer", borderRadius: '25px',
                         }}>
@@ -339,13 +345,23 @@ const Page = () => {
                                 // setShowSaveBtn(true);
                                 setCheckUserEmailData(null);
                                 const value = e.target.value;
-                                if (!validateEmail(value)) {
-                                    setEmailValidationError(true);
-                                    setShowSaveBtn(false);
-                                } else {
-                                    checkUserEmail();
-                                    setEmailValidationError(false);
+                                if (debounceTimeout) {
+                                    clearTimeout(debounceTimeout);
                                 }
+
+                                // Set a new timeout for the API call
+                                const timeout = setTimeout(() => {
+                                    if (!validateEmail(value)) {
+                                        setEmailValidationError(true);
+                                        setShowSaveBtn(false);
+                                    } else {
+                                        setEmailValidationError(false);
+                                        checkUserEmail(value); // Pass the input value directly to the API call
+                                    }
+                                }, 500); // Delay of 500ms after the last keystroke
+
+                                // Store the timeout ID to clear it later
+                                setDebounceTimeout(timeout);
                             }}
                             style={styles.input}
                         />

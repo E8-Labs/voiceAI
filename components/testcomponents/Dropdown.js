@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 
-export default function AnimatedButton({ snackMessage, error = false, profileData }) {
+export default function AnimatedButton({ snackMessage, error = false, profileData, wideScreen }) {
 
     const router = useRouter();
 
@@ -50,10 +50,10 @@ export default function AnimatedButton({ snackMessage, error = false, profileDat
                     <span className="material-icons">
                         {
                             profileData && profileData.profile_image ?
-                                <div className='flex flex-row justify-center items-center p-2' style={{ borderRadius: "50%", height: 54, width: 54, backgroundColor: "white" }}>
+                                <div className='flex flex-row justify-center items-center p-2' style={{ borderRadius: "50%", backgroundColor: "white" }}>
                                     <img onClick={handleProfileClick} src={profileData.profile_image} alt='profile'
                                         // height={40} width={40} 
-                                        style={{ borderRadius: "50%", height: 48, width: 48 }} />
+                                        style={{ borderRadius: "50%", height: 40, width: 40 }} />
                                 </div> :
                                 <Image onClick={handleProfileClick} src="/assets/placeholderImg.jpg" alt='profile' height={40} width={40} style={{ borderRadius: "50%" }} />
                         }
@@ -67,7 +67,7 @@ export default function AnimatedButton({ snackMessage, error = false, profileDat
                 <div
                     className={`absolute flex flex-col items-center right-3 top-1/2 transform -translate-y-1/2 rounded-full transition-all duration-500 ease-in-out overflow-hidden ${snackMessage ? 'w-80 border-2 border-white h-16 px-2 opacity-100' : 'w-0 h-0 px-0 py-0 opacity-0'
                         }`}
-                    style={{ marginLeft: -40, backgroundColor: '#FFFFFF40' }}
+                    style={{ marginLeft: -40, backgroundColor: '#FFFFFF40', width: wideScreen ? "355px" : "" }}
                 >
                     {snackMessage && (
                         <div className="flex flex-col mt-2 justify-start items-center" style={{ textAlign: "start" }}>

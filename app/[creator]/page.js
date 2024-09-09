@@ -658,7 +658,7 @@ const Page = () => {
                         <div className='pt-8 ps-8'>
                             <div className='2xl:flex hidden w-full flex flex-row justify-between'>
                                 <div className='flex flex-col items-start'>
-                                    <div className='px-6 py-2 flex gap-4 flex-row items-center' ref={buttonRef4}
+                                    <div className='px-2 py-2 flex gap-4 flex-row items-center' ref={buttonRef4}
                                         style={{
                                             border: "2px solid #ffffff",
                                             // borderTopLeftRadius: 50, borderTopRightRadius: 50,
@@ -815,7 +815,7 @@ const Page = () => {
                                     showProfileIcon &&
                                     <div className='flex flex-row gap-4 items-center'>
                                         <div className='me-8' style={{ zIndex: 2 }}>
-                                            <AnimatedButton snackMessage={snackMessage} profileData={profileData} />
+                                            <AnimatedButton snackMessage={snackMessage} wideScreen={isWideScreen} profileData={profileData} />
                                         </div>
                                     </div>
                                 }
@@ -1049,7 +1049,7 @@ const Page = () => {
                                     <div className='w-7/12' style={{ backgroundColor: "#ffffff23", padding: 20, borderRadius: 10 }}>
                                         {/* <AddCard handleBack={handleBack} closeForm={closeForm} /> */}
                                         <div style={{ backgroundColor: 'white', padding: 18, borderRadius: 10 }}>
-                                            <div className='mt-4'>
+                                            <div className='mt-2'>
                                                 <Image src="/assets/claimIcon.png" alt='claimimg' height={24} width={24} />
                                             </div>
                                             <div className='mt-8' style={{ fontWeight: '600', fontSize: 24, fontFamily: 'inter' }}>
