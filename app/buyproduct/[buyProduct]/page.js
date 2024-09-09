@@ -171,10 +171,10 @@ const Page = () => {
                                             {
                                                 allowBuy ?
                                                     <button className='px-6 py-1 mt-10 bg-purple2' style={{ borderRadius: "50px", color: "white" }}>
-                                                        Pay Now
+                                                        Purchased
                                                     </button> :
                                                     <button onClick={handleBuyProduct} className='px-6 py-1 mt-10 bg-purple' style={{ borderRadius: "50px", color: "white" }}>
-                                                        Purchased
+                                                        Pay Now
                                                     </button>
                                             }
                                         </div>
