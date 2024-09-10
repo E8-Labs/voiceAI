@@ -231,6 +231,7 @@ export default function Animation({ onChangeIndex }) {
                 // status: "true"
                 login: "true"
             }
+            localStorage.setItem('signinNumber', JSON.stringify(signinVerificationNumber));
             console.log("Data sending in api", data);
             const response = await axios.post(ApiPath, data, {
                 headers: {
@@ -504,6 +505,7 @@ export default function Animation({ onChangeIndex }) {
                 console.log("Response of ", response.data);
 
                 if (response.data.status === true) {
+                    localStorage.removeItem('signinNumber');
                     if (fromBuyStatus) {
                         const Data = JSON.parse(fromBuyStatus);
                         window.open(`/buyproduct/${Data.id}`);

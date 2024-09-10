@@ -47,7 +47,7 @@ const GroupImages = () => {
 
 
     return (
-        <div className='border-2 flex flex-col h-screen justify-center items-center'>
+        <div className='flex flex-col h-screen justify-center items-center'>
             <div style={{ position: 'absolute', top: 70, right: 100 }}>
                 <motion.img
                     src="/assets/user11.png"

@@ -96,7 +96,7 @@ const Page = () => {
 
     return (
         <div className='h-screen w-full' style={{ backgroundColor: "#ffffff40", overflow: 'auto', scrollbarWidth: 0, }}>
-            <div className='w-11/12 pe-4 lg:w-9/12 flex flex-col gap-2 pt-10 ps-2 lg:ps-10' style={{ maxHeight: '90vh', overflow: "auto", scrollbarWidth: "none" }}>
+            <div className='w-full pe-4 lg:w-9/12 flex flex-col gap-2 pt-10 ps-2 lg:ps-10' style={{ maxHeight: '90vh', overflow: "auto", scrollbarWidth: "none" }}>
                 <div style={{ fontSize: 20, fontWeight: 400, fontFamily: 'inter' }}>
                     Calls Logs
                 </div>
@@ -164,8 +164,16 @@ const Page = () => {
                                                                 </div>
                                                             </div>
                                                             <div className='w-2/12 lg:w-2/12'>
-                                                                <div style={styles.text2}>
-                                                                    {/* ${Number(item.amount).toFixed(2)} */}true
+                                                                <div style={{
+                                                                    textAlignLast: 'left',
+                                                                    fontSize: 14,
+                                                                    color: item.status === "completed" ? 'green' : '#FF424250',
+                                                                    fontWeight: 300,
+                                                                    whiteSpace: 'nowrap',  // Prevent text from wrapping
+                                                                    overflow: 'hidden',    // Hide overflow text
+                                                                    textOverflow: 'ellipsis'  // Add ellipsis for overflow text
+                                                                }}>
+                                                                    {item.status}
                                                                 </div>
                                                             </div>
                                                             <div className='w-2/12 lg:w-2/12'>

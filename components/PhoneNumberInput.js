@@ -49,6 +49,19 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
         return () => clearTimeout(timeOut);
     }, []);
 
+    useEffect(() => {
+        const localNumber = localStorage.getItem('signinNumber');
+        if (localNumber) {
+            const Number = JSON.parse(localNumber);
+            console.log('Number from signin screen', Number);
+            // setPhone(Number);
+            const timeOut = setTimeout(() => {
+                setPhone(Number);
+            }, 1500);
+            return () => clearTimeout(timeOut);
+        }
+    }, [])
+
     //getting user location
 
     const getGeoLocation = () => {

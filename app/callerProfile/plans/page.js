@@ -393,14 +393,17 @@ const Page = () => {
                         <div style={{ fontSize: 20, fontWeight: 400, fontFamily: 'inter', }}>
                             Payment History
                         </div>
-                        <div className='w-full flex flex-row justify-between mt-5 gap-2'>
+                        <div className='w-full flex flex-row justify-between mt-5 gap-2 lg:flex hidden'>
                             <div className='w-3/12 lg:w-2/12'>
                                 <div style={styles.text}>ID</div>
                             </div>
-                            <div className='w-3/12 lg:w-4/12 '>
+                            <div className='w-2/12 lg:w-2/12 '>
                                 <div style={styles.text}>Purchases</div>
                             </div>
-                            <div className='w-3/12 lg:w-2/12'>
+                            <div className='lg:flex hidden lg:w-2/12 '>
+                                <div style={styles.text}>Creator</div>
+                            </div>
+                            <div className='w-2/12 lg:w-2/12'>
                                 <div style={styles.text}>Amount</div>
                             </div>
                             <div className='w-3/12 lg:w-2/12'>
@@ -422,37 +425,38 @@ const Page = () => {
                                                 No Payment History
                                             </div> :
                                             <div>
-                                                {paymentHistory.map((item) => (
-                                                    <div>
-                                                        {/* <button className='w-full' //</>style={{}} onClick={() => { setOpen(item) }}> */}
-                                                        <div className='w-full flex flex-row justify-between mt-10 gap-2' key={item.invoice_id}>
-                                                            <div className='w-3/12 lg:w-2/12'>
-                                                                <div className='lg:hidden' style={styles.text2}>
-                                                                    {item.payment_intent_id.slice(0, 6)}
-                                                                </div>
-                                                                <div className='lg:flex hidden' style={styles.text2}>
-                                                                    {item.payment_intent_id}
-                                                                </div>
-                                                            </div>
-                                                            <div className='w-3/12 lg:w-4/12'>
-                                                                <div className='lg:hidden' style={styles.text2}>
-                                                                    {item.product_name.slice(0, 6)}
-                                                                </div>
-                                                                <div className='lg:flex hidden' style={styles.text2}>
-                                                                    {item.product_name}
-                                                                </div>
-                                                            </div>
-                                                            <div className='w-3/12 lg:w-2/12 ms-2'>
-                                                                <div style={styles.text2}>
-                                                                    ${item.payment_amount}
-                                                                </div>
-                                                            </div>
-                                                            <div className='w-3/12 lg:w-2/12'>
-                                                                <div style={styles.text2}>
-                                                                    {item.payment_date}
-                                                                </div>
-                                                            </div>
-                                                            {/* <div className='w-2/12'>
+                                                <div className='lg:flex hidden'>
+                                                    {paymentHistory.map((item) => (
+                                                        <div>
+                                                            {/* <button className='w-full' //</>style={{}} onClick={() => { setOpen(item) }}> */}
+                                                            <div className='flex flex-col gap-2'>
+                                                                <div className='w-full flex flex-row justify-between mt-10 gap-2' key={item.invoice_id}>
+                                                                    <div className='w-3/12 lg:w-2/12'>
+                                                                        <div className='lg:flex hidden' style={styles.text2}>
+                                                                            {item.payment_intent_id}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className='w-2/12 lg:w-2/12'>
+                                                                        <div className='lg:flex hidden' style={styles.text2}>
+                                                                            {item.product_name}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className='lg:flex hidden lg:w-2/12 ms-2'>
+                                                                        <div className='lg:flex hidden' style={styles.text2}>
+                                                                            {item.creatorName}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className='w-2/12 lg:w-2/12 ms-2'>
+                                                                        <div style={styles.text2}>
+                                                                            ${item.payment_amount}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className='w-3/12 lg:w-2/12'>
+                                                                        <div style={styles.text2}>
+                                                                            {item.payment_date}
+                                                                        </div>
+                                                                    </div>
+                                                                    {/* <div className='w-2/12'>
                                                                 <button onClick={() => handleOpenPdf(item.pdf_url)} style={{
                                                                     fontSize: 12, textDecoration: 'underline', fontWeight: 400, fontFamily: 'inter',
                                                                     color: '#2548FD'
@@ -460,11 +464,59 @@ const Page = () => {
                                                                     PDF
                                                                 </button>
                                                             </div> */}
+                                                                </div>
+                                                            </div>
+                                                            <div className='w-full h-0.5 rounded mt-2' style={{ backgroundColor: '#00000011' }}></div>
+                                                            {/* </button> */}
                                                         </div>
-                                                        <div className='w-full h-0.5 rounded mt-2' style={{ backgroundColor: '#00000011' }}></div>
-                                                        {/* </button> */}
-                                                    </div>
-                                                ))}
+                                                    ))}
+                                                </div>
+
+                                                <div style={{ height: '45vh' }}>
+                                                    {paymentHistory.map((item) => (
+                                                        <div
+                                                            key={item.invoice_id}
+                                                            className='px-2 py-1 rounded w-full lg:hidden mt-4'
+                                                            style={{ border: '1px solid #00000020' }}>
+                                                            <div>
+                                                                <div style={{ fontWeight: '600', fontFamily: 'inter', fontSize: '18' }}>
+                                                                    Name
+                                                                </div>
+                                                                <div
+                                                                    className='w-full flex flex-row justify-between'
+                                                                    style={{ fontWeight: '400', fontFamily: 'inter', fontSize: '15' }}>
+                                                                    <div>
+                                                                        {item.product_name}
+                                                                    </div>
+                                                                    <div style={{ fontWeight: '600', fontFamily: 'inter', fontSize: '15' }}>
+                                                                        ${item.payment_amount}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div>
+                                                                <div className='mt-1' style={{ fontWeight: '600', fontFamily: 'inter', fontSize: '18' }}>
+                                                                    Creator
+                                                                </div>
+                                                                <div className='w-full flex flex-row justify-between'>
+                                                                    <div>
+                                                                        {item.creatorName}
+                                                                    </div>
+                                                                    <div style={{ fontWeight: '600', fontFamily: 'inter', fontSize: '15' }}>
+                                                                        {item.payment_date}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className='mt-1' style={{ fontWeight: '600', fontFamily: 'inter', fontSize: '18' }}>
+                                                                Product Id
+                                                            </div>
+                                                            <div
+                                                                style={{ fontWeight: '400', fontFamily: 'inter', fontSize: '15' }}>
+                                                                {item.payment_intent_id}
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+
                                             </div>
                                     }
                                 </div>
