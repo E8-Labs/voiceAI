@@ -13,8 +13,8 @@ const Page = () => {
 
     return (
         <div style={backgroundImage}>
-            <div className='w-full h-screen flex flex-row justify-start'>
-                <div className='h-screen ms-10 w-10/12 px-4 pb-4' style={{ backgroundColor: "transparent", overflow: 'auto', scrollbarWidth: 'none', }}>
+            <div className='w-full h-screen flex flex-row justify-center'>
+                <div className='h-screen w-9/12 px-4 pb-4 border-2 text-justify' style={{ backgroundColor: "transparent", overflow: 'auto', scrollbarWidth: 'none', }}>
                     <div className='mt-10' style={{ fontSize: 28, fontWeight: '500', fontFamily: 'inter' }}>
                         CreatorX! Terms and Conditions
                     </div>
