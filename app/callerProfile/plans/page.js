@@ -425,7 +425,7 @@ const Page = () => {
                                                 No Payment History
                                             </div> :
                                             <div>
-                                                <div className='lg:flex hidden'>
+                                                <div className='lg:flex hidden flex-col'>
                                                     {paymentHistory.map((item) => (
                                                         <div>
                                                             {/* <button className='w-full' //</>style={{}} onClick={() => { setOpen(item) }}> */}

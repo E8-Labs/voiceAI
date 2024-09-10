@@ -314,9 +314,12 @@ const Page = () => {
                                             <CircularProgress size={25} /> :
                                             <div>
                                                 {profileData && profileData.profile_image ?
-                                                    <button onClick={handleUploadClick}>
+                                                    <button onClick={handleUploadClick} className='flex flex-row items-start'>
                                                         <img src={profileData.profile_image} alt='profile'// height={70} width={70}
                                                             style={{ backgroundColor: "", height: "70px", width: "70px", borderRadius: "50%", resize: "cover", border: "3px solid white" }} />
+                                                        <button onClick={handleUploadClick} className='text-purple -ms-6 mt-2'>
+                                                            <Image src="/assets/editIcon.png" alt='edit' height={20} width={20} />
+                                                        </button>
                                                     </button> :
                                                     <button onClick={handleUploadClick}>
                                                         <Image src="/assets/placeholderImg.jpg" alt='profile' height={70} width={70}
@@ -347,11 +350,13 @@ const Page = () => {
                             className="hidden"
                         />
 
+
+                        {/*
                         <button onClick={handleUploadClick} className='text-purple'>
                             <Image src="/assets/editIcon.png" alt='edit' height={35} width={35} />
                         </button>
 
-                        {/* {imageLoader ?
+                         {imageLoader ?
                             <CircularProgress size={25} /> :
                             <button onClick={handleUploadClick} className='text-purple'>
                                 Upload
@@ -435,7 +440,7 @@ const Page = () => {
                                 {
                                     nameLoader ?
                                         <CircularProgress size={25} /> :
-                                        <button style={{fontWeight: '400', fontFamily: 'inter'}} className='bg-purple px-2 rounded-3xl text-white' onClick={handleEditProfile}>
+                                        <button style={{ fontWeight: '400', fontFamily: 'inter' }} className='bg-purple px-2 rounded-3xl text-white' onClick={handleEditProfile}>
                                             {/* bg-purple text-white px-2 rounded-3xl */}
                                             Save
                                         </button>

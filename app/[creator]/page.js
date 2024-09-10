@@ -741,7 +741,8 @@ const Page = () => {
                                             {/* code for assistant name and calls */}
                                             <div className='flex flex-row items-center gap-8'>
                                                 <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                    {getAssistantData &&
+                                                    {
+                                                        getAssistantData &&
                                                         <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
                                                             {
                                                                 getAssistantData.name ?
