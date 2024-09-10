@@ -105,10 +105,13 @@ const Page = () => {
                     style={{ backgroundColor: "#FFFFFF40" }}
                 >
                     <div className='w-full flex flex-row justify-between'>
-                        <div className='w-4/12'>
+                        <div className='w-3/12'>
                             <div style={styles.text}>Spoke to</div>
                         </div>
-                        <div className='w-3/12 lg:w-2/12 '>
+                        <div className='w-2/12 lg:w-2/12 '>
+                            <div style={styles.text}>Status</div>
+                        </div>
+                        <div className='w-2/12 lg:w-2/12 '>
                             <div style={styles.text}>Amount</div>
                         </div>
                         <div className='w-3/12 lg:w-3/12'>
@@ -135,7 +138,7 @@ const Page = () => {
                                                     <button className='w-full' //</>style={{}} onClick={() => { setOpen(item) }}
                                                     >
                                                         <div className='w-full flex flex-row justify-between mt-10 items-center' key={item.id}>
-                                                            <div className='w-4/12 flex flex-row gap-2 items-center' style={{}}>
+                                                            <div className='w-3/12 flex flex-row gap-2 items-center' style={{}}>
                                                                 {item.model.owner.profile_image ?
                                                                     <img src={item.model.owner.profile_image} alt='profile' style={{ borderRadius: "50%" }}
                                                                         height={25} width={25}
@@ -160,7 +163,12 @@ const Page = () => {
                                                                     {item.model.owner.name}
                                                                 </div>
                                                             </div>
-                                                            <div className='w-3/12 lg:w-2/12'>
+                                                            <div className='w-2/12 lg:w-2/12'>
+                                                                <div style={styles.text2}>
+                                                                    {/* ${Number(item.amount).toFixed(2)} */}true
+                                                                </div>
+                                                            </div>
+                                                            <div className='w-2/12 lg:w-2/12'>
                                                                 <div style={styles.text2}>
                                                                     ${Number(item.amount).toFixed(2)}
                                                                 </div>

@@ -421,12 +421,12 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                     }} className='text-purple ms-1'>
                         Terms & Conditions
                     </button>
-                    <button onClick={() => {
+                    {/* <button onClick={() => {
                         window.open('https://tailwindcss.com/docs/height', '_blank');
                         // window.open('/buyproduct/terms', '_blank');
                     }} className='text-purple ms-1'>
                         <span className='text-black'>&</span> Privacy Policy
-                    </button>
+                    </button> */}
                 </div>
             </div>
             <div className='w-full flex justify-center mt-8'>

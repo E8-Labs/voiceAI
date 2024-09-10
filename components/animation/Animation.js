@@ -646,7 +646,6 @@ export default function Animation({ onChangeIndex }) {
                                         </div> : ""
                                 }
 
-
                                 {/* <div className='mt-2'>
                                     <button style={{ color: "#552AFF", fontSize: 13, fontWeight: "400" }}>
                                         <u>
@@ -700,7 +699,12 @@ export default function Animation({ onChangeIndex }) {
                             style={styles}
                         >
                             <div className='w-full'>
-                                <div className='text-lightWhite' style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
+                                <div>
+                                    <button onClick={handleBack}>
+                                        <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
+                                    </button>
+                                </div>
+                                <div className='text-lightWhite mt-4' style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
                                     Enter verification code sent to ****{Number(signinVerificationNumber.slice(-4))}
                                 </div>
                                 <div className='flex flex-row gap-4 mt-4'>

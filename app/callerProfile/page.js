@@ -38,6 +38,15 @@ const Page = () => {
         return () => clearTimeout(timer);
     }, [successSnack]);
 
+    useEffect(() => {
+        if (selectedImage) {
+            console.log("image recieved");
+            handleEditProfile();
+        } else {
+            console.log("nothing recieved");
+        };
+    }, [selectedImage]);
+
     // useEffect(() => {
     //     if (userEmail) {
     //         const timeOut = setTimeout(() => {
@@ -133,7 +142,7 @@ const Page = () => {
     //code to add img
 
     const handleImageChange = async (event) => {
-        setShowSaveBtn(true);
+        // setShowSaveBtn(true);
         const file = event.target.files[0];
         // if (file) {
         //     setSelectedImage(file);
@@ -268,26 +277,55 @@ const Page = () => {
                     <div className='lg:w-7/12 flex flex-row items-center justify-between'>
                         <div className='flex flex-row items-center gap-4'>
                             <div>
-                                {imageUrl ?
-                                    <button onClick={handleUploadClick}>
-                                        <img src={imageUrl} alt='profile'
-                                            style={{ borderRadius: '50%', height: "70px", width: "70px", resize: "contain" }} />
-                                    </button>
-                                    :
-                                    <div>
-                                        {profileData && profileData.profile_image ?
-                                            <button onClick={handleUploadClick}>
-                                                <img src={profileData.profile_image} alt='profile'// height={70} width={70}
-                                                    style={{ backgroundColor: "", height: "70px", width: "70px", borderRadius: "50%", resize: "cover" }} />
-                                            </button> :
-                                            <button onClick={handleUploadClick}>
-                                                <Image src="/assets/placeholderImg.jpg" alt='profile' height={70} width={70}
-                                                    style={{ borderRadius: '50%' }} />
-                                            </button>
-                                        }
-                                    </div>
+                                {/* {
+                                    imageUrl ?
+                                        <button onClick={handleUploadClick}>
+                                            {
+                                                imageLoader ?
+                                                    <CircularProgress size={25} /> :
+                                                    <img src={imageUrl} alt='profile'
+                                                        style={{ borderRadius: '50%', height: "70px", width: "70px", resize: "contain", border: "3px solid white" }} />
+                                            }
+                                        </button>
+                                        :
+                                        <div>
+                                            {
+                                                imageLoader ?
+                                                    <CircularProgress size={25} /> :
+                                                    <div>
+                                                        {profileData && profileData.profile_image ?
+                                                            <button onClick={handleUploadClick}>
+                                                                <img src={profileData.profile_image} alt='profile'// height={70} width={70}
+                                                                    style={{ backgroundColor: "", height: "70px", width: "70px", borderRadius: "50%", resize: "cover", border: "3px solid white" }} />
+                                                            </button> :
+                                                            <button onClick={handleUploadClick}>
+                                                                <Image src="/assets/placeholderImg.jpg" alt='profile' height={70} width={70}
+                                                                    style={{ borderRadius: '50%', border: "3px solid white" }} />
+                                                            </button>
+                                                        }
+                                                    </div>
+                                            }
+                                        </div>
 
-                                }
+                                } */}
+                                <div>
+                                    {
+                                        imageLoader ?
+                                            <CircularProgress size={25} /> :
+                                            <div>
+                                                {profileData && profileData.profile_image ?
+                                                    <button onClick={handleUploadClick}>
+                                                        <img src={profileData.profile_image} alt='profile'// height={70} width={70}
+                                                            style={{ backgroundColor: "", height: "70px", width: "70px", borderRadius: "50%", resize: "cover", border: "3px solid white" }} />
+                                                    </button> :
+                                                    <button onClick={handleUploadClick}>
+                                                        <Image src="/assets/placeholderImg.jpg" alt='profile' height={70} width={70}
+                                                            style={{ borderRadius: '50%', border: "3px solid white" }} />
+                                                    </button>
+                                                }
+                                            </div>
+                                    }
+                                </div>
                             </div>
                             <div>
                                 <div style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 15 }}>
@@ -310,7 +348,7 @@ const Page = () => {
                         />
 
                         <button onClick={handleUploadClick} className='text-purple'>
-                            Upload
+                            <Image src="/assets/editIcon.png" alt='edit' height={35} width={35} />
                         </button>
 
                         {/* {imageLoader ?
@@ -393,11 +431,12 @@ const Page = () => {
 
                     {
                         showSaveBtn && (userName || selectedImage) ?
-                            <div className='w-full flex flex-row justify-end text-purple' style={{ fontWeight: '500' }}>
+                            <div className='w-full lg:w-7/12 pe-4 flex flex-row justify-end text-purple' style={{ fontWeight: '500' }}>
                                 {
                                     nameLoader ?
                                         <CircularProgress size={25} /> :
-                                        <button onClick={handleEditProfile}>
+                                        <button style={{fontWeight: '400', fontFamily: 'inter'}} className='bg-purple px-2 rounded-3xl text-white' onClick={handleEditProfile}>
+                                            {/* bg-purple text-white px-2 rounded-3xl */}
                                             Save
                                         </button>
                                 }

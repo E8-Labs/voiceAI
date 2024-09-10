@@ -101,6 +101,7 @@ const Page = () => {
                     setBuyProductSuccess(response.data);
                     if (response.data.status === true) {
                         // setOpenBuyProductDrawer(null);
+                        window.close();
                         setAllowBuy(true);
                         localStorage.removeItem('buyProductdata');
                     } else {
@@ -112,7 +113,6 @@ const Page = () => {
                 console.error("Error occured in api", error);
             } finally {
                 setBuyProductLoader(false);
-
             }
         }
     }
@@ -159,9 +159,9 @@ const Page = () => {
                             <div className='mt-8' style={{ fontWeight: "500", fontFamily: "inter", fontSize: 18 }}>
                                 {productDetails && productDetails.name}
                             </div>
-                            <div className='mt-8' style={{ fontWeight: "700", fontFamily: "inter", fontSize: 28 }}>
+                            <button className='mt-8' style={{ fontWeight: "700", fontFamily: "inter", fontSize: 28 }}>
                                 ${productDetails && productDetails.productPrice}
-                            </div>
+                            </button>
                             <div>
 
                                 {

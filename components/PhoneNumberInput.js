@@ -130,9 +130,9 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
             phonenumber(phone); // Pass valid phone number up to parent
         } catch (error) {
             if (fromCreateAccount === true) {
-                formatErr('Enter valid phone number');
+                formatErr('Error occured while formating');
             } else if (fromSignIn === true) {
-                formatErr('Enter valid phone number');
+                formatErr('Error occured while formating');
             }
             // setError('Enter valid phone number');
         }

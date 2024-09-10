@@ -167,7 +167,12 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                     onChange={(e) => handleInputChange(e, setP5, null)}
                     maxLength={1}
                     style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
-                    onKeyDown={(e) => handleBackspace(e, setP5, "P4")}
+                    onKeyDown={(e) => {
+                        handleBackspace(e, setP5, "P4");
+                        if (e.key === 'Enter') {
+                            handleVerifyClick();
+                        }
+                    }}
                 />
             </div>
 

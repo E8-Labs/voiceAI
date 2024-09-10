@@ -28,7 +28,7 @@ const gifBackgroundImage = {
     width: '700px',
     height: '700px',
     borderRadius: "50%",
-    resize: "cover"
+    resize: "cover",
 }
 
 const Page = () => {
@@ -63,6 +63,7 @@ const Page = () => {
     const [showLogoutBtn, setShowLogoutBtn] = useState(false);
     const [showPopup, setshowPopup] = useState(true);
     const [isWideScreen, setIsWideScreen] = useState(false);
+    const [isHighScreen, setIsHighScreen] = useState(false);
     const [openClaimPopup, setOpenClaimPopup] = useState(false);
     // for side animation
     const [isVisible, setisVisible] = useState(true);
@@ -105,9 +106,34 @@ const Page = () => {
     }, []);
 
 
+    // useEffect(() => {
+    //     const handleResize = () => {
+    //         setIsWideScreen(window.innerWidth >= 1024);
+    //         setIsHighScreen(window.innerHeight <= 1204);
+    //     };
+
+    //     handleResize(); // Set initial state
+    //     window.addEventListener('resize', handleResize);
+
+    //     return () => {
+    //         window.removeEventListener('resize', handleResize);
+    //     };
+    // }, []);
+
+    //move to become creator
+
+
     useEffect(() => {
         const handleResize = () => {
-            setIsWideScreen(window.innerWidth >= 1024);
+            // Check if width is greater than or equal to 1024px
+            setIsWideScreen(window.innerWidth >= 950);
+
+            // Check if height is greater than or equal to 1024px
+            setIsHighScreen(window.innerHeight >= 950);
+
+            // Log the updated state values for debugging (Optional)
+            console.log("isWideScreen: ", window.innerWidth >= 950);
+            console.log("isHighScreen: ", window.innerHeight >= 1024);
         };
 
         handleResize(); // Set initial state
@@ -118,7 +144,7 @@ const Page = () => {
         };
     }, []);
 
-    //move to become creator
+
     const handleCreatorXClick = () => {
         router.push('/creator/onboarding2')
     }
@@ -541,8 +567,8 @@ const Page = () => {
                                     // alt="Animating Image"
                                     className='flex flex-row items-center justify-center'
                                     animate={{
-                                        width: isWideScreen ? ["830px", "650px", "830px"] : ["600px", "400px", "600px"], // Keyframes for width
-                                        height: isWideScreen ? ["830px", "650px", "830px"] : ["600px", "400px", "600px"], // Keyframes for height
+                                        width: isWideScreen && isHighScreen ? ["830px", "650px", "830px"] : ["500px", "350px", "500px"], // Keyframes for width
+                                        height: isWideScreen && isHighScreen ? ["830px", "650px", "830px"] : ["500px", "350px", "500px"], // Keyframes for height
                                     }}
                                     transition={{
                                         duration: 4.5,
@@ -730,7 +756,7 @@ const Page = () => {
                                                     }
                                                 </div>
                                             </div>
-                                            <div className='flex flex-row'>
+                                            <div className='flex flex-row pe-4'>
                                                 <div style={{ fontSize: 12, color: "grey", fontWeight: "400", fontFamily: "inter" }}>
                                                     Calls:
                                                 </div>
@@ -846,8 +872,8 @@ const Page = () => {
                                     // alt="Animating Image"
                                     className='flex flex-row items-center justify-center'
                                     animate={{
-                                        width: isWideScreen ? ["830px", "650px", "830px"] : ["600px", "400px", "600px"], // Keyframes for width
-                                        height: isWideScreen ? ["830px", "650px", "830px"] : ["600px", "400px", "600px"], // Keyframes for height
+                                        width: isWideScreen && isHighScreen ? ["830px", "650px", "830px"] : ["500px", "350px", "500px"], // Keyframes for width
+                                        height: isWideScreen && isHighScreen ? ["830px", "650px", "830px"] : ["500px", "350px", "500px"], // Keyframes for height
                                     }}
                                     transition={{
                                         duration: 5,
