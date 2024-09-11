@@ -101,9 +101,12 @@ const Page = () => {
                     setBuyProductSuccess(response.data);
                     if (response.data.status === true) {
                         // setOpenBuyProductDrawer(null);
-                        window.close();
                         setAllowBuy(true);
                         localStorage.removeItem('buyProductdata');
+                        const TimeOut = setTimeout(() => {
+                            window.close();
+                        }, 1000);
+                        return (() => clearTimeout(TimeOut));
                     } else {
                         console.log("Status is", response.data.status);
                         console.log("No responce :", response.data.message);

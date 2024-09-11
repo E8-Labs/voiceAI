@@ -43,9 +43,9 @@ const Page = () => {
             fontSize: 14,
             color: '#000000',
             fontWeight: 300,
-            whiteSpace: 'nowrap',  // Prevent text from wrapping
-            overflow: 'hidden',    // Hide overflow text
-            textOverflow: 'ellipsis'  // Add ellipsis for overflow text
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis'
         },
         backgroundImage: {
             backgroundImage: 'url("/assets/cardImage.png")',
@@ -432,17 +432,17 @@ const Page = () => {
                                                             <div className='flex flex-col gap-2'>
                                                                 <div className='w-full flex flex-row justify-between mt-10 gap-2' key={item.invoice_id}>
                                                                     <div className='w-3/12 lg:w-2/12'>
-                                                                        <div className='lg:flex hidden' style={styles.text2}>
+                                                                        <div style={styles.text2}>
                                                                             {item.payment_intent_id}
                                                                         </div>
                                                                     </div>
                                                                     <div className='w-2/12 lg:w-2/12'>
-                                                                        <div className='lg:flex hidden' style={styles.text2}>
+                                                                        <div style={styles.text2}>
                                                                             {item.product_name}
                                                                         </div>
                                                                     </div>
                                                                     <div className='lg:flex hidden lg:w-2/12 ms-2'>
-                                                                        <div className='lg:flex hidden' style={styles.text2}>
+                                                                        <div style={styles.text2}>
                                                                             {item.creatorName}
                                                                         </div>
                                                                     </div>
@@ -472,7 +472,7 @@ const Page = () => {
                                                     ))}
                                                 </div>
 
-                                                <div style={{ height: '45vh' }}>
+                                                <div className='lg:hidden' style={{ height: '45vh' }}>
                                                     {paymentHistory.map((item) => (
                                                         <div
                                                             key={item.invoice_id}
@@ -510,7 +510,7 @@ const Page = () => {
                                                                 Product Id
                                                             </div>
                                                             <div
-                                                                style={{ fontWeight: '400', fontFamily: 'inter', fontSize: '15' }}>
+                                                                style={{ ...styles.text2, fontWeight: '400', fontFamily: 'inter', fontSize: '15' }}>
                                                                 {item.payment_intent_id}
                                                             </div>
                                                         </div>

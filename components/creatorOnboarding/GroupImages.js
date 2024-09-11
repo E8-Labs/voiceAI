@@ -54,8 +54,8 @@ const GroupImages = () => {
                     // alt="Animating Image"
                     className='flex flex-row items-center justify-center'
                     animate={{
-                        width: ["50px", "80px"],
-                        height: ["50px", "80px"]
+                        width: ["50px", "90px"],
+                        height: ["50px", "90px"]
                     }}
                     transition={{
                         duration: 4,

@@ -138,7 +138,7 @@ const LoginModal = ({ closeForm, creator, assistantData }) => {
                 )}
 
                 {currentIndex === 2 && (
-                    <div className='flex flex-col w-full lg:w-10/12 xl:w-8/12 h- justify-center' style={shdowBorder}>
+                    <div className='flex flex-col w-full lg:w-10/12 xl:w-8/12 h- justify-center' style={isWideScreen ? shdowBorder : {}}>
                         <motion.div
                             className='px-3 py-5'
                             key="box3"
@@ -150,7 +150,7 @@ const LoginModal = ({ closeForm, creator, assistantData }) => {
                             transition={{ duration: 0 }}
                             style={styles}
                         >
-                            <div className='w-10/12 lg:w-full '>
+                            <div className='w-full lg:w-full '>
                                 <VerifyPhoneNumber handleContinue={handleContinue} userLoginDetails={userLoginDetails} handleBack={handleBack} handleSignin={handleSignin} />
                             </div>
                         </motion.div>
@@ -158,7 +158,7 @@ const LoginModal = ({ closeForm, creator, assistantData }) => {
                 )}
 
                 {currentIndex === 3 && (
-                    <div className='flex flex-col w-full xl:w-10/12 h- justify-center' style={shdowBorder}>
+                    <div className='flex flex-col w-full xl:w-10/12 h- justify-center' style={isWideScreen ? shdowBorder : {}}>
                         <motion.div
                             className='px-3 py-5'
                             key="box4"
@@ -201,7 +201,7 @@ const LoginModal = ({ closeForm, creator, assistantData }) => {
                 )}
 
                 {currentIndex === 4 && (
-                    <div className='flex flex-col w-full lg:w-10/12 xl:w-8/12 h- justify-center' style={shdowBorder}>
+                    <div className='flex flex-col w-full lg:w-10/12 xl:w-8/12 h- justify-center' style={isWideScreen ? shdowBorder : {}}>
                         <motion.div
                             className='px-3 py-5'
                             key="box5"

@@ -112,7 +112,7 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
         if (phone) {
             const timer = setTimeout(() => {
                 validatePhoneNumber(phone, selectedCountry);
-            }, 1000);
+            }, 500);
             return () => clearTimeout(timer);
         }
     }, [phone, selectedCountry]);

@@ -36,9 +36,9 @@ const CycleArray = ({ data, assistantData }) => {
             <div className='flex flex-row gap-2'
                 style={{
                     backgroundColor: "#ffffff40",
-                    padding: 12,
+                    padding: 10,
                     borderRadius: 20,
-                    paddingTop: 20,
+                    // paddingTop: 20,
                     width: "250px",
                     border: "2px solid white"
                 }}>

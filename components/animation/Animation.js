@@ -72,6 +72,7 @@ export default function Animation({ onChangeIndex }) {
     const [index1Loader, setIndex1Loader] = useState(false);
     const [numberFormatErr, setNumberFormatErr] = useState(null);
     const [verifyEmailLoader, setVerifyEmailLoader] = useState(false);
+    const [resendCodeLoader, setResendCodeLoader] = useState(false);
 
     const checkUserName = async () => {
         const ApiPath = Apis.checkUserName;
@@ -103,6 +104,9 @@ export default function Animation({ onChangeIndex }) {
             }, 300); // Adjust this delay according to the animation timing
         }
     }, [currentIndex]);
+
+    console.log("Sign in number for verification", signinVerificationNumber);
+
 
     const SignInNumber = (number) => {
         setSigninVerificationNumber(number);
@@ -218,9 +222,16 @@ export default function Animation({ onChangeIndex }) {
     }, [userPhoneNumber]);
 
     //code for login back
-    const handleLogin = async () => {
+    const handleLogin = async (e) => {
+        if (e) {
+            console.log("E value is", e);
+        } else {
+            console.log("No event");
+        };
+        // return
         try {
             setIndex1Loader(true);
+            setResendCodeLoader(true);
             const ApiPath = Apis.sendVerificationCode;
             // const LocalData = localStorage.getItem('route');
             // const D = JSON.parse(LocalData);
@@ -232,7 +243,7 @@ export default function Animation({ onChangeIndex }) {
                 login: "true"
             }
             localStorage.setItem('signinNumber', JSON.stringify(signinVerificationNumber));
-            console.log("Data sending in api", data);
+            console.log("Data sending in api to send verification code:", data);
             const response = await axios.post(ApiPath, data, {
                 headers: {
                     'Content-Type': "application/json"
@@ -241,13 +252,18 @@ export default function Animation({ onChangeIndex }) {
             if (response) {
                 console.log("Response of login api is", response);
                 if (response.data.status === true) {
-                    handleContinue();
+                    if (e) {
+                        return
+                    } else {
+                        handleContinue();
+                    }
                 }
             }
         } catch (error) {
             console.error("Error occured in login api", error);
         } finally {
             setIndex1Loader(false);
+            setResendCodeLoader(false);
         }
     }
 
@@ -261,6 +277,7 @@ export default function Animation({ onChangeIndex }) {
 
             router.push(`/${path}?from=signin`);
             localStorage.removeItem('route');
+            localStorage.removeItem('signinNumber');
         } else {
             setDirection(2);
             setCurrentIndex((prevIndex) => prevIndex + 2);
@@ -480,7 +497,7 @@ export default function Animation({ onChangeIndex }) {
     const handleVerifyLoginCode = async () => {
 
         const fromBuyStatus = localStorage.getItem('fromBuyScreen');
-        console.log("Data of akdsfiuhifh", JSON.parse(fromBuyStatus));
+        console.log("Data of fromBuyscreen", JSON.parse(fromBuyStatus));
         // return
 
         const LocalData = localStorage.getItem('route');
@@ -522,8 +539,8 @@ export default function Animation({ onChangeIndex }) {
                     // return
                     localStorage.removeItem('route');
                 } else if (response.data.status === false) {
-                    console.log("Error errrrrrrr");
-                    setVerifyErr(true);
+                    console.log("Error in verify code api");
+                    setVerifyErr(response.data.message);
                 }
             } else {
                 console.log("error");
@@ -663,12 +680,12 @@ export default function Animation({ onChangeIndex }) {
                                             </div> :
                                             <div>
                                                 {
-                                                    numberFormatErr ?
+                                                    numberFormatErr || signinVerificationNumber === null ?
                                                         <button className='bg-purple2 text-white w-full' //onClick={handleLogin}
                                                             style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
                                                             Continue
                                                         </button> :
-                                                        <button className='bg-purple hover:bg-purple2 text-white w-full' onClick={handleLogin}
+                                                        <button className='bg-purple text-white w-full' onClick={() => handleLogin(null)}
                                                             style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
                                                             Continue
                                                         </button>
@@ -792,7 +809,7 @@ export default function Animation({ onChangeIndex }) {
                                     {
                                         verifyErr && (
                                             <div className='mt-2' style={{ fontWeight: "400", fontFamily: "inter", color: "#FF0100" }}>
-                                                Invalid Code
+                                                {verifyErr}
                                             </div>
                                         )
                                     }
@@ -806,18 +823,35 @@ export default function Animation({ onChangeIndex }) {
                                             </div> :
                                             <div>
                                                 {/* {VP} */}
-                                                <Button onClick={handleVerifyLoginCode} className='bg-purple hover:bg-purple2 text-white rounded w-full'
-                                                    style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
-                                                    Continue
-                                                </Button>
+                                                {
+                                                    VP1 && VP2 && VP3 && VP4 && VP5 ?
+                                                        <Button onClick={handleVerifyLoginCode} className='bg-purple hover:bg-purple text-white rounded w-full'
+                                                            style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
+                                                            Continue
+                                                        </Button> :
+                                                        <Button
+                                                            disabled
+                                                            // onClick={handleVerifyLoginCode}
+                                                            className='bg-purple2 hover:bg-purple2 text-white rounded w-full'
+                                                            style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px", color: 'white' }}>
+                                                            Continue
+                                                        </Button>
+                                                }
                                             </div>
                                     }
                                 </div>
-                                <div className='mt-6 flex flex-row items-center gap-1'>
+                                {
+                                    resendCodeLoader ?
+                                        <CircularProgress className='mt-4 ms-6' size={20} /> :
+                                        <button onClick={(e) => handleLogin(e)} className='text-purple underline mt-2' style={{ fontSize: 15, fontWeight: "500", fontFamily: 'inter' }}>
+                                            Resend Code
+                                        </button>
+                                }
+                                <div className='mt-4 flex flex-row items-center gap-1'>
                                     <div style={{ fontSize: 12, fontWeight: "400" }}>
                                         Or
                                     </div>
-                                    <button onClick={handleBack} style={{ fontSize: 15, fontWeight: "500" }}>
+                                    <button onClick={handleSignUpContinue} style={{ fontSize: 15, fontWeight: "500", fontFamily: 'inter' }}>
                                         Signup
                                     </button>
                                 </div>

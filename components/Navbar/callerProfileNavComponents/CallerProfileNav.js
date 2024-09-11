@@ -59,6 +59,13 @@ const CallerProfileNav = ({ handleCloseMenu }) => {
             href: '/callerProfile/termsandconditions',
             image: '/assets/selectedTermsIcon.png',
             unSelectedImg: '/assets/terms.png'
+        },
+        {
+            id: 7,
+            name: 'Privay Policy',
+            href: '',///callerProfile/plans
+            image: '/assets/selectedTermsIcon.png',
+            unSelectedImg: '/assets/terms.png'
         }
     ]
 
@@ -173,7 +180,24 @@ const CallerProfileNav = ({ handleCloseMenu }) => {
                                             {/* <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={40} width={40} style={{ resize: "cover", padding: 2, borderRadius: "50%" }} /> */}
                                             {
                                                 userDetails && userDetails.profile_image ?
-                                                    <img src={userDetails.profile_image} alt='profilephoto' style={{ resize: "cover", padding: 2, borderRadius: "50%", height: 40, width: 40 }} /> :
+                                                    // <img src={userDetails.profile_image} alt='profilephoto' style={{ resize: "cover", padding: 2, borderRadius: "50%", height: 40, width: 40 }} />
+                                                    <Image
+                                                        src={userDetails.profile_image}
+                                                        alt='profile'
+                                                        height={40}
+                                                        width={40}
+                                                        style={{
+                                                            width: '40px',
+                                                            height: '40px',
+                                                            backgroundColor: "",
+                                                            borderRadius: "50%",
+                                                            border: "3px solid white",
+                                                            objectFit: 'cover',
+                                                            objectPosition: 'center',
+                                                            // backgroundColor: 'red'
+                                                        }}
+                                                    />
+                                                    :
                                                     <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={40} width={40} style={{ resize: "cover", padding: 2, borderRadius: "50%" }} />
                                             }
                                         </div>

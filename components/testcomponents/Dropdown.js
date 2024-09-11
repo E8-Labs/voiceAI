@@ -44,18 +44,31 @@ export default function AnimatedButton({ snackMessage, error = false, profileDat
         <div className="flex items-center justify-start  bg-none" style={{ backgroundColor: 'transparent' }}>
             <button
                 // onClick={() => setIsExpanded(!isExpanded)}
-                className="relative bg-none flex flex-col items-center p-4 rounded-full focus:outline-none"
+                className="relative bg-none flex flex-col items-center pe-1 md:p-4 rounded-full focus:outline-none"
             >
                 <div className="flex items-center justify-start">
                     <span className="material-icons">
                         {
                             profileData && profileData.profile_image ?
                                 <div className='flex flex-row justify-center items-center p-2' style={{ borderRadius: "50%", backgroundColor: "" }}>
-                                    <img onClick={handleProfileClick} src={profileData.profile_image} alt='profile'
+                                    <img
+                                        onClick={handleProfileClick}
+                                        src={profileData.profile_image} alt='profile'
                                         // height={40} width={40} 
-                                        style={{ borderRadius: "50%", height: 40, width: 40, border: "3px solid white" }} />
+                                        // style={{ borderRadius: "50%", height: 50, width: 50, border: "3px solid white" }}
+                                        style={{
+                                            width: '50px',
+                                            height: '50px',
+                                            backgroundColor: "",
+                                            borderRadius: "50%",
+                                            border: "3px solid white",
+                                            objectFit: 'cover',
+                                            objectPosition: 'center',
+                                            // backgroundColor: 'red'
+                                        }}
+                                    />
                                 </div> :
-                                <Image onClick={handleProfileClick} src="/assets/placeholderImg.jpg" alt='profile' height={40} width={40} style={{ borderRadius: "50%" }} />
+                                <Image onClick={handleProfileClick} src="/assets/placeholderImg.jpg" alt='profile' height={50} width={50} style={{ borderRadius: "50%" }} />
                         }
                     </span>
                     {/* Replace with your icon */}

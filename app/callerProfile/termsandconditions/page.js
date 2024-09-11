@@ -1,9 +1,42 @@
-import React from 'react'
+'use client'
+import React, { useEffect, useState } from 'react';
 
 const Page = () => {
+
+    const [screenWidth, setScreenWidth] = useState(false);
+    const [highScreen, setHighScreen] = useState(false);
+
+    //check if the screen is small
+    useEffect(() => {
+        const handleResize = () => {
+            setScreenWidth(window.innerWidth <= 950);
+        };
+
+        handleResize();
+
+        // Add the event listener for window resizing
+        window.addEventListener('resize', handleResize);
+
+        // Cleanup the event listener on unmount
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
     return (
-        <div className='h-screen w-full px-4 pb-4' style={{ backgroundColor: "#ffffff40", overflow: 'auto', scrollbarWidth: 0, }}>
-            <div className='mt-10' style={{ fontSize: 28, fontWeight: '500', fontFamily: 'inter' }}>
+        <div className='h-screen ld:w-10/12 w-11/12 px-4 pb-4 text-justify' style={{
+            backgroundColor: "#ffffff40",
+            overflowY: 'scroll',
+            msOverflowStyle: 'none', /* Hide scrollbar in IE and Edge */
+            scrollbarWidth: 'none', /* Hide scrollbar in Firefox */
+        }}>
+            <style jsx>{`
+                /* Hide scrollbar in Safari and Chrome */
+                div::-webkit-scrollbar {
+                    display: none;
+                }
+            `}</style>
+            <div className='mt-10' style={{ fontSize: screenWidth ? 17 : 28, fontWeight: '500', fontFamily: 'inter' }}>
                 CreatorX! Terms and Conditions
             </div>
             <div className='w-full p-3 rounded-xl mt-6'

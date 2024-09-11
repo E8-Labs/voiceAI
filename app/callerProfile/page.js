@@ -73,7 +73,7 @@ const Page = () => {
                     console.log("Response of checkemail", response.data);
                     setCheckUserEmailData(response.data);
                     if (response.data.status === false) {
-                        setShowSaveBtn(true);
+                        setShowSaveBtn(false);
                     } else
                         if (response.data.status === true) {
                             setShowSaveBtn(true);
@@ -313,18 +313,36 @@ const Page = () => {
                                         imageLoader ?
                                             <CircularProgress size={25} /> :
                                             <div>
-                                                {profileData && profileData.profile_image ?
-                                                    <button onClick={handleUploadClick} className='flex flex-row items-start'>
-                                                        <img src={profileData.profile_image} alt='profile'// height={70} width={70}
-                                                            style={{ backgroundColor: "", height: "70px", width: "70px", borderRadius: "50%", resize: "cover", border: "3px solid white" }} />
-                                                        <button onClick={handleUploadClick} className='text-purple -ms-6 mt-2'>
-                                                            <Image src="/assets/editIcon.png" alt='edit' height={20} width={20} />
+                                                {
+                                                    profileData && profileData.profile_image ?
+                                                        <button onClick={handleUploadClick} className='flex flex-row items-start'>
+                                                            <Image
+                                                                src={profileData.profile_image}
+                                                                alt='profile'
+                                                                height={70}
+                                                                width={70}
+                                                                style={{
+                                                                    width: '70px',
+                                                                    height: '70px',
+                                                                    backgroundColor: "",
+                                                                    borderRadius: "50%",
+                                                                    border: "3px solid white",
+                                                                    objectFit: 'cover',
+                                                                    objectPosition: 'center',
+                                                                    // backgroundColor: 'red'
+                                                                }}
+                                                            />
+                                                            <div onClick={handleUploadClick} className='text-purple -ms-5 mt-1'>
+                                                                <Image src="/assets/editIcon.png" alt='edit' height={20} width={20} />
+                                                            </div>
+                                                        </button> :
+                                                        <button onClick={handleUploadClick} className='flex flex-row items-start'>
+                                                            <Image src="/assets/placeholderImg.jpg" alt='profile' height={70} width={70}
+                                                                style={{ borderRadius: '50%', border: "3px solid white" }} />
+                                                            <div onClick={handleUploadClick} className='text-purple -ms-5 mt-1'>
+                                                                <Image src="/assets/editIcon.png" alt='edit' height={20} width={20} />
+                                                            </div>
                                                         </button>
-                                                    </button> :
-                                                    <button onClick={handleUploadClick}>
-                                                        <Image src="/assets/placeholderImg.jpg" alt='profile' height={70} width={70}
-                                                            style={{ borderRadius: '50%', border: "3px solid white" }} />
-                                                    </button>
                                                 }
                                             </div>
                                     }
@@ -440,7 +458,7 @@ const Page = () => {
                                 {
                                     nameLoader ?
                                         <CircularProgress size={25} /> :
-                                        <button style={{ fontWeight: '400', fontFamily: 'inter' }} className='bg-purple px-2 rounded-3xl text-white' onClick={handleEditProfile}>
+                                        <button style={{ fontWeight: '400', fontFamily: 'inter' }} className='bg-purple px-4 py-1 rounded-3xl text-white' onClick={handleEditProfile}>
                                             {/* bg-purple text-white px-2 rounded-3xl */}
                                             Save
                                         </button>
