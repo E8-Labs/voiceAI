@@ -6,8 +6,10 @@ import axios from 'axios'
 import Apis from '../apis/Apis'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import { auth, RecaptchaVerifier, signInWithPhoneNumber, PhoneAuthProvider, signInWithCredential } from '../firebase.js';
+// import { auth, RecaptchaVerifier, signInWithPhoneNumber, PhoneAuthProvider, signInWithCredential } from 'firebase/auth'
 
-const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeForm }) => {
+const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeForm, getVerificationId }) => {
 
     const router = useRouter();
 
@@ -22,6 +24,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
     const [termsCheck, setTermsCheck] = useState(false);
     const [checkUserEmailData, setCheckUserEmailData] = useState(null);
     const [emailValidationError, setEmailValidationError] = useState(false);
+    const [verificationId, setVerificationId] = useState('');
 
     const handlePhoneNumber = (number) => {
         // console.log("Number is", number);
@@ -31,6 +34,163 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
     const handleNumberFormatErr = (status) => {
         setNumberFormatError(status);
     }
+
+    //code for phone verification throught firebase
+    useEffect(() => {
+        console.log("In check Captcha")
+        if (!auth) {
+            console.log('No Auth Object')
+            return
+        }
+        console.log("Init recaptcha")
+        // Initialize RecaptchaVerifier when 'auth' changes
+        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+            'size': 'invisible',
+            'callback': (response) => {
+                // reCAPTCHA solved, allow signInWithPhoneNumber.
+                // ...
+            },
+            'expired-callback': () => {
+                // Response expired. Ask user to solve reCAPTCHA again.
+                // ...
+            }
+        })
+        // Cleanup function for RecaptchaVerifier if you want you can add 
+        return () => {
+            window.recaptchaVerifier.clear();
+        }
+
+    }, [auth]);
+
+    // Send OTP
+    const sendOtp = async () => {
+        setLoginLoader(true);
+        //code to save userFormdata
+        const data = {
+            firstName: userName,
+            lastName: userLastName,
+            email: userEmail,
+            phonenumber: userPhoneNumber
+        }
+        localStorage.setItem('formData', JSON.stringify(data));
+
+        const userData = {
+            name: userName + " " + userLastName,
+            email: userEmail,
+            phone: userPhoneNumber,
+            password: userPassword
+        }
+        console.log("Data for create account", userData);
+        
+        try {
+            if (!userPhoneNumber) {
+                console.log("Please enter a valid phone number");
+                return;
+            }
+
+
+            const appVerifier = window.recaptchaVerifier;
+
+            // Send OTP
+            const formattedPhoneNumber = `+${userPhoneNumber.replace(/\D/g, '')}`;
+            const confirmation = await signInWithPhoneNumber(auth, formattedPhoneNumber, window.recaptchaVerifier)
+
+            setVerificationId(confirmation.verificationId);
+            getVerificationId(confirmation.verificationId);
+            console.log('OTP sent successfully');
+            handleContinue(userData);
+        }
+        catch (error) {
+            console.error("Error during OTP sending:", error);
+        } finally {
+            setLoginLoader(false);
+            // setIndex1Loader(false);
+            // setResendCodeLoader(false);
+        }
+    };
+
+    // Verify OTP
+    const verifyOtp = async () => {
+        try {
+            if (!auth) {
+                console.log("Auth not initialized");
+                return;
+            }
+
+            console.log("Otp sending in firebase", VP1 + VP2 + VP3 + VP4 + VP5 + VP6);
+            let OtpCode = VP1 + VP2 + VP3 + VP4 + VP5 + VP6
+            console.log("Otp code sending in firebase", OtpCode);
+            console.log("Verification id :", verificationId)
+
+            // const credential = auth.PhoneAuthProvider.credential(verificationId, OtpCode);
+            // await auth.signInWithCredential(credential);
+
+            const credential = PhoneAuthProvider.credential(verificationId, OtpCode);
+            await signInWithCredential(auth, credential);
+            console.log("Phone number verified successfully");
+            setVerifyLoader(true);
+            const fromBuyStatus = localStorage.getItem('fromBuyScreen');
+            console.log("Data of fromBuyscreen", JSON.parse(fromBuyStatus));
+            // return
+
+            const LocalData = localStorage.getItem('route');
+            // try {
+            //     setVerifyLoader(true);
+            //     const ApiPath = Apis.verifyCode;
+            //     const data = {
+            //         // code: VP1 + VP2 + VP3 + VP4 + VP5,
+            //         phone: signinVerificationNumber,
+            //         login: true
+            //     }
+            //     console.log('Code sendding', data);
+            //     const response = await axios.post(ApiPath, data, {
+            //         headers: {
+            //             'Content-Type': "application/json"
+            //         }
+            //     });
+            //     if (response) {
+            //         console.log("Response of ", response.data);
+
+            //         if (response.data.status === true) {
+            //             localStorage.removeItem('signinNumber');
+            //             if (fromBuyStatus) {
+            //                 const Data = JSON.parse(fromBuyStatus);
+            //                 window.open(`/buyproduct/${Data.id}`);
+            //                 localStorage.removeItem("fromBuyScreen");
+            //                 localStorage.setItem('User', JSON.stringify(response.data));
+            //             }
+            //             else {
+            //                 if (LocalData) {
+            //                     const D = JSON.parse(LocalData);
+            //                     const modalName = D.modalName;
+            //                     localStorage.setItem('User', JSON.stringify(response.data));
+            //                     router.push(`/${modalName}`);
+            //                 }
+            //             }
+            //             console.log("Response of login verification code", response.data.data);
+            //             // router.push(`/${}`)
+            //             // return
+            //             localStorage.removeItem('route');
+            //         } else if (response.data.status === false) {
+            //             console.log("Error in verify code api");
+            //             setVerifyErr(response.data.message);
+            //         }
+            //     } else {
+            //         console.log("error");
+            //     }
+            // } catch (error) {
+            //     console.error("Error occured in loginverification code", error);
+            // } finally {
+            //     setVerifyLoader(false);
+            //     // setVerifyErr(false);
+            // }
+
+        } catch (error) {
+            console.error("Error during OTP verification:", error);
+        } finally {
+            setVerifyLoader(false);
+        }
+    };
 
     //call emailValidation api
     useEffect(() => {
@@ -88,48 +248,30 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
     }, [userPhoneNumber]);
 
     const handleLogin = async () => {
-
-        //code to save userFormdata
-        const data = {
-            firstName: userName,
-            lastName: userLastName,
-            email: userEmail,
-            phonenumber: userPhoneNumber
-        }
-        localStorage.setItem('formData', JSON.stringify(data));
-
-        const userData = {
-            name: userName + " " + userLastName,
-            email: userEmail,
-            phone: userPhoneNumber,
-            password: userPassword
-        }
-        console.log("Data for create account", userData);
-
         // return
+        sendOtp();
 
-        setLoginLoader(true);
 
-        const verificationNumber = {
-            phone: userPhoneNumber
-        }
+        // const verificationNumber = {
+        //     phone: userPhoneNumber
+        // }
 
-        try {
-            const ApiPath = Apis.sendVerificationCode;
-            const response = await axios.post(ApiPath, verificationNumber, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            if (response.status === 200) {
-                console.log("Response of api is", response.data);
-                handleContinue(userData);
-            }
-        } catch (error) {
-            console.error("Error occured in sendVC", error);
-        } finally {
-            setLoginLoader(false)
-        }
+        // try {
+        //     const ApiPath = Apis.sendVerificationCode;
+        //     const response = await axios.post(ApiPath, verificationNumber, {
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         }
+        //     });
+        //     if (response.status === 200) {
+        //         console.log("Response of api is", response.data);
+        //         handleContinue(userData);
+        //     }
+        // } catch (error) {
+        //     console.error("Error occured in sendVC", error);
+        // } finally {
+        //     setLoginLoader(false)
+        // }
     }
 
     // const MuiFieldStyle = {
@@ -254,6 +396,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
 
     return (
         <div>
+            <div id="recaptcha-container" />
             <div className='flex flex-row w-full justify-end'>
                 <button onClick={handleCloseForm}>
                     <Image src="/assets/croseBtn.png" alt='cross' height={25} width={25} />

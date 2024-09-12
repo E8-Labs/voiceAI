@@ -28,6 +28,7 @@ const LoginModal = ({ closeForm, creator, assistantData }) => {
     const [direction, setDirection] = useState(1);
     const [userLoginDetails, setUserLoginDetails] = useState(null);
     const [isWideScreen, setIsWideScreen] = useState(false);
+    const [verificationId, setVerificationId] = useState('');
 
     useEffect(() => {
         const handleResize = () => {
@@ -47,6 +48,9 @@ const LoginModal = ({ closeForm, creator, assistantData }) => {
         setCurrentIndex((prevIndex) => prevIndex + 1);
         setUserLoginDetails(details);
     };
+    const getVerificationId = (id) => {
+        setVerificationId(id)
+    }
 
     // const handleContinueT = (details) => {
     //     // handleCurrentIndex();
@@ -131,7 +135,7 @@ const LoginModal = ({ closeForm, creator, assistantData }) => {
                             <div className='w-full'>
                                 <CreateAccount
                                     creator={creator} modalData={assistantData}
-                                    handleContinue={handleContinue} handleBack={handleBack} closeForm={closeForm} />
+                                    handleContinue={handleContinue} handleBack={handleBack} getVerificationId={getVerificationId} closeForm={closeForm} />
                             </div>
                         </motion.div>
                     </div>
@@ -151,7 +155,7 @@ const LoginModal = ({ closeForm, creator, assistantData }) => {
                             style={styles}
                         >
                             <div className='w-full lg:w-full '>
-                                <VerifyPhoneNumber handleContinue={handleContinue} userLoginDetails={userLoginDetails} handleBack={handleBack} handleSignin={handleSignin} />
+                                <VerifyPhoneNumber handleContinue={handleContinue} verificationId={verificationId} userLoginDetails={userLoginDetails} handleBack={handleBack} handleSignin={handleSignin} />
                             </div>
                         </motion.div>
                     </div>

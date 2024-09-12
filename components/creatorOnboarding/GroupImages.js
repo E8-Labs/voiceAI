@@ -315,7 +315,7 @@ const GroupImages = () => {
 
             <div className='xl:flex hidden' style={{ position: 'absolute', top: 200, right: 800 }}>
                 <motion.img
-                    src="/tristan.jpg"
+                    src="/myself.jpeg"
                     // alt="Animating Image"
                     className='flex flex-row items-center justify-center'
                     animate={{
@@ -329,9 +329,16 @@ const GroupImages = () => {
                         ease: "easeInOut",
                     }}
                     style={{
+                        width: '80px',
+                        height: '80px',
+                        backgroundColor: "",
                         borderRadius: "50%",
+                        border: "3px solid white",
+                        objectFit: 'cover',
+                        objectPosition: 'center',
                         border: "1px solid #552AFF",
                         padding: 4
+                        // backgroundColor: 'red'
                     }}
                 >
                 </motion.img>

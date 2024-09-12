@@ -98,11 +98,11 @@ const Page = () => {
         <div className='h-screen w-full' style={{ backgroundColor: "#ffffff40", overflow: 'hidden', scrollbarWidth: 0, }}>
             <div className='w-full pe-4 lg:w-9/12 flex flex-col gap-2 pt-10 ps-2 lg:ps-10' style={{ maxHeight: '90vh', overflow: "hidden", scrollbarWidth: "none" }}>
                 <div style={{ fontSize: 20, fontWeight: 400, fontFamily: 'inter' }}>
-                    Calls Logs
+                    Call Logs
                 </div>
 
                 <div className='w-full p-5 rounded-xl border-2'
-                    style={{ backgroundColor: "#FFFFFF40", maxHeight: '70vh', overflow: 'auto' }}
+                    style={{ backgroundColor: "#FFFFFF40", maxHeight: '', overflow: 'auto' }}
                 >
                     <div className='w-full flex flex-row justify-between lg:flex hidden'>
                         <div className='w-3/12'>
@@ -199,23 +199,23 @@ const Page = () => {
                                                     </>
                                                 ))}
                                             </div>
-                                            <div className='lg:hidden pb-4' style={{ height: '45vh' }}>
+                                            <div className='lg:hidden pb-4' style={{ border: '' }}>
                                                 {callLogDetails.map((item) => (
                                                     <div
                                                         key={item.id}
                                                         className='px-2 py-1 rounded w-full lg:hidden mt-4'
                                                         style={{ border: '1px solid #00000020' }}>
                                                         <div>
-                                                            <div style={{ fontWeight: '600', fontFamily: 'inter', fontSize: '18' }}>
+                                                            {/* <div style={{ fontWeight: '500', fontFamily: 'inter', fontSize: '18' }}>
                                                                 Spoke To:
-                                                            </div>
+                                                            </div> */}
                                                             <div
                                                                 className='w-full flex flex-row justify-between mt-1'
                                                                 style={{ fontWeight: '400', fontFamily: 'inter', fontSize: '15' }}>
                                                                 <div className='flex flex-row gap-2 items-center' style={{}}>
                                                                     {item.model.owner.profile_image ?
                                                                         <img src={item.model.owner.profile_image} alt='profile' style={{ borderRadius: "50%" }}
-                                                                            height={25} width={25}
+                                                                            height={40} width={40}
                                                                         />
                                                                         :
                                                                         <div>
@@ -223,54 +223,60 @@ const Page = () => {
                                                                                 item.model.owner.name == "Tristan" ?
                                                                                     <img src="/tristan.png" alt='profile'
                                                                                         // height={30} width={30} 
-                                                                                        style={{ borderRadius: "50%", objectFit: 'cover', height: "40px", width: '40px' }}
+                                                                                        style={{ borderRadius: "50%", objectFit: 'cover', height: "55px", width: '55px' }}
                                                                                     /> :
                                                                                     <img src="/andrew.webp" alt='profile'
                                                                                         // height={30} width={40} 
-                                                                                        style={{ borderRadius: "50%", objectFit: 'contain', height: "40px", width: '40px' }}
+                                                                                        style={{ borderRadius: "50%", objectFit: 'contain', height: "55px", width: '55px' }}
                                                                                     />
                                                                             }
                                                                         </div>
                                                                     }
 
-                                                                    <div style={styles.text2}>
-                                                                        {item.model.owner.name}
+                                                                    <div style={styles.text2} className='flex flex-col items-start justify-start'>
+                                                                        <div>
+                                                                            {item.model.owner.name}
+                                                                        </div>
+                                                                        <div
+                                                                            style={{
+                                                                                textAlignLast: 'left',
+                                                                                fontSize: 13,
+                                                                                color: item.status === "completed" ? 'green' : '#FF424250',
+                                                                                fontWeight: 300,
+                                                                                whiteSpace: 'nowrap',  // Prevent text from wrapping
+                                                                                overflow: 'hidden',    // Hide overflow text
+                                                                                textOverflow: 'ellipsis'  // Add ellipsis for overflow text
+                                                                            }}>
+                                                                            {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                                <div style={{ fontWeight: '600', fontFamily: 'inter', fontSize: '15' }}>
-                                                                    ${Number(item.amount).toFixed(2)}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div>
-                                                            <div className='mt-1' style={{ fontWeight: '600', fontFamily: 'inter', fontSize: '18' }}>
-                                                                Status
-                                                            </div>
-                                                            <div className='w-full flex flex-row justify-between'>
-                                                                <div
-                                                                    style={{
-                                                                        textAlignLast: 'left',
-                                                                        fontSize: 14,
-                                                                        color: item.status === "completed" ? 'green' : '#FF424250',
-                                                                        fontWeight: 300,
-                                                                        whiteSpace: 'nowrap',  // Prevent text from wrapping
-                                                                        overflow: 'hidden',    // Hide overflow text
-                                                                        textOverflow: 'ellipsis'  // Add ellipsis for overflow text
-                                                                    }}>
-                                                                    {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
-                                                                </div>
-                                                                <div style={{ fontWeight: '600', fontFamily: 'inter', fontSize: '15' }}>
+                                                                <div style={{ fontWeight: '500', fontFamily: 'inter', fontSize: '15' }}>
                                                                     {item.durationString}
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div className='mt-1' style={{ fontWeight: '600', fontFamily: 'inter', fontSize: '18' }}>
-                                                            Date
+                                                        <div>
+                                                            {/* <div className='mt-1' style={{ fontWeight: '500', fontFamily: 'inter', fontSize: '18' }}>
+                                                                Status:
+                                                            </div> */}
+                                                            <div className='w-full flex flex-row justify-between mt-2'>
+                                                                <div style={{ fontWeight: '500', fontFamily: 'inter', fontSize: '15' }}>
+                                                                    ${Number(item.amount).toFixed(2)}
+                                                                </div>
+                                                                <div
+                                                                    style={{ ...styles.text2, fontWeight: '400', fontFamily: 'inter', fontSize: '15' }}>
+                                                                    {moment(item.createdAt).format('MM/DD/YYYY')}
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <div
+                                                        {/* <div className='mt-1' style={{ fontWeight: '500', fontFamily: 'inter', fontSize: '18' }}>
+                                                            Date:
+                                                        </div> */}
+                                                        {/* <div
                                                             style={{ ...styles.text2, fontWeight: '400', fontFamily: 'inter', fontSize: '15' }}>
                                                             {moment(item.createdAt).format('MM/DD/YYYY')}
-                                                        </div>
+                                                        </div> */}
                                                     </div>
                                                 ))}
                                             </div>

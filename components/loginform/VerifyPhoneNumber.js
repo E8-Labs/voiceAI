@@ -4,8 +4,9 @@ import React, { useEffect, useRef, useState } from 'react'
 import Apis from '../apis/Apis'
 import axios from 'axios'
 import { CircularProgress } from '@mui/material'
+import { auth, RecaptchaVerifier, signInWithPhoneNumber, PhoneAuthProvider, signInWithCredential } from '../firebase.js';
 
-const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handleSignin }) => {
+const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handleSignin, verificationId }) => {
 
 
     const inputFocusRef = useRef(null);
@@ -14,11 +15,12 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
     const [P3, setP3] = useState("")
     const [P4, setP4] = useState("")
     const [P5, setP5] = useState("")
+    const [P6, setP6] = useState("")
     const [verifyLoader, setVerifyLoader] = useState(false);
     const [showError, setShowError] = useState(null)
 
     const data = {
-        code: P1 + P2 + P3 + P4 + P5,
+        code: P1 + P2 + P3 + P4 + P5 + P6,
         phone: userLoginDetails.phone,
     }
 
@@ -58,42 +60,93 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
     };
 
 
-
-
-    const handleVerifyClick = async () => {
-        // handleContinue();
+    const verifyOtp = async () => {
         setVerifyLoader(true);
-        // console.log("Code sending is", data);
-        // console.log("Login details are", userLoginDetails);
         const mergedData = {
             ...data,
             ...userLoginDetails,
         };
         console.log("Merged data is:", mergedData);
-        // return
         try {
-            const response = await axios.post(Apis.verifyCode, mergedData, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            if (response) {
-                console.log("response of check code ", response.data);
-                if (response.data.status === true) {
-                    console.log("Response of signup", response.data);
-                    localStorage.setItem("User", JSON.stringify(response.data));
-                    // return
-                    handleContinue();
-                    localStorage.removeItem('formData');
-                } else {
-                    setShowError(response.data.message);
-                }
+            if (!auth) {
+                console.log("Auth not initialized");
+                return;
             }
+
+            console.log("Otp sending in firebase", P1 + P2 + P3 + P4 + P5 + P6);
+            let OtpCode = P1 + P2 + P3 + P4 + P5 + P6
+            console.log("Otp code sending in firebase", OtpCode);
+            console.log("Verification id :", verificationId)
+
+            // const credential = auth.PhoneAuthProvider.credential(verificationId, OtpCode);
+            // await auth.signInWithCredential(credential);
+
+            const credential = PhoneAuthProvider.credential(verificationId, OtpCode);
+            await signInWithCredential(auth, credential);
+            console.log("Phone number verified successfully");
+
+            // return
+            try {
+                const response = await axios.post(Apis.verifyCode, mergedData, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (response) {
+                    console.log("response of check code ", response.data);
+                    if (response.data.status === true) {
+                        console.log("Response of signup", response.data);
+                        localStorage.setItem("User", JSON.stringify(response.data));
+                        // return
+                        handleContinue();
+                        localStorage.removeItem('formData');
+                    } else {
+                        setShowError(response.data.message);
+                    }
+                }
+            } catch (error) {
+                console.log("Error uccured in verification api is", error);
+            } finally {
+                setVerifyLoader(false);
+            }
+
         } catch (error) {
-            console.log("Error uccured in verification api is", error);
+            console.error("Error during OTP verification:", error);
         } finally {
             setVerifyLoader(false);
         }
+    };
+
+    const handleVerifyClick = async () => {
+        // handleContinue();
+        // console.log("Code sending is", data);
+        // console.log("Login details are", userLoginDetails);
+
+        verifyOtp();
+        // return
+        // try {
+        //     const response = await axios.post(Apis.verifyCode, mergedData, {
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         }
+        //     });
+        //     if (response) {
+        //         console.log("response of check code ", response.data);
+        //         if (response.data.status === true) {
+        //             console.log("Response of signup", response.data);
+        //             localStorage.setItem("User", JSON.stringify(response.data));
+        //             // return
+        //             handleContinue();
+        //             localStorage.removeItem('formData');
+        //         } else {
+        //             setShowError(response.data.message);
+        //         }
+        //     }
+        // } catch (error) {
+        //     console.log("Error uccured in verification api is", error);
+        // } finally {
+        //     setVerifyLoader(false);
+        // }
     }
 
     const handleBackClick = () => {
@@ -164,11 +217,27 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                     value={P5}
                     inputMode="numeric"
                     pattern="[0-9]*"
-                    onChange={(e) => handleInputChange(e, setP5, null)}
+                    onChange={(e) => handleInputChange(e, setP5, "P6")}
                     maxLength={1}
                     style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
                     onKeyDown={(e) => {
                         handleBackspace(e, setP5, "P4");
+                        // if (e.key === 'Enter') {
+                        //     handleVerifyClick();
+                        // }
+                    }}
+                />
+                <input
+                    id="P6"
+                    type='text'
+                    value={P6}
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    onChange={(e) => handleInputChange(e, setP6, null)}
+                    maxLength={1}
+                    style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                    onKeyDown={(e) => {
+                        handleBackspace(e, setP6, "P5");
                         if (e.key === 'Enter') {
                             handleVerifyClick();
                         }

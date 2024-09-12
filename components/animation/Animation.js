@@ -8,6 +8,10 @@ import Apis from '../apis/Apis';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
+
+import { auth, RecaptchaVerifier, signInWithPhoneNumber, PhoneAuthProvider, signInWithCredential } from '../firebase.js';
+
+
 const boxVariants = {
     enter: (direction) => ({
         x: direction > 0 ? '100%' : '-100%',
@@ -66,6 +70,7 @@ export default function Animation({ onChangeIndex }) {
     const [VP3, setVP3] = useState("");
     const [VP4, setVP4] = useState("");
     const [VP5, setVP5] = useState("");
+    const [VP6, setVP6] = useState("");
     const [verifyLoader, setVerifyLoader] = useState(false);
     const [verifyErr, setVerifyErr] = useState(false);
     const [creatorLoader, setCreatorLoader] = useState(false);
@@ -73,6 +78,173 @@ export default function Animation({ onChangeIndex }) {
     const [numberFormatErr, setNumberFormatErr] = useState(null);
     const [verifyEmailLoader, setVerifyEmailLoader] = useState(false);
     const [resendCodeLoader, setResendCodeLoader] = useState(false);
+
+    const [verificationId, setVerificationId] = useState('');
+    const [otp, setOtp] = useState("");
+
+    useEffect(() => {
+        if (!auth) { return }
+        console.log("Init recaptcha")
+        // Initialize RecaptchaVerifier when 'auth' changes
+        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+            'size': 'invisible',
+            'callback': (response) => {
+                // reCAPTCHA solved, allow signInWithPhoneNumber.
+                // ...
+            },
+            'expired-callback': () => {
+                // Response expired. Ask user to solve reCAPTCHA again.
+                // ...
+            }
+        })
+        // Cleanup function for RecaptchaVerifier if you want you can add 
+        return () => {
+            window.recaptchaVerifier.clear();
+        }
+
+    }, [auth]);
+
+
+    const setUpRecaptcha = () => {
+        try {
+            if (!auth) {
+                console.error("Firebase auth is not initialized");
+                return;
+            }
+
+            // RecaptchaVerifier should only be initialized once
+            if (!window.recaptchaVerifier) {
+                window.recaptchaVerifier = new RecaptchaVerifier(
+                    'recaptcha-container',
+                    {
+                        size: 'invisible',
+                        callback: (response) => {
+                            console.log('reCAPTCHA solved');
+                        },
+                        'expired-callback': () => {
+                            console.log('reCAPTCHA expired');
+                        },
+                    },
+                    auth
+                );
+            }
+        } catch (error) {
+            console.error("Error initializing RecaptchaVerifier", error);
+        }
+    };
+
+
+    // Send OTP
+    const sendOtp = async () => {
+        try {
+            if (!signinVerificationNumber) {
+                console.log("Please enter a valid phone number");
+                return;
+            }
+
+
+            const appVerifier = window.recaptchaVerifier;
+
+            // Send OTP
+            const formattedPhoneNumber = `+${signinVerificationNumber.replace(/\D/g, '')}`;
+            const confirmation = await signInWithPhoneNumber(auth, formattedPhoneNumber, window.recaptchaVerifier)
+
+            setVerificationId(confirmation.verificationId);
+            console.log('OTP sent successfully');
+            handleContinue();
+        } catch (error) {
+            console.error("Error during OTP sending:", error);
+        } finally {
+                setIndex1Loader(false);
+                setResendCodeLoader(false);
+        }
+    };
+
+    // Verify OTP
+    const verifyOtp = async () => {
+        try {
+            if (!auth) {
+                console.log("Auth not initialized");
+                return;
+            }
+
+            console.log("Otp sending in firebase", VP1 + VP2 + VP3 + VP4 + VP5 + VP6);
+            let OtpCode = VP1 + VP2 + VP3 + VP4 + VP5 + VP6
+            console.log("Otp code sending in firebase", OtpCode);
+            console.log("Verification id :", verificationId)
+
+            // const credential = auth.PhoneAuthProvider.credential(verificationId, OtpCode);
+            // await auth.signInWithCredential(credential);
+
+            const credential = PhoneAuthProvider.credential(verificationId, OtpCode);
+            await signInWithCredential(auth, credential);
+            console.log("Phone number verified successfully");
+            setVerifyLoader(true);
+            const fromBuyStatus = localStorage.getItem('fromBuyScreen');
+            console.log("Data of fromBuyscreen", JSON.parse(fromBuyStatus));
+            // return
+
+            const LocalData = localStorage.getItem('route');
+            try {
+                setVerifyLoader(true);
+                const ApiPath = Apis.verifyCode;
+                const data = {
+                    // code: VP1 + VP2 + VP3 + VP4 + VP5,
+                    phone: signinVerificationNumber,
+                    login: true
+                }
+                console.log('Code sendding', data);
+                const response = await axios.post(ApiPath, data, {
+                    headers: {
+                        'Content-Type': "application/json"
+                    }
+                });
+                if (response) {
+                    console.log("Response of ", response.data);
+
+                    if (response.data.status === true) {
+                        localStorage.removeItem('signinNumber');
+                        if (fromBuyStatus) {
+                            const Data = JSON.parse(fromBuyStatus);
+                            window.open(`/buyproduct/${Data.id}`);
+                            localStorage.removeItem("fromBuyScreen");
+                            localStorage.setItem('User', JSON.stringify(response.data));
+                        }
+                        else {
+                            if (LocalData) {
+                                const D = JSON.parse(LocalData);
+                                const modalName = D.modalName;
+                                localStorage.setItem('User', JSON.stringify(response.data));
+                                router.push(`/${modalName}`);
+                            }
+                        }
+                        console.log("Response of login verification code", response.data.data);
+                        // router.push(`/${}`)
+                        // return
+                        localStorage.removeItem('route');
+                    } else if (response.data.status === false) {
+                        console.log("Error in verify code api");
+                        setVerifyErr(response.data.message);
+                    }
+                } else {
+                    console.log("error");
+                }
+            } catch (error) {
+                console.error("Error occured in loginverification code", error);
+            } finally {
+                setVerifyLoader(false);
+                // setVerifyErr(false);
+            }
+
+        } catch (error) {
+            console.error("Error during OTP verification:", error);
+        } finally {
+            setVerifyLoader(false);
+        }
+    };
+
+
+
 
     const checkUserName = async () => {
         const ApiPath = Apis.checkUserName;
@@ -105,7 +277,7 @@ export default function Animation({ onChangeIndex }) {
         }
     }, [currentIndex]);
 
-    console.log("Sign in number for verification", signinVerificationNumber);
+    // console.log("Sign in number for verification", signinVerificationNumber);
 
 
     const SignInNumber = (number) => {
@@ -223,48 +395,52 @@ export default function Animation({ onChangeIndex }) {
 
     //code for login back
     const handleLogin = async (e) => {
+        setIndex1Loader(true);
+        setResendCodeLoader(true);
         if (e) {
             console.log("E value is", e);
         } else {
             console.log("No event");
         };
         // return
-        try {
-            setIndex1Loader(true);
-            setResendCodeLoader(true);
-            const ApiPath = Apis.sendVerificationCode;
-            // const LocalData = localStorage.getItem('route');
-            // const D = JSON.parse(LocalData);
-            // const modalName = D.modalName;
-            // router.push(`/${modalName}`);
-            const data = {
-                phone: signinVerificationNumber,
-                // status: "true"
-                login: "true"
-            }
-            localStorage.setItem('signinNumber', JSON.stringify(signinVerificationNumber));
-            console.log("Data sending in api to send verification code:", data);
-            const response = await axios.post(ApiPath, data, {
-                headers: {
-                    'Content-Type': "application/json"
-                }
-            });
-            if (response) {
-                console.log("Response of login api is", response);
-                if (response.data.status === true) {
-                    if (e) {
-                        return
-                    } else {
-                        handleContinue();
-                    }
-                }
-            }
-        } catch (error) {
-            console.error("Error occured in login api", error);
-        } finally {
-            setIndex1Loader(false);
-            setResendCodeLoader(false);
-        }
+        let sent = await sendOtp();
+
+        // try {
+        //     setIndex1Loader(true);
+        //     setResendCodeLoader(true);
+        //     const ApiPath = Apis.sendVerificationCode;
+        //     // const LocalData = localStorage.getItem('route');
+        //     // const D = JSON.parse(LocalData);
+        //     // const modalName = D.modalName;
+        //     // router.push(`/${modalName}`);
+        //     const data = {
+        //         phone: signinVerificationNumber,
+        //         // status: "true"
+        //         login: "true"
+        //     }
+        //     localStorage.setItem('signinNumber', JSON.stringify(signinVerificationNumber));
+        //     console.log("Data sending in api to send verification code:", data);
+        //     const response = await axios.post(ApiPath, data, {
+        //         headers: {
+        //             'Content-Type': "application/json"
+        //         }
+        //     });
+        //     if (response) {
+        //         console.log("Response of login api is", response);
+        //         if (response.data.status === true) {
+        //             if (e) {
+        //                 return
+        //             } else {
+        //                 handleContinue();
+        //             }
+        //         }
+        //     }
+        // } catch (error) {
+        //     console.error("Error occured in login api", error);
+        // } finally {
+        //     setIndex1Loader(false);
+        //     setResendCodeLoader(false);
+        // }
     }
 
     //signup click
@@ -496,61 +672,8 @@ export default function Animation({ onChangeIndex }) {
 
     const handleVerifyLoginCode = async () => {
 
-        const fromBuyStatus = localStorage.getItem('fromBuyScreen');
-        console.log("Data of fromBuyscreen", JSON.parse(fromBuyStatus));
-        // return
-
-        const LocalData = localStorage.getItem('route');
-        const D = JSON.parse(LocalData);
-        const modalName = D.modalName;
-        // router.push(`/${modalName}`);
-        try {
-            setVerifyLoader(true);
-            const ApiPath = Apis.verifyCode;
-            const data = {
-                code: VP1 + VP2 + VP3 + VP4 + VP5,
-                phone: signinVerificationNumber,
-                login: true
-            }
-            console.log('Code sendding', data)
-            const response = await axios.post(ApiPath, data, {
-                headers: {
-                    'Content-Type': "application/json"
-                }
-            });
-            if (response) {
-                console.log("Response of ", response.data);
-
-                if (response.data.status === true) {
-                    localStorage.removeItem('signinNumber');
-                    if (fromBuyStatus) {
-                        const Data = JSON.parse(fromBuyStatus);
-                        window.open(`/buyproduct/${Data.id}`);
-                        localStorage.removeItem("fromBuyScreen");
-                        localStorage.setItem('User', JSON.stringify(response.data));
-                        router.push(`/${modalName}`);
-                    }
-                    else {
-                        localStorage.setItem('User', JSON.stringify(response.data));
-                        router.push(`/${modalName}`);
-                    }
-                    console.log("Response of login verification code", response.data.data);
-                    // router.push(`/${}`)
-                    // return
-                    localStorage.removeItem('route');
-                } else if (response.data.status === false) {
-                    console.log("Error in verify code api");
-                    setVerifyErr(response.data.message);
-                }
-            } else {
-                console.log("error");
-            }
-        } catch (error) {
-            console.error("Error occured in loginverification code", error);
-        } finally {
-            setVerifyLoader(false);
-            // setVerifyErr(false);
-        }
+        setVerifyLoader(true);
+        verifyOtp()
     }
 
     //code for hiding the bordercolor
@@ -589,6 +712,7 @@ export default function Animation({ onChangeIndex }) {
 
     return (
         <div style={containerStyles}>
+            <div id="recaptcha-container" />
             <AnimatePresence initial={false} custom={direction}>
                 {currentIndex === 0 && (
                     <div className='flex flex-col h-screen justify-center' style={{ height: "", }}>
@@ -791,13 +915,32 @@ export default function Animation({ onChangeIndex }) {
                                         pattern="[0-9]*"
                                         value={VP5}
                                         onChange={(e) => {
-                                            handleInputChange2(e, setVP5, null);
+                                            handleInputChange2(e, setVP5, "P6");
                                             setVerifyErr(false);
                                         }}
                                         maxLength={1}
                                         style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
                                         onKeyDown={(e) => {
                                             handleBackspace2(e, setVP5, "P4");
+                                            // if (e.key === 'Enter') {
+                                            //     handleVerifyLoginCode();
+                                            // }
+                                        }}
+                                    />
+                                    <input
+                                        id="P6"
+                                        type='text'
+                                        inputMode="numeric"
+                                        pattern="[0-9]*"
+                                        value={VP6}
+                                        onChange={(e) => {
+                                            handleInputChange2(e, setVP6, null);
+                                            setVerifyErr(false);
+                                        }}
+                                        maxLength={1}
+                                        style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                                        onKeyDown={(e) => {
+                                            handleBackspace2(e, setVP6, "P5");
                                             if (e.key === 'Enter') {
                                                 handleVerifyLoginCode();
                                             }
@@ -824,7 +967,7 @@ export default function Animation({ onChangeIndex }) {
                                             <div>
                                                 {/* {VP} */}
                                                 {
-                                                    VP1 && VP2 && VP3 && VP4 && VP5 ?
+                                                    VP1 && VP2 && VP3 && VP4 && VP5 && VP6 ?
                                                         <Button onClick={handleVerifyLoginCode} className='bg-purple hover:bg-purple text-white rounded w-full'
                                                             style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
                                                             Continue

@@ -195,7 +195,7 @@ const Page = () => {
         },
         text2: {
             textAlignLast: 'left',
-            fontSize: 18,
+            fontSize: 14,
             color: '#000000',
             fontWeight: 300,
             whiteSpace: 'nowrap',  // Prevent text from wrapping

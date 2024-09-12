@@ -254,15 +254,6 @@ const Page = () => {
                     <div style={{ fontSize: 20, fontWeight: "bold", fontFamily: 'inter', paddingLeft: 10 }} >
                         My Account
                     </div>
-                    <button className='lg:hidden px-2 ' onClick={handleLogout}
-                        style={{
-                            backgroundColor: '#FF424250',
-                            // backgroundColor: '#ffffff',
-                            fontWeight: '400', fontFamily: 'inter',
-                            color: '#FF4242', cursor: "pointer", borderRadius: '25px',
-                        }}>
-                        Logout
-                    </button>
                 </div>
                 <div className='w-11/12 pe-4 lg:w-8/12 py-6 px-8 mt-3 flex flex-col gap-5' style={{
                     backgroundColor: '#FFFFFF40', borderRadius: 10
@@ -315,7 +306,9 @@ const Page = () => {
                                             <div>
                                                 {
                                                     profileData && profileData.profile_image ?
-                                                        <button onClick={handleUploadClick} className='flex flex-row items-start'>
+                                                        <button
+                                                            // onClick={handleUploadClick}
+                                                            className='flex flex-row items-start'>
                                                             <Image
                                                                 src={profileData.profile_image}
                                                                 alt='profile'
@@ -336,8 +329,11 @@ const Page = () => {
                                                                 <Image src="/assets/editIcon.png" alt='edit' height={20} width={20} />
                                                             </div>
                                                         </button> :
-                                                        <button onClick={handleUploadClick} className='flex flex-row items-start'>
-                                                            <Image src="/assets/placeholderImg.jpg" alt='profile' height={70} width={70}
+                                                        <button
+                                                            // onClick={handleUploadClick}
+                                                            className='flex flex-row items-start'>
+                                                            <Image
+                                                                src="/assets/placeholderImg.jpg" alt='profile' height={70} width={70}
                                                                 style={{ borderRadius: '50%', border: "3px solid white" }} />
                                                             <div onClick={handleUploadClick} className='text-purple -ms-5 mt-1'>
                                                                 <Image src="/assets/editIcon.png" alt='edit' height={20} width={20} />
@@ -452,20 +448,32 @@ const Page = () => {
 
                     <PhoneNumberInput editAccess={accessDenied} phonenumber={getPhoneNumber} myCallerAccount={myCallerAccountStatus} />
 
-                    {
-                        showSaveBtn && (userName || selectedImage) ?
-                            <div className='w-full lg:w-7/12 pe-4 flex flex-row justify-end text-purple' style={{ fontWeight: '500' }}>
-                                {
-                                    nameLoader ?
-                                        <CircularProgress size={25} /> :
-                                        <button style={{ fontWeight: '400', fontFamily: 'inter' }} className='bg-purple px-4 py-1 rounded-3xl text-white' onClick={handleEditProfile}>
-                                            {/* bg-purple text-white px-2 rounded-3xl */}
-                                            Save
-                                        </button>
-                                }
-                            </div> :
-                            ""
-                    }
+                    <div className='flex flex-row w-full justify-between items-center'>
+                        <button className='lg:hidden px-2 py-1' onClick={handleLogout}
+                            style={{
+                                backgroundColor: '#FF424250',
+                                // backgroundColor: '#ffffff',
+                                fontWeight: '400', fontFamily: 'inter',
+                                color: '#FF4242', cursor: "pointer", borderRadius: '25px',
+                            }}>
+                            Logout
+                        </button>
+
+                        {
+                            showSaveBtn && (userName || selectedImage) ?
+                                <div className='w-full lg:w-7/12 pe-4 flex flex-row justify-end text-purple' style={{ fontWeight: '500' }}>
+                                    {
+                                        nameLoader ?
+                                            <CircularProgress size={25} /> :
+                                            <button style={{ fontWeight: '400', fontFamily: 'inter' }} className='bg-purple px-4 py-1 rounded-3xl text-white' onClick={handleEditProfile}>
+                                                {/* bg-purple text-white px-2 rounded-3xl */}
+                                                Save
+                                            </button>
+                                    }
+                                </div> :
+                                ""
+                        }
+                    </div>
 
 
 

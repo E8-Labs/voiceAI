@@ -479,38 +479,38 @@ const Page = () => {
                                                             className='px-2 py-1 rounded w-full lg:hidden mt-4'
                                                             style={{ border: '1px solid #00000020' }}>
                                                             <div>
-                                                                <div style={{ fontWeight: '600', fontFamily: 'inter', fontSize: '18' }}>
+                                                                <div style={{ fontWeight: '500', fontFamily: 'inter', fontSize: '15' }}>
                                                                     Name
                                                                 </div>
                                                                 <div
                                                                     className='w-full flex flex-row justify-between'
-                                                                    style={{ fontWeight: '400', fontFamily: 'inter', fontSize: '15' }}>
-                                                                    <div>
+                                                                    style={{ fontWeight: '400', fontFamily: 'inter', fontSize: '10' }}>
+                                                                    <div style={{ fontWeight: '400', fontFamily: 'inter', fontSize: '10' }}>
                                                                         {item.product_name}
                                                                     </div>
-                                                                    <div style={{ fontWeight: '600', fontFamily: 'inter', fontSize: '15' }}>
+                                                                    <div style={{ fontWeight: '500', fontFamily: 'inter', fontSize: '12' }}>
                                                                         ${item.payment_amount}
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div>
-                                                                <div className='mt-1' style={{ fontWeight: '600', fontFamily: 'inter', fontSize: '18' }}>
+                                                                <div className='mt-1' style={{ fontWeight: '500', fontFamily: 'inter', fontSize: '15' }}>
                                                                     Creator
                                                                 </div>
                                                                 <div className='w-full flex flex-row justify-between'>
-                                                                    <div>
+                                                                    <div style={{ fontWeight: '400', fontFamily: 'inter', fontSize: '10' }}>
                                                                         {item.creatorName}
                                                                     </div>
-                                                                    <div style={{ fontWeight: '600', fontFamily: 'inter', fontSize: '15' }}>
+                                                                    <div style={{ fontWeight: '500', fontFamily: 'inter', fontSize: '12' }}>
                                                                         {item.payment_date}
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div className='mt-1' style={{ fontWeight: '600', fontFamily: 'inter', fontSize: '18' }}>
+                                                            <div className='mt-1' style={{ fontWeight: '500', fontFamily: 'inter', fontSize: '15' }}>
                                                                 Product Id
                                                             </div>
                                                             <div
-                                                                style={{ ...styles.text2, fontWeight: '400', fontFamily: 'inter', fontSize: '15' }}>
+                                                                style={{ ...styles.text2, fontWeight: '400', fontFamily: 'inter', fontSize: '10' }}>
                                                                 {item.payment_intent_id}
                                                             </div>
                                                         </div>
