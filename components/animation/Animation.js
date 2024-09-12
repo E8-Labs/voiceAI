@@ -155,8 +155,8 @@ export default function Animation({ onChangeIndex }) {
         } catch (error) {
             console.error("Error during OTP sending:", error);
         } finally {
-                setIndex1Loader(false);
-                setResendCodeLoader(false);
+            setIndex1Loader(false);
+            setResendCodeLoader(false);
         }
     };
 
@@ -327,7 +327,7 @@ export default function Animation({ onChangeIndex }) {
         if (userName) {
             const timeout = setTimeout(() => {
                 checkUserName();
-            }, 2000);
+            }, 500);
             return () => clearTimeout(timeout);
         }
     }, [userName]);
@@ -1023,7 +1023,7 @@ export default function Animation({ onChangeIndex }) {
                                         </button>
                                     </div>
                                     <div className='mt-6' style={{ fontSize: 24, fontWeight: "600" }}>
-                                        First, claim your unique name
+                                        First, claim your unique url
                                     </div>
                                     <div className='text-lightWhite mt-2' style={{ fontSize: 13, fontWeight: "400" }}>
                                         The good ones are still available
@@ -1183,14 +1183,14 @@ export default function Animation({ onChangeIndex }) {
                                         </button>
                                     </div>
                                     <div className='mt-6 text-lightWhite' style={{ fontWeight: "400", fontSize: 13 }}>
-                                        voice.ai/tate is all yours!
+                                        voice.ai/{userName} is all yours!
                                     </div>
                                     <div className='mt-6' style={{ fontSize: 24, fontWeight: "600" }}>
                                         Now, create your account
                                     </div>
                                     <div className='w-full flex flex-row gap-6 mt-8'>
                                         <TextField
-                                            className='w-5/12'
+                                            className='w-10/12'
                                             autoComplete='off'
                                             id="filled-basic"
                                             label="Email address"
@@ -1218,7 +1218,8 @@ export default function Animation({ onChangeIndex }) {
                                             }}
                                         />
 
-                                        <TextField className=' w-5/12'
+                                        {/*
+                                            <TextField className=' w-5/12'
                                             autofill='off'
                                             id="password"
                                             type='password'
@@ -1242,6 +1243,7 @@ export default function Animation({ onChangeIndex }) {
                                                     borderBottomColor: '#050A0890',
                                                 },
                                             }} />
+                                    */}
                                     </div>
                                     <div>
                                         {
@@ -1281,7 +1283,7 @@ export default function Animation({ onChangeIndex }) {
                                                 </div>
                                         }
                                     </div>
-                                    <div className='text-lightWhite mt-6' style={{ fontSize: 12, fontWeight: '400', textAlign: "center" }}>
+                                    {/*<div className='text-lightWhite mt-6' style={{ fontSize: 12, fontWeight: '400', textAlign: "center" }}>
                                         OR
                                     </div>
                                     <div>
@@ -1292,7 +1294,7 @@ export default function Animation({ onChangeIndex }) {
                                             style={{ fontSize: 15, fontWeight: "400", color: "white", borderRadius: "50px" }}>
                                             Sign up with Google
                                         </Button>
-                                    </div>
+                                    </div>*/}
                                 </div>
                             </div>
                         </motion.div>
