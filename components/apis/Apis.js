@@ -27,6 +27,7 @@ const Apis = {
     DashBoardApi: `${BasePath}api/user/creator_dashboard`,
 
     DelKnowledgeBase: `${BasePath}api/ai/deleteKb`,
+    EmailVerificationCode: `${BasePath}api/user/sendVerificationEmail`,
     //user profile apis
     MyAiapi: `${BasePath}api/user/my_ai`,
     CallerCallLogs: `${BasePath}api/user/call_logs`,

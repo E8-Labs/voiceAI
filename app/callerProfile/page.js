@@ -325,7 +325,14 @@ const Page = () => {
                                                                     // backgroundColor: 'red'
                                                                 }}
                                                             />
-                                                            <div onClick={handleUploadClick} className='text-purple -ms-5 mt-1'>
+                                                            <div onClick={handleUploadClick} className='text-purple -ms-6  border-white'
+                                                                style={{
+                                                                    // border: '1px solid red',
+                                                                    borderWidth: 1,
+                                                                    borderRadius: '50%',
+                                                                    padding: 2,
+                                                                    backgroundColor: '#ffffff80'
+                                                                }}>
                                                                 <Image src="/assets/editIcon.png" alt='edit' height={20} width={20} />
                                                             </div>
                                                         </button> :
@@ -335,7 +342,14 @@ const Page = () => {
                                                             <Image
                                                                 src="/assets/placeholderImg.jpg" alt='profile' height={70} width={70}
                                                                 style={{ borderRadius: '50%', border: "3px solid white" }} />
-                                                            <div onClick={handleUploadClick} className='text-purple -ms-5 mt-1'>
+                                                            <div onClick={handleUploadClick} className='text-purple -ms-6'
+                                                                style={{
+                                                                    borderWidth: 2,
+                                                                    borderColor: 'white',
+                                                                    borderRadius: '50%',
+                                                                    padding: 2,
+                                                                    backgroundColor: '#ffffff80'
+                                                                }}>
                                                                 <Image src="/assets/editIcon.png" alt='edit' height={20} width={20} />
                                                             </div>
                                                         </button>

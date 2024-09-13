@@ -111,6 +111,7 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
     useEffect(() => {
         if (phone) {
             const timer = setTimeout(() => {
+                console.log("Log is working")
                 validatePhoneNumber(phone, selectedCountry);
             }, 500);
             return () => clearTimeout(timer);
@@ -132,6 +133,8 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
                 if (fromCreateAccount === true) {
                     formatErr('Enter valid phone number');
                 } else if (fromSignIn === true) {
+                    formatErr('Enter valid phone number');
+                } else {
                     formatErr('Enter valid phone number');
                 }
                 // setError('Enter valid phone number');

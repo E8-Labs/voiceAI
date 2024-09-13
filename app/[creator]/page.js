@@ -33,17 +33,6 @@ const backgroundImage = {
 //     resize: "cover",
 // }
 
-const gifBackgroundImageSmallScreen = {
-    backgroundImage: 'url("/assets/applogo2.png")', // Ensure the correct path
-    backgroundSize: "cover",
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-    width: '300px',
-    height: '300px',
-    borderRadius: "50%",
-    resize: "cover",
-}
-
 const Page = () => {
     const router = useRouter();
     const buttonRef = useRef(null);
@@ -76,6 +65,7 @@ const Page = () => {
     const [showLogoutBtn, setShowLogoutBtn] = useState(false);
     const [showPopup, setshowPopup] = useState(true);
     const [isWideScreen, setIsWideScreen] = useState(false);
+    const [isWideScreen2, setIsWideScreen2] = useState(false);
     const [isHighScreen, setIsHighScreen] = useState(false);
     const [openClaimPopup, setOpenClaimPopup] = useState(false);
     // for side animation
@@ -141,11 +131,13 @@ const Page = () => {
             // Check if width is greater than or equal to 1024px
             setIsWideScreen(window.innerWidth >= 950);
 
+            setIsWideScreen2(window.innerWidth >= 500);
             // Check if height is greater than or equal to 1024px
             setIsHighScreen(window.innerHeight >= 950);
 
             // Log the updated state values for debugging (Optional)
             console.log("isWideScreen: ", window.innerWidth >= 950);
+            console.log("isWideScreen2: ", window.innerWidth >= 500);
             console.log("isHighScreen: ", window.innerHeight >= 1024);
         };
 
@@ -160,6 +152,22 @@ const Page = () => {
 
     const handleCreatorXClick = () => {
         router.push('/creator/onboarding2')
+    }
+
+    const handleProfileClick = () => {
+        const localData = localStorage.getItem('User');
+        if (localData) {
+            const Data = JSON.parse(localData);
+            console.log("Data recieved is", Data);
+            if (Data.data.user.role === "caller") {
+                // router.push('/callerProfile')
+                window.open('/callerProfile', '_blank');
+            } else {
+                // router.push('/profile');
+                window.open('/profile', '_blank');
+            }
+        }
+        // return
     }
 
 
@@ -516,14 +524,25 @@ const Page = () => {
         }
     }, [])
 
+    const gifBackgroundImageSmallScreen = {
+        backgroundImage: 'url("/assets/applogo2.png")', // Ensure the correct path
+        backgroundSize: "cover",
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center',
+        width: isWideScreen2 ? '550px' : '330px',
+        height: isWideScreen2 ? '550px' : '330px',
+        borderRadius: "50%",
+        resize: "cover",
+    }
+
 
     const gifBackgroundImage = {
         backgroundImage: 'url("/assets/applogo2.png")', // Ensure the correct path
         backgroundSize: "cover",
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
-        width: isHighScreen ? '800px' : '500px',
-        height: isHighScreen ? '800px' : '500px',
+        width: isHighScreen ? '870px' : '500px',
+        height: isHighScreen ? '870px' : '500px',
         borderRadius: "50%",
         resize: "cover",
     }
@@ -671,7 +690,7 @@ const Page = () => {
                     </div> :
                     <div style={backgroundImage} className='h-screen' onMouseMove={handleMouseMove}>
                         <div className='pt-8 ps-8'>
-                            <div className='2xl:flex hidden w-full flex flex-row justify-between'>
+                            <div className='lg:flex hidden w-full flex flex-row justify-between'>
                                 <div className='flex flex-col items-start'>
                                     <div className='px-2 py-2 flex gap-4 flex-row items-center' ref={buttonRef4}
                                         style={{
@@ -964,7 +983,29 @@ const Page = () => {
                                     showProfileIcon &&
                                     <div className='flex flex-row gap-4 items-center'>
                                         <div className='me-8' style={{ zIndex: 2 }}>
-                                            <AnimatedButton snackMessage={snackMessage} wideScreen={isWideScreen} profileData={profileData} />
+                                            {/* <AnimatedButton snackMessage={snackMessage} wideScreen={isWideScreen} profileData={profileData} /> */}
+                                            {
+                                                profileData && profileData.profile_image ?
+                                                    <div className='flex flex-row justify-center items-center p-2' style={{ borderRadius: "50%", backgroundColor: "" }}>
+                                                        <img
+                                                            onClick={handleProfileClick}
+                                                            src={profileData.profile_image} alt='profile'
+                                                            // height={40} width={40} 
+                                                            // style={{ borderRadius: "50%", height: 50, width: 50, border: "3px solid white" }}
+                                                            style={{
+                                                                width: '50px',
+                                                                height: '50px',
+                                                                backgroundColor: "",
+                                                                borderRadius: "50%",
+                                                                border: "3px solid white",
+                                                                objectFit: 'cover',
+                                                                objectPosition: 'center',
+                                                                // backgroundColor: 'red'
+                                                            }}
+                                                        />
+                                                    </div> :
+                                                    <Image onClick={handleProfileClick} src="/assets/placeholderImg.jpg" alt='profile' height={50} width={50} style={{ borderRadius: "50%" }} />
+                                            }
                                         </div>
                                     </div>
                                 }
@@ -992,7 +1033,7 @@ const Page = () => {
                                 <div style={gifBackgroundImage} className='flex flex-row justify-center items-center'>
                                     <Image onClick={handleContinue} src="/mainAppGif3.gif" alt='gif' style={{
                                         backgroundColor: "",
-                                        borderRadius: "50%", height: isHighScreen ? '750px' : '450px', width: isHighScreen ? '750px' : '450px'
+                                        borderRadius: "50%", height: isHighScreen ? '780px' : '450px', width: isHighScreen ? '780px' : '450px'
                                     }} height={600} width={600} />
                                 </div>
 
@@ -1074,7 +1115,8 @@ const Page = () => {
                                         style={{
                                             backgroundColor: "",
                                             borderRadius: "50%",
-
+                                            height: isWideScreen2 ? '550px' : '280px',
+                                            width: isWideScreen2 ? '550px' : '280px'
                                         }}
                                         height={300} width={300} />
                                 </div>
@@ -1162,7 +1204,7 @@ const Page = () => {
                         </div>
 
 
-                        {/* Button and Calls array */}
+                        {/* CreatorX Button and Calls array */}
                         <div style={{ position: "absolute", bottom: 10 }} className='w-full flex items-end justify-between mb-12 rounded md:flex hidden'>
                             <div ref={buttonRef} className='flex items-end ms-8 px-4' style={{ backgroundColor: "#620FEB66", width: "fit-content", borderRadius: "70px" }}>
                                 <button className='flex flex-row p-4 items-center gap-4'>
