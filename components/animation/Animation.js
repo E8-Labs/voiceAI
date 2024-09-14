@@ -231,7 +231,8 @@ export default function Animation({ onChangeIndex }) {
                         phone: userPhoneNumber,
                         name: userName,
                         email: userEmail,
-                        login: false
+                        login: false,
+                        role: "creator"
                     }
                     console.log('Code sendding', data);
                     // return
@@ -1168,17 +1169,17 @@ export default function Animation({ onChangeIndex }) {
                                                 {/* {VP} */}
                                                 {
                                                     VP1 && VP2 && VP3 && VP4 && VP5 && VP6 ?
-                                                        <Button onClick={handleVerifyLoginCode} className='bg-purple hover:bg-purple text-white rounded w-full'
+                                                        <button onClick={handleVerifyLoginCode} className='bg-purple hover:bg-purple text-white rounded w-full'
                                                             style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
                                                             Continue
-                                                        </Button> :
-                                                        <Button
+                                                        </button> :
+                                                        <button
                                                             disabled
                                                             // onClick={handleVerifyLoginCode}
                                                             className='bg-purple2 hover:bg-purple2 text-white rounded w-full'
                                                             style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px", color: 'white' }}>
                                                             Continue
-                                                        </Button>
+                                                        </button>
                                                 }
                                             </div>
                                     }
@@ -1611,7 +1612,7 @@ export default function Animation({ onChangeIndex }) {
                                     </div>
                                     <div style={{ height: 50 }}>
                                         {
-                                            EmailP1 &&
+                                            EmailP1 && EmailP2 && EmailP3 && EmailP4 && EmailP5 &&
                                             <div>
                                                 {
                                                     verifyEmailLoader ?
@@ -1619,7 +1620,7 @@ export default function Animation({ onChangeIndex }) {
                                                             <CircularProgress size={25} />
                                                         </div> :
                                                         <button onClick={handleVerifyEmailCode}
-                                                            className='w-full bg-purple hover:bg-purple2 text-white mt-8'
+                                                            className='w-full bg-purple hover:bg-purple text-white mt-8'
                                                             style={{ fontWeight: "400", fontSize: 15, height: 50, borderRadius: '50px' }}>
                                                             Verify
                                                         </button>
@@ -1729,9 +1730,9 @@ export default function Animation({ onChangeIndex }) {
                                 <div className='w-full flex justify-center'>
                                     <div className='w-10/12'>
                                         <div>
-                                            <button onClick={handleBack}>
+                                            {/* <button onClick={handleBack}>
                                                 <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
-                                            </button>
+                                            </button> */}
                                         </div>
                                         <div className='mt-6' style={{ fontSizeL: 24, fontWeight: "600" }}>
                                             Verify phone number.
@@ -1859,11 +1860,11 @@ export default function Animation({ onChangeIndex }) {
                                                     <div className='w-full flex flex-row justify-center mt-8'>
                                                         <CircularProgress size={25} />
                                                     </div> :
-                                                    <Button onClick={() => verifyOtp("Signup")}
-                                                        className='w-full bg-purple hover:bg-purple2 text-white mt-8'
+                                                    <button onClick={() => verifyOtp("Signup")}
+                                                        className='w-full bg-purple hover:bg-purple text-white mt-8'
                                                         style={{ fontWeight: "400", fontSize: 15, height: 50, borderRadius: '50px' }}>
                                                         Verify
-                                                    </Button>
+                                                    </button>
                                             }
                                         </div>
                                     </div>

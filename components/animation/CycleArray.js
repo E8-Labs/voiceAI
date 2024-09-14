@@ -64,7 +64,7 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
                                         <div className='flex flex-row gap-1'>
                                             <Image src="/assets/callLogo.png" alt='logo' height={10} width={13} />
                                             <div style={{ fontSize: 13, fontWeight: "400", color: "grey" }}>
-                                                Live Call
+                                                Live Call ,
                                             </div>
                                         </div>
                                         <div style={{ fontSize: 13, fontWeight: "400", color: "grey" }}>

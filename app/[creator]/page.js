@@ -317,10 +317,10 @@ const Page = () => {
     const styleLoginModal = {
         height: 'auto',
         bgcolor: 'transparent',
-        p: 2,
+        // p: 2,
         mx: 'auto',
         my: '50vh',
-        transform: 'translateY(-50%)',
+        transform: 'translateY(-55%)',
         borderRadius: 2,
         border: "none",
         outline: "none",
@@ -983,8 +983,8 @@ const Page = () => {
                                     showProfileIcon &&
                                     <div className='flex flex-row gap-4 items-center'>
                                         <div className='me-8' style={{ zIndex: 2 }}>
-                                            {/* <AnimatedButton snackMessage={snackMessage} wideScreen={isWideScreen} profileData={profileData} /> */}
-                                            {
+                                            <AnimatedButton snackMessage={snackMessage} wideScreen={isWideScreen} profileData={profileData} />
+                                            {/* {
                                                 profileData && profileData.profile_image ?
                                                     <div className='flex flex-row justify-center items-center p-2' style={{ borderRadius: "50%", backgroundColor: "" }}>
                                                         <img
@@ -1005,7 +1005,7 @@ const Page = () => {
                                                         />
                                                     </div> :
                                                     <Image onClick={handleProfileClick} src="/assets/placeholderImg.jpg" alt='profile' height={50} width={50} style={{ borderRadius: "50%" }} />
-                                            }
+                                            } */}
                                         </div>
                                     </div>
                                 }
@@ -1070,7 +1070,7 @@ const Page = () => {
                         {/* visible on small screens only */}
                         <div style={{
                             position: 'absolute',
-                            top: '50%',
+                            top: '55%',
                             left: '50%',
                             transform: 'translate(-50%, -50%)',
                         }} className='w-full flex justify-center items-center md:hidden'>
@@ -1087,20 +1087,20 @@ const Page = () => {
                                     // src="/borderedAppLogo.png"
                                     // alt="Animating Image"
                                     animate={{
-                                        width: ["130px", "150px", "130px"], // Keyframes for width
-                                        height: ["0px", "50px", "0px"], // Keyframes for height
+                                        // width: ["150px", "150px", "150px"], // Keyframes for width
+                                        // height: ["50px", "50px", "50px"], // Keyframes for height
+                                        y: [0, -30, 0]
                                     }}
                                     transition={{
-                                        duration: 7,
+                                        duration: 3.5,
                                         repeat: Infinity,
                                         repeatType: "loop",
                                         ease: "easeInOut",
                                     }}
-                                    className='-mb-8'
+                                    className='-mb-24 rounded-lg flex flex-col justify-center'
+                                    style={{ fontSize: 14, fontWeight: '500', fontFamily: 'inter', backgroundColor: '#ffffff80' }}
                                 >
-                                    <div className='px-4 py-2 rounded-lg' style={{ fontSize: 14, fontWeight: '500', fontFamily: 'inter', backgroundColor: '#ffffff80' }}>
-                                        Tap to call
-                                    </div>
+                                    Tap to call
                                 </motion.div>
 
                                 <div
@@ -1324,7 +1324,33 @@ const Page = () => {
                             </Box>
                         </Modal>
 
-                        <Drawer
+                        <Modal
+                            open={openBottomForm}
+                            // onClose={(() => setOpenLoginModal(false))}
+                            closeAfterTransition
+                            BackdropProps={{
+                                timeout: 1000,
+                                sx: {
+                                    backgroundColor: 'transparent',
+                                    backdropFilter: 'blur(40px)',
+                                    height: "100%"
+                                },
+                            }}
+                            className='h-screen'
+                        >
+                            <Box className="lg:w-5/12 sm:w-7/12 w-10/12"
+                                sx={styleLoginModal}
+                            >
+                                {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
+                                <div className='rounded' style={{ padding: 30, backgroundColor: '#ffffff60' }}>
+                                    <div className='w-full' style={{  }}>
+                                        <LoginModal creator={creator} assistantData={getAssistantData} closeForm={hideBottom} />
+                                    </div>
+                                </div>
+                            </Box>
+                        </Modal>
+
+                        {/* <Drawer
                             open={openBottomForm}
                             // onClose={() => setOpenLoginModalDrawer(false)}
                             anchor='bottom'
@@ -1346,7 +1372,7 @@ const Page = () => {
                                     <LoginModal creator={creator} assistantData={getAssistantData} closeForm={hideBottom} />
                                 </div>
                             </div>
-                        </Drawer>
+                        </Drawer> */}
 
                         {/* <div className=''>
                     <Snackbar

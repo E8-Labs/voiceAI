@@ -28,7 +28,7 @@ const ProfileNav = () => {
             name: 'My Account',
             href: '/profile/myaccount',
             image: '/assets/about.png',
-            unSelectedImg: '/unselectedaccountIcon.png'
+            unSelectedImg: '/unselectedAccountIcon.png'
         },
         {
             id: 3,

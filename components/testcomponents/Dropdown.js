@@ -1,3 +1,4 @@
+import { Alert, Fade, Snackbar } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
@@ -57,8 +58,8 @@ export default function AnimatedButton({ snackMessage, error = false, profileDat
                                         // height={40} width={40} 
                                         // style={{ borderRadius: "50%", height: 50, width: 50, border: "3px solid white" }}
                                         style={{
-                                            width: '50px',
-                                            height: '50px',
+                                            width: '55px',
+                                            height: '55px',
                                             backgroundColor: "",
                                             borderRadius: "50%",
                                             border: "3px solid white",
@@ -68,7 +69,8 @@ export default function AnimatedButton({ snackMessage, error = false, profileDat
                                         }}
                                     />
                                 </div> :
-                                <Image onClick={handleProfileClick} src="/assets/placeholderImg.jpg" alt='profile' height={50} width={50} style={{ borderRadius: "50%" }} />
+                                <Image onClick={handleProfileClick} src="/assets/placeholderImg.jpg"
+                                    alt='profile' height={55} width={55} style={{ borderRadius: "50%" }} />
                         }
                     </span>
                     {/* Replace with your icon */}
@@ -78,9 +80,9 @@ export default function AnimatedButton({ snackMessage, error = false, profileDat
                 } */}
 
                 <div
-                    className={`absolute flex flex-col items-center right-3 top-1/2 transform -translate-y-1/2 rounded-full transition-all duration-500 ease-in-out overflow-hidden ${snackMessage ? 'w-80 border-2 border-white h-16 px-2 opacity-100' : 'w-0 h-0 px-0 py-0 opacity-0'
+                    className={`absolute flex flex-col md:flex hidden items-center right-3 top-1/2 transform -translate-y-1/2 rounded-full transition-all duration-500 ease-in-out overflow-hidden ${snackMessage ? 'w-[350px] border-2 border-white h-16 px-2 pr-10 opacity-100' : 'w-0 h-0 px-0 py-0 opacity-0'
                         }`}
-                    style={{ marginLeft: -40, backgroundColor: '#FFFFFF40', width: wideScreen ? "355px" : "" }}
+                    style={{ marginLeft: -40, backgroundColor: '#FFFFFF40', width: wideScreen ? "385px" : "" }}
                 >
                     {snackMessage && (
                         <div className="flex flex-col mt-2 justify-start items-center" style={{ textAlign: "start" }}>
@@ -104,6 +106,60 @@ export default function AnimatedButton({ snackMessage, error = false, profileDat
                         </div>
                     )}
                 </div>
+
+                <div className='md:hidden'>
+                    <Snackbar
+                        open={snackMessage}
+                        autoHideDuration={5000}
+                        // onClose={() => setCallErr(false)}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'center',
+                        }}
+                        TransitionComponent={Fade}
+                        TransitionProps={{
+                            timeout: {
+                                enter: 1000,
+                                exit: 1000,
+                            }
+                        }}
+                        sx={{
+                            position: 'fixed',
+                            top: '23%',
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            // border: "2px solid red",
+                            width: "500px"
+                        }}
+                    >
+                        <Alert
+                            // onClose={() => setCallErr(false)}
+                            // severity="error"
+                            sx={{
+                                width: '309px',
+                                backgroundColor: 'white',
+                                color: 'black',
+                                width: "330px",
+                                borderRadius: "20px"
+                                // border: "2px solid grey"
+                            }}
+                        >
+                            <div className='w-full text-start'>
+                                <div>
+                                    <div style={{ fontSize: 15, fontWeight: '500', fontFamily: 'inter' }}>
+                                        🎉 Congratulations
+                                    </div>
+                                    <div>
+                                    </div>
+                                </div>
+                                <div style={{ fontSize: 13, fontWeight: '400', fontFamily: 'inter' }}>
+                                    Your call has been initiated successfully
+                                </div>
+                            </div>
+                        </Alert>
+                    </Snackbar>
+                </div>
+
             </button>
         </div>
     );

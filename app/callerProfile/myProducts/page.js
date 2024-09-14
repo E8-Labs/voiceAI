@@ -6,6 +6,7 @@ import axios from 'axios'
 import { Alert, CircularProgress, Drawer, Fade, Snackbar } from '@mui/material'
 import moment from 'moment'
 import { useRouter } from 'next/navigation'
+import { AnimatePresence, motion } from 'framer-motion'
 const Page = () => {
 
     const router = useRouter();
@@ -360,6 +361,14 @@ const Page = () => {
         setOpenProducts(item);
     }
 
+    const [opensearchBar, setOpensearchBar] = useState(false);
+    const [searchValue, setsearchValue] = useState("");
+
+    const filteredData = callerDashboardData.filter(item =>
+        item.profile.name.toLowerCase().includes(searchValue.toLowerCase())
+    );
+
+
     return (
         <div className='h-screen w-full' style={{ backgroundColor: "#ffffff40", overflow: 'auto', scrollbarWidth: 0, }}>
             <div className='w-11/12 pe-4 lg:w-10/12 flex flex-col gap-2 pt-10 ps-2 lg:ps-10'>
@@ -384,7 +393,33 @@ const Page = () => {
                                         <div>
                                             Creators
                                         </div>
-                                        <button>
+                                        <AnimatePresence>
+                                            {
+                                                opensearchBar &&
+                                                <motion.div
+                                                    initial={{ opacity: 0, x: 20 }}
+                                                    animate={{ opacity: 1, x: -10 }}
+                                                    exit={{ opacity: 0, x: 20 }}
+                                                    transition={{ duration: 0.3 }}
+                                                    style={{
+                                                        width: '50%',
+                                                        // border: '2px solid green'
+                                                    }}
+                                                >
+                                                    <div className='w-full'>
+                                                        <input className='w-full py-2 bg-transparent outline-none border-none px-4'
+                                                            value={searchValue}
+                                                            onChange={(e) => setsearchValue(e.target.value)}
+                                                            placeholder='Search...'
+                                                            style={{
+                                                                fontSize: 15, fontFamily: 'inter',
+                                                                border: '2px solid white', borderRadius: '50px'
+                                                            }} />
+                                                    </div>
+                                                </motion.div>
+                                            }
+                                        </AnimatePresence>
+                                        <button onClick={() => setOpensearchBar(!opensearchBar)} className='outline-none border-none'>
                                             <Image src="/assets/searchIcon.png" height={24} width={24} alt='search' />
                                         </button>
                                     </div>
@@ -403,7 +438,7 @@ const Page = () => {
                                                             </div> :
                                                             <div style={{ maxHeight: '30vh', overflow: "auto", scrollbarWidth: "none" }}>
                                                                 {
-                                                                    callerDashboardData.map((item) => (
+                                                                    filteredData.map((item) => (
                                                                         <div key={item.profile.id} className='w-full rounded-xl flex flex-row mt-2'
                                                                         // style={{ backgroundColor: "#FFFFFF30" }}
                                                                         >

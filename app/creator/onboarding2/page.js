@@ -20,6 +20,9 @@ export default function Home() {
 
     const router = useRouter();
     const [currentIndex, setCurrentIndex] = useState(null);
+    const [isHighScreen, setIsHighScreen] = useState(false);
+    const [isWideScreen, setIsWideScreen] = useState(false);
+    const [isWideScreen2, setIsWideScreen2] = useState(false);
 
     const handleCurrentIndex = (id) => {
         setCurrentIndex(id);
@@ -35,7 +38,43 @@ export default function Home() {
             const LocalData = JSON.parse(Data);
             console.log("Route path recieved is", LocalData);
         }
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        const handleResize = () => {
+            // Check if width is greater than or equal to 1024px
+            setIsWideScreen(window.innerWidth >= 950);
+
+            setIsWideScreen2(window.innerWidth >= 500);
+            // Check if height is greater than or equal to 1024px
+            setIsHighScreen(window.innerHeight >= 950);
+
+            // Log the updated state values for debugging (Optional)
+            console.log("isWideScreen: ", window.innerWidth >= 950);
+            console.log("isWideScreen2: ", window.innerWidth >= 500);
+            console.log("isHighScreen: ", window.innerHeight >= 1024);
+        };
+
+        handleResize(); // Set initial state
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+
+    //code for gif image
+    const gifBackgroundImage = {
+        backgroundImage: 'url("/assets/applogo2.png")', // Ensure the correct path
+        backgroundSize: "cover",
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center',
+        width: isHighScreen ? '870px' : '500px',
+        height: isHighScreen ? '870px' : '500px',
+        borderRadius: "50%",
+        resize: "cover",
+    }
 
 
 
@@ -75,7 +114,7 @@ export default function Home() {
                 }
                 {
                     currentIndex === 1 &&
-                    <div className='w-6/12 flex md:flex hidden justify-center h-screen' style={{  }}>
+                    <div className='w-6/12 flex md:flex hidden justify-center h-screen' style={{}}>
                         {/* <img src="/assets/groupImages.png" alt='app' style={{ height: "850px", width: "100%", resize: "cover", objectFit: "contain" }} /> */}
                         {/* <ImagesFile /> */}
                         <GroupImages />
@@ -84,7 +123,17 @@ export default function Home() {
                 {
                     currentIndex <= 6 && currentIndex > 1 &&
                     <div className='w-6/12 flex md:flex hidden  justify-center'>
-                        <img src='/assets/mainLogo.png' alt='app' style={{ height: "637px", width: "637px", resize: "cover", objectFit: "contain" }} />
+                        {/* <img src='/assets/mainLogo.png' alt='app' style={{ height: "637px", width: "637px", resize: "cover", objectFit: "contain" }} /> */}
+
+                        <div style={gifBackgroundImage} className='flex flex-row justify-center items-center'>
+                            <Image
+                                // onClick={handleContinue}
+                                src="/mainAppGif3.gif" alt='gif' style={{
+                                    backgroundColor: "",
+                                    borderRadius: "50%", height: isHighScreen ? '780px' : '450px', width: isHighScreen ? '780px' : '450px'
+                                }} height={600} width={600} />
+                        </div>
+
                     </div>
                 }
             </div>

@@ -247,6 +247,7 @@ const Page = () => {
         return emailPattern.test(email); // Test the email string directly
     };
 
+
     return (
         <div className='h-screen w-full' style={{ backgroundColor: "#ffffff30", }}>
             <div className='w-full py-10 px-2 lg:px-5' style={{}}>
@@ -268,6 +269,7 @@ const Page = () => {
                     <div className='lg:w-7/12 flex flex-row items-center justify-between'>
                         <div className='flex flex-row items-center gap-4'>
                             <div>
+                                
                                 {/* {
                                     imageUrl ?
                                         <button onClick={handleUploadClick}>
@@ -333,7 +335,7 @@ const Page = () => {
                                                                     padding: 2,
                                                                     backgroundColor: '#ffffff80'
                                                                 }}>
-                                                                <Image src="/assets/editIcon.png" alt='edit' height={20} width={20} />
+                                                                <Image src="/assets/editIcon.png" alt='edit' height={15} width={15} />
                                                             </div>
                                                         </button> :
                                                         <button
@@ -350,7 +352,7 @@ const Page = () => {
                                                                     padding: 2,
                                                                     backgroundColor: '#ffffff80'
                                                                 }}>
-                                                                <Image src="/assets/editIcon.png" alt='edit' height={20} width={20} />
+                                                                <Image src="/assets/editIcon.png" alt='edit' height={15} width={15} />
                                                             </div>
                                                         </button>
                                                 }

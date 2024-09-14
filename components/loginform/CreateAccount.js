@@ -81,7 +81,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
             password: userPassword
         }
         console.log("Data for create account", userData);
-        
+
         try {
             if (!userPhoneNumber) {
                 console.log("Please enter a valid phone number");
@@ -438,7 +438,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                 </div>
 
             </div>
-            <TextField className=' w-full mt-8'
+            <TextField className=' w-full'
                 autofill='off'
                 id="filled-basic"
                 value={userName}
@@ -451,7 +451,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                         color: 'black !important',  // Apply black color directly
                     },
                 }}
-                style={{ color: "black" }}
+                style={{ color: "black", marginTop: 40 }}
             />
 
             <TextField className=' w-full mt-6'
@@ -462,6 +462,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                 label="Last Name" variant="outlined"
                 placeholder='Last Name'
                 sx={MuiFieldStyle}
+                style={{ marginTop: 30 }}
             />
             <TextField className=' w-full mt-6'
                 autofill='off'
@@ -480,6 +481,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                 label="Email" variant="outlined"
                 placeholder='Email Address'
                 sx={MuiFieldStyle}
+                style={{ marginTop: 30 }}
             />
             {
                 emailValidationError ?
@@ -499,7 +501,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                     </div>
             }
             {/* <TextField className='mt-4' id="outlined-basic" label="Outlined" variant="outlined" sx={MuiFieldStyle} /> */}
-            <div className='mt-6'>
+            <div className='mt-6' style={{ marginTop: 27 }}>
                 <PhoneNumberInput phonenumber={handlePhoneNumber} fromCreateAccount={true} formatErr={handleNumberFormatErr} />
             </div>
             {

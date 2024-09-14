@@ -313,7 +313,7 @@ const GroupImages = () => {
                 </motion.img>
             </div>
 
-            <div className='xl:flex hidden' style={{ position: 'absolute', top: 200, right: 800 }}>
+            {/* <div className='xl:flex hidden' style={{ position: 'absolute', top: 200, right: 800 }}>
                 <motion.img
                     src="/myself.jpeg"
                     // alt="Animating Image"
@@ -342,7 +342,7 @@ const GroupImages = () => {
                     }}
                 >
                 </motion.img>
-            </div>
+            </div> */}
 
         </div>
     )
