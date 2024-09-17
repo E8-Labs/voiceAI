@@ -998,7 +998,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     </div>
                     <div className="w-full flex flex-row justify-end">
                       <div className="w-6/12">
-                        <button
+                        {/*<button
                           onClick={handleBuildAI}
                           className="bg-purple hover:bg-purple text-white w-full mt-12 py-2"
                           style={{
@@ -1014,7 +1014,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                           ) : (
                             "Continue"
                           )}
-                        </button>
+                        </button>*/}
                       </div>
                     </div>
                   </div>

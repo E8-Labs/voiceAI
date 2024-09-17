@@ -90,7 +90,7 @@ function AiSocialLinks({ handleContinue, aiName }) {
 
                 <div className="mt-12 flex flex-row items-center gap-2">
                     <div className='flex flex-row items-center'>
-                        <Image src="/myself.jpeg" alt='Profile' //height={50} width={50}
+                        <Image src="/assets/placeholderImg.jpg" alt='Profile' //height={50} width={50}
                             height={55}
                             width={55}
                             style={{

@@ -28,6 +28,16 @@ const Page = () => {
     const [checkUserEmailData, setCheckUserEmailData] = useState(null);
     const [emailValidationError, setEmailValidationError] = useState(false);
     const [debounceTimeout, setDebounceTimeout] = useState(null);
+    const [assistantData, setAssistantData] = useState(null);
+
+    useEffect(() => {
+        const LocalData = localStorage.getItem('assistantData');
+        if (LocalData) {
+            const Data = JSON.parse(LocalData);
+            console.log('data from localstorage of assistant', Data);
+            setAssistantData(Data);
+        }
+    }, [])
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -251,10 +261,13 @@ const Page = () => {
     return (
         <div className='h-screen w-full' style={{ backgroundColor: "#ffffff30", }}>
             <div className='w-full py-10 px-2 lg:px-5' style={{}}>
-                <div className='flex flex-row justify-between items-center'>
-                    <div style={{ fontSize: 20, fontWeight: "bold", fontFamily: 'inter', paddingLeft: 10 }} >
+                <div className='flex flex-row justify-between items-center w-8/12'>
+                    <div style={{ fontSize: 20, fontWeight: "bold", fontFamily: 'inter', paddingLeft: 10 }}>
                         My Account
                     </div>
+                    <button onClick={() => {router.push(`/${assistantData && assistantData.assitant.name}`)}} className='text-purple'>
+                        Go Back to {assistantData && assistantData.assitant.name}
+                    </button>
                 </div>
                 <div className='w-11/12 pe-4 lg:w-8/12 py-6 px-8 mt-3 flex flex-col gap-5' style={{
                     backgroundColor: '#FFFFFF40', borderRadius: 10
@@ -269,7 +282,7 @@ const Page = () => {
                     <div className='lg:w-7/12 flex flex-row items-center justify-between'>
                         <div className='flex flex-row items-center gap-4'>
                             <div>
-                                
+
                                 {/* {
                                     imageUrl ?
                                         <button onClick={handleUploadClick}>

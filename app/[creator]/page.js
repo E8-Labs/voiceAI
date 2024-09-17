@@ -846,7 +846,7 @@ const Page = () => {
                                 <div style={{ zIndex: 2 }}>
                                     {/* <ProfileAnimation creator={creator} /> */}
                                     <div className='flex flex-col items-start'>
-                                        <div className='px-2 py-1 flex gap-4 flex-row items-center' ref={buttonRef4}
+                                        <div className='px-2 py-1 flex gap-4 flex-row items-center' //ref={buttonRef4}
                                             style={{
                                                 border: "2px solid #ffffff",
                                                 // borderTopLeftRadius: 50, borderTopRightRadius: 50,
@@ -957,7 +957,7 @@ const Page = () => {
                                             </div>
                                         </div>
                                         {/* code for socials */}
-                                        <div className='flex flex-row items-center justify-center pb-3 px-4' ref={buttonRef3}
+                                        <div className='flex flex-row items-center justify-center pb-3 px-4' //ref={buttonRef3}
                                             style={{
                                                 border: "2px solid #ffffff", borderTop: "8px solid #e7f3fe",
                                                 borderBottomLeftRadius: 50,
@@ -1233,7 +1233,7 @@ const Page = () => {
                                 </div>
 
 
-                                <div ref={buttonRef} className='flex items-end' style={{ backgroundColor: "transparent", width: "fit-content", borderRadius: "70px" }}>
+                                <div className='flex items-end' style={{ backgroundColor: "transparent", width: "fit-content", borderRadius: "70px" }}>
                                     <button
                                         onClick={
                                             // handleCreatorXClick
