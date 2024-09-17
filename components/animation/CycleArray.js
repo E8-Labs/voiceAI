@@ -60,32 +60,32 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
                         {
                             onLargeScreen ?
                                 <div className='w-full'>
-                                    <div className='flex flex-row w-full justify-between'>
+                                    <div className='flex flex-row w-full justify-between gap-1'>
                                         <div className='flex flex-row gap-1'>
                                             <Image src="/assets/callLogo.png" alt='logo' height={10} width={13} />
                                             <div style={{ fontSize: 13, fontWeight: "400", color: "grey" }}>
-                                                Live Call,
+                                                Live Call with
                                             </div>
                                         </div>
-                                        <div style={{ fontSize: 13, fontWeight: "400", color: "grey" }}>
-                                            {
-                                                data[currentIndex] &&
-                                                data[currentIndex].caller.city
-                                            }
-                                        </div>
-                                    </div>
-                                    <div className='flex flex-row items-center gap-1' style={{ fontWeight: "400", fontSize: 15, color: "" }}>
-                                        <div style={{ fontWeight: "300", fontSize: 15, color: "grey" }}>
+                                        <div style={{ fontWeight: "600", fontSize: 13, color: "#00000090" }}>
                                             {/*
                                                 data[currentIndex] &&
                                                 data[currentIndex].message.charAt(0).toUpperCase() + data[currentIndex].message.slice(1)
                                             */}
                                             {
                                                 data[currentIndex] &&
-                                                (data[currentIndex].message.length > 10
-                                                    ? data[currentIndex].message.charAt(0).toUpperCase() + data[currentIndex].message.slice(1, 10) + '...'
-                                                    : data[currentIndex].message.charAt(0).toUpperCase() + data[currentIndex].message.slice(1)
+                                                (data[currentIndex].caller.name.length > 10
+                                                    ? data[currentIndex].caller.name.charAt(0).toUpperCase() + data[currentIndex].caller.name.slice(1, 10) + '...'
+                                                    : data[currentIndex].caller.name.charAt(0).toUpperCase() + data[currentIndex].caller.name.slice(1)
                                                 )
+                                            }
+                                        </div>
+                                    </div>
+                                    <div className='flex flex-row items-center gap-1' style={{ fontWeight: "400", fontSize: 15, color: "" }}>
+                                        <div style={{ fontSize: 13, fontWeight: "400", color: "grey" }}>
+                                            {
+                                                data[currentIndex] &&
+                                                data[currentIndex].caller.city
                                             }
                                         </div>
                                     </div>
@@ -113,9 +113,9 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
                                             */}
                                             {
                                                 data[currentIndex] &&
-                                                (data[currentIndex].message.length > 10
-                                                    ? data[currentIndex].message.charAt(0).toUpperCase() + data[currentIndex].message.slice(1, 10) + '...'
-                                                    : data[currentIndex].message.charAt(0).toUpperCase() + data[currentIndex].message.slice(1)
+                                                (data[currentIndex].caller.name.length > 10
+                                                    ? data[currentIndex].caller.name.charAt(0).toUpperCase() + data[currentIndex].caller.name.slice(1, 10) + '...'
+                                                    : data[currentIndex].caller.name.charAt(0).toUpperCase() + data[currentIndex].caller.name.slice(1)
                                                 )
                                             }
                                         </div>
