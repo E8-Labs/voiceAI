@@ -95,7 +95,11 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
                                             {
                                                 data[currentIndex] &&
                                                 data[currentIndex].caller.city
+                                            }, {
+                                                data[currentIndex] &&
+                                                data[currentIndex].caller.state
                                             }
+                                            
                                         </div>
                                     </div>
                                 </div> :
