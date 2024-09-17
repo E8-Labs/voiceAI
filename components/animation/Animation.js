@@ -93,6 +93,7 @@ export default function Animation({ onChangeIndex }) {
     const [isHighScreen, setIsHighScreen] = useState(false);
     const [isWideScreen, setIsWideScreen] = useState(false);
     const [isWideScreen2, setIsWideScreen2] = useState(false);
+    const [verifyCodeSignUpLoader, setVerifyCodeSignUpLoader] = useState(false);
 
     useEffect(() => {
         if (!auth) { return }
@@ -200,7 +201,6 @@ export default function Animation({ onChangeIndex }) {
     };
 
     // Verify OTP
-    const [verifyCodeSignUpLoader, setVerifyCodeSignUpLoader] = useState(false);
     const verifyOtp = async (e) => {
         console.log("Verify code for", e);
         if (e === "Signup") {
@@ -520,10 +520,11 @@ export default function Animation({ onChangeIndex }) {
 
     //email validation
 
-    const checkUserEmail = async () => {
+    const checkUserEmail = async (emailValue) => {
         const ApiPath = Apis.checkUserEmail;
         const data = {
-            email: userEmail
+            // email: userEmail
+            email: emailValue
         }
         try {
             const response = await axios.post(ApiPath, data, {
@@ -1425,7 +1426,7 @@ export default function Animation({ onChangeIndex }) {
                                                             setEmailValidationError(false);
                                                             if (userEmail) {
                                                                 const timeout = setTimeout(() => {
-                                                                    checkUserEmail();
+                                                                    checkUserEmail(value);
                                                                 }, 300);
                                                                 return (() => clearTimeout(timeout));
                                                             }
