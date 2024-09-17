@@ -143,7 +143,7 @@ function AiSocialLinks({ handleContinue, aiName }) {
                         <input style={styles.urlsInput}
                             value={instaUrl}
                             onChange={(e) => setInstaurl(e.target.value)}
-                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paset URL'
+                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
                         />
 
                     </div>
@@ -157,7 +157,7 @@ function AiSocialLinks({ handleContinue, aiName }) {
                         <input style={styles.urlsInput}
                             value={youtubeUrl}
                             onChange={(e) => setYoutubeurl(e.target.value)}
-                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paset URL'
+                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
                         />
 
                     </div>
@@ -171,7 +171,7 @@ function AiSocialLinks({ handleContinue, aiName }) {
                         <input style={styles.urlsInput}
                             value={twitterUrl}
                             onChange={(e) => setTwitterurl(e.target.value)}
-                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paset URL'
+                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
                         />
 
                     </div>
@@ -185,7 +185,7 @@ function AiSocialLinks({ handleContinue, aiName }) {
                         <input style={styles.urlsInput}
                             value={appleProducts}
                             onChange={(e) => setAppleProducts(e.target.value)}
-                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paset URL'
+                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
                         />
 
                     </div>
@@ -199,7 +199,7 @@ function AiSocialLinks({ handleContinue, aiName }) {
                         <input style={styles.urlsInput}
                             value={spotifyurl}
                             onChange={(e) => setSpotifyurl(e.target.value)}
-                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paset URL'
+                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
                         />
 
                     </div>
@@ -211,12 +211,12 @@ function AiSocialLinks({ handleContinue, aiName }) {
                         height={30} width={30} />
                     <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
                         {/* <input style={styles.urlsInput}
-                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paset URL'
+                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
                         /> */}
                         <input style={styles.urlsInput}
                             value={fbUrl}
                             onChange={(e) => setFburl(e.target.value)}
-                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paset URL'
+                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
                         />
                     </div>
                 </div>

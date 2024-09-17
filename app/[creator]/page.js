@@ -378,6 +378,15 @@ const Page = () => {
             }
         }
 
+        if (buttonRef5 && buttonRef5.current) {
+            const rect = buttonRef5.current.getBoundingClientRect();
+            if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+                setBoxVisible(false);
+                return;
+            }
+        }
+
+
         // if (buttonRef5) {
         //     const rect = buttonRef5.current.getBoundingClientRect();
         //     if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
@@ -1245,7 +1254,7 @@ const Page = () => {
                                     </div>
                                 </button>
                             </div>
-                            <div className='me-8 md:flex hidden'>
+                            <div ref={buttonRef5} className='me-8 md:flex hidden'>
                                 <CycleArray onLargeScreen={true} data={getRecentCallData} assistantData={getAssistantData} />
                             </div>
                         </div>
