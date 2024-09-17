@@ -72,12 +72,21 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
                                                 data[currentIndex] &&
                                                 data[currentIndex].message.charAt(0).toUpperCase() + data[currentIndex].message.slice(1)
                                             */}
-                                            {
+                                            {/*
                                                 data[currentIndex] &&
                                                 (data[currentIndex].caller.name.length > 10
                                                     ? data[currentIndex].caller.name.charAt(0).toUpperCase() + data[currentIndex].caller.name.slice(1, 10) + '...'
                                                     : data[currentIndex].caller.name.charAt(0).toUpperCase() + data[currentIndex].caller.name.slice(1)
                                                 )
+                                            */}
+                                            {
+                                                data[currentIndex] &&
+                                                (() => {
+                                                    const name = data[currentIndex].caller.name.split(' ')[0]; // Get the first part before the space
+                                                    return name.length > 10
+                                                        ? name.charAt(0).toUpperCase() + name.slice(1, 10) + '...'
+                                                        : name.charAt(0).toUpperCase() + name.slice(1);
+                                                })()
                                             }
                                         </div>
                                     </div>
