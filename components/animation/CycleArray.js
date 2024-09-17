@@ -76,9 +76,16 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
                                     </div>
                                     <div className='flex flex-row items-center gap-1' style={{ fontWeight: "400", fontSize: 15, color: "" }}>
                                         <div style={{ fontWeight: "300", fontSize: 15, color: "grey" }}>
-                                            {
+                                            {/*
                                                 data[currentIndex] &&
                                                 data[currentIndex].message.charAt(0).toUpperCase() + data[currentIndex].message.slice(1)
+                                            */}
+                                            {
+                                                data[currentIndex] &&
+                                                (data[currentIndex].message.length > 10
+                                                    ? data[currentIndex].message.charAt(0).toUpperCase() + data[currentIndex].message.slice(1, 10) + '...'
+                                                    : data[currentIndex].message.charAt(0).toUpperCase() + data[currentIndex].message.slice(1)
+                                                )
                                             }
                                         </div>
                                     </div>
@@ -100,9 +107,16 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
                                     </div>
                                     <div className='flex flex-row items-center gap-1' style={{ fontWeight: "400", fontSize: 14, color: "" }}>
                                         <div style={{ fontWeight: "300", fontSize: 14, color: "grey" }}>
-                                            {
+                                            {/*
                                                 data[currentIndex] &&
                                                 data[currentIndex].message.charAt(0).toUpperCase() + data[currentIndex].message.slice(1)
+                                            */}
+                                            {
+                                                data[currentIndex] &&
+                                                (data[currentIndex].message.length > 10
+                                                    ? data[currentIndex].message.charAt(0).toUpperCase() + data[currentIndex].message.slice(1, 10) + '...'
+                                                    : data[currentIndex].message.charAt(0).toUpperCase() + data[currentIndex].message.slice(1)
+                                                )
                                             }
                                         </div>
                                     </div>

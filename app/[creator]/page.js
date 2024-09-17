@@ -472,7 +472,7 @@ const Page = () => {
         if (snackMessage === true) {
             setTimeout(() => {
                 setSnackMessage(false);
-            }, 2000);
+            }, 6000);
         }
     }, [snackMessage]);
 
@@ -541,8 +541,8 @@ const Page = () => {
         backgroundSize: "cover",
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
-        width: isHighScreen ? '870px' : '500px',
-        height: isHighScreen ? '870px' : '500px',
+        width: isHighScreen ? '950px' : '630px',
+        height: isHighScreen ? '950px' : '630px',
         borderRadius: "50%",
         resize: "cover",
     }
@@ -1057,7 +1057,7 @@ const Page = () => {
                                 </div> */}
 
                                 <div style={gifBackgroundImage} className='flex flex-row justify-center items-center'>
-                                    <Image onClick={handleContinue} src="/mainAppGif3.gif" alt='gif' style={{
+                                    <Image onClick={handleContinue} src="/maingif.gif" alt='gif' style={{
                                         backgroundColor: "",
                                         borderRadius: "50%", height: isHighScreen ? '780px' : '450px', width: isHighScreen ? '780px' : '450px'
                                     }} height={600} width={600} />
@@ -1137,7 +1137,7 @@ const Page = () => {
                                     //     // height: isWideScreen && 1000
                                     // }}
                                     className='flex flex-row justify-center items-center'>
-                                    <Image onClick={handleContinue} src="/mainAppGif3.gif" alt='gif'
+                                    <Image onClick={handleContinue} src="/maingif.gif" alt='gif'
                                         style={{
                                             backgroundColor: "",
                                             borderRadius: "50%",

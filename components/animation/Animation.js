@@ -1288,7 +1288,7 @@ export default function Animation({ onChangeIndex }) {
                                         InputProps={{
                                             startAdornment: (
                                                 <InputAdornment position="start" style={{ color: 'blue', fontSize: '14px', fontWeight: 'bold' }}>
-                                                    voice.ai /
+                                                    mycreatorx.com /
                                                 </InputAdornment>
                                             ),
                                             style: {
