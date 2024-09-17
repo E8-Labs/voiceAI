@@ -226,7 +226,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
         right: 0,
         bottom: 0,
         // backgroundColor: "red",
-        height: "20vh",
+        // height: "20vh",
         // marginLeft: 10,
         display: 'flex',
         alignItems: 'center',
@@ -432,7 +432,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
         <div style={containerStyles}>
             <AnimatePresence initial={false} custom={direction}>
                 {currentIndex === 0 && (
-                    <div className='flex flex-col h-screen w-full justify-center' style={{ height: "" }}>
+                    <div className='flex flex-col h-screen w-full sm:justify-center justify-start' style={{ height: "" }}>
                         <motion.div
                             key="box1"
                             custom={direction}
@@ -445,10 +445,8 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                         >
 
                             <div className='w-full flex justify-center'>
-                                <div className='w-10/12'>
-                                    <div>
-                                    </div>
-                                    <div className='mt-6' style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
+                                <div className='w-11/12 sm:w-10/12'>
+                                    <div className='' style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
                                         Greet callers
                                     </div>
                                     <div className='text-lightWhite mt-2' style={{ fontSize: 13, fontWeight: "400" }}>
@@ -459,7 +457,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                     </div>
 
                                     <TextField
-                                        className='w-10/12 bg-grayBg mt-5'
+                                        className='w-full sm:w-10/12 bg-grayBg mt-5'
                                         label="Greeting"
                                         style={{ borderRadius: 5 }}
                                         multiline
@@ -498,21 +496,21 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         }}
                                     />
 
-                                    <div className='w-10/12'>
+                                    <div className='w-full sm:w-10/12'>
                                         {
                                             greetText ?
-                                                <Button onClick={handleContinue}
+                                                <button onClick={handleContinue}
                                                     className='bg-purple hover:bg-purple text-white w-full mt-12'
                                                     style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
                                                     Continue
-                                                </Button> :
-                                                <Button
+                                                </button> :
+                                                <button
                                                     disabled
                                                     // onClick={handleContinue}
                                                     className='bg-purple2 hover:bg-purple text-white w-full mt-12'
                                                     style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px", color: "white" }}>
                                                     Continue
-                                                </Button>
+                                                </button>
                                         }
                                     </div>
 
@@ -524,7 +522,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                     </div>
                 )}
                 {currentIndex === 1 && (
-                    <div className='flex flex-col h-screen justify-center' style={{ height: "", }}>
+                    <div className='flex flex-col h-screen  sm:justify-center justify-start' style={{ height: "", }}>
                         <motion.div
                             key="box2"
                             custom={direction}
@@ -536,7 +534,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             style={styles}
                         >
                             <div className='w-full flex justify-center'>
-                                <div className='w-10/12'>
+                                <div className='w-11/12 sm:w-10/12'>
                                     <div>
                                         <button onClick={handleBack}>
                                             <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
@@ -546,7 +544,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         What might users ask you about <br /> during the calls?
                                     </div>
 
-                                    <TextField className=' w-9/12 mt-8'
+                                    <TextField className='w-full sm:w-9/12 mt-8'
                                         autofill='off'
                                         id="filled-basic"
                                         label="Description" variant="filled"
@@ -580,21 +578,21 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         }}
                                     />
 
-                                    <div className='w-10/12'>
+                                    <div className='w-full sm:w-10/12'>
                                         {
                                             serviceDetails ?
-                                                <Button onClick={handleContinue}
+                                                <button onClick={handleContinue}
                                                     className='bg-purple hover:bg-purple text-white w-full mt-12'
                                                     style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
                                                     Continue
-                                                </Button> :
-                                                <Button
+                                                </button> :
+                                                <button
                                                     disabled
                                                     // onClick={handleContinue}
                                                     className='bg-purple2 hover:bg-purple text-white w-full mt-12'
                                                     style={{ fontSize: 15, color: "white", fontWeight: "400", height: "52px", borderRadius: "50px" }}>
                                                     Continue
-                                                </Button>
+                                                </button>
                                         }
                                     </div>
 
@@ -605,7 +603,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                     </div>
                 )}
                 {currentIndex === 2 && (
-                    <div className='flex flex-col h-screen justify-center' style={{ height: "", }}>
+                    <div className='flex flex-col h-screen  sm:justify-center justify-start' style={{ height: "", }}>
                         <motion.div
                             key="box3"
                             custom={direction}
@@ -616,7 +614,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             transition={{ duration: 0 }}
                             style={styles}>
                             <div className='w-full flex justify-center'>
-                                <div className='w-10/12'>
+                                <div className='w-11/12 sm:w-10/12'>
                                     <div>
                                         <button onClick={handleBack}>
                                             <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
@@ -654,21 +652,21 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         </button>
                                     </div>
 
-                                    <div className='w-10/12'>
+                                    <div className='w-full sm:w-10/12'>
                                         {
                                             allQuestionsFilled ?
-                                                <Button onClick={handleContinue}
+                                                <button onClick={handleContinue}
                                                     className='bg-purple hover:bg-purple text-white w-full mt-12'
                                                     style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
                                                     Continue
-                                                </Button> :
-                                                <Button
+                                                </button> :
+                                                <button
                                                     disabled
                                                     // onClick={handleContinue}
                                                     className='bg-purple2 hover:bg-purple text-white w-full mt-12'
                                                     style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px", color: "white" }}>
                                                     Continue
-                                                </Button>
+                                                </button>
                                         }
                                     </div>
 
@@ -678,7 +676,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                     </div>
                 )}
                 {currentIndex === 3 && (
-                    <div className='flex flex-col h-screen justify-center' style={{ height: "", }}>
+                    <div className='flex flex-col h-screen sm:justify-center justify-start' style={{ height: "", }}>
                         <motion.div
                             key="box4"
                             custom={direction}
@@ -689,7 +687,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             transition={{ duration: 0 }}
                             style={styles}>
                             <div className='w-full flex justify-center'>
-                                <div className='w-10/12'>
+                                <div className='w-11/12 sm:w-10/12'>
                                     <div>
                                         <button onClick={handleBack}>
                                             <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
@@ -737,22 +735,22 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                     </div>
 
                                     {inputRows.every(row => row.productAmount && row.productName) ?
-                                        <div className='w-10/12'>
-                                            <Button onClick={handleContinue}
+                                        <div className='w-full sm:w-10/12'>
+                                            <button onClick={handleContinue}
                                                 className='bg-purple hover:bg-purple text-white w-full mt-12'
                                                 style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
                                                 Continue
-                                            </Button>
+                                            </button>
                                         </div>
                                         :
-                                        <div className='w-10/12'>
-                                            <Button
+                                        <div className='w-full sm:w-10/12'>
+                                            <button
                                                 disabled
                                                 // onClick={handleContinue}
                                                 className='bg-purple2 hover:bg-purple text-white w-full mt-12'
                                                 style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px", color: "white" }}>
                                                 Continue
-                                            </Button>
+                                            </button>
                                         </div>
                                     }
                                     {/* 
@@ -770,7 +768,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                     </div>
                 )}
                 {currentIndex === 4 && (
-                    <div className='flex flex-col h-screen justify-center' style={{ height: "", }}>
+                    <div className='flex flex-col h-screen sm:justify-center justify-start' style={{ height: "", }}>
                         <motion.div
                             key="box5"
                             custom={direction}
@@ -781,7 +779,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             transition={{ duration: 0 }}
                             style={styles}>
                             <div className='w-full flex justify-center'>
-                                <div className='w-10/12'>
+                                <div className='w-11/12 sm:w-10/12'>
                                     <div>
                                         <button onClick={handleBack}>
                                             <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
@@ -797,7 +795,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                             </div>
 
 
-                                            <div className='w-11/12 flex flex-col mt-8'>
+                                            <div className='w-full sm:w-11/12 flex flex-col mt-8'>
                                                 <div>
                                                     <div className='flex flex-row w-11/12 items-center justify-between '
                                                         style={goalsStyles.button}
@@ -821,7 +819,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
                                             {
                                                 sellProduct &&
-                                                <div className='w-10/12 flex flex-col mt-8'>
+                                                <div className='w-11/12 sm:w-10/12 flex flex-col mt-8'>
                                                     <FormControl className='w-full mt-4'>
                                                         <Select
                                                             className=' border-none rounded-md'
@@ -864,7 +862,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                 </div>
                                             }
 
-                                            <div className='w-11/12 flex flex-col mt-8'>
+                                            <div className='w-full sm:w-11/12 flex flex-col mt-8'>
                                                 <div>
                                                     <div className='flex flex-row w-11/12 items-center justify-between '
                                                         style={goalsStyles.button}
@@ -900,7 +898,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
                                             </div>
 
-                                            <div className='w-11/12 flex flex-col mt-8'>
+                                            <div className='w-full sm:w-11/12 flex flex-col mt-8'>
                                                 <div>
                                                     <div className='flex flex-row w-11/12 items-center justify-between '
                                                         style={goalsStyles.button}
@@ -950,12 +948,12 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         </div>
                                     </div>
 
-                                    <div className='w-10/12'>
-                                        <Button onClick={handleContinue}
+                                    <div className='w-full sm:w-10/12'>
+                                        <button onClick={handleContinue}
                                             className='bg-purple hover:bg-purple text-white w-full mt-12'
                                             style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
                                             Continue
-                                        </Button>
+                                        </button>
                                     </div>
 
                                 </div>
@@ -965,7 +963,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                 )}
                 {
                     currentIndex === 5 && (
-                        <div className='flex h-screen flex-col justify-center' style={{ height: "", }}>
+                        <div className='flex h-screen flex-col sm:justify-center justify-start' style={{ height: "", }}>
                             <motion.div
                                 key="box6"
                                 custom={direction}
@@ -976,7 +974,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                 transition={{ duration: 0 }}
                                 style={styles}>
                                 <div className='w-full flex justify-center'>
-                                    <div className='w-10/12'>
+                                    <div className='w-11/12 sm:w-10/12'>
                                         <div>
                                             <button onClick={handleBack}>
                                                 <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />

@@ -18,11 +18,29 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
     const [P6, setP6] = useState("")
     const [verifyLoader, setVerifyLoader] = useState(false);
     const [showError, setShowError] = useState(null)
+    const [isWideScreen, setIsWideScreen] = useState(false);
 
     const data = {
         code: P1 + P2 + P3 + P4 + P5 + P6,
         phone: userLoginDetails.phone,
     }
+
+    useEffect(() => {
+        const handleResize = () => {
+            // Check if width is greater than or equal to 1024px
+            setIsWideScreen(window.innerWidth >= 500);
+
+            // Log the updated state values for debugging (Optional)
+            console.log("isWideScreen: ", window.innerWidth >= 500);
+        };
+
+        handleResize(); // Set initial state
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     useEffect(() => {
         inputFocusRef.current.focus();
@@ -153,6 +171,11 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
         handleBack()
     }
 
+    const boxStyle = {
+        height: isWideScreen ? "40px" : "30px", width: isWideScreen ? "40px" : "30px", borderRadius: 6,
+        backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none"
+    }
+
 
     return (
         <div>
@@ -165,7 +188,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
 
 
 
-            <div className='flex flex-row gap-4 mt-4'>
+            <div className='flex flex-row gap-2 sm:gap-4 mt-4'>
                 <input
                     id="P1"
                     type='text'
@@ -175,7 +198,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                     value={P1}
                     onChange={(e) => handleInputChange(e, setP1, "P2")}
                     maxLength={1}
-                    style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                    style={boxStyle}
                     onKeyDown={(e) => handleBackspace(e, setP1, null)}
                 />
                 <input
@@ -186,7 +209,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                     pattern="[0-9]*"
                     onChange={(e) => handleInputChange(e, setP2, "P3")}
                     maxLength={1}
-                    style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                    style={boxStyle}
                     onKeyDown={(e) => handleBackspace(e, setP2, "P1")}
                 />
                 <input
@@ -197,7 +220,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                     pattern="[0-9]*"
                     onChange={(e) => handleInputChange(e, setP3, "P4")}
                     maxLength={1}
-                    style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                    style={boxStyle}
                     onKeyDown={(e) => handleBackspace(e, setP3, "P2")}
                 />
                 <input
@@ -208,7 +231,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                     pattern="[0-9]*"
                     onChange={(e) => handleInputChange(e, setP4, "P5")}
                     maxLength={1}
-                    style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                    style={boxStyle}
                     onKeyDown={(e) => handleBackspace(e, setP4, "P3")}
                 />
                 <input
@@ -219,7 +242,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                     pattern="[0-9]*"
                     onChange={(e) => handleInputChange(e, setP5, "P6")}
                     maxLength={1}
-                    style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                    style={boxStyle}
                     onKeyDown={(e) => {
                         handleBackspace(e, setP5, "P4");
                         // if (e.key === 'Enter') {
@@ -235,7 +258,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                     pattern="[0-9]*"
                     onChange={(e) => handleInputChange(e, setP6, null)}
                     maxLength={1}
-                    style={{ height: "40px", width: "40px", borderRadius: 6, backgroundColor: "#EDEDEDC7", textAlign: "center", outline: "none", border: "none" }}
+                    style={boxStyle}
                     onKeyDown={(e) => {
                         handleBackspace(e, setP6, "P5");
                         if (e.key === 'Enter') {

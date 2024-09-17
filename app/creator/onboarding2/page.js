@@ -84,9 +84,10 @@ export default function Home() {
             <div className='flex flex-row items-center justify-center w-full'>
                 <div
                     // className='flex flex-row justify-center md:w-5/12 w-full items-center'
-                    className={`flex flex-row justify-center items-center ${currentIndex === 6 ? 'w-6/12' : 'md:w-6/12 w-full'}`}
+                    // className={`flex flex-row justify-center items-center ${currentIndex === 6 ? 'w-6/12' : 'md:w-6/12 w-full'}`}
+                    className= 'flex flex-row justify-center items-center md:w-6/12 w-full' //{`flex flex-row justify-center items-center md:w-6/12 w-full ${currentIndex === 6 ? 'w-6/12' : 'md:w-6/12 w-full'}`}
                 >
-                    <div className='w-9/12'>
+                    <div className='w-full sm:w-9/12'>
                         <div className='mt-24 sm:flex hidden'>
                             {
                                 currentIndex < 6 &&
@@ -98,7 +99,7 @@ export default function Home() {
                             }
                             {/* <div>Onboarding 2</div> */}
                         </div>
-                        <div className='w-full flex justify-center items-center -mt-24' >
+                        <div className='w-full flex justify-center items-center sm:-mt-48'>
                             <Animation onChangeIndex={handleCurrentIndex} />
                         </div>
 

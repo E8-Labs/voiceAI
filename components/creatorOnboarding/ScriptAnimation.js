@@ -23,6 +23,7 @@ import AiSocialLinks from "./AiSocialLinks";
 import { useRouter } from "next/navigation";
 import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
 import Knowledgebase from "../buildai/Knowledgebase";
+import SocialOAuth from "./SocialOAuth";
 
 const boxVariants = {
   enter: (direction) => ({
@@ -40,6 +41,19 @@ const boxVariants = {
 };
 
 export default function ScriptAnimation({ onChangeIndex }) {
+
+  useEffect(() => {
+    const Data = localStorage.getItem('BuildaiIndex');
+    if (Data) {
+      const localdata = JSON.parse(Data);
+      setCurrentIndex(localdata);
+      setDirection(localdata);
+    }
+    // else{
+    //   setCurrentIndex(0);
+    //   setDirection(0);
+    // }
+  })
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
@@ -56,6 +70,9 @@ export default function ScriptAnimation({ onChangeIndex }) {
   const [showBuildAiErr, setShowBuildAiErr] = useState(false);
   //state to get sociallinks data
   const [socialLinks, setSocialLinks] = useState(null);
+  const [knowledgeModal, setKnowledgeModal] = useState(false);
+  const [knowledgeData, setKnowledgeData] = useState([]);
+  const [delKBLoader, setDelKBLoader] = useState(null);
   const fileInputRef = useRef(null);
 
   // const handleSocialLinks = () => {}
@@ -194,7 +211,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
   const containerStyles = {
     position: "relative",
     // height: '40vh',
-    width: "100%",
+    width: "90%",
     overflow: "hidden",
   };
 
@@ -205,7 +222,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
     right: 0,
     bottom: 0,
     // backgroundColor: "red",
-    height: "20vh",
+    // height: "20vh",
     // marginLeft: 10,
     display: "flex",
     alignItems: "center",
@@ -314,16 +331,11 @@ export default function ScriptAnimation({ onChangeIndex }) {
     }
   }
 
-  const [knowledgeModal, setKnowledgeModal] = useState(false);
-  const [knowledgeData, setKnowledgeData] = useState([]);
-  const [delKBLoader, setDelKBLoader] = useState(null);
-
   return (
     <div style={containerStyles}>
       <AnimatePresence initial={false} custom={direction}>
         {currentIndex === 0 && (
           <div
-            className="flex flex-col h-screen w-full justify-center"
             style={{ height: "" }}
           >
             <motion.div
@@ -336,8 +348,8 @@ export default function ScriptAnimation({ onChangeIndex }) {
               transition={{ duration: 0 }}
               style={styles}
             >
-              <div className="w-full flex justify-center">
-                <div className="w-10/12">
+              <div className="w-full flex sm:justify-center justify-start">
+                <div className="sm:w-10/12 w-full">
                   <div>
                     {/* <button onClick={handleBack}>
                                             <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
@@ -360,7 +372,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     {/* Name you ai */}
                   </div>
                   <TextField
-                    className=" w-9/12 mt-8"
+                    className="w-full sm:w-9/12 mt-8"
                     autofill="off"
                     id="filled-basic"
                     label="Name"
@@ -384,9 +396,9 @@ export default function ScriptAnimation({ onChangeIndex }) {
                                         style={{ color: "black" }}
                                     /> */}
 
-                  <div className="w-10/12">
+                  <div className="w-full sm:w-10/12">
                     {aiName ? (
-                      <Button
+                      <button
                         onClick={handleContinue}
                         className="bg-purple hover:bg-purple text-white w-full mt-12"
                         style={{
@@ -397,9 +409,9 @@ export default function ScriptAnimation({ onChangeIndex }) {
                         }}
                       >
                         Continue
-                      </Button>
+                      </button>
                     ) : (
-                      <Button
+                      <button
                         disabled
                         // onClick={handleContinue}
                         className="bg-purple2 hover:bg-purple text-white w-full mt-12"
@@ -412,7 +424,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                         }}
                       >
                         Continue
-                      </Button>
+                      </button>
                     )}
                   </div>
                 </div>
@@ -422,7 +434,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
         )}
         {currentIndex === 1 && (
           <div
-            className="flex flex-col h-screen justify-center"
+            className="flex flex-col h-screen sm:justify-center justify-start"
             style={{ height: "" }}
           >
             <motion.div
@@ -435,8 +447,8 @@ export default function ScriptAnimation({ onChangeIndex }) {
               transition={{ duration: 0 }}
               style={styles}
             >
-              <div className="w-full flex justify-center">
-                <div className="w-10/12">
+              <div className="w-full flex sm:justify-center justify-start">
+                <div className="sm:w-10/12 w-full">
                   <div>
                     <button onClick={handleBack}>
                       <Image
@@ -458,45 +470,8 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     Describe what {aiName} does as a creator or influencer?
                   </div>
 
-                  {/* <TextField
-                                        className='w-9/12 mt-8'
-                                        autofill='off'
-                                        id="filled-basic"
-                                        label="Description"
-                                        variant="filled"
-                                        multiline
-                                        rows={3}
-                                        value={talkAbout}
-                                        onChange={(e) => setTalkAbout(e.target.value)}
-                                        placeholder=' talk about dating, business, fitness ...'
-                                        sx={{
-                                            '& label.Mui-focused': {
-                                                color: '#050A0890',
-                                            },
-                                            '& .MuiFilledInput-root': {
-                                                backgroundColor: '#EDEDED', // Optional: Removes the background color
-                                                // padding: '6px 8px', // Decrease the padding inside the input container
-                                                fontSize: 13,
-                                                fontWeight: '400',
-                                                fontFamily: "inter"
-                                            },
-                                            '& .MuiFilledInput-root:before': {
-                                                borderBottom: 'none', // Remove the default inactive state bottom border
-                                            },
-                                            '& .MuiFilledInput-root:after': {
-                                                borderBottom: 'none', // Remove the focused state bottom border
-                                            },
-                                            '& .MuiFilledInput-root:hover:before': {
-                                                borderBottom: 'none', // Remove the hover state bottom border
-                                            },
-                                            '& .MuiFilledInput-root.Mui-focused:before': {
-                                                borderBottom: 'none', // Ensure no border is shown when the field is focused
-                                            }
-                                        }}
-                                    /> */}
-
                   <TextField
-                    className="w-9/12 mt-8"
+                    className="w-full sm:w-9/12 mt-8"
                     autofill="off"
                     id="filled-basic"
                     label="Description"
@@ -536,9 +511,9 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     }}
                   />
 
-                  <div className="w-10/12">
+                  <div className="w-full sm:w-10/12">
                     {talkAbout ? (
-                      <Button
+                      <button
                         onClick={handleContinue}
                         className="bg-purple hover:bg-purple text-white w-full mt-12"
                         style={{
@@ -549,9 +524,9 @@ export default function ScriptAnimation({ onChangeIndex }) {
                         }}
                       >
                         Continue
-                      </Button>
+                      </button>
                     ) : (
-                      <Button
+                      <button
                         disabled
                         // onClick={handleContinue}
                         className="bg-purple2 hover:bg-purple text-white w-full mt-12"
@@ -564,7 +539,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                         }}
                       >
                         Continue
-                      </Button>
+                      </button>
                     )}
                   </div>
                 </div>
@@ -574,7 +549,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
         )}
         {currentIndex === 2 && (
           <div
-            className="flex flex-col h-screen justify-center"
+            className="flex flex-col h-screen sm:justify-center justify-start"
             style={{ height: "" }}
           >
             <motion.div
@@ -587,8 +562,8 @@ export default function ScriptAnimation({ onChangeIndex }) {
               transition={{ duration: 0 }}
               style={styles}
             >
-              <div className="w-full flex justify-center">
-                <div className="w-10/12">
+              <div className="w-full flex sm:justify-center justify-start">
+                <div className="sm:w-10/12 w-full">
                   <div>
                     <button onClick={handleBack}>
                       <Image
@@ -610,7 +585,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     What does {aiName} help your community with?
                   </div>
                   <TextField
-                    className=" w-9/12 mt-8"
+                    className="w-full sm:w-9/12 mt-8"
                     autofill="off"
                     id="filled-basic"
                     label="Ai help tagline"
@@ -646,9 +621,9 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     }}
                   />
 
-                  <div className="w-10/12">
+                  <div className="w-full sm:w-10/12">
                     {helpTagline ? (
-                      <Button
+                      <button
                         onClick={handleContinue}
                         className="bg-purple hover:bg-purple text-white w-full mt-12"
                         style={{
@@ -659,9 +634,9 @@ export default function ScriptAnimation({ onChangeIndex }) {
                         }}
                       >
                         Continue
-                      </Button>
+                      </button>
                     ) : (
-                      <Button
+                      <button
                         disabled
                         // onClick={handleContinue}
                         className="bg-purple2 hover:bg-purple text-white w-full mt-12"
@@ -674,7 +649,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                         }}
                       >
                         Continue
-                      </Button>
+                      </button>
                     )}
                   </div>
                 </div>
@@ -684,7 +659,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
         )}
         {currentIndex === 3 && (
           <div
-            className="flex flex-col h-screen justify-center"
+            className="flex flex-col h-screen sm:justify-center justify-start"
             style={{ height: "" }}
           >
             <motion.div
@@ -697,9 +672,9 @@ export default function ScriptAnimation({ onChangeIndex }) {
               transition={{ duration: 0 }}
               style={styles}
             >
-              <div className="w-full flex justify-center">
-                <div className="w-10/12">
-                  <div>
+              <div className="w-full flex sm:justify-center justify-start">
+                <div className="sm:w-10/12 w-full">
+                  <div className="flex flex-row w-full sm:w-9/12 justify-between items-center">
                     <button onClick={handleBack}>
                       <Image
                         src={"/assets/backarrow.png"}
@@ -708,20 +683,19 @@ export default function ScriptAnimation({ onChangeIndex }) {
                         width={16}
                       />
                     </button>
-                  </div>
-                  <div
-                    className="mt-6"
-                    style={{
-                      fontSize: 24,
-                      fontWeight: "600",
-                      fontFamily: "inter",
-                    }}
-                  >
-                    Socials
+                    <button
+                      onClick={handleContinue}
+                      style={{
+                        fontWeight: '400',
+                        fontFamily: 'inter',
+                        fontSize: 15
+                      }}>
+                      Skip
+                    </button>
                   </div>
 
                   <div>
-                    <AiSocialLinks handleContinue={handleContinue} />
+                    <AiSocialLinks handleContinue={handleContinue} aiName={aiName} />
                   </div>
 
                   {/* <div className='w-10/12'>
@@ -738,7 +712,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
         )}
         {currentIndex === 4 && (
           <div
-            className="flex flex-col h-screen justify-center"
+            className="flex flex-col h-screen sm:justify-center justify-start"
             style={{ height: "" }}
           >
             <motion.div
@@ -751,8 +725,61 @@ export default function ScriptAnimation({ onChangeIndex }) {
               transition={{ duration: 0 }}
               style={styles}
             >
-              <div className="w-full flex justify-center">
-                <div className="w-10/12">
+              <div className="w-full flex sm:justify-center justify-start">
+                <div className="sm:w-10/12 w-full">
+                  <div className="flex flex-row w-full sm:w-10/12 justify-between items-center">
+                    <button onClick={handleBack}>
+                      <Image
+                        src={"/assets/backarrow.png"}
+                        alt="back"
+                        height={14}
+                        width={16}
+                      />
+                    </button>
+                    <button
+                      onClick={handleContinue}
+                      style={{
+                        fontWeight: '400',
+                        fontFamily: 'inter',
+                        fontSize: 15
+                      }}>
+                      Skip
+                    </button>
+                  </div>
+
+                  <div>
+                    <SocialOAuth currentIndex={currentIndex} handleContinue={handleContinue} />
+                  </div>
+
+                  {/* <div className='w-10/12'>
+                                        <Button onClick={handleTempContinue}
+                                            className='bg-purple hover:bg-purple text-white w-full mt-12'
+                                            style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
+                                            Continue
+                                        </Button>
+                                    </div> */}
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+        {currentIndex === 5 && (
+          <div
+            className="flex flex-col h-screen sm:justify-center justify-start"
+            style={{ height: "" }}
+          >
+            <motion.div
+              key="box6"
+              custom={direction}
+              variants={boxVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0 }}
+              style={styles}
+            >
+              <div className="w-full flex sm:justify-center justify-start">
+                <div className="sm:w-10/12 w-full">
                   <div>
                     <button onClick={handleBack}>
                       <Image
@@ -781,7 +808,8 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     >
                       Knowledge base
                     </div>
-                    <button onClick={() => { setKnowledgeModal(true) }} className="bg-purple px-2 py-2 " style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 15, color: 'white', borderRadius: "50px" }}>
+                    <button onClick={() => { setKnowledgeModal(true) }} className="bg-purple px-2 py-1 sm:py-2 "
+                      style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 15, color: 'white', borderRadius: "50px" }}>
                       Add Knowledge
                     </button>
                   </div>
@@ -849,24 +877,24 @@ export default function ScriptAnimation({ onChangeIndex }) {
                   </div>
 
                   <div className='w-10/12'>
-                    <Button onClick={handleContinue}
+                    <button onClick={handleContinue}
                       className='bg-purple hover:bg-purple text-white w-full mt-12'
                       style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
                       Continue
-                    </Button>
+                    </button>
                   </div>
                 </div>
               </div>
             </motion.div>
           </div>
         )}
-        {currentIndex === 5 && (
+        {currentIndex === 6 && (
           <div
-            className="flex h-screen flex-col justify-center"
+            className="flex h-screen flex-col sm:justify-center justify-start"
             style={{ height: "" }}
           >
             <motion.div
-              key="box6"
+              key="box7"
               custom={direction}
               variants={boxVariants}
               initial="enter"
@@ -876,7 +904,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
               style={styles}
             >
               <div className="w-full flex justify-center">
-                <div className="w-10/12 flex flex-row items-center gap-4">
+                <div className="w-full sm:w-10/12 flex flex-row items-center gap-4">
                   <div style={{ height: "100%", width: "2px" }} />
 
                   <div>
@@ -948,9 +976,9 @@ export default function ScriptAnimation({ onChangeIndex }) {
 
                     <div className="flex flex-row items-center gap-6 mt-12">
                       <div className="w-7/12">
-                        <Button
+                        <button
                           onClick={handleUploadClick}
-                          className="bg-purple hover:bg-purple text-white w-full"
+                          className="bg-purple hover:bg-purple text-white w-full py-2"
                           style={{
                             fontSize: 15,
                             fontWeight: "400",
@@ -958,7 +986,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                           }}
                         >
                           Upload
-                        </Button>
+                        </button>
                       </div>
                       {
                         skipLoader ?
@@ -970,9 +998,9 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     </div>
                     <div className="w-full flex flex-row justify-end">
                       <div className="w-6/12">
-                        <Button
+                        <button
                           onClick={handleBuildAI}
-                          className="bg-purple hover:bg-purple text-white w-full mt-12"
+                          className="bg-purple hover:bg-purple text-white w-full mt-12 py-2"
                           style={{
                             fontSize: 15,
                             fontWeight: "400",
@@ -986,7 +1014,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                           ) : (
                             "Continue"
                           )}
-                        </Button>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -995,13 +1023,13 @@ export default function ScriptAnimation({ onChangeIndex }) {
             </motion.div>
           </div>
         )}
-        {currentIndex === 6 && (
+        {currentIndex === 7 && (
           <div
-            className="flex flex-col justify-center h-screen"
+            className="flex flex-col sm:justify-center justify-start h-screen"
             style={{ height: "" }}
           >
             <motion.div
-              key="box7"
+              key="box8"
               custom={direction}
               variants={boxVariants}
               initial="enter"

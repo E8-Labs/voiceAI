@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Apis from '@/components/apis/Apis';
 import axios from 'axios';
-import { CircularProgress } from '@mui/material';
+import { Box, CircularProgress, Modal } from '@mui/material';
 import moment from 'moment';
 
 const Page = () => {
@@ -94,6 +94,51 @@ const Page = () => {
         },
     ]
 
+    const [transcriptSummaryText, setTranscriptSummaryText] = useState('');
+    const [transcriptText, setTranscriptText] = useState('');
+    const styleDetails = {
+        maxHeight: '60vh',
+        overflow: 'auto',
+        scrollbarWidth: 'none',
+        bgcolor: 'transparent',
+        // p: 2,
+        mx: 'auto',
+        // my: '50vh',
+        borderRadius: 20,
+        border: "none",
+        outline: "none",
+        // border: "2px solid green",
+        backgroundColor: '#ffffff50',
+        padding: 25
+    };
+
+    const formatToHtml = async (text) => {
+        const apiResponse = text;
+
+        // Replace markdown-style bold and convert line breaks to <br> tags
+        const formattedContent = apiResponse
+            .replace(/### (.*?)\n/g, '<strong>$1</strong><br/>') // Heading 3
+            .replace(/## (.*?)\n/g, '<h2>$1</h2>')  // Heading 2
+            .replace(/# (.*?)\n/g, '<h1>$1</h1>')   // Heading 1
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold text
+            .replace(/\n/g, '<br>'); // Line breaks
+
+        return setTranscriptSummaryText(formattedContent)
+    };
+
+    const [transcriptData, setTranscriptData] = useState('');
+    const fetchTranscript = async (Text) => {
+        const apiResponse = Text;
+
+        // Handle bot and human responses, bold text, and new lines
+        const formattedContent = apiResponse
+            .replace(/bot: (.*?)(\n|$)/g, '<div class="flex justify-start mb-2"><div class="bg-blue-100 p-4 rounded-lg max-w-lg"><strong>Bot:</strong> $1</div></div>')   // Format bot messages (left)
+            .replace(/human: (.*?)(\n|$)/g, '<div class="flex justify-end mb-2"><div class="bg-green-100 p-4 rounded-lg max-w-lg text-right"><strong>Human:</strong> $1</div></div>') // Format human messages (right)
+            .replace(/\n/g, '<br>'); // Convert new lines to <br> tags
+
+        setTranscriptText(formattedContent);
+    }
+
     return (
         <div className='h-screen w-full' style={{ backgroundColor: "#ffffff40", overflow: 'hidden', scrollbarWidth: 0, }}>
             <div className='w-full pe-4 lg:w-9/12 flex flex-col gap-2 pt-10 ps-2 lg:ps-10' style={{ maxHeight: '90vh', overflow: "hidden", scrollbarWidth: "none" }}>
@@ -111,14 +156,17 @@ const Page = () => {
                         <div className='w-2/12 lg:w-2/12 '>
                             <div style={styles.text}>Status</div>
                         </div>
-                        <div className='w-2/12 lg:w-2/12 '>
+                        <div className='w-2/12 lg:w-1/12 '>
                             <div style={styles.text}>Amount</div>
                         </div>
-                        <div className='w-3/12 lg:w-3/12'>
+                        <div className='w-3/12 lg:w-2/12'>
                             <div style={styles.text}>Duration</div>
                         </div>
                         <div className='w-3/12 lg:w-2/12'>
                             <div style={styles.text}>Date</div>
+                        </div>
+                        <div className='w-3/12 lg:w-2/12'>
+                            <div style={styles.text}>Summary</div>
                         </div>
                     </div>
                     {
@@ -177,12 +225,12 @@ const Page = () => {
                                                                         {item.status}
                                                                     </div>
                                                                 </div>
-                                                                <div className='w-2/12 lg:w-2/12'>
+                                                                <div className='w-2/12 lg:w-1/12'>
                                                                     <div style={styles.text2}>
                                                                         ${Number(item.amount).toFixed(2)}
                                                                     </div>
                                                                 </div>
-                                                                <div className='w-3/12 lg:w-3/12 '>
+                                                                <div className='w-3/12 lg:w-2/12 '>
                                                                     <div style={styles.text2}>
                                                                         {item.durationString}
                                                                     </div>
@@ -191,6 +239,22 @@ const Page = () => {
                                                                     <div style={styles.text2}>
                                                                         {/* {item.model.owner.assitant.createdAt} */}
                                                                         {moment(item.createdAt).format('MM/DD/YYYY')}
+                                                                    </div>
+                                                                </div>
+                                                                <div className='w-3/12 lg:w-2/12'>
+                                                                    <div style={styles.text2}>
+                                                                        {/* {item.model.owner.assitant.createdAt} */}
+                                                                        {/* {moment(item.createdAt).format('MM/DD/YYYY')} */}
+                                                                        <button
+                                                                            onClick={() => {
+                                                                                if (item.summary !== "") {
+                                                                                    formatToHtml(item.summary);
+                                                                                } else {
+                                                                                    fetchTranscript(item.transcript);
+                                                                                }
+                                                                            }} className='text-purple' style={{ fontWeight: '400', fontSize: 15, fontFamily: 'inter' }}>
+                                                                            Details
+                                                                        </button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -285,6 +349,46 @@ const Page = () => {
                             </div>
                     }
                 </div>
+            </div>
+            <div className='h-100vh flex flex-col justify-center items-center'>
+                <Modal
+                    open={transcriptSummaryText}
+                    onClose={(() => setTranscriptSummaryText(''))}
+                    closeAfterTransition
+                    BackdropProps={{
+                        timeout: 1000,
+                        sx: {
+                            backgroundColor: 'transparent',
+                            backdropFilter: 'blur(40px)',
+                            height: "100%"
+                        },
+                    }} className='h-screen flex flex-col justify-center items-center'>
+                    <Box className="lg:w-5/12 sm:w-7/12 w-10/12" style={styleDetails}>
+                        <div dangerouslySetInnerHTML={{ __html: transcriptSummaryText }} />
+                        {/* hello */}
+
+                    </Box>
+                </Modal>
+                <Modal
+                    open={transcriptText}
+                    onClose={(() => setTranscriptText(''))}
+                    closeAfterTransition
+                    BackdropProps={{
+                        timeout: 1000,
+                        sx: {
+                            backgroundColor: 'transparent',
+                            backdropFilter: 'blur(40px)',
+                            height: "100%"
+                        },
+                    }} className='h-screen flex flex-col justify-center items-center'>
+                    <Box className="lg:w-5/12 sm:w-7/12 w-10/12" style={styleDetails}>
+                        <div>
+                            {/* {transcriptText} */}
+                            <div dangerouslySetInnerHTML={{ __html: transcriptText }} />
+                        </div>
+
+                    </Box>
+                </Modal>
             </div>
         </div >
     )

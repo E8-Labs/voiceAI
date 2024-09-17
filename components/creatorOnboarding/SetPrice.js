@@ -85,18 +85,18 @@ function SetPrice({ handleBack, handleContinue, buildScriptLoader }) {
                             <div>
                                 {
                                     toogleActive || callPrice ?
-                                        <Button onClick={handleUploadClick}
+                                        <button onClick={handleUploadClick}
                                             className='bg-purple hover:bg-purple text-white w-full'
                                             style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
                                             Upload
-                                        </Button> :
-                                        <Button
+                                        </button> :
+                                        <button
                                             disabled
                                             //onClick={handleUploadClick}
                                             className='bg-purple2 hover:bg-purple text-white w-full'
                                             style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px", color: "white" }}>
                                             Upload
-                                        </Button>
+                                        </button>
                                 }
                             </div>
                     }

@@ -186,6 +186,8 @@ const Page = () => {
     const [creatorsLoader, setCreatorsLoader] = useState(false);
     const [purchasedProductLoader, setPurchasedProductLoaderLoader] = useState(false);
     const [apiData, setApiData] = useState(false);
+    const [opensearchBar, setOpensearchBar] = useState(false);
+    const [searchValue, setsearchValue] = useState("");
 
 
     const styles = {
@@ -361,12 +363,16 @@ const Page = () => {
         setOpenProducts(item);
     }
 
-    const [opensearchBar, setOpensearchBar] = useState(false);
-    const [searchValue, setsearchValue] = useState("");
-
+    //code to filter data
     const filteredData = callerDashboardData.filter(item =>
         item.profile.name.toLowerCase().includes(searchValue.toLowerCase())
     );
+
+    // useEffect(() => {
+    //     if (filteredData) {
+    //         setOpenProducts(response.data.data.filteredData[0]);
+    //     }
+    // }, [filteredData])
 
 
     return (
@@ -389,8 +395,8 @@ const Page = () => {
                             <div className='w-full flex flex-row p-4 rounded-xl' style={{ backgroundColor: "#ffffff40" }}>
 
                                 <div className='w-6/12'>
-                                    <div className='flex flex-row justify-between items-center mt-4 px-4'>
-                                        <div>
+                                    <div className='flex flex-row justify-between items-center px-4'>
+                                        <div className='flex flex-col justify-center' style={{ height: 50, fontSize: 20, fontWeight: 400 }}>
                                             Creators
                                         </div>
                                         <AnimatePresence>
@@ -419,9 +425,15 @@ const Page = () => {
                                                 </motion.div>
                                             }
                                         </AnimatePresence>
-                                        <button onClick={() => setOpensearchBar(!opensearchBar)} className='outline-none border-none'>
-                                            <Image src="/assets/searchIcon.png" height={24} width={24} alt='search' />
-                                        </button>
+                                        {
+                                            opensearchBar ?
+                                                <button onClick={() => setOpensearchBar(!opensearchBar)} className='outline-none border-none'>
+                                                    <Image src="/assets/croseBtn.png" height={24} width={24} alt='search' />
+                                                </button> :
+                                                <button onClick={() => setOpensearchBar(!opensearchBar)} className='outline-none border-none'>
+                                                    <Image src="/assets/searchIcon.png" height={24} width={24} alt='search' />
+                                                </button>
+                                        }
                                     </div>
 
                                     <div>
@@ -434,7 +446,7 @@ const Page = () => {
                                                     {
                                                         callerDashboardData === null || openProducts.length < 1 ?
                                                             <div className='ms-4 mt-2' style={{ fontWeight: '500', fontFamily: 'inter', fontSize: 15, }}>
-                                                                No caller dashoboard
+                                                                No creator
                                                             </div> :
                                                             <div style={{ maxHeight: '30vh', overflow: "auto", scrollbarWidth: "none" }}>
                                                                 {

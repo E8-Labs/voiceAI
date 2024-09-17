@@ -90,6 +90,9 @@ export default function Animation({ onChangeIndex }) {
     const [verificationId, setVerificationId] = useState('');
     const [otp, setOtp] = useState("");
     const [emailVerificationCodeErr2, setEmailVerificationCodeErr2] = useState(null);
+    const [isHighScreen, setIsHighScreen] = useState(false);
+    const [isWideScreen, setIsWideScreen] = useState(false);
+    const [isWideScreen2, setIsWideScreen2] = useState(false);
 
     useEffect(() => {
         if (!auth) { return }
@@ -829,7 +832,7 @@ export default function Animation({ onChangeIndex }) {
     const containerStyles = {
         position: 'relative',
         // height: '40vh',
-        width: '80%',
+        width: '90%',
         overflow: 'hidden',
         // backgroundColor: "blue"
     };
@@ -841,13 +844,37 @@ export default function Animation({ onChangeIndex }) {
         right: 0,
         bottom: 0,
         // backgroundColor: "red",
-        height: "20vh",
+        // height: "20vh",
         // marginLeft: 10,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         marginInline: 10
     };
+
+    //code for wide screen
+    useEffect(() => {
+        const handleResize = () => {
+            // Check if width is greater than or equal to 1024px
+            setIsWideScreen(window.innerWidth >= 950);
+
+            setIsWideScreen2(window.innerWidth >= 500);
+            // Check if height is greater than or equal to 1024px
+            setIsHighScreen(window.innerHeight >= 640);
+
+            // Log the updated state values for debugging (Optional)
+            console.log("isWideScreen: ", window.innerWidth >= 640);
+            console.log("isWideScreen2: ", window.innerWidth >= 500);
+            console.log("isHighScreen: ", window.innerHeight >= 1024);
+        };
+
+        handleResize(); // Set initial state
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
 
     //code for verification code whe user sign in
@@ -911,12 +938,16 @@ export default function Animation({ onChangeIndex }) {
         },
     };
 
+    const margin = {
+        marginTop: '25%'
+    }
+
     return (
         <div style={containerStyles}>
             <div id="recaptcha-container" />
             <AnimatePresence initial={false} custom={direction}>
                 {currentIndex === 0 && (
-                    <div className='flex flex-col h-screen justify-center' style={{ height: "", }}>
+                    <div className='flex flex-col h-screen sm:justify-center justify-start' style={margin}>
                         <motion.div
                             key="box1"
                             custom={direction}
@@ -1031,7 +1062,7 @@ export default function Animation({ onChangeIndex }) {
                     </div>
                 )}
                 {currentIndex === 1 && (
-                    <div className='flex flex-col h-screen justify-center' style={{ height: "", }}>
+                    <div className='flex flex-col h-screen sm:justify-center justify-start' style={margin}>
                         <motion.div
                             key="box2"
                             custom={direction}
@@ -1205,7 +1236,7 @@ export default function Animation({ onChangeIndex }) {
                     </div>
                 )}
                 {currentIndex === 2 && (
-                    <div className='flex flex-col h-screen justify-center' style={{ height: "", }}>
+                    <div className='flex flex-col h-screen sm:justify-center justify-start' style={margin}>
                         <motion.div
                             key="box3"
                             custom={direction}
@@ -1217,13 +1248,13 @@ export default function Animation({ onChangeIndex }) {
                             style={styles}
                         >
                             <div className='w-full flex justify-center'>
-                                <div className='w-10/12'>
+                                <div className='w-full sm:w-10/12'>
                                     <div>
                                         <button onClick={handleBack}>
                                             <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
                                         </button>
                                     </div>
-                                    <div className='mt-6' style={{ fontSize: 24, fontWeight: "600" }}>
+                                    <div className='mt-6' style={{ fontSize: 24, fontWeight: "600" }} onClick={handleContinue}>
                                         First, claim your unique url
                                     </div>
                                     <div className='text-lightWhite mt-2' style={{ fontSize: 13, fontWeight: "400", marginBottom: 50 }}>
@@ -1299,7 +1330,7 @@ export default function Animation({ onChangeIndex }) {
                                         Try something similar.
                                     </div> */}
 
-                                    <div className='w-10/12' style={{ height: "55px" }}
+                                    <div className='w-full sm:w-10/12' style={{ height: "55px" }}
                                     >
                                         <div>
                                             {
@@ -1350,7 +1381,7 @@ export default function Animation({ onChangeIndex }) {
                     </div>
                 )}
                 {currentIndex === 3 && (
-                    <div className='flex flex-col h-screen justify-center' style={{ height: "", }}>
+                    <div className='flex flex-col h-screen sm:justify-center justify-start' style={margin}>
                         <motion.div
                             key="box4"
                             custom={direction}
@@ -1361,16 +1392,16 @@ export default function Animation({ onChangeIndex }) {
                             transition={{ duration: 0 }}
                             style={styles}>
                             <div className='w-full flex justify-center'>
-                                <div className='w-10/12'>
+                                <div className='w-full sm:w-10/12'>
                                     <div>
                                         <button onClick={handleBack}>
                                             <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
                                         </button>
                                     </div>
                                     <div className='mt-6 text-lightWhite' style={{ fontWeight: "400", fontSize: 13 }}>
-                                        voice.ai/{userName} is all yours!
+                                        app.mycreatorx.com/{userName} is all yours!
                                     </div>
-                                    <div className='mt-6' style={{ fontSize: 24, fontWeight: "600" }}>
+                                    <div className='mt-6' style={{ fontSize: 24, fontWeight: "600" }} onClick={handleContinue}>
                                         Now, create your account
                                     </div>
                                     <div className='w-full flex flex-row gap-6 mt-8'>
@@ -1500,7 +1531,7 @@ export default function Animation({ onChangeIndex }) {
                     </div>
                 )}
                 {currentIndex === 4 && (
-                    <div className='flex flex-col h-screen justify-center' style={{ height: "", }}>
+                    <div className='flex flex-col h-screen sm:justify-center justify-start' style={margin}>
                         <motion.div
                             key="box5"
                             custom={direction}
@@ -1511,13 +1542,13 @@ export default function Animation({ onChangeIndex }) {
                             transition={{ duration: 0 }}
                             style={styles}>
                             <div className='w-full flex justify-center'>
-                                <div className='w-10/12'>
+                                <div className='w-full sm:w-10/12'>
                                     <div>
                                         {/* <button onClick={handleBack}>
                                             <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
                                         </button> */}
                                     </div>
-                                    <div className='mt-6' style={{ fontSizeL: 24, fontWeight: "600" }}>
+                                    <div className='mt-6' style={{ fontSizeL: 24, fontWeight: "600" }} onClick={handleContinue}>
                                         Verify email address.
                                     </div>
                                     <div className='text-lightWhite mt-1' style={{ fontSize: 13, fontWeight: "400" }}>
@@ -1635,7 +1666,7 @@ export default function Animation({ onChangeIndex }) {
                     </div>
                 )}
                 {currentIndex === 5 && (
-                    <div className='flex flex-col h-screen justify-center' style={{ height: "", }}>
+                    <div className='flex flex-col h-screen sm:justify-center justify-start' style={margin}>
                         <motion.div
                             key="box6"
                             custom={direction}
@@ -1646,13 +1677,13 @@ export default function Animation({ onChangeIndex }) {
                             transition={{ duration: 0 }}
                             style={styles}>
                             <div className='w-full flex justify-center'>
-                                <div className='w-10/12'>
+                                <div className='w-full sm:w-10/12'>
                                     <div>
                                         <button onClick={handleBack}>
                                             <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
                                         </button>
                                     </div>
-                                    <div className='mt-6' style={{ fontSizeL: 24, fontWeight: "600" }}>
+                                    <div className='mt-6' style={{ fontSizeL: 24, fontWeight: "600" }} onClick={handleContinue}>
                                         Add your phone number
                                     </div>
                                     <div className='text-lightWhite mt-2'>
@@ -1717,7 +1748,7 @@ export default function Animation({ onChangeIndex }) {
                 )}
                 {
                     currentIndex === 6 && (
-                        <div className='flex h-screen flex-col justify-center' style={{ height: "", }}>
+                        <div className='flex h-screen flex-col sm:justify-center justify-start' style={margin}>
                             <motion.div
                                 key="box7"
                                 custom={direction}
@@ -1728,13 +1759,13 @@ export default function Animation({ onChangeIndex }) {
                                 transition={{ duration: 0 }}
                                 style={styles}>
                                 <div className='w-full flex justify-center'>
-                                    <div className='w-10/12'>
+                                    <div className='w-full sm:w-10/12'>
                                         <div>
                                             {/* <button onClick={handleBack}>
                                                 <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
                                             </button> */}
                                         </div>
-                                        <div className='mt-6' style={{ fontSizeL: 24, fontWeight: "600" }}>
+                                        <div className='mt-6' style={{ fontSizeL: 24, fontWeight: "600" }} onClick={handleContinue}>
                                             Verify phone number.
                                         </div>
                                         <div className='text-lightWhite mt-1' style={{ fontSize: 13, fontWeight: "400" }}>
@@ -1907,6 +1938,16 @@ export default function Animation({ onChangeIndex }) {
                                 //     height: 'auto'
                                 // }}
                                 />
+
+                                <div className='w-full flex flex-col text-center justify-center mt-4' style={{ color: '#050A0885', fontWeight: '400', fontSize: 13 }}>
+                                    Welcome to Voice.ai {userName}, where creators like you build a more engaging and personalized <span
+                                        style={{
+                                            color: '#050A0830',
+                                            fontWeight: '400', fontSize: 13,
+                                        }}>
+                                        experience for their community. With Voice, you're able to build an AI version of yourself so people can come talk directly with your AI twin. In the next steps, we'll be creating your AI based on what makes you- you.
+                                    </span>
+                                </div>
 
                                 <div className='w-full flex justify-center mt-4'>
                                     <button onClick={handleCongratsClick} className='bg-purple text-white px-6 py-2' style={{ borderRadius: "50px" }}>

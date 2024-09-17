@@ -1,4 +1,4 @@
-const BasePath = 'https://www.blindcircle.com:444/voice/' //'https://www.blindcircle.com:444/voice/' //;'http://localhost:8005/'
+const BasePath = 'https://www.blindcircle.com:444/voice/' // Link for live or git //'https://www.blindcircle.com:444/voice/' //;'http://localhost:8005/'
 
 const Apis = {
     //user flow apis
@@ -15,6 +15,7 @@ const Apis = {
 
     GetRecentCalls: `${BasePath}api/calls/get_recent_calls`,
     GetAssistantData: `${BasePath}api/user/getProfileFromUsername`,
+    Login_Google:`${BasePath}api/user/login_google`,
 
 
     //apis for voice creator onboarding

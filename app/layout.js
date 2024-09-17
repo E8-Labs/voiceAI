@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+import SessionProviderWrapper from "@/components/socialAuth/SessioneProviderWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,6 +13,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        {/* code for removing scrolling on phones */}
+        {/* <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" /> */}
+
         {/* Code for popins */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
@@ -21,7 +25,11 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <SessionProviderWrapper>
+          {children}
+        </SessionProviderWrapper>
+      </body>
     </html>
   );
 }

@@ -1338,11 +1338,11 @@ const Page = () => {
                             }}
                             className='h-screen'
                         >
-                            <Box className="lg:w-5/12 sm:w-7/12 w-10/12"
+                            <Box className="lg:w-5/12 sm:w-7/12 w-11/12"
                                 sx={styleLoginModal}
                             >
                                 {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
-                                <div className='rounded' style={{ padding: 30, backgroundColor: '#ffffff60' }}>
+                                <div className='rounded' style={{ padding: 20, backgroundColor: '#ffffff60' }}>
                                     <div className='w-full' style={{  }}>
                                         <LoginModal creator={creator} assistantData={getAssistantData} closeForm={hideBottom} />
                                     </div>

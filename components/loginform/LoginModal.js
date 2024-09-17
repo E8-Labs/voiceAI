@@ -316,7 +316,7 @@ const LoginModal = ({ closeForm, creator, assistantData }) => {
                                 </div>
 
                                 <div className='mt-2' style={{ fontWeight: '400', fontSize: 14, fontFamily: 'inter' }}>
-                                    Allow voice.ai to access your location while using the app
+                                    Allow mycreatorx to access your location while using the app
                                 </div>
 
                                 {/* Display location or error */}

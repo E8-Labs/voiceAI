@@ -25,6 +25,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
     const [checkUserEmailData, setCheckUserEmailData] = useState(null);
     const [emailValidationError, setEmailValidationError] = useState(false);
     const [verificationId, setVerificationId] = useState('');
+    const [isWideScreen, setIsWideScreen] = useState(false);
 
     const handlePhoneNumber = (number) => {
         // console.log("Number is", number);
@@ -378,7 +379,24 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
             setUserEmail(Data.email);
             // setUserPhoneNumber(Data.phonenumber);
         }
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        const handleResize = () => {
+            // Check if width is greater than or equal to 1024px
+            setIsWideScreen(window.innerWidth >= 500);
+
+            // Log the updated state values for debugging (Optional)
+            console.log("isWideScreen: ", window.innerWidth >= 500);
+        };
+
+        handleResize(); // Set initial state
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     //code to close form
     const handleCloseForm = () => {
@@ -451,7 +469,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                         color: 'black !important',  // Apply black color directly
                     },
                 }}
-                style={{ color: "black", marginTop: 40 }}
+                style={{ color: "black", marginTop: isWideScreen ? 40 : 10 }}
             />
 
             <TextField className=' w-full mt-6'
@@ -462,7 +480,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                 label="Last Name" variant="outlined"
                 placeholder='Last Name'
                 sx={MuiFieldStyle}
-                style={{ marginTop: 30 }}
+                style={{ marginTop: isWideScreen ? 30 : 15 }}
             />
             <TextField className=' w-full mt-6'
                 autofill='off'
@@ -481,7 +499,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                 label="Email" variant="outlined"
                 placeholder='Email Address'
                 sx={MuiFieldStyle}
-                style={{ marginTop: 30 }}
+                style={{ marginTop: isWideScreen ? 30 : 15 }}
             />
             {
                 emailValidationError ?
@@ -501,7 +519,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                     </div>
             }
             {/* <TextField className='mt-4' id="outlined-basic" label="Outlined" variant="outlined" sx={MuiFieldStyle} /> */}
-            <div className='mt-6' style={{ marginTop: 27 }}>
+            <div className='mt-6' style={{ marginTop: isWideScreen ? 26 : 5 }}>
                 <PhoneNumberInput phonenumber={handlePhoneNumber} fromCreateAccount={true} formatErr={handleNumberFormatErr} />
             </div>
             {

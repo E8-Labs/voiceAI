@@ -538,11 +538,11 @@ const Page = () => {
                     },
                 }}
             >
-                <Box className="lg:w-5/12 sm:w-7/12"
+                <Box className="lg:w-5/12 sm:w-7/12 w-full"
                     sx={styleAddCardPopup}
                 >
                     <div className='flex flex-row justify-center'>
-                        <div className='w-9/12' style={{ backgroundColor: "#ffffff23", padding: 20, borderRadius: 5 }}>
+                        <div className='w-11/12 sm:w-9/12' style={{ backgroundColor: "#ffffff23", padding: 20, borderRadius: 5 }}>
                             {/* <AddCard handleBack={handleBack} closeForm={closeForm} /> */}
                             <div style={{ backgroundColor: 'white', padding: 18, borderRadius: 5 }}>
                                 <Elements stripe={stripePromise}>
