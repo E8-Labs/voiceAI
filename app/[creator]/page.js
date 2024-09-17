@@ -718,8 +718,21 @@ const Page = () => {
                                                         <div style={{ border: "2px solid black", borderRadius: "50%" }}>
                                                             {
                                                                 getAssistantData && getAssistantData.profile_image ?
-                                                                    <Image src={getAssistantData.profile_image} alt='profilephoto' height={50} width={50}
-                                                                        style={{ padding: 4, borderRadius: "50%" }} /> :
+                                                                    <Image src={getAssistantData.profile_image} alt='profilephoto' //height={50} width={50}
+                                                                        height={50}
+                                                                        width={50}
+                                                                        style={{
+                                                                            width: '50px',
+                                                                            height: '50px',
+                                                                            backgroundColor: "",
+                                                                            borderRadius: "50%",
+                                                                            border: "3px solid white",
+                                                                            objectFit: 'cover',
+                                                                            objectPosition: 'center',
+                                                                            // backgroundColor: 'red'
+                                                                        }}
+                                                                    //style={{ padding: 4, borderRadius: "50%" }} 
+                                                                    /> :
                                                                     <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={50} width={50}
                                                                         style={{ padding: 4, borderRadius: "50%" }} />
                                                             }
@@ -874,8 +887,21 @@ const Page = () => {
                                                                     style={{ padding: 4, borderRadius: "50%" }} /> */}
                                                                 {
                                                                     getAssistantData && getAssistantData.profile_image ?
-                                                                        <Image src={getAssistantData.profile_image} alt='profilephoto' height={50} width={50}
-                                                                            style={{ padding: 4, borderRadius: "50%" }} /> :
+                                                                        <Image src={getAssistantData.profile_image} alt='profilephoto' //height={50} width={50}
+                                                                            height={50}
+                                                                            width={50}
+                                                                            style={{
+                                                                                width: '50px',
+                                                                                height: '50px',
+                                                                                backgroundColor: "",
+                                                                                borderRadius: "50%",
+                                                                                border: "3px solid white",
+                                                                                objectFit: 'cover',
+                                                                                objectPosition: 'center',
+                                                                                // backgroundColor: 'red'
+                                                                            }}
+                                                                        // style={{ padding: 4, borderRadius: "50%" }} 
+                                                                        /> :
                                                                         <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={50} width={50}
                                                                             style={{ padding: 4, borderRadius: "50%" }} />
                                                                 }
@@ -1343,7 +1369,7 @@ const Page = () => {
                             >
                                 {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
                                 <div className='rounded' style={{ padding: 20, backgroundColor: '#ffffff60' }}>
-                                    <div className='w-full' style={{  }}>
+                                    <div className='w-full' style={{}}>
                                         <LoginModal creator={creator} assistantData={getAssistantData} closeForm={hideBottom} />
                                     </div>
                                 </div>

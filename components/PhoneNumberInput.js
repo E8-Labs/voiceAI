@@ -197,7 +197,7 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
                 flagStyle={{
                     display: 'none',
                 }}
-                countryCodeEditable={!true}
+                countryCodeEditable={true}
                 enableSearch={true}
                 searchStyle={{
                     backgroundColor: 'transparent',

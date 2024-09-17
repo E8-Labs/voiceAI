@@ -40,8 +40,8 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
                         style={{
                             backgroundColor: "#ffffff40",
                             padding: 4,
-                            borderRadius: 20,
-                            // paddingTop: 20,
+                            borderRadius: 10,
+                            paddingTop: 10,
                             width: "auto",
                             border: "2px solid #ffffff40"
                         }}>
