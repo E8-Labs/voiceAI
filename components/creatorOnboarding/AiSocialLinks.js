@@ -2,6 +2,7 @@
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { Button } from '@mui/material'
+import { color } from 'framer-motion';
 
 function AiSocialLinks({ handleContinue, aiName }) {
 
@@ -13,32 +14,41 @@ function AiSocialLinks({ handleContinue, aiName }) {
     const [twitterUrl, setTwitterurl] = useState("");
     const [spotifyurl, setSpotifyurl] = useState("");
     const [instaUrl, setInstaurl] = useState("");
+    const [userData, setUserData] = useState(null);
+    const [validLinkErr, setValidLinkErr] = useState(false);
+    const [validYoutubeLinkErr, setValidYoutubeLinkErr] = useState(false);
+    const [validTwitterLinkErr, setValidTwitterLinkErr] = useState(false);
+    const [validApplePodcastLinkErr, setValidApplePodcastLinkErr] = useState(false);
+    const [validSpotifyLinkErr, setValidSpotifyLinkErr] = useState(false);
+    const [validFacebookLinkErr, setValidFacebookLinkErr] = useState(false);
 
     useEffect(() => {
-        const localData = localStorage.getItem('socialsUrl');
+        const localData = localStorage.getItem('User');
         if (localData) {
             const Data = JSON.parse(localData);
-            console.log("social inks data recieved", Data);
-            if (Data.discord_url) {
-                setAppleProducts(Data.discord_url)
-            }
-            if (Data.fb_url) {
-                setFburl(Data.fb_url)
-            }
-            if (Data.insta_url) {
-                setInstaurl(Data.insta_url)
-            }
-            if (Data.spotify_url) {
-                setSpotifyurl(Data.spotify_url)
-            }
-            if (Data.twitter_url) {
-                setTwitterurl(Data.twitter_url)
-            }
-            if (Data.youtube_url) {
-                setYoutubeurl(Data.youtube_url)
-            }
+            console.log("User data recieved", Data.data.user);
+            setUserData(Data.data.user);
         }
-    }, [])
+    }, []);
+
+    //validate instagram url
+    // const validateInstagramUrl = (url) => {
+    //     const profileRegex = /^(https?:\/\/)?(www\.)?instagram\.com\/[a-zA-Z0-9._]{1,30}(\/)?(\?.*)?$/;
+    //     return profileRegex.test(url);
+    // }
+
+    //simple url validation pattern
+    const validateUrl = (url) => {
+        const urlRegex = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/;
+        return urlRegex.test(url);
+    };
+
+    const linkErrStyle = {
+        fontSize: 12, height: 13,
+        fontFamily: 'inter', fontWeight: '400',
+        color: '#FF0100',
+    }
+
 
     const handleContinueSocial = () => {
         const data = {
@@ -90,7 +100,7 @@ function AiSocialLinks({ handleContinue, aiName }) {
 
                 <div className="mt-12 flex flex-row items-center gap-2">
                     <div className='flex flex-row items-center'>
-                        <Image src="/assets/placeholderImg.jpg" alt='Profile' //height={50} width={50}
+                        <Image src={userData && userData.profile_image ? userData.profile_image : "/assets/placeholderImg.jpg"} alt='Profile' //height={50} width={50}
                             height={55}
                             width={55}
                             style={{
@@ -106,17 +116,48 @@ function AiSocialLinks({ handleContinue, aiName }) {
                             }} />
                         <div style={triangle} />
                     </div>
-                    <div className='sm:flex sm:flex-row sm:gap-2'>
-                        <div>
-                            {aiName}
+                    <div className='sm:flex sm:flex-row sm:gap-2 items-center'>
+                        <div style={{ fontWeight: '400', fontSize: 15, fontFamily: 'inter' }}>
+                            {userData && userData.name ?
+                                <div>
+                                    {userData.name}
+                                </div> :
+                                <div>
+                                    {userData && userData.email}
+                                </div>
+                            }
                         </div>
                         <div className='flex flex-row gap-2 items-center'>
-                            <Image style={styles.image}
-                                src={'/assets/twiterIcon.png'} alt='Youtube'
-                                height={30} width={30} />
-                            <Image style={styles.image}
-                                src={'/assets/youtubeIcon.png'} alt='Youtube'
-                                height={30} width={30} />
+                            {
+                                instaUrl && <Image style={styles.image}
+                                    src={'/assets/instagram.png'} alt='Youtube'
+                                    height={30} width={30} />
+                            }
+                            {
+                                youtubeUrl && <Image style={styles.image}
+                                    src={'/assets/youtubeIcon.png'} alt='Youtube'
+                                    height={30} width={30} />
+                            }
+                            {
+                                twitterUrl && <Image style={styles.image}
+                                    src={'/assets/twiterIcon.png'} alt='Youtube'
+                                    height={30} width={30} />
+                            }
+                            {
+                                appleProducts && <Image style={styles.image}
+                                    src={'/assets/appleProducts.png'} alt='Youtube'
+                                    height={30} width={30} />
+                            }
+                            {
+                                spotifyurl && <Image style={styles.image}
+                                    src={'/assets/spotify.png'} alt='Youtube'
+                                    height={30} width={30} />
+                            }
+                            {
+                                fbUrl && <Image style={styles.image}
+                                    src={'/assets/fbIcon.png'} alt='Youtube'
+                                    height={30} width={30} />
+                            }
                         </div>
                     </div>
                 </div>
@@ -135,77 +176,165 @@ function AiSocialLinks({ handleContinue, aiName }) {
                 <div className='text-gray-400 text-sm mt-3 mb-10 mb-5 w-11/12'>
                     This is used as your knowledge base to train your ai model.
                 </div>
-                <div className='flex flex-row gap-5 mb-8'>
+                <div className='flex flex-row gap-5'>
                     <Image style={styles.image}
                         src={'/assets/instagram.png'} alt='web'
                         height={30} width={30} />
                     <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
                         <input style={styles.urlsInput}
                             value={instaUrl}
-                            onChange={(e) => setInstaurl(e.target.value)}
+                            onChange={(e) => {
+                                setInstaurl(e.target.value);
+                                const url = e.target.value;
+
+                                if (instaUrl) {
+                                    if (validateUrl(url)) {
+                                        console.log("Valid URL");
+                                        setValidLinkErr(false);
+                                    } else {
+                                        console.log("Invalid URL");
+                                        setValidLinkErr(true);
+                                    }
+                                }
+                            }}
                             className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
                         />
-
                     </div>
                 </div>
+                <div className='mt-2 mb-8' style={linkErrStyle}>
+                    {
+                        instaUrl && validLinkErr && "Invalid link" //: 'valid'
+                    }
+                </div>
 
-                <div className='flex flex-row gap-5 mb-8'>
+                <div className='flex flex-row gap-5'>
                     <Image style={styles.image}
                         src={'/assets/youtubeIcon.png'} alt='Youtube'
                         height={30} width={30} />
                     <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
                         <input style={styles.urlsInput}
                             value={youtubeUrl}
-                            onChange={(e) => setYoutubeurl(e.target.value)}
+                            onChange={(e) => {
+                                setYoutubeurl(e.target.value);
+                                const url = e.target.value;
+
+                                if (youtubeUrl) {
+                                    if (validateUrl(url)) {
+                                        console.log("Valid URL");
+                                        setValidYoutubeLinkErr(false);
+                                    } else {
+                                        console.log("Invalid URL");
+                                        setValidYoutubeLinkErr(true);
+                                    }
+                                }
+                            }}
                             className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
                         />
-
                     </div>
                 </div>
+                <div className='mt-2 mb-8' style={linkErrStyle}>
+                    {
+                        youtubeUrl && validYoutubeLinkErr && "Invalid link"
+                    }
+                </div>
 
-                <div className='flex flex-row gap-5 mb-8'>
+                <div className='flex flex-row gap-5'>
                     <Image style={styles.image}
                         src={'/assets/twiterIcon.png'} alt='twiter'
                         height={30} width={30} />
                     <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
                         <input style={styles.urlsInput}
                             value={twitterUrl}
-                            onChange={(e) => setTwitterurl(e.target.value)}
+                            onChange={(e) => {
+                                setTwitterurl(e.target.value);
+                                const url = e.target.value;
+
+                                if (twitterUrl) {
+                                    if (validateUrl(url)) {
+                                        console.log("Valid URL");
+                                        setValidTwitterLinkErr(false);
+                                    } else {
+                                        console.log("Invalid URL");
+                                        setValidTwitterLinkErr(true);
+                                    }
+                                }
+                            }}
                             className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
                         />
 
                     </div>
                 </div>
+                <div className='mt-2 mb-8' style={linkErrStyle}>
+                    {
+                        twitterUrl && validTwitterLinkErr && "Invalid link"
+                    }
+                </div>
 
-                <div className='flex flex-row gap-5 mb-8'>
+                <div className='flex flex-row gap-5'>
                     <Image style={styles.image}
                         src={'/assets/appleProducts.png'} alt='Icon'
                         height={30} width={30} />
                     <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
                         <input style={styles.urlsInput}
                             value={appleProducts}
-                            onChange={(e) => setAppleProducts(e.target.value)}
+                            onChange={(e) => {
+                                setAppleProducts(e.target.value);
+                                const url = e.target.value;
+
+                                if (appleProducts) {
+                                    if (validateUrl(url)) {
+                                        console.log("Valid URL");
+                                        setValidApplePodcastLinkErr(false);
+                                    } else {
+                                        console.log("Invalid URL");
+                                        setValidApplePodcastLinkErr(true);
+                                    }
+                                }
+                            }}
                             className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
                         />
 
                     </div>
                 </div>
+                <div className='mt-2 mb-8' style={linkErrStyle}>
+                    {
+                        appleProducts && validApplePodcastLinkErr && "Invalid link"
+                    }
+                </div>
 
-                <div className='flex flex-row gap-5 mb-8'>
+                <div className='flex flex-row gap-5'>
                     <Image style={styles.image}
                         src={'/assets/spotify.png'} alt='tiktok'
                         height={30} width={30} />
                     <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
                         <input style={styles.urlsInput}
                             value={spotifyurl}
-                            onChange={(e) => setSpotifyurl(e.target.value)}
+                            onChange={(e) => {
+                                setSpotifyurl(e.target.value);
+                                const url = e.target.value;
+
+                                if (spotifyurl) {
+                                    if (validateUrl(url)) {
+                                        console.log("Valid URL");
+                                        setValidSpotifyLinkErr(false);
+                                    } else {
+                                        console.log("Invalid URL");
+                                        setValidSpotifyLinkErr(true);
+                                    }
+                                }
+                            }}
                             className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
                         />
 
                     </div>
                 </div>
+                <div className='mt-2 mb-8' style={linkErrStyle}>
+                    {
+                        spotifyurl && validSpotifyLinkErr && "Invalid link"
+                    }
+                </div>
 
-                <div className='flex flex-row gap-5 mb-8'>
+                <div className='flex flex-row gap-5'>
                     <Image style={styles.image}
                         src={'/assets/fbIcon.png'} alt='facebook'
                         height={30} width={30} />
@@ -215,10 +344,28 @@ function AiSocialLinks({ handleContinue, aiName }) {
                         /> */}
                         <input style={styles.urlsInput}
                             value={fbUrl}
-                            onChange={(e) => setFburl(e.target.value)}
+                            onChange={(e) => {
+                                setFburl(e.target.value);
+                                const url = e.target.value;
+
+                                if (spotifyurl) {
+                                    if (validateUrl(url)) {
+                                        console.log("Valid URL");
+                                        setValidFacebookLinkErr(false);
+                                    } else {
+                                        console.log("Invalid URL");
+                                        setValidFacebookLinkErr(true);
+                                    }
+                                }
+                            }}
                             className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
                         />
                     </div>
+                </div>
+                <div className='mt-2 mb-8' style={linkErrStyle}>
+                    {
+                        fbUrl && validFacebookLinkErr && "Invalid link"
+                    }
                 </div>
                 <div>
                     {

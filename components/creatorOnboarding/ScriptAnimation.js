@@ -382,21 +382,8 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     placeholder="For ex: Hormozi, Tate.ai"
                     sx={MuiFieldStyle}
                   />
-                  {/* <TextField className=' w-9/12 mt-10'
-                                        autofill='off'
-                                        id="filled-basic"
-                                        label="First Name" variant="outlined"
-                                        placeholder='First name.'
-                                        sx={MuiFieldStyle}
-                                        inputProps={{
-                                            style: {
-                                                color: 'black !important',  // Apply black color directly
-                                            },
-                                        }}
-                                        style={{ color: "black" }}
-                                    /> */}
 
-                  <div className="w-full sm:w-10/12">
+                  <div className="w-full sm:w-9/12">
                     {aiName ? (
                       <button
                         onClick={handleContinue}
@@ -511,7 +498,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     }}
                   />
 
-                  <div className="w-full sm:w-10/12">
+                  <div className="w-full sm:w-9/12">
                     {talkAbout ? (
                       <button
                         onClick={handleContinue}
@@ -621,7 +608,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     }}
                   />
 
-                  <div className="w-full sm:w-10/12">
+                  <div className="w-full sm:w-9/12">
                     {helpTagline ? (
                       <button
                         onClick={handleContinue}
@@ -694,7 +681,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     </button>
                   </div>
 
-                  <div>
+                  <div style={{ border: '', height: "50vh", overflow: 'auto', scrollbarWidth: 'none' }}>
                     <AiSocialLinks handleContinue={handleContinue} aiName={aiName} />
                   </div>
 

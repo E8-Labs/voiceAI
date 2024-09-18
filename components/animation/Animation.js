@@ -831,9 +831,9 @@ export default function Animation({ onChangeIndex }) {
     // }
 
     const containerStyles = {
-        position: 'relative',
+        // position: 'relative',
         // height: '40vh',
-        width: '90%',
+        width: '100%',
         overflow: 'hidden',
         // backgroundColor: "blue"
     };
@@ -940,7 +940,8 @@ export default function Animation({ onChangeIndex }) {
     };
 
     const margin = {
-        marginTop: '25%'
+        // marginTop: '25%'
+        // border: '2px solid red'
     }
 
     return (
@@ -948,7 +949,7 @@ export default function Animation({ onChangeIndex }) {
             <div id="recaptcha-container" />
             <AnimatePresence initial={false} custom={direction}>
                 {currentIndex === 0 && (
-                    <div className='flex flex-col h-screen sm:justify-center justify-start' style={margin}>
+                    <div className='flex flex-col h-auto sm:justify-center justify-start' style={margin}>
                         <motion.div
                             key="box1"
                             custom={direction}
@@ -1063,7 +1064,7 @@ export default function Animation({ onChangeIndex }) {
                     </div>
                 )}
                 {currentIndex === 1 && (
-                    <div className='flex flex-col h-screen sm:justify-center justify-start' style={margin}>
+                    <div className='flex flex-col h-auto sm:justify-center justify-start' style={margin}>
                         <motion.div
                             key="box2"
                             custom={direction}
@@ -1237,7 +1238,7 @@ export default function Animation({ onChangeIndex }) {
                     </div>
                 )}
                 {currentIndex === 2 && (
-                    <div className='flex flex-col h-screen sm:justify-center justify-start' style={margin}>
+                    <div className='flex flex-col h-auto sm:justify-center justify-start' style={margin}>
                         <motion.div
                             key="box3"
                             custom={direction}
@@ -1249,7 +1250,8 @@ export default function Animation({ onChangeIndex }) {
                             style={styles}
                         >
                             <div className='w-full flex justify-center'>
-                                <div className='w-full sm:w-10/12'>
+                                <div className='w-full' //sm:w-full'
+                                >
                                     <div>
                                         <button onClick={handleBack}>
                                             <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
@@ -1263,7 +1265,7 @@ export default function Animation({ onChangeIndex }) {
                                     </div>
 
                                     <TextField
-                                        className='w-full md:w-9/12'
+                                        className='w-full sm:w-full lg:w-8/12'
                                         autofill='off'
                                         id="filled-basic"
                                         value={userName}
@@ -1289,13 +1291,13 @@ export default function Animation({ onChangeIndex }) {
                                         InputProps={{
                                             startAdornment: (
                                                 <InputAdornment position="start" style={{ color: 'blue', fontSize: '14px', fontWeight: 'bold' }}>
-                                                    mycreatorx.com /
+                                                    mycreatorx
                                                 </InputAdornment>
                                             ),
                                             style: {
-                                                color: 'black',  // Apply color to the input text
-                                                fontSize: '16px', // Apply font size to the input text
-                                                fontWeight: '400', // Apply font weight to the input text
+                                                color: 'black',
+                                                fontSize: '16px',
+                                                fontWeight: '400',
                                             },
                                         }}
                                     />
@@ -1331,7 +1333,7 @@ export default function Animation({ onChangeIndex }) {
                                         Try something similar.
                                     </div> */}
 
-                                    <div className='w-full sm:w-10/12' style={{ height: "55px" }}
+                                    <div className='w-full sm:w-full lg:w-8/12' style={{ height: "55px" }}
                                     >
                                         <div>
                                             {
@@ -1342,12 +1344,12 @@ export default function Animation({ onChangeIndex }) {
                                                                 <div style={{ fontWeight: "400", fontSize: 14, color: "green" }}>
                                                                     {
                                                                         creatorLoader ?
-                                                                            <div className='w-full mt-12 flex flex-row justify-center'>
+                                                                            <div className='w-full mt-10 flex flex-row justify-center'>
                                                                                 <CircularProgress size={25} />
                                                                             </div> :
                                                                             <button onClick={handleCreatorClick}
                                                                                 className='bg-purple hover:bg-purple text-white w-full mt-12'
-                                                                                style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
+                                                                                style={{ fontSize: 15, fontWeight: "400", height: "44px", borderRadius: "50px" }}>
                                                                                 Continue
                                                                             </button>
                                                                     }
@@ -1356,8 +1358,8 @@ export default function Animation({ onChangeIndex }) {
                                                                 <div style={{ fontWeight: "400", fontSize: 14, color: "green" }}>
                                                                     <button
                                                                         // disabled
-                                                                        className='bg-placeholderColor text-white rounded w-full mt-12'
-                                                                        style={{ fontSize: 15, fontWeight: "400", height: "52px", color: "white", borderRadius: "50px" }}>
+                                                                        className='bg-placeholderColor text-white rounded w-full mt-10'
+                                                                        style={{ fontSize: 15, fontWeight: "400", height: "44px", color: "white", borderRadius: "50px" }}>
                                                                         Continue
                                                                     </button>
                                                                 </div>
@@ -1371,7 +1373,7 @@ export default function Animation({ onChangeIndex }) {
                                         <div style={{ fontSize: 12, fontWeight: "400" }}>
                                             Or
                                         </div>
-                                        <button onClick={handleMoveLogin} style={{ fontSize: 15, fontWeight: "500" }}>
+                                        <button onClick={handleMoveLogin} style={{ fontSize: 12, fontWeight: "400" }}>
                                             Login
                                         </button>
                                     </div>
@@ -1382,7 +1384,7 @@ export default function Animation({ onChangeIndex }) {
                     </div>
                 )}
                 {currentIndex === 3 && (
-                    <div className='flex flex-col h-screen sm:justify-center justify-start' style={margin}>
+                    <div className='flex flex-col h-auto sm:justify-center justify-start' style={margin}>
                         <motion.div
                             key="box4"
                             custom={direction}
@@ -1393,7 +1395,7 @@ export default function Animation({ onChangeIndex }) {
                             transition={{ duration: 0 }}
                             style={styles}>
                             <div className='w-full flex justify-center'>
-                                <div className='w-full sm:w-10/12'>
+                                <div className='w-full sm:w-full'>
                                     <div>
                                         <button onClick={handleBack}>
                                             <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
@@ -1407,7 +1409,7 @@ export default function Animation({ onChangeIndex }) {
                                     </div>
                                     <div className='w-full flex flex-row gap-6 mt-8'>
 
-                                        <TextField className=' w-full mt-6'
+                                        <TextField className=' w-full mt-6 sm:w-full lg:w-8/12'
                                             autofill='off'
                                             id="filled-basic"
                                             value={userEmail}
@@ -1447,10 +1449,11 @@ export default function Animation({ onChangeIndex }) {
                                         />
 
                                     </div>
-                                    <div style={{ height: 14 }}>
+                                    <div className='mt-2' //style={{ height: 14, border: '2px solid red' }}
+                                    >
                                         {
                                             emailValidationError ?
-                                                <div className='mt-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100", height: 13 }}>
+                                                <div  style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100", height: 13 }}>
                                                     Enter valid email
                                                 </div> :
                                                 <div>
@@ -1477,13 +1480,14 @@ export default function Animation({ onChangeIndex }) {
                                                 </div>
                                         }
                                     </div>
-                                    <div style={{ height: '51px' }}>
+                                    <div //style={{ height: '44px' }}
+                                    >
                                         {
                                             userEmail ?
                                                 <div>
                                                     {
                                                         sendEmailCodeLoader ?
-                                                            <div className='w-full flex flex-row justify-center mt-8'>
+                                                            <div className='w-full sm:w-full lg:w-8/12 flex flex-row justify-center mt-8'>
                                                                 <CircularProgress size={25} />
                                                             </div> :
                                                             <div>
@@ -1493,8 +1497,8 @@ export default function Animation({ onChangeIndex }) {
                                                                             <button
                                                                                 onClick={handleVerifyEmail}
                                                                                 sx={{ textDecoration: "none" }}
-                                                                                className='bg-purple hover:bg-purple2 w-full mt-8'
-                                                                                style={{ fontSize: 15, fontWeight: "400", color: "white", height: "51px", borderRadius: "50px" }}>
+                                                                                className='bg-purple hover:bg-purple2 w-full sm:w-full lg:w-8/12 mt-8'
+                                                                                style={{ fontSize: 15, fontWeight: "400", color: "white", height: "44px", borderRadius: "50px" }}>
                                                                                 Continue
                                                                             </button>
                                                                         </div> :
@@ -1503,8 +1507,8 @@ export default function Animation({ onChangeIndex }) {
                                                                                 // disabled
                                                                                 // onClick={handleContinue}
                                                                                 sx={{ textDecoration: "none" }}
-                                                                                className='bg-placeholderColor w-full mt-8'
-                                                                                style={{ fontSize: 15, fontWeight: "400", color: "white", height: "51px", borderRadius: "50px" }}>
+                                                                                className='bg-placeholderColor w-full sm:w-full lg:w-8/12 mt-8'
+                                                                                style={{ fontSize: 15, fontWeight: "400", color: "white", height: "44px", borderRadius: "50px" }}>
                                                                                 Continue
                                                                             </button>
                                                                         </div>
@@ -1532,7 +1536,7 @@ export default function Animation({ onChangeIndex }) {
                     </div>
                 )}
                 {currentIndex === 4 && (
-                    <div className='flex flex-col h-screen sm:justify-center justify-start' style={margin}>
+                    <div className='flex flex-col h-auto sm:justify-center justify-start' style={margin}>
                         <motion.div
                             key="box5"
                             custom={direction}
@@ -1543,20 +1547,20 @@ export default function Animation({ onChangeIndex }) {
                             transition={{ duration: 0 }}
                             style={styles}>
                             <div className='w-full flex justify-center'>
-                                <div className='w-full sm:w-10/12'>
+                                <div className='w-full sm:w-full'>
                                     <div>
-                                        {/* <button onClick={handleBack}>
+                                        <button onClick={handleBack}>
                                             <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
-                                        </button> */}
+                                        </button>
                                     </div>
-                                    <div className='mt-6' style={{ fontSizeL: 24, fontWeight: "600" }} onClick={handleContinue}>
+                                    <div className='mt-6' style={{ fontSize: 24, fontWeight: "600" }} onClick={handleContinue}>
                                         Verify email address.
                                     </div>
-                                    <div className='text-lightWhite mt-1' style={{ fontSize: 13, fontWeight: "400" }}>
+                                    <div className='text-lightWhite mt-3' style={{ fontSize: 13, fontWeight: "400" }}>
                                         code was sent to {userEmail.slice(0, 4)}*********@gmail.com
                                     </div>
 
-                                    <div className='flex flex-row gap-4 mt-4'>
+                                    <div className='flex flex-row gap-4 mt-8'>
                                         <input
                                             id="P1"
                                             ref={emailVerifyInput}
@@ -1635,24 +1639,25 @@ export default function Animation({ onChangeIndex }) {
                                     </div>
 
                                     <div className='flex flex-row gap-1 mt-6'>
-                                        <div className='text-lightWhite' style={{ fontSize: 13, fontWeight: "400" }}>
+                                        <div className='text-lightWhite' style={{ fontSize: 14, fontWeight: "400" }}>
                                             Didn't receive code?
                                         </div>
-                                        <button className='text-purple' style={{ fontSize: 13, fontWeight: "400" }}>
+                                        <button className='' style={{ fontSize: 14, fontWeight: "400", color: '#050A08' }}>
                                             Resend
                                         </button>
                                     </div>
-                                    <div style={{ height: 50 }}>
+                                    <div //style={{ height: 50 }}
+                                    >
                                         {
                                             EmailP1 && EmailP2 && EmailP3 && EmailP4 && EmailP5 &&
                                             <div>
                                                 {
                                                     verifyEmailLoader ?
-                                                        <div className='w-full flex flex-row justify-center mt-8'>
+                                                        <div className='w-full sm:w-full lg:w-8/12 flex flex-row justify-center mt-8'>
                                                             <CircularProgress size={25} />
                                                         </div> :
                                                         <button onClick={handleVerifyEmailCode}
-                                                            className='w-full bg-purple hover:bg-purple text-white mt-8'
+                                                            className='w-full sm:w-full lg:w-8/12 bg-purple hover:bg-purple text-white mt-8'
                                                             style={{ fontWeight: "400", fontSize: 15, height: 50, borderRadius: '50px' }}>
                                                             Verify
                                                         </button>
@@ -1667,7 +1672,7 @@ export default function Animation({ onChangeIndex }) {
                     </div>
                 )}
                 {currentIndex === 5 && (
-                    <div className='flex flex-col h-screen sm:justify-center justify-start' style={margin}>
+                    <div className='flex flex-col h-auto sm:justify-center justify-start' style={margin}>
                         <motion.div
                             key="box6"
                             custom={direction}
@@ -1678,19 +1683,19 @@ export default function Animation({ onChangeIndex }) {
                             transition={{ duration: 0 }}
                             style={styles}>
                             <div className='w-full flex justify-center'>
-                                <div className='w-full sm:w-10/12'>
+                                <div className='w-full sm:w-full'>
                                     <div>
-                                        <button onClick={handleBack}>
+                                        {/* <button onClick={handleBack}>
                                             <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
-                                        </button>
+                                        </button> */}
                                     </div>
-                                    <div className='mt-6' style={{ fontSizeL: 24, fontWeight: "600" }} onClick={handleContinue}>
+                                    <div className='mt-6' style={{ fontSize: 24, fontWeight: "600" }} onClick={handleContinue}>
                                         Add your phone number
                                     </div>
                                     <div className='text-lightWhite mt-2'>
                                         We can use this to share important updates to you
                                     </div>
-                                    <div className='mt-6'>
+                                    <div className='mt-12 w-full sm:w-full lg:w-8/12'>
                                         <PhoneNumberInput phonenumber={userNumber} formatErr={getNumberFormat} />
                                     </div>
                                     <div style={{ height: 15 }}>
@@ -1721,12 +1726,12 @@ export default function Animation({ onChangeIndex }) {
                                                 <div style={{ fontWeight: "400", fontSize: 14, color: "green" }}>
                                                     {
                                                         VerifiyNumberLoader ?
-                                                            <div className='w-full flex flex-row justify-center mt-8'>
+                                                            <div className='w-full sm:w-full lg:w-8/12 flex flex-row justify-center mt-8'>
                                                                 <CircularProgress size={20} />
                                                             </div> :
                                                             <button
                                                                 onClick={(e) => sendOtp("signup")}
-                                                                className='w-full mt-6 bg-purple hover:bg-purple2 text-white'
+                                                                className='w-full sm:w-full lg:w-8/12 mt-6 bg-purple hover:bg-purple2 text-white'
                                                                 style={{ height: 50, fontSize: 15, fontWeight: "400", color: "white", borderRadius: '50px' }}>
                                                                 Continue
                                                             </button>
@@ -1735,7 +1740,7 @@ export default function Animation({ onChangeIndex }) {
                                                 <div style={{ fontWeight: "400", fontSize: 14, color: "green" }}>
                                                     <button
                                                         disabled
-                                                        className='w-full mt-6 bg-placeholderColor text-white'
+                                                        className='w-full sm:w-full lg:w-8/12 mt-6 bg-placeholderColor text-white'
                                                         style={{ height: 50, fontSize: 15, fontWeight: "400", color: "white", borderRadius: '50px' }}>
                                                         Continue
                                                     </button>
@@ -1749,7 +1754,7 @@ export default function Animation({ onChangeIndex }) {
                 )}
                 {
                     currentIndex === 6 && (
-                        <div className='flex h-screen flex-col sm:justify-center justify-start' style={margin}>
+                        <div className='flex flex-col h-auto sm:justify-center justify-start' style={margin}>
                             <motion.div
                                 key="box7"
                                 custom={direction}
@@ -1760,17 +1765,17 @@ export default function Animation({ onChangeIndex }) {
                                 transition={{ duration: 0 }}
                                 style={styles}>
                                 <div className='w-full flex justify-center'>
-                                    <div className='w-full sm:w-10/12'>
+                                    <div className='w-full sm:w-full'>
                                         <div>
-                                            {/* <button onClick={handleBack}>
+                                            <button onClick={handleBack}>
                                                 <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
-                                            </button> */}
+                                            </button>
                                         </div>
                                         <div className='mt-6' style={{ fontSizeL: 24, fontWeight: "600" }} onClick={handleContinue}>
                                             Verify phone number.
                                         </div>
-                                        <div className='text-lightWhite mt-1' style={{ fontSize: 13, fontWeight: "400" }}>
-                                            4 digit code was sent to number ending with *9083
+                                        <div className='text-lightWhite mt-3' style={{ fontSize: 13, fontWeight: "400" }}>
+                                            6 digit code was sent to number ending with ****{Number(userPhoneNumber.slice(-4))}
                                         </div>
                                         {/* <div className='flex flex-row gap-6 mt-8'>
                                             <input
@@ -1817,7 +1822,7 @@ export default function Animation({ onChangeIndex }) {
 
 
 
-                                        <div className='flex flex-row gap-4 mt-4'>
+                                        <div className='flex flex-row gap-4 mt-8'>
                                             <input
                                                 id="P1"
                                                 type='text'
@@ -1886,14 +1891,15 @@ export default function Animation({ onChangeIndex }) {
                                                 Resend
                                             </button>
                                         </div>
-                                        <div style={{ height: 50 }}>
+                                        <div //style={{ height: 50 }}
+                                        >
                                             {
                                                 verifyCodeSignUpLoader ?
-                                                    <div className='w-full flex flex-row justify-center mt-8'>
+                                                    <div className='w-full sm:w-full lg:w-8/12 flex flex-row justify-center mt-8'>
                                                         <CircularProgress size={25} />
                                                     </div> :
                                                     <button onClick={() => verifyOtp("Signup")}
-                                                        className='w-full bg-purple hover:bg-purple text-white mt-8'
+                                                        className='w-full bg-purple sm:w-full lg:w-8/12 hover:bg-purple text-white mt-8'
                                                         style={{ fontWeight: "400", fontSize: 15, height: 50, borderRadius: '50px' }}>
                                                         Verify
                                                     </button>
@@ -1906,7 +1912,7 @@ export default function Animation({ onChangeIndex }) {
                     )
                 }
                 {currentIndex === 7 && (
-                    <div className='flex flex-col justify-center h-screen' style={{ height: "", }}>
+                    <div className='flex flex-col justify-start h-screen' style={{ backgroundColor: "", }}>
                         <motion.div
                             key="box8"
                             custom={direction}

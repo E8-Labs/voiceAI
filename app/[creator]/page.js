@@ -395,13 +395,13 @@ const Page = () => {
         //     }
         // }
 
-        // if (buttonRef6) {
-        //     const rect = buttonRef6.current.getBoundingClientRect();
-        //     if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
-        //         setBoxVisible(false);
-        //         return;
-        //     }
-        // }
+        if (buttonRef6 && buttonRef6.current) {
+            const rect = buttonRef6.current.getBoundingClientRect();
+            if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+                setBoxVisible(false);
+                return;
+            }
+        }
 
         // If none of the conditions are met, show the box
         setBoxVisible(true);
@@ -1066,9 +1066,9 @@ const Page = () => {
                                 </div> */}
 
                                 <div style={gifBackgroundImage} className='flex flex-row justify-center items-center'>
-                                    <Image onClick={handleContinue} src="/maingif.gif" alt='gif' style={{
+                                    <Image ref={buttonRef6} onClick={handleContinue} src="/maingif.gif" alt='gif' style={{
                                         backgroundColor: "",
-                                        borderRadius: "50%", height: isHighScreen ? '780px' : '450px', width: isHighScreen ? '780px' : '450px'
+                                        borderRadius: "50%", height: isHighScreen ? '680px' : '350px', width: isHighScreen ? '680px' : '350px'
                                     }} height={600} width={600} />
                                 </div>
 
@@ -1150,8 +1150,8 @@ const Page = () => {
                                         style={{
                                             backgroundColor: "",
                                             borderRadius: "50%",
-                                            height: isWideScreen2 ? '550px' : '280px',
-                                            width: isWideScreen2 ? '550px' : '280px'
+                                            height: isWideScreen2 ? '350px' : '180px',
+                                            width: isWideScreen2 ? '350px' : '180px'
                                         }}
                                         height={300} width={300} />
                                 </div>

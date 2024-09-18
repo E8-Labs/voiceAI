@@ -85,12 +85,14 @@ export default function Home() {
                 <div
                     // className='flex flex-row justify-center md:w-5/12 w-full items-center'
                     // className={`flex flex-row justify-center items-center ${currentIndex === 6 ? 'w-6/12' : 'md:w-6/12 w-full'}`}
-                    className= 'flex flex-row justify-center items-center md:w-6/12 w-full' //{`flex flex-row justify-center items-center md:w-6/12 w-full ${currentIndex === 6 ? 'w-6/12' : 'md:w-6/12 w-full'}`}
+                    className='flex flex-row justify-center items-center md:w-6/12 w-full' //{`flex flex-row justify-center items-center md:w-6/12 w-full ${currentIndex === 6 ? 'w-6/12' : 'md:w-6/12 w-full'}`}
                 >
-                    <div className='w-full sm:w-9/12'>
-                        <div className='mt-24 sm:flex hidden'>
+                    <div className='w-full flex flex-col justify-between sm:w-9/12 justify-start items-center h-screen' //style={{backgroundColor: 'green'}}
+                    >
+                        <div className='sm:flex hidden sm:pt-10 md:pt-14 w-full' style={{ backgroundColor: '' }}
+                        >
                             {
-                                currentIndex < 6 &&
+                                currentIndex < 7 &&
                                 <Image src={'/assets/applogo.png'}
                                     alt='logo'
                                     height={40}
@@ -99,15 +101,19 @@ export default function Home() {
                             }
                             {/* <div>Onboarding 2</div> */}
                         </div>
-                        <div className='w-full flex justify-center items-center sm:-mt-48'>
-                            <Animation onChangeIndex={handleCurrentIndex} />
+                        <div className={currentIndex === 7 ? 'pt-28 sm:pt-0 sm:w-full w-10/12' : 'sm:w-full w-10/12'} style={{ backgroundColor: '', height: currentIndex === 7 ? '100%' : '75%', }}>
+                            <div className='w-full flex justify-center items-center' style={{ backgroundColor: '' }}
+                            >
+                                <Animation onChangeIndex={handleCurrentIndex} />
+                            </div>
                         </div>
+                        <div style={{ height: 0 }} />
 
                     </div>
                 </div>
                 {
                     currentIndex === 0 &&
-                    <div className='w-6/12 flex md:flex hidden justify-center h-screen'>
+                    <div className='w-6/12 flex lg:flex hidden justify-center h-screen'>
                         {/* <img src="/assets/groupImages.png" alt='app' style={{ height: "850px", width: "100%", resize: "cover", objectFit: "contain" }} /> */}
                         {/* <ImagesFile /> */}
                         <GroupImages />
@@ -115,7 +121,7 @@ export default function Home() {
                 }
                 {
                     currentIndex === 1 &&
-                    <div className='w-6/12 flex md:flex hidden justify-center h-screen' style={{}}>
+                    <div className='w-6/12 flex lg:flex hidden justify-center h-screen' style={{}}>
                         {/* <img src="/assets/groupImages.png" alt='app' style={{ height: "850px", width: "100%", resize: "cover", objectFit: "contain" }} /> */}
                         {/* <ImagesFile /> */}
                         <GroupImages />
@@ -123,7 +129,7 @@ export default function Home() {
                 }
                 {
                     currentIndex <= 6 && currentIndex > 1 &&
-                    <div className='w-6/12 flex md:flex hidden  justify-center'>
+                    <div className='w-6/12 flex lg:flex hidden  justify-center'>
                         {/* <img src='/assets/mainLogo.png' alt='app' style={{ height: "637px", width: "637px", resize: "cover", objectFit: "contain" }} /> */}
 
                         <div style={gifBackgroundImage} className='flex flex-row justify-center items-center'>

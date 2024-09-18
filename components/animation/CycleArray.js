@@ -60,14 +60,14 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
                         {
                             onLargeScreen ?
                                 <div className='w-full'>
-                                    <div className='flex flex-row w-full justify-between gap-1'>
+                                    <div className='flex flex-row w-full gap-1'>
                                         <div className='flex flex-row'>
                                             <Image src="/assets/callLogo.png" alt='logo' height={10} width={13} />
-                                            <div style={{ fontSize: 13, fontWeight: "400", color: "grey" }}>
+                                            <div style={{ fontSize: 13, fontWeight: "400", color: "grey", marginLeft: '4px' }}>
                                                 Live Call with
                                             </div>
                                         </div>
-                                        <div style={{ fontWeight: "600", fontSize: 13, color: "#00000090", marginLeft: '1px' }}>
+                                        <div style={{ fontWeight: "600", fontSize: 13, color: "#00000090" }}>
                                             {/*
                                                 data[currentIndex] &&
                                                 data[currentIndex].message.charAt(0).toUpperCase() + data[currentIndex].message.slice(1)
