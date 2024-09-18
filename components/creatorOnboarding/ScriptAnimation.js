@@ -74,8 +74,19 @@ export default function ScriptAnimation({ onChangeIndex }) {
   const [knowledgeData, setKnowledgeData] = useState([]);
   const [delKBLoader, setDelKBLoader] = useState(null);
   const fileInputRef = useRef(null);
+  const [uploadLoader, setUploadLoader] = useState(false);
 
   // const handleSocialLinks = () => {}
+  useEffect(() => {
+    const localData = localStorage.getItem('User');
+    if (localData) {
+      const Data = JSON.parse(localData);
+      console.log("Local Data recieved from localstorage", Data)
+      if (Data.data.user.username) {
+        setAiName(Data.data.user.username)
+      }
+    }
+  }, [])
 
   const handleAudioChange = (event) => {
     const file = event.target.files[0];
@@ -109,6 +120,12 @@ export default function ScriptAnimation({ onChangeIndex }) {
 
   //calling api of ld your ai
 
+  useEffect(() => {
+    if (selectedAudio) {
+      handleBuildAI();
+    }
+  }, [selectedAudio])
+
   const handleBuildAI = async (event) => {
 
     try {
@@ -116,7 +133,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
       if (event) {
         setSkipLoader(true);
       } else {
-        setBuildAiLoader(true);
+        setUploadLoader(true);
       }
 
       const ApiPath = Apis.BuildAI;
@@ -177,7 +194,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
     } catch (error) {
       console.error("ERror occured in build ai api", error);
     } finally {
-      setBuildAiLoader(false);
+      setUploadLoader(false);
       setSkipLoader(false);
     }
   };
@@ -238,7 +255,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
     "& .MuiFilledInput-root": {
       fontSize: 13,
       fontWeight: "400",
-      backgroundColor: "#EDEDEDC7", // Optional: Removes the background color
+      backgroundColor: "#EDEDED78", //"#EDEDEDC7", // Optional: Removes the background color
       "&:before": {
         borderBottom: "none", // Remove the default inactive state bottom border
       },
@@ -473,10 +490,11 @@ export default function ScriptAnimation({ onChangeIndex }) {
                         color: "#050A0890",
                       },
                       "& .MuiFilledInput-root": {
-                        backgroundColor: "#EDEDED", // Background color of the input
+                        backgroundColor: "#EDEDED78", // Background color of the input
                         fontSize: 13,
                         fontWeight: "400",
                         fontFamily: "inter",
+                        borderRadius: 2
                       },
                       "& .MuiFilledInput-root:before": {
                         borderBottom: "none", // Remove the default inactive state bottom border
@@ -587,11 +605,12 @@ export default function ScriptAnimation({ onChangeIndex }) {
                         color: "#050A0890",
                       },
                       "& .MuiFilledInput-root": {
-                        backgroundColor: "#EDEDED", // Optional: Removes the background color
+                        backgroundColor: "#EDEDED78", // Optional: Removes the background color
                         // padding: '6px 8px', // Decrease the padding inside the input container
                         fontSize: 13,
                         fontWeight: "400",
                         fontFamily: "inter",
+                        borderRadius: 2
                       },
                       "& .MuiFilledInput-root:before": {
                         borderBottom: "none", // Remove the default inactive state bottom border
@@ -715,7 +734,10 @@ export default function ScriptAnimation({ onChangeIndex }) {
               <div className="w-full flex sm:justify-center justify-start">
                 <div className="sm:w-10/12 w-full">
                   <div className="flex flex-row w-full sm:w-10/12 justify-between items-center">
-                    <button onClick={handleBack}>
+                    <button onClick={() => {
+                      localStorage.removeItem('BuildaiIndex');
+                      handleBack();
+                    }}>
                       <Image
                         src={"/assets/backarrow.png"}
                         alt="back"
@@ -963,17 +985,23 @@ export default function ScriptAnimation({ onChangeIndex }) {
 
                     <div className="flex flex-row items-center gap-6 mt-12">
                       <div className="w-7/12">
-                        <button
-                          onClick={handleUploadClick}
-                          className="bg-purple hover:bg-purple text-white w-full py-2"
-                          style={{
-                            fontSize: 15,
-                            fontWeight: "400",
-                            borderRadius: "50px",
-                          }}
-                        >
-                          Upload
-                        </button>
+                        {
+                          uploadLoader ?
+                            <div className="w-full flex flex-row justify-center">
+                              <CircularProgress size={25} />
+                            </div> :
+                            <button
+                              onClick={handleUploadClick}
+                              className="bg-purple hover:bg-purple text-white w-full py-2"
+                              style={{
+                                fontSize: 15,
+                                fontWeight: "400",
+                                borderRadius: "50px",
+                              }}
+                            >
+                              Upload
+                            </button>
+                        }
                       </div>
                       {
                         skipLoader ?

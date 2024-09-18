@@ -57,7 +57,7 @@ export default function Home() {
             <div className='flex flex-row items-center justify-center w-full'>
                 <div
                     // className='flex flex-row justify-center md:w-5/12 w-full items-center'
-                    className={`flex flex-row justify-center items-center ${currentIndex === 6 ? 'w-full' : 'md:w-5/12 w-full'}`}
+                    className={`flex flex-row justify-center items-center ${currentIndex === 6 ? 'w-full' : 'md:w-5/12 w-full'}`} //style={{ backgroundColor: 'green' }}
                 >
                     <div className='w-full sm:w-11/12'>
                         <div className='mt-24 sm:flex hidden'>
@@ -74,17 +74,21 @@ export default function Home() {
 
                     </div>
                 </div>
-                <div className='w-7/12 flex md:flex hidden justify-center' style={{ height: "100%" }}>
-                    {/* <img src="/assets/mainLogo.png" alt='app' style={{ height: "850px", width: "100%", resize: "cover", objectFit: "contain" }} /> */}
-                    <div style={gifBackgroundImage} className='flex flex-row justify-center items-center'>
-                        <Image
-                            // onClick={handleContinue}
-                            src="/mainAppGif3.gif" alt='gif' style={{
-                                backgroundColor: "",
-                                borderRadius: "50%", height: isHighScreen ? '780px' : '450px', width: isHighScreen ? '780px' : '450px'
-                            }} height={600} width={600} />
-                    </div>
-                </div>
+                {
+                    currentIndex === 6 ?
+                        "" :
+                        <div className='w-7/12 flex md:flex hidden justify-center' style={{ height: "100%" }}>
+                            {/* <img src="/assets/mainLogo.png" alt='app' style={{ height: "850px", width: "100%", resize: "cover", objectFit: "contain" }} /> */}
+                            <div style={gifBackgroundImage} className='flex flex-row justify-center items-center'>
+                                <Image
+                                    // onClick={handleContinue}
+                                    src="/mainAppGif3.gif" alt='gif' style={{
+                                        backgroundColor: "",
+                                        borderRadius: "50%", height: isHighScreen ? '780px' : '450px', width: isHighScreen ? '780px' : '450px'
+                                    }} height={600} width={600} />
+                            </div>
+                        </div>
+                }
                 {/* {
                     currentIndex === 1 &&
                     <div className='w-7/12 flex md:flex hidden justify-center' style={{ height: "100%" }}>

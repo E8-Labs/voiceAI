@@ -245,6 +245,7 @@ export default function Animation({ onChangeIndex }) {
                         // code: VP1 + VP2 + VP3 + VP4 + VP5,
                         phone: userPhoneNumber,
                         name: userName,
+                        username: userName,
                         email: userEmail,
                         login: false,
                         role: "creator"
@@ -1396,7 +1397,7 @@ export default function Animation({ onChangeIndex }) {
                     </div>
                 )}
                 {currentIndex === 3 && (
-                    <div className='flex flex-col h-auto sm:justify-center justify-start' style={margin}>
+                    <div className='flex flex-col h-auto sm:justify-center justify-start -mt-12' style={margin}>
                         <motion.div
                             key="box4"
                             custom={direction}
@@ -1462,7 +1463,7 @@ export default function Animation({ onChangeIndex }) {
                                         />
 
                                     </div>
-                                    <div className='mt-2' //style={{ height: 14, border: '2px solid red' }}
+                                    <div className='mt-2' style={{ height: 14 }}
                                     >
                                         {
                                             emailValidationError ?
@@ -1528,7 +1529,8 @@ export default function Animation({ onChangeIndex }) {
                                                                 }
                                                             </div>
                                                     }
-                                                </div> : ''
+                                                </div> :
+                                                <div className='w-full sm:w-full lg:w-8/12 flex flex-row justify-center mt-8' style={{ height: '44px', backgroundColor: '' }} />
                                         }
                                     </div>
                                     {/*<div className='text-lightWhite mt-6' style={{ fontSize: 12, fontWeight: '400', textAlign: "center" }}>
@@ -1942,8 +1944,13 @@ export default function Animation({ onChangeIndex }) {
                                     </button> */}
                                 </div>
                                 {/* <Image src={'/assets/congratulations.png'} alt='congrats' height={445} width={445} /> */}
-                                <div style={{ fontSize: 24, fontWeight: "600", textAlign: ' center' }}>
-                                    Congratulations
+                                <div>
+                                    <div style={{ fontSize: 24, fontWeight: "600", textAlign: ' center' }}>
+                                        Congratulations!
+                                    </div>
+                                    <div style={{ fontSize: 16, fontWeight: "500", textAlign: ' center' }}>
+                                        Your account is created
+                                    </div>
                                 </div>
                                 {/* <Image
                                     src={'/congrats.png'}

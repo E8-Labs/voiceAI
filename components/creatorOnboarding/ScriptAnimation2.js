@@ -383,7 +383,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
             });
             // return
             if (response) {
-                //console.log("Response of subscribe plan api is", response.data);
+                console.log("Response of subscribe plan api is", response.data);
                 if (response.data.status === true) {
                     localStorage.removeItem("fromBuildScreen");
                     // handleSubLoader(false);
@@ -1044,7 +1044,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                     )
                 }
                 {currentIndex === 6 && (
-                    <div className='flex flex-col justify-center h-screen' style={{ height: "", }}>
+                    <div className='flex flex-col justify-center h-screen' style={{ height: "", width: '100%', backgroundColor: '' }}>
                         <motion.div
                             key="box7"
                             custom={direction}
@@ -1053,7 +1053,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             animate="center"
                             exit="exit"
                             transition={{ duration: 0 }}
-                            style={styles}>
+                            style={styles} className='w-full'>
                             <div className='w-full flex flex-row' style={{ height: "auto" }}>
                                 <div className='w-6/12'>
                                     <div style={{ height: 14 }}>

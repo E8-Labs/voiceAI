@@ -101,7 +101,7 @@ export default function Home() {
                             }
                             {/* <div>Onboarding 2</div> */}
                         </div>
-                        <div className='w-full flex justify-center items-center -mt-12' style={{ backgroundColor: '' }}
+                        <div className={currentIndex === 7 ? 'w-full flex justify-center items-center' : 'w-full flex justify-center items-center -mt-12'} style={{ backgroundColor: '' }}
                         >
                             <Animation onChangeIndex={handleCurrentIndex} />
                         </div>

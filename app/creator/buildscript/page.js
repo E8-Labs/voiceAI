@@ -99,7 +99,7 @@ export default function Home() {
                     className={`flex flex-row h-screen ${currentIndex === 6 ? 'w-full' : 'md:w-5/12 w-full'}`} style={{}}
                 >
                     <div className='sm:w-11/12 w-full h-screen flex flex-col justify-between'>
-                        <div className='sm:flex hidden sm:mt-24 ms-4'>
+                        <div className='sm:flex hidden sm:mt-24 md:ms-12 lg:ms-16'>
                             <Image src={'/assets/applogo.png'}
                                 alt='logo'
                                 height={40}
