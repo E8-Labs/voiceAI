@@ -461,7 +461,8 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                 id="filled-basic"
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
-                label="First Name" variant="outlined"
+                // label="First Name" 
+                variant="outlined"
                 placeholder='First Name'
                 sx={MuiFieldStyle}
                 inputProps={{
@@ -477,7 +478,8 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                 id="filled-basic"
                 value={userLastName}
                 onChange={(e) => setUserLastName(e.target.value)}
-                label="Last Name" variant="outlined"
+                // label="Last Name" 
+                variant="outlined"
                 placeholder='Last Name'
                 sx={MuiFieldStyle}
                 style={{ marginTop: isWideScreen ? 30 : 15 }}
@@ -496,7 +498,8 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                         setEmailValidationError(false);
                     }
                 }}
-                label="Email" variant="outlined"
+                // label="Email" 
+                variant="outlined"
                 placeholder='Email Address'
                 sx={MuiFieldStyle}
                 style={{ marginTop: isWideScreen ? 30 : 15 }}
@@ -519,7 +522,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                     </div>
             }
             {/* <TextField className='mt-4' id="outlined-basic" label="Outlined" variant="outlined" sx={MuiFieldStyle} /> */}
-            <div className='mt-6' style={{ marginTop: isWideScreen ? 26 : 5 }}>
+            <div style={{ marginTop: isWideScreen ? 5 : 5 }}>
                 <PhoneNumberInput phonenumber={handlePhoneNumber} fromCreateAccount={true} formatErr={handleNumberFormatErr} />
             </div>
             {
@@ -566,7 +569,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                         },
                     },
                 }} /> */}
-            <div className='flex flex-row gap-2 items-center mt-8'>
+            <div className='flex flex-row gap-2 items-center mt-1'>
                 {
                     termsCheck ?
                         <button onClick={handleTermsCheckBtn}>

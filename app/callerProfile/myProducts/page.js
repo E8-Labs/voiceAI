@@ -368,11 +368,15 @@ const Page = () => {
         item.profile.name.toLowerCase().includes(searchValue.toLowerCase())
     );
 
-    // useEffect(() => {
-    //     if (filteredData) {
-    //         setOpenProducts(response.data.data.filteredData[0]);
-    //     }
-    // }, [filteredData])
+    useEffect(() => {
+        if (filteredData && filteredData.length > 0) {
+            // Set the first user's products if filteredData exists and is not empty
+            setOpenProducts(filteredData[0]);
+        } else {
+            // Reset openProducts if there are no matching results
+            setOpenProducts(null);
+        }
+    }, [filteredData]);
 
 
     return (

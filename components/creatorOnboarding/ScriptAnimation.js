@@ -375,7 +375,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     className="w-full sm:w-9/12 mt-8"
                     autofill="off"
                     id="filled-basic"
-                    label="Name"
+                    // label="Name"
                     variant="outlined"
                     value={aiName}
                     onChange={(e) => setAiName(e.target.value)}
@@ -461,7 +461,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     className="w-full sm:w-9/12 mt-8"
                     autofill="off"
                     id="filled-basic"
-                    label="Description"
+                    // label="Description"
                     variant="filled"
                     multiline
                     rows={3}
@@ -575,7 +575,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     className="w-full sm:w-9/12 mt-8"
                     autofill="off"
                     id="filled-basic"
-                    label="Ai help tagline"
+                    // label="Ai help tagline"
                     variant="filled"
                     multiline
                     rows={3}

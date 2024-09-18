@@ -50,7 +50,8 @@ const Signin = ({ handleContinue, closeForm }) => {
                 id="filled-basic"
                 value={userEmail}
                 onChange={(e) => setUserEmail(e.target.value)}
-                label="EmailAddress" variant="outlined"
+                // label="EmailAddress" 
+                variant="outlined"
                 placeholder='Enter email address.'
                 sx={{
                     '& label.Mui-focused': {
@@ -75,7 +76,8 @@ const Signin = ({ handleContinue, closeForm }) => {
                 id="filled-basic"
                 value={userPassword}
                 onChange={(e) => setUserPassword(e.target.value)}
-                label="Password" variant="outlined"
+                // label="Password" 
+                variant="outlined"
                 placeholder='Enter password.'
                 sx={{
                     '& label.Mui-focused': {

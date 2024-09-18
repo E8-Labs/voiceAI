@@ -95,6 +95,18 @@ export default function Animation({ onChangeIndex }) {
     const [isWideScreen2, setIsWideScreen2] = useState(false);
     const [verifyCodeSignUpLoader, setVerifyCodeSignUpLoader] = useState(false);
 
+    const gifBackgroundImage = {
+        backgroundImage: 'url("/assets/applogo2.png")', // Ensure the correct path
+        backgroundSize: "cover",
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center',
+        width: isHighScreen ? '570px' : '350px',
+        height: isHighScreen ? '570px' : '350px',
+        borderRadius: "50%",
+        resize: "cover",
+        // border: '2px solid green'
+    }
+
     useEffect(() => {
         if (!auth) { return }
         console.log("Init recaptcha")
@@ -1290,13 +1302,13 @@ export default function Animation({ onChangeIndex }) {
                                         sx={MuiFieldStyle}
                                         InputProps={{
                                             startAdornment: (
-                                                <InputAdornment position="start" style={{ color: 'blue', fontSize: '14px', fontWeight: 'bold' }}>
-                                                    mycreatorx
+                                                <InputAdornment position="start" style={{ color: 'blue', fontSize: 14, fontWeight: 'bold', marginRight: 2 }}>
+                                                    mycreatorx.com/
                                                 </InputAdornment>
                                             ),
                                             style: {
                                                 color: 'black',
-                                                fontSize: '16px',
+                                                fontSize: 15,
                                                 fontWeight: '400',
                                             },
                                         }}
@@ -1443,7 +1455,8 @@ export default function Animation({ onChangeIndex }) {
                                                     handleVerifyEmail();
                                                 }
                                             }}
-                                            label="Email" variant="outlined"
+                                            // label="Email"
+                                            variant="outlined"
                                             placeholder='Email Address'
                                             sx={MuiFieldStyle}
                                         />
@@ -1453,7 +1466,7 @@ export default function Animation({ onChangeIndex }) {
                                     >
                                         {
                                             emailValidationError ?
-                                                <div  style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100", height: 13 }}>
+                                                <div style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100", height: 13 }}>
                                                     Enter valid email
                                                 </div> :
                                                 <div>
@@ -1932,7 +1945,7 @@ export default function Animation({ onChangeIndex }) {
                                 <div style={{ fontSize: 24, fontWeight: "600", textAlign: ' center' }}>
                                     Congratulations
                                 </div>
-                                <Image
+                                {/* <Image
                                     src={'/congrats.png'}
                                     alt='congrats'
                                     height={550}
@@ -1944,7 +1957,21 @@ export default function Animation({ onChangeIndex }) {
                                 //     maxWidth: '100%',
                                 //     height: 'auto'
                                 // }}
-                                />
+                                /> */}
+
+
+                                {/* code for animation orb */}
+                                <div className='w-full flex flex-row justify-center' //style={{border: '2px solid red'}}
+                                >
+                                    <div style={gifBackgroundImage} className='flex flex-row justify-center items-center'>
+                                        <Image
+                                            // onClick={handleContinue}
+                                            src="/mainAppGif3.gif" alt='gif' style={{
+                                                backgroundColor: "",
+                                                borderRadius: "50%", height: isHighScreen ? '580px' : '350px', width: isHighScreen ? '580px' : '350px'
+                                            }} height={600} width={600} />
+                                    </div>
+                                </div>
 
                                 <div className='w-full flex flex-col text-center justify-center mt-4' style={{ color: '#050A0885', fontWeight: '400', fontSize: 13 }}>
                                     Welcome to Voice.ai {userName}, where creators like you build a more engaging and personalized <span

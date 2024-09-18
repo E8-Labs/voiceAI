@@ -68,7 +68,8 @@ const MakeCallForm = ({ closeForm }) => {
                     <TextField className='w-full'
                         autofill='off'
                         id="filled-basic"
-                        label="First name" variant="outlined"
+                        // label="First name"
+                        variant="outlined"
                         value={userName}
                         onChange={(e) => setUserName(e.target.value)}
                         placeholder='Enter first name'
@@ -92,7 +93,8 @@ const MakeCallForm = ({ closeForm }) => {
                     <TextField className='w-full'
                         autofill='off'
                         id="filled-basic"
-                        label="Last name" variant="outlined"
+                        // label="Last name"
+                        variant="outlined"
                         value={userLastName}
                         onChange={(e) => setUserLastName(e.target.value)}
                         placeholder='Enter last name'
@@ -116,7 +118,8 @@ const MakeCallForm = ({ closeForm }) => {
                     <TextField className='w-full'
                         autofill='off'
                         id="filled-basic"
-                        label="Email" variant="outlined"
+                        // label="Email"
+                        variant="outlined"
                         value={userEmail}
                         onChange={(e) => setUserEmail(e.target.value)}
                         placeholder='Enter email'

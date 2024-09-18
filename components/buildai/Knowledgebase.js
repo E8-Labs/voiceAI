@@ -311,7 +311,8 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
                                 id="filled-basic"
                                 value={documentName}
                                 onChange={(e) => setDocumentName(e.target.value)}
-                                label="Name Document" variant="outlined"
+                                // label="Name Document"
+                                variant="outlined"
                                 placeholder='Name Document'
                                 sx={MuiFieldStyle}
                                 inputProps={{
@@ -327,7 +328,8 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
                                 id="filled-basic"
                                 value={documentDescription}
                                 onChange={(e) => setDocumentDescription(e.target.value)}
-                                label="Description" variant="outlined"
+                                // label="Description" 
+                                variant="outlined"
                                 placeholder='Description'
                                 sx={MuiFieldStyle}
                                 multiline
@@ -386,7 +388,8 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
                             id="filled-basic"
                             value={textData}
                             onChange={(e) => setTextData(e.target.value)}
-                            label="Text" variant="outlined"
+                            // label="Text" 
+                            variant="outlined"
                             placeholder='Type or paste your text'
                             sx={MuiFieldStyle}
                             multiline
@@ -409,7 +412,8 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
                             id="filled-basic"
                             value={urlData}
                             onChange={(e) => setUrlData(e.target.value)}
-                            label="URL" variant="outlined"
+                            // label="URL" 
+                            variant="outlined"
                             placeholder='Enter URL'
                             sx={MuiFieldStyle}
                             inputProps={{

@@ -458,7 +458,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
                                     <TextField
                                         className='w-full sm:w-10/12 bg-grayBg mt-5'
-                                        label="Greeting"
+                                        // label="Greeting"
                                         style={{ borderRadius: 5 }}
                                         multiline
                                         rows={6} // Controls the number of visible rows
@@ -547,7 +547,8 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                     <TextField className='w-full sm:w-9/12 mt-8'
                                         autofill='off'
                                         id="filled-basic"
-                                        label="Description" variant="filled"
+                                        // label="Description" 
+                                        variant="filled"
                                         multiline
                                         rows={6}
                                         value={serviceDetails}
@@ -1184,7 +1185,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                 border: "2px solid #EDEDED80"
                                             }}
                                         >
-                                            {}
+                                            { }
                                         </Alert>
                                     </Snackbar>
 
@@ -1261,9 +1262,9 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                 <button className='w-5/12 mt-5' style={{
                                                     height: 40, backgroundColor: '#552AFF', borderRadius: 5, color: 'white', borderRadius: "50px"
                                                 }}
-                                                    // onClick={() => {
-                                                    //     router.push("/profile")
-                                                    // }}
+                                                // onClick={() => {
+                                                //     router.push("/profile")
+                                                // }}
                                                 >
                                                     {/* <div className='text-red'> */}
                                                     Countinue
