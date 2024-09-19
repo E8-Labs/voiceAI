@@ -57,27 +57,32 @@ export default function Home() {
             <div className='flex flex-row items-center justify-center w-full'>
                 <div
                     // className='flex flex-row justify-center md:w-5/12 w-full items-center'
-                    className={`flex flex-row justify-center items-center ${currentIndex === 6 ? 'w-full' : 'md:w-5/12 w-full'}`} //style={{ backgroundColor: 'green' }}
+                    className={`flex flex-row justify-center items-center ${currentIndex === 6 ? 'w-full' : 'lg:w-5/12 w-full'}`} //style={{ backgroundColor: 'green' }}
                 >
-                    <div className='w-full sm:w-11/12'>
+                    <div className='sm:w-11/12 w-full h-screen flex flex-col justify-between'>
                         <div className='mt-24 sm:flex hidden'>
-                            <Image src={'/assets/applogo.png'}
+                            <Image src={'/creatorXlogo.png'}
                                 alt='logo'
-                                height={40}
-                                width={37}
+                                height={410}
+                                width={116}
                             />
                             {/* <div>Onboarding 2</div> */}
                         </div>
-                        <div className='w-full flex justify-center items-center sm:mt-0 mt-24'>
-                            <ScriptAnimation2 onChangeIndex={handleCurrentIndex} />
+                        <div
+                            className=' sm:w-full w-full' //className={currentIndex === 7 ? 'pt-28 sm:pt-0 sm:w-full w-10/12' : 'pt-28 sm:pt-28 sm:w-full w-10/12'}  //'pt-28 sm:w-full w-10/12' //{currentIndex === 7 ? 'pt-28 sm:pt-28 sm:w-full w-10/12' : 'sm:w-full w-10/12'} 
+                            style={{ backgroundColor: '', height: '68%', }}>
+                            <div className='w-full flex justify-center items-center sm:mt-0 mt-24'>
+                                <ScriptAnimation2 onChangeIndex={handleCurrentIndex} />
+                            </div>
                         </div>
+                        <div />
 
                     </div>
                 </div>
                 {
                     currentIndex === 6 ?
                         "" :
-                        <div className='w-7/12 flex md:flex hidden justify-center' style={{ height: "100%" }}>
+                        <div className='w-7/12 flex lg:flex hidden justify-center' style={{ height: "100%" }}>
                             {/* <img src="/assets/mainLogo.png" alt='app' style={{ height: "850px", width: "100%", resize: "cover", objectFit: "contain" }} /> */}
                             <div style={gifBackgroundImage} className='flex flex-row justify-center items-center'>
                                 <Image

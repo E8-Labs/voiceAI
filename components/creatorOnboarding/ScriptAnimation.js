@@ -63,6 +63,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
   const [talkAbout, setTalkAbout] = useState("");
   const [helpTagline, setHelpTagline] = useState("");
   const [buildAiLoader, setBuildAiLoader] = useState(false);
+  const [kbData, setkbData] = useState(false);
   const [skipLoader, setSkipLoader] = useState(false);
   const [selectedAudio, setSelectedAudio] = useState(null);
   const [audioUrl, setAudioUrl] = useState(null);
@@ -75,6 +76,51 @@ export default function ScriptAnimation({ onChangeIndex }) {
   const [delKBLoader, setDelKBLoader] = useState(null);
   const fileInputRef = useRef(null);
   const [uploadLoader, setUploadLoader] = useState(false);
+
+  const getAiData = async () => {
+    const localData = localStorage.getItem('User');
+    const Data = JSON.parse(localData);
+    // setAiLoader(true);
+    // console.log("Data from local for nowledge", Data);
+    const AuthToken = Data.data.token;
+    console.log("Auth token is", AuthToken);
+    try {
+      const response = await axios.get(Apis.MyAiapi, {
+        headers: {
+          'Authorization': 'Bearer ' + AuthToken,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response) {
+        console.log("Response of kb api is", response.data.data);
+        if (response.data.status === true) {
+          setKnowledgeData(response.data.data.kb)
+          if (response.data.data.kb.length > 0) {
+            setkbData(false);
+          } else {
+            setkbData(true);
+          }
+          // setAiData(response.data.data.kb);
+          // setUserSelectedData(response.data.data.kb);
+          // getknowledgeData(response.data.data.kb);
+          // closeModal(false);
+          // localStorage('KnowledgeBase', JSON.stringify(response.data.data.kb));
+        } else {
+          console.error("Status of kb api", response.data.message);
+        }
+      }
+    } catch (error) {
+      console.error("Error occured in kb", error);
+    } finally {
+      // setAiLoader(false);
+    }
+
+  }
+
+  useEffect(() => {
+    getAiData();
+  }, [])
 
   // const handleSocialLinks = () => {}
   useEffect(() => {
@@ -228,7 +274,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
   const containerStyles = {
     position: "relative",
     // height: '40vh',
-    width: "90%",
+    width: "100%",
     overflow: "hidden",
   };
 
@@ -238,13 +284,13 @@ export default function ScriptAnimation({ onChangeIndex }) {
     left: 0,
     right: 0,
     bottom: 0,
-    // backgroundColor: "red",
+    // backgroundColor: "blue",
     // height: "20vh",
     // marginLeft: 10,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    marginInline: 10,
+    // marginInline: 10,ƒ
   };
 
   //styles for mui fields
@@ -292,7 +338,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
 
   const styleLoginModal = {
     height: 'auto',
-    bgcolor: 'white',
+    // bgcolor: 'white',
     p: 2,
     mx: 'auto',
     my: '50vh',
@@ -308,7 +354,8 @@ export default function ScriptAnimation({ onChangeIndex }) {
   }
 
   const getknowledgeData = (data) => {
-    setKnowledgeData(data)
+    // setKnowledgeData(data)
+    getAiData();
   }
 
   const handleDelAddedData = async (itemId) => {
@@ -334,6 +381,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
           console.log("Response of api is", response.data);
           if (response.data.status === true) {
             console.log("Response of api is", response.data);
+            getAiData();
           } else {
             console.log("Response of api is", response.data.message);
           }
@@ -366,14 +414,14 @@ export default function ScriptAnimation({ onChangeIndex }) {
               style={styles}
             >
               <div className="w-full flex sm:justify-center justify-start">
-                <div className="sm:w-10/12 w-full">
+                <div className="w-full">
                   <div>
                     {/* <button onClick={handleBack}>
                                             <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
                                         </button> */}
                   </div>
                   <div
-                    className="mt-6"
+                    // className="mt-6"
                     style={{
                       fontSize: 24,
                       fontWeight: "600",
@@ -382,29 +430,25 @@ export default function ScriptAnimation({ onChangeIndex }) {
                   >
                     Name your AI
                   </div>
-                  <div
-                    className="text-lightWhite mt-2"
-                    style={{ fontSize: 13, fontWeight: "400" }}
-                  >
-                    {/* Name you ai */}
+                  <div className="w-full sm:w-9/12 mt-10">
+                    <TextField
+                      className="w-full"// sm:w-9/12" //style={{marginTop: 6}}
+                      autofill="off"
+                      id="filled-basic"
+                      // label="Name"
+                      variant="outlined"
+                      value={aiName}
+                      onChange={(e) => setAiName(e.target.value)}
+                      placeholder="For ex: Hormozi, Tate.ai"
+                      sx={MuiFieldStyle}
+                    />
                   </div>
-                  <TextField
-                    className="w-full sm:w-9/12 mt-8"
-                    autofill="off"
-                    id="filled-basic"
-                    // label="Name"
-                    variant="outlined"
-                    value={aiName}
-                    onChange={(e) => setAiName(e.target.value)}
-                    placeholder="For ex: Hormozi, Tate.ai"
-                    sx={MuiFieldStyle}
-                  />
 
                   <div className="w-full sm:w-9/12">
                     {aiName ? (
                       <button
                         onClick={handleContinue}
-                        className="bg-purple hover:bg-purple text-white w-full mt-12"
+                        className="bg-purple hover:bg-purple text-white w-full mt-8"
                         style={{
                           fontSize: 15,
                           fontWeight: "400",
@@ -418,7 +462,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                       <button
                         disabled
                         // onClick={handleContinue}
-                        className="bg-purple2 hover:bg-purple text-white w-full mt-12"
+                        className="bg-purple2 hover:bg-purple text-white w-full mt-8"
                         style={{
                           fontSize: 15,
                           fontWeight: "400",
@@ -438,7 +482,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
         )}
         {currentIndex === 1 && (
           <div
-            className="flex flex-col h-screen sm:justify-center justify-start"
+            className="flex flex-col sm:justify-center justify-start"
             style={{ height: "" }}
           >
             <motion.div
@@ -452,7 +496,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
               style={styles}
             >
               <div className="w-full flex sm:justify-center justify-start">
-                <div className="sm:w-10/12 w-full">
+                <div className="w-full">
                   <div>
                     <button onClick={handleBack}>
                       <Image
@@ -464,7 +508,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     </button>
                   </div>
                   <div
-                    className="mt-6"
+                    className="mt-6 w-full sm:w-9/12"
                     style={{
                       fontSize: 24,
                       fontWeight: "600",
@@ -554,7 +598,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
         )}
         {currentIndex === 2 && (
           <div
-            className="flex flex-col h-screen sm:justify-center justify-start"
+            className="flex flex-col sm:justify-center justify-start"
             style={{ height: "" }}
           >
             <motion.div
@@ -568,7 +612,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
               style={styles}
             >
               <div className="w-full flex sm:justify-center justify-start">
-                <div className="sm:w-10/12 w-full">
+                <div className="w-full">
                   <div>
                     <button onClick={handleBack}>
                       <Image
@@ -580,7 +624,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     </button>
                   </div>
                   <div
-                    className="mt-6"
+                    className="mt-6 w-full sm:w-9/12"
                     style={{
                       fontSize: 24,
                       fontWeight: "600",
@@ -665,7 +709,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
         )}
         {currentIndex === 3 && (
           <div
-            className="flex flex-col h-screen sm:justify-center justify-start"
+            className="flex flex-col sm:justify-center justify-start"
             style={{ height: "" }}
           >
             <motion.div
@@ -679,7 +723,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
               style={styles}
             >
               <div className="w-full flex sm:justify-center justify-start">
-                <div className="sm:w-10/12 w-full">
+                <div className="w-full">
                   <div className="flex flex-row w-full sm:w-9/12 justify-between items-center">
                     <button onClick={handleBack}>
                       <Image
@@ -700,7 +744,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     </button>
                   </div>
 
-                  <div style={{ border: '', height: "50vh", overflow: 'auto', scrollbarWidth: 'none' }}>
+                  <div style={{ border: '', height: "auto", scrollbarWidth: 'none' }}>
                     <AiSocialLinks handleContinue={handleContinue} aiName={aiName} />
                   </div>
 
@@ -716,7 +760,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
             </motion.div>
           </div>
         )}
-        {currentIndex === 4 && (
+        {/* {currentIndex === 4 && (
           <div
             className="flex flex-col h-screen sm:justify-center justify-start"
             style={{ height: "" }}
@@ -732,7 +776,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
               style={styles}
             >
               <div className="w-full flex sm:justify-center justify-start">
-                <div className="sm:w-10/12 w-full">
+                <div className="w-full">
                   <div className="flex flex-row w-full sm:w-10/12 justify-between items-center">
                     <button onClick={() => {
                       localStorage.removeItem('BuildaiIndex');
@@ -759,26 +803,18 @@ export default function ScriptAnimation({ onChangeIndex }) {
                   <div>
                     <SocialOAuth currentIndex={currentIndex} handleContinue={handleContinue} />
                   </div>
-
-                  {/* <div className='w-10/12'>
-                                        <Button onClick={handleTempContinue}
-                                            className='bg-purple hover:bg-purple text-white w-full mt-12'
-                                            style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
-                                            Continue
-                                        </Button>
-                                    </div> */}
                 </div>
               </div>
             </motion.div>
           </div>
-        )}
-        {currentIndex === 5 && (
+        )} */}
+        {currentIndex === 4 && (
           <div
-            className="flex flex-col h-screen sm:justify-center justify-start"
+            className="flex flex-col sm:justify-center justify-start"
             style={{ height: "" }}
           >
             <motion.div
-              key="box6"
+              key="box5"
               custom={direction}
               variants={boxVariants}
               initial="enter"
@@ -788,7 +824,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
               style={styles}
             >
               <div className="w-full flex sm:justify-center justify-start">
-                <div className="sm:w-10/12 w-full">
+                <div className="w-full">
                   <div>
                     <button onClick={handleBack}>
                       <Image
@@ -817,10 +853,18 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     >
                       Knowledge base
                     </div>
-                    <button onClick={() => { setKnowledgeModal(true) }} className="bg-purple px-2 py-1 sm:py-2 "
-                      style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 15, color: 'white', borderRadius: "50px" }}>
-                      Add Knowledge
-                    </button>
+                    {
+                      kbData ?
+                        <button
+                          onClick={handleContinue}
+                          style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 15, }}>
+                          Skip
+                        </button> :
+                        <button onClick={() => { setKnowledgeModal(true) }} className="bg-purple px-2 py-1 sm:py-2 "
+                          style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 15, color: 'white', borderRadius: "50px" }}>
+                          Add Knowledge
+                        </button>
+                    }
                   </div>
                   <Modal
                     open={knowledgeModal}
@@ -885,25 +929,33 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     </div>
                   </div>
 
-                  <div className='w-10/12'>
-                    <button onClick={handleContinue}
-                      className='bg-purple hover:bg-purple text-white w-full mt-12'
-                      style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
-                      Continue
-                    </button>
+                  <div className='w-full'>
+                    {
+                      kbData ?
+                        <button onClick={() => { setKnowledgeModal(true) }}
+                          className='bg-purple hover:bg-purple text-white w-full mt-12'
+                          style={{ fontSize: 15, fontWeight: "400", height: "44px", borderRadius: "50px" }}>
+                          Add Knowledge
+                        </button> :
+                        <button onClick={handleContinue}
+                          className='bg-purple hover:bg-purple text-white w-full mt-12'
+                          style={{ fontSize: 15, fontWeight: "400", height: "44px", borderRadius: "50px" }}>
+                          Continue
+                        </button>
+                    }
                   </div>
                 </div>
               </div>
             </motion.div>
           </div>
         )}
-        {currentIndex === 6 && (
+        {currentIndex === 5 && (
           <div
-            className="flex h-screen flex-col sm:justify-center justify-start"
+            className="flex flex-col sm:justify-center justify-start"
             style={{ height: "" }}
           >
             <motion.div
-              key="box7"
+              key="box6"
               custom={direction}
               variants={boxVariants}
               initial="enter"
@@ -913,8 +965,8 @@ export default function ScriptAnimation({ onChangeIndex }) {
               style={styles}
             >
               <div className="w-full flex justify-center">
-                <div className="w-full sm:w-10/12 flex flex-row items-center gap-4">
-                  <div style={{ height: "100%", width: "2px" }} />
+                <div className="w-full flex flex-row items-center gap-4">
+                  {/* <div style={{ height: "100%", width: "2px", backgroundColor: 'black' }} /> */}
 
                   <div>
                     <div>
@@ -945,21 +997,6 @@ export default function ScriptAnimation({ onChangeIndex }) {
                       For best results, upload at least 10 minutes of audio.
                     </div>
 
-                    {/* <div className="flex flex-col items-center">
-                                                <input
-                                                    type="file"
-                                                    accept="audio/*"
-                                                    onChange={handleAudioChange}
-                                                    className="mb-4"
-                                                />
-                                                {selectedAudio && (
-                                                    <audio controls>
-                                                        <source src={selectedAudio} type="audio/mpeg" />
-                                                        Your browser does not support the audio element.
-                                                    </audio>
-                                                )}
-                                            </div> */}
-
                     <div className="flex flex-col items-center mt-6">
                       <input
                         type="file"
@@ -975,12 +1012,6 @@ export default function ScriptAnimation({ onChangeIndex }) {
                           Your browser does not support the audio element.
                         </audio>
                       )}
-                      {/* <button
-                                                    onClick={handleUploadClick}
-                                                    className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
-                                                >
-                                                    Select Audio
-                                                </button> */}
                     </div>
 
                     <div className="flex flex-row items-center gap-6 mt-12">
@@ -1038,13 +1069,13 @@ export default function ScriptAnimation({ onChangeIndex }) {
             </motion.div>
           </div>
         )}
-        {currentIndex === 7 && (
+        {currentIndex === 6 && (
           <div
-            className="flex flex-col sm:justify-center justify-start h-screen"
+            className="flex flex-col sm:justify-center justify-start"
             style={{ height: "" }}
           >
             <motion.div
-              key="box8"
+              key="box7"
               custom={direction}
               variants={boxVariants}
               initial="enter"

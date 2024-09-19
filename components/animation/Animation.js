@@ -54,8 +54,10 @@ export default function Animation({ onChangeIndex }) {
     const [checkUserNameData, setCheckUserNameData] = useState(null);
     const [checkUserEmailData, setCheckUserEmailData] = useState(null);
     const [checkUserPhoneNumberData, setCheckUserPhoneNumberData] = useState(null);
+    const [formatError, setFormatError] = useState(null);
     const [userEmail, setUserEmail] = useState("");
     const [userPhoneNumber, setUserPhoneNumber] = useState("");
+    const [debounceValue, setDebounceValue] = useState("");
     const [userPassword, setUserPassword] = useState("")
     const [VerifiyNumberLoader, setVerifiyNumberLoader] = useState(false);
     const [P1, setP1] = useState("");
@@ -70,6 +72,8 @@ export default function Animation({ onChangeIndex }) {
     const [EmailP4, setEmailP4] = useState("");
     const [EmailP5, setEmailP5] = useState("");
     const [signinVerificationNumber, setSigninVerificationNumber] = useState(null);
+    const [emailValidationError, setEmailValidationError] = useState(false);
+    const [sendEmailCodeLoader, setSendEmailCodeLoader] = useState(false);
 
     //code for sending verification code when signIn
     const [VP1, setVP1] = useState("");
@@ -443,10 +447,10 @@ export default function Animation({ onChangeIndex }) {
     }
 
     //code for email verification code sending
-    const handleVerifyEmail = async () => {
+    const handleVerifyEmail = async (e) => {
         // setVerifyEmailLoader(true);
-        setSendEmailCodeLoader(true);
         try {
+            setSendEmailCodeLoader(true);
             const ApiPath = Apis.EmailVerificationCode;
             const data = {
                 email: userEmail,
@@ -461,7 +465,13 @@ export default function Animation({ onChangeIndex }) {
             if (response) {
                 console.log("Api response of verify code api", response.data);
                 if (response.data.status === true) {
-                    handleContinue()
+                    // handleContinue()
+                    if (e === 'resendcode') {
+                        console.log('Conde resent sucessfull')
+                    } else {
+                        handleContinue();
+                        setSendEmailCodeLoader(false);
+                    }
                 } else {
                     setEmailVerificationCodeErr(response.data.message);
                 }
@@ -559,12 +569,18 @@ export default function Animation({ onChangeIndex }) {
 
     //code to validate email
     const validateEmail = (email) => { // Accept email directly as a string
+        // const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        // return emailPattern.test(email);
         const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        // Check if email contains consecutive dots, which are invalid
+        if (/\.\./.test(email)) {
+            return false;
+        }
+
+        // Check the general pattern for a valid email
         return emailPattern.test(email);
     };
-
-    const [emailValidationError, setEmailValidationError] = useState(false);
-    const [sendEmailCodeLoader, setSendEmailCodeLoader] = useState(false);
 
 
     // useEffect(() => {
@@ -581,6 +597,7 @@ export default function Animation({ onChangeIndex }) {
             phone: userPhoneNumber
         }
         const ApiPath = Apis.checkPhone;
+        console.log('Data sending in api', data);
         try {
             const response = await axios.post(ApiPath, data, {
                 headers: {
@@ -589,8 +606,11 @@ export default function Animation({ onChangeIndex }) {
             });
             if (response) {
                 if (response.data) {
-                    setCheckUserPhoneNumberData(response.data)
+                    console.log("Response of check number is", response);
+                    setCheckUserPhoneNumberData(response.data);
                 }
+            } else {
+                console.log("No response")
             }
         } catch (error) {
             console.error("Error occured in checknumber api", error);
@@ -598,13 +618,26 @@ export default function Animation({ onChangeIndex }) {
         }
     }
 
+    // useEffect(() => {
+    //     console.log('Check log 1')
+    //     if (userPhoneNumber) {
+    //         const timer = setTimeout(() => {
+    //             checkPhoneNumber();
+    //             console.log('Check log 2')
+    //         }, 300);
+    //         return () => clearTimeout(timer);
+    //     }
+    // }, [userPhoneNumber]);
     useEffect(() => {
+        console.log('Check log 1')
         if (userPhoneNumber) {
-            setTimeout(() => {
+            const timer = setTimeout(() => {
                 checkPhoneNumber();
-            }, 500);
+                console.log('Check log 2')
+            }, 300); // Debounce the API call by 300ms
+            return () => clearTimeout(timer); // Clean up the timeout
         }
-    }, [userPhoneNumber]);
+    }, [debounceValue])
 
     //code for login back
     const handleLogin = async (e) => {
@@ -747,10 +780,11 @@ export default function Animation({ onChangeIndex }) {
 
 
     const userNumber = (phone) => {
-        setUserPhoneNumber(phone)
+        console.log("check log 3", phone)
+        setUserPhoneNumber(phone);
+        setDebounceValue(phone + Date.now());
     }
 
-    const [formatError, setFormatError] = useState(null);
     const getNumberFormat = (status) => {
         console.log("Format error is", status);
         setFormatError(status);
@@ -1043,7 +1077,7 @@ export default function Animation({ onChangeIndex }) {
                                         </u>
                                     </button>
                                 </div> */}
-                                <div className='mt-8 w-full lg:w-8/12' style={{ color: "white" }}>
+                                <div className='mt-6 w-full lg:w-8/12' style={{ color: "white" }}>
                                     {
                                         index1Loader ?
                                             <div className='w-full flex flex-row justify-center'>
@@ -1198,7 +1232,7 @@ export default function Animation({ onChangeIndex }) {
                                 <div>
                                     {
                                         verifyErr && (
-                                            <div className='mt-2' style={{ fontWeight: "400", fontFamily: "inter", color: "#FF0100" }}>
+                                            <div className='mt-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100" }}>
                                                 {verifyErr}
                                             </div>
                                         )
@@ -1397,7 +1431,7 @@ export default function Animation({ onChangeIndex }) {
                     </div>
                 )}
                 {currentIndex === 3 && (
-                    <div className='flex flex-col h-auto sm:justify-center justify-start -mt-12' style={margin}>
+                    <div className='flex flex-col h-auto sm:justify-center justify-start' style={margin}>
                         <motion.div
                             key="box4"
                             custom={direction}
@@ -1411,14 +1445,14 @@ export default function Animation({ onChangeIndex }) {
                                 <div className='w-full sm:w-full'>
                                     <div>
                                         <button onClick={handleBack}>
-                                            <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
+                                            <Image style={{ backgroundColor: '' }} src='/assets/backarrow.png' alt='back' height={14} width={16} />
                                         </button>
                                     </div>
                                     <div className='mt-6 text-lightWhite' style={{ fontWeight: "400", fontSize: 13 }}>
                                         app.mycreatorx.com/{userName} is all yours!
                                     </div>
                                     <div className='mt-6' style={{ fontSize: 24, fontWeight: "600" }} onClick={handleContinue}>
-                                        Now, create your account
+                                        What's your email address?
                                     </div>
                                     <div className='w-full flex flex-row gap-6 mt-8'>
 
@@ -1473,19 +1507,19 @@ export default function Animation({ onChangeIndex }) {
                                                 <div>
                                                     {
                                                         emailVerificationCodeErr ?
-                                                            <div style={{ fontWeight: "400", fontSize: 14, color: "red", height: 14 }}>
+                                                            <div style={{ fontWeight: "400", fontSize: 12, color: "red", height: 14 }}>
                                                                 {emailVerificationCodeErr}
                                                             </div> :
                                                             <div>
                                                                 {
                                                                     checkUserEmailData && checkUserEmailData.status === true &&
-                                                                    <div style={{ fontWeight: "400", fontSize: 14, color: "green", height: 14 }}>
+                                                                    <div style={{ fontWeight: "400", fontSize: 12, color: "green", height: 14 }}>
                                                                         Email Available
                                                                     </div>
                                                                 }
                                                                 {
                                                                     checkUserEmailData && checkUserEmailData.status === false &&
-                                                                    <div style={{ fontWeight: "400", fontSize: 14, color: "red", height: 14 }}>
+                                                                    <div style={{ fontWeight: "400", fontSize: 12, color: "red", height: 14 }}>
                                                                         {checkUserEmailData.message}
                                                                     </div>
                                                                 }
@@ -1647,19 +1681,26 @@ export default function Animation({ onChangeIndex }) {
                                     <div style={{ height: 15 }}>
                                         {
                                             emailVerificationCodeErr2 &&
-                                            <div style={{ fontSize: 14, fontWeight: "500", color: 'red' }}>
+                                            <div style={{ fontSize: 12, fontWeight: "400", color: 'red' }}>
                                                 Invalid code
                                             </div>
                                         }
                                     </div>
 
                                     <div className='flex flex-row gap-1 mt-6'>
-                                        <div className='text-lightWhite' style={{ fontSize: 14, fontWeight: "400" }}>
+                                        <div className='text-lightWhite' style={{ fontSize: 12, fontWeight: "400" }}>
                                             Didn't receive code?
                                         </div>
-                                        <button className='' style={{ fontSize: 14, fontWeight: "400", color: '#050A08' }}>
-                                            Resend
-                                        </button>
+                                        {
+                                            sendEmailCodeLoader ?
+                                                <CircularProgress size={20} sx={{ marginLeft: 1 }} />
+                                                :
+                                                <button
+                                                    onClick={() => { handleVerifyEmail('resendcode') }}
+                                                    className='' style={{ fontSize: 12, fontWeight: "400", color: '#050A08' }}>
+                                                    Resend
+                                                </button>
+                                        }
                                     </div>
                                     <div //style={{ height: 50 }}
                                     >
@@ -1716,19 +1757,19 @@ export default function Animation({ onChangeIndex }) {
                                     <div style={{ height: 15 }}>
                                         {
                                             formatError ?
-                                                <div style={{ fontWeight: "400", fontSize: 14, color: "red" }}>
+                                                <div style={{ fontWeight: "400", fontSize: 12, color: "red" }}>
                                                     {formatError}
                                                 </div> :
                                                 <div>
                                                     {
                                                         checkUserPhoneNumberData && checkUserPhoneNumberData.status === true &&
-                                                        <div style={{ fontWeight: "400", fontSize: 14, color: "green" }}>
+                                                        <div style={{ fontWeight: "400", fontSize: 12, color: "green" }}>
                                                             {checkUserPhoneNumberData.message}
                                                         </div>
                                                     }
                                                     {
                                                         checkUserPhoneNumberData && checkUserPhoneNumberData.status === false &&
-                                                        <div style={{ fontWeight: "400", fontSize: 14, color: "red" }}>
+                                                        <div style={{ fontWeight: "400", fontSize: 12, color: "red" }}>
                                                             {checkUserPhoneNumberData.message}
                                                         </div>
                                                     }
@@ -1746,7 +1787,7 @@ export default function Animation({ onChangeIndex }) {
                                                             </div> :
                                                             <button
                                                                 onClick={(e) => sendOtp("signup")}
-                                                                className='w-full sm:w-full lg:w-8/12 mt-6 bg-purple hover:bg-purple2 text-white'
+                                                                className='w-full sm:w-full lg:w-8/12 mt-6 bg-purple hover:bg-purple text-white'
                                                                 style={{ height: 50, fontSize: 15, fontWeight: "400", color: "white", borderRadius: '50px' }}>
                                                                 Continue
                                                             </button>
@@ -1996,7 +2037,7 @@ export default function Animation({ onChangeIndex }) {
                                     </button>
                                 </div>
 
-                                <div className='flex flex-row mt-6 justify-center w-full gap-1'>
+                                {/* <div className='flex flex-row mt-6 justify-center w-full gap-1'>
                                     <button style={{ fontSize: 11, fontWeight: "400" }}>
                                         Privacy policy -
                                     </button>
@@ -2006,7 +2047,7 @@ export default function Animation({ onChangeIndex }) {
                                     <button style={{ fontSize: 11, fontWeight: "400" }}>
                                         Cookie Policy
                                     </button>
-                                </div>
+                                </div> */}
 
                             </div>
                         </motion.div>

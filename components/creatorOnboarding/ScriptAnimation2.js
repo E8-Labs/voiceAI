@@ -76,6 +76,18 @@ export default function ScriptAnimation2({ onChangeIndex }) {
     const [buildScriptLoader, setBuildScriptLoader] = useState(false);
     const [allQuestionsFilled, setAllQuestionsFilled] = useState(null);
 
+    //code to add subscription
+
+    const [subscribe, setsubscibe] = useState(false);
+    const [cardData, setCardData] = useState(null);
+    const [subscribeLoader, setsubscribeLoader] = useState(false);
+    const [cardAdded, setCardAdded] = useState(null);
+    // //console.log("Card data added", setCardData);
+    const [selectPlanErr, setSelectPlanErr] = useState(false);
+    const [subscribeFailureErr, setSubscribeFailureErr] = useState(null);
+    const [validLinkErr, setValidLinkErr] = useState(false);
+    const [validOtherLinkErr, setValidOtherLinkErr] = useState(false);
+
     //update ref when selectedplan changed
     // useEffect(() => {
     //     selectedPlanRef.current = selectedPlan;
@@ -231,7 +243,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        marginInline: 10
+        // marginInline: 10
     };
 
     const goalsStyles = {
@@ -326,15 +338,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
         //console.log(newInputRows);
     };
 
-    //code to add subscription
 
-    const [subscribe, setsubscibe] = useState(false);
-    const [cardData, setCardData] = useState(null);
-    const [subscribeLoader, setsubscribeLoader] = useState(false);
-    const [cardAdded, setCardAdded] = useState(null);
-    // //console.log("Card data added", setCardData);
-    const [selectPlanErr, setSelectPlanErr] = useState(false);
-    const [subscribeFailureErr, setSubscribeFailureErr] = useState(null);
 
     const handleBuildScriptCont = (e) => {
         //console.log("Continue build script function");
@@ -425,6 +429,19 @@ export default function ScriptAnimation2({ onChangeIndex }) {
     }
 
 
+    //code to validate urls
+
+    const validateUrl = (url) => {
+        const urlRegex = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/;
+        return urlRegex.test(url);
+    };
+
+    const linkErrStyle = {
+        fontSize: 12, height: 13,
+        fontFamily: 'inter', fontWeight: '400',
+        color: '#FF0100',
+        // marginLeft: 50
+    }
 
 
 
@@ -432,7 +449,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
         <div style={containerStyles}>
             <AnimatePresence initial={false} custom={direction}>
                 {currentIndex === 0 && (
-                    <div className='flex flex-col h-screen w-full sm:justify-center justify-start' style={{ height: "" }}>
+                    <div className='flex flex-col w-full sm:justify-center justify-start' style={{ height: "", backgroundColor: '' }}>
                         <motion.div
                             key="box1"
                             custom={direction}
@@ -445,7 +462,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                         >
 
                             <div className='w-full flex justify-center'>
-                                <div className='w-11/12 sm:w-10/12'>
+                                <div className='w-11/12 sm:w-full'>
                                     <div className='' style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
                                         Greet callers
                                     </div>
@@ -522,7 +539,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                     </div>
                 )}
                 {currentIndex === 1 && (
-                    <div className='flex flex-col h-screen  sm:justify-center justify-start' style={{ height: "", }}>
+                    <div className='flex flex-col  sm:justify-center justify-start' style={{ height: "", }}>
                         <motion.div
                             key="box2"
                             custom={direction}
@@ -534,7 +551,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             style={styles}
                         >
                             <div className='w-full flex justify-center'>
-                                <div className='w-11/12 sm:w-10/12'>
+                                <div className='w-11/12 sm:w-full'>
                                     <div>
                                         <button onClick={handleBack}>
                                             <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
@@ -579,7 +596,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         }}
                                     />
 
-                                    <div className='w-full sm:w-10/12'>
+                                    <div className='w-full sm:w-9/12'>
                                         {
                                             serviceDetails ?
                                                 <button onClick={handleContinue}
@@ -604,7 +621,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                     </div>
                 )}
                 {currentIndex === 2 && (
-                    <div className='flex flex-col h-screen  sm:justify-center justify-start' style={{ height: "", }}>
+                    <div className='flex flex-col  sm:justify-center justify-start' style={{ height: "", }}>
                         <motion.div
                             key="box3"
                             custom={direction}
@@ -615,7 +632,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             transition={{ duration: 0 }}
                             style={styles}>
                             <div className='w-full flex justify-center'>
-                                <div className='w-11/12 sm:w-10/12'>
+                                <div className='w-11/12 sm:w-full'>
                                     <div>
                                         <button onClick={handleBack}>
                                             <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
@@ -623,13 +640,15 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                     </div>
                                     {/* <CallerInfo /> */}
 
-                                    <div className='mt-6' style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
+                                    <div className='mt-6 w-full sm:w-9/12' style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
                                         KYC - What would you like to know about your callers?
                                     </div>
-                                    <div className='text-sm text-gray-400 mt-2'>
+                                    <div className='text-sm text-gray-400 mt-2 w-full sm:w-9/12'>
                                         These are questions your AI will ask during the call to give you a better understanding about the person
                                     </div>
-                                    <div style={{ maxHeight: "40vh", overflowY: "auto" }}>
+                                    <div
+                                        className='w-full sm:w-9/12'
+                                        style={{ maxHeight: "40vh", overflowY: "auto" }}>
                                         {inputs.map((input, index) => (
                                             <div key={index}
                                                 // style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}
@@ -653,7 +672,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         </button>
                                     </div>
 
-                                    <div className='w-full sm:w-10/12'>
+                                    <div className='w-full sm:w-9/12'>
                                         {
                                             allQuestionsFilled ?
                                                 <button onClick={handleContinue}
@@ -677,7 +696,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                     </div>
                 )}
                 {currentIndex === 3 && (
-                    <div className='flex flex-col h-screen sm:justify-center justify-start' style={{ height: "", }}>
+                    <div className='flex flex-col sm:justify-center justify-start' style={{ height: "", }}>
                         <motion.div
                             key="box4"
                             custom={direction}
@@ -688,18 +707,18 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             transition={{ duration: 0 }}
                             style={styles}>
                             <div className='w-full flex justify-center'>
-                                <div className='w-11/12 sm:w-10/12'>
+                                <div className='w-11/12 sm:w-full'>
                                     <div>
                                         <button onClick={handleBack}>
                                             <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
                                         </button>
                                     </div>
-                                    <div className='mt-6' style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
+                                    <div className='mt-6 w-full sm:w-9/12' style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
                                         Do you sell any products or services that can offer to qualified callers?
                                     </div>
 
                                     {/* Code to make dynamic routes */}
-                                    <div className='mt-8' style={{ maxHeight: "20vh", overflowY: "auto", scrollbarWidth: "none" }}>
+                                    <div className='mt-8 w-full sm:w-9/12' style={{ maxHeight: "20vh", overflowY: "auto", scrollbarWidth: "none" }}>
                                         {inputRows.map((row, index) => (
                                             <div className='w-full flex flex-row gap-2 mt-2' key={index} style={{}}>
                                                 <div className='w-3/12 px-3 py-3 rounded-lg flex flex-row gap-4 items-center' style={{ backgroundColor: "#EDEDED80", }}>
@@ -736,7 +755,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                     </div>
 
                                     {inputRows.every(row => row.productAmount && row.productName) ?
-                                        <div className='w-full sm:w-10/12'>
+                                        <div className='w-full w-full sm:w-9/12'>
                                             <button onClick={handleContinue}
                                                 className='bg-purple hover:bg-purple text-white w-full mt-12'
                                                 style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
@@ -744,7 +763,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                             </button>
                                         </div>
                                         :
-                                        <div className='w-full sm:w-10/12'>
+                                        <div className='w-full w-full sm:w-9/12'>
                                             <button
                                                 disabled
                                                 // onClick={handleContinue}
@@ -769,7 +788,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                     </div>
                 )}
                 {currentIndex === 4 && (
-                    <div className='flex flex-col h-screen sm:justify-center justify-start' style={{ height: "", }}>
+                    <div className='flex flex-col sm:justify-center justify-start' style={{ height: "", }}>
                         <motion.div
                             key="box5"
                             custom={direction}
@@ -780,7 +799,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             transition={{ duration: 0 }}
                             style={styles}>
                             <div className='w-full flex justify-center'>
-                                <div className='w-11/12 sm:w-10/12'>
+                                <div className='w-11/12 sm:w-full'>
                                     <div>
                                         <button onClick={handleBack}>
                                             <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
@@ -888,12 +907,30 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                     <div className='w-11/12 mt-8' style={{}}>
                                                         <input
                                                             value={webinarUrl}
-                                                            onChange={(e) => setWebinarUrl(e.target.value)}
+                                                            onChange={(e) => {
+                                                                setWebinarUrl(e.target.value);
+                                                                const url = e.target.value;
+
+                                                                if (webinarUrl) {
+                                                                    if (validateUrl(url)) {
+                                                                        console.log("Valid URL");
+                                                                        setValidLinkErr(false);
+                                                                    } else {
+                                                                        console.log("Invalid URL");
+                                                                        setValidLinkErr(true);
+                                                                    }
+                                                                }
+                                                            }}
                                                             type='text'
                                                             className='w-full p-4 rounded-lg outline-none'
                                                             placeholder='Paste website or calender link'
                                                             style={{ backgroundColor: "#EDEDED80", border: "1px solid #EDEDED" }}
                                                         />
+                                                        <div style={linkErrStyle}>
+                                                            {
+                                                                webinarUrl && validLinkErr && "Invalid link"
+                                                            }
+                                                        </div>
                                                     </div>
                                                 }
 
@@ -964,7 +1001,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                 )}
                 {
                     currentIndex === 5 && (
-                        <div className='flex h-screen flex-col sm:justify-center justify-start' style={{ height: "", }}>
+                        <div className='flex flex-col sm:justify-center justify-start' style={{ height: "", }}>
                             <motion.div
                                 key="box6"
                                 custom={direction}
@@ -975,7 +1012,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                 transition={{ duration: 0 }}
                                 style={styles}>
                                 <div className='w-full flex justify-center'>
-                                    <div className='w-11/12 sm:w-10/12'>
+                                    <div className='w-11/12 sm:w-full'>
                                         <div>
                                             <button onClick={handleBack}>
                                                 <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
@@ -1044,7 +1081,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                     )
                 }
                 {currentIndex === 6 && (
-                    <div className='flex flex-col justify-center h-screen' style={{ height: "", width: '100%', backgroundColor: '' }}>
+                    <div className='flex flex-col justify-center' style={{ height: "", width: '100%', backgroundColor: '' }}>
                         <motion.div
                             key="box7"
                             custom={direction}
@@ -1228,7 +1265,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
                 {
                     currentIndex === 7 && (
-                        <div className='flex h-screen flex-col justify-center' style={{ height: "", }}>
+                        <div className='flex flex-col justify-center' style={{ height: "", }}>
                             <motion.div
                                 key="box8"
                                 custom={direction}

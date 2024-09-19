@@ -31,6 +31,32 @@ function AiSocialLinks({ handleContinue, aiName }) {
         }
     }, []);
 
+    useEffect(() => {
+        const localData = localStorage.getItem('socialsUrl');
+        if (localData) {
+            const Data = JSON.parse(localData);
+            console.log("social inks data recieved", Data);
+            if (Data.discord_url) {
+                setAppleProducts(Data.discord_url)
+            }
+            if (Data.fb_url) {
+                setFburl(Data.fb_url)
+            }
+            if (Data.insta_url) {
+                setInstaurl(Data.insta_url)
+            }
+            if (Data.spotify_url) {
+                setSpotifyurl(Data.spotify_url)
+            }
+            if (Data.twitter_url) {
+                setTwitterurl(Data.twitter_url)
+            }
+            if (Data.youtube_url) {
+                setYoutubeurl(Data.youtube_url)
+            }
+        }
+    }, [])
+
     //validate instagram url
     // const validateInstagramUrl = (url) => {
     //     const profileRegex = /^(https?:\/\/)?(www\.)?instagram\.com\/[a-zA-Z0-9._]{1,30}(\/)?(\?.*)?$/;
@@ -47,6 +73,7 @@ function AiSocialLinks({ handleContinue, aiName }) {
         fontSize: 12, height: 13,
         fontFamily: 'inter', fontWeight: '400',
         color: '#FF0100',
+        marginLeft: 50
     }
 
 
@@ -201,7 +228,7 @@ function AiSocialLinks({ handleContinue, aiName }) {
                         />
                     </div>
                 </div>
-                <div className='mt-2 mb-8' style={linkErrStyle}>
+                <div className='mt-1 mb-2' style={linkErrStyle}>
                     {
                         instaUrl && validLinkErr && "Invalid link" //: 'valid'
                     }
@@ -232,7 +259,7 @@ function AiSocialLinks({ handleContinue, aiName }) {
                         />
                     </div>
                 </div>
-                <div className='mt-2 mb-8' style={linkErrStyle}>
+                <div className='mt-1 mb-2' style={linkErrStyle}>
                     {
                         youtubeUrl && validYoutubeLinkErr && "Invalid link"
                     }
@@ -264,7 +291,7 @@ function AiSocialLinks({ handleContinue, aiName }) {
 
                     </div>
                 </div>
-                <div className='mt-2 mb-8' style={linkErrStyle}>
+                <div className='mt-1 mb-2' style={linkErrStyle}>
                     {
                         twitterUrl && validTwitterLinkErr && "Invalid link"
                     }
@@ -296,7 +323,7 @@ function AiSocialLinks({ handleContinue, aiName }) {
 
                     </div>
                 </div>
-                <div className='mt-2 mb-8' style={linkErrStyle}>
+                <div className='mt-1 mb-2' style={linkErrStyle}>
                     {
                         appleProducts && validApplePodcastLinkErr && "Invalid link"
                     }
@@ -328,7 +355,7 @@ function AiSocialLinks({ handleContinue, aiName }) {
 
                     </div>
                 </div>
-                <div className='mt-2 mb-8' style={linkErrStyle}>
+                <div className='mt-1 mb-2' style={linkErrStyle}>
                     {
                         spotifyurl && validSpotifyLinkErr && "Invalid link"
                     }
@@ -362,7 +389,7 @@ function AiSocialLinks({ handleContinue, aiName }) {
                         />
                     </div>
                 </div>
-                <div className='mt-2 mb-8' style={linkErrStyle}>
+                <div className='mt-1 mb-2' style={linkErrStyle}>
                     {
                         fbUrl && validFacebookLinkErr && "Invalid link"
                     }

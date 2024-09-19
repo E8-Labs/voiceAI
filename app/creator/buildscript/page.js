@@ -55,66 +55,32 @@ export default function Home() {
     }
 
     return (
-        // <div className='w-full' style={{ height: "100vh", display: 'flex', alignItems: "center", width: "", overflow: "hidden" }}>
-        //     <div className='flex flex-row items-center justify-center w-full'>
-        //         <div
-        //             // className='flex flex-row justify-center md:w-5/12 w-full items-center'
-        //             className={`flex flex-row justify-center items-center ${currentIndex === 6 ? 'w-full' : 'md:w-5/12 w-full'}`}
-        //         >
-        //             <div className='w-11/12'>
-        //                 <div className='mt-24 sm:flex hidden'>
-        //                     <Image src={'/assets/applogo.png'}
-        //                         alt='logo'
-        //                         height={40}
-        //                         width={37}
-        //                     />
-        //                     {/* <div>Onboarding 2</div> */}
-        //                 </div>
-        //                 {/* <ScriptAiAnimation /> */}
-        //                 <div style={{ border: "2px solid red" }}>
-        //                     <ScriptAnimation onChangeIndex={handleCurrentIndex} />
-        //                 </div>
-        //             </div>
-        //         </div>
-        //         {
-        //             currentIndex === 0 &&
-        //             <div className='w-7/12 flex md:flex hidden justify-center' style={{ height: "100%" }}>
-        //                 <img src="/assets/groupImages.png" alt='app' style={{ height: "850px", width: "100%", resize: "cover", objectFit: "contain" }} />
-        //                 {/* <ImagesFile /> */}
-        //             </div>
-        //         }
-        //         {
-        //             currentIndex < 6 && currentIndex > 0 &&
-        //             <div className='w-7/12 flex md:flex hidden  justify-center'>
-        //                 <img src='/assets/mainLogo.png' alt='app' style={{ height: "637px", width: "637px", resize: "cover", objectFit: "contain" }} />
-        //             </div>
-        //         }
-        //     </div>
-        //     {/* <div>hello</div> */}
-        // </div>
         <div className='w-full' style={{ height: "100vh", display: 'flex', alignItems: "center", width: "", overflow: "hidden", }}>
-            <div className='flex flex-row items-center justify-center w-full' style={{ height: '100%' }}>
+            <div className='flex flex-row items-center justify-center w-full' style={{ height: '100%',  }}>
                 <div
                     // className='flex flex-row justify-center md:w-5/12 w-full items-center'
-                    className={`flex flex-row h-screen ${currentIndex === 6 ? 'w-full' : 'md:w-5/12 w-full'}`} style={{}}
+                    className={`flex flex-row justify-center h-screen ${currentIndex === 6 ? 'w-full' : 'lg:w-5/12 w-full'}`} style={{backgroundColor: ''}}
                 >
-                    <div className='sm:w-11/12 w-full h-screen flex flex-col justify-between'>
-                        <div className='sm:flex hidden sm:mt-24 md:ms-12 lg:ms-16'>
-                            <Image src={'/assets/applogo.png'}
+                    <div className='sm:w-10/12 w-full h-screen flex flex-col justify-between'>
+                        <div className='mt-24 sm:flex hidden'  style={{backgroundColor: ''}}>
+                            <Image src={'/creatorXlogo.png'}
                                 alt='logo'
-                                height={40}
-                                width={37}
+                                height={410}
+                                width={116}
                             />
                             {/* <div>Onboarding 2</div> */}
                         </div>
-                        <div className='w-full flex justify-center items-center sm:-mt-24'>
-                            <ScriptAnimation onChangeIndex={handleCurrentIndex} />
+                        <div className=' sm:w-full w-full' //className={currentIndex === 7 ? 'pt-28 sm:pt-0 sm:w-full w-10/12' : 'pt-28 sm:pt-28 sm:w-full w-10/12'}  //'pt-28 sm:w-full w-10/12' //{currentIndex === 7 ? 'pt-28 sm:pt-28 sm:w-full w-10/12' : 'sm:w-full w-10/12'} 
+                            style={{ backgroundColor: '', height: currentIndex === 3 ? "85%" : '68%', }}>
+                            <div className='w-full flex justify-center items-center'  style={{backgroundColor: ''}}>
+                                <ScriptAnimation onChangeIndex={handleCurrentIndex} />
+                            </div>
                         </div>
                         <div />
 
                     </div>
                 </div>
-                <div className='w-7/12 flex md:flex hidden justify-center items-center' style={{ height: "100%" }}>
+                <div className='w-7/12 flex lg:flex hidden justify-center items-center' style={{ height: "100%" }}>
                     {/* <img src="/assets/mainLogo.png" alt='app' style={{ height: "850px", width: "100%", resize: "cover", objectFit: "contain" }} /> */}
                     <div style={gifBackgroundImage} className='flex flex-row justify-center items-center'>
                         <Image

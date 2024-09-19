@@ -24,6 +24,7 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
     const [showError, setShowError] = useState(false);
     const [aiData, setAiData] = useState([]);
     const [aiLoader, setAiLoader] = useState(false);
+    const [validLinkErr, setValidLinkErr] = useState(false);
 
     //code for list
     const [userSelectedData, setUserSelectedData] = useState([]);
@@ -64,13 +65,12 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
 
     }
 
-    // useEffect(() => {
-    //     const data = localStorage.getItem("KnowledgeBase");
-    //     if (data) {
-    //         const LocalData = JSON.parse(data);
-    //         setAiData(LocalData)
-    //     }
-    // }, [])
+    useEffect(() => {
+        setQuestionType("Document")
+        setShowDocument(true);
+        setText(false);
+        setWebUrl(false);
+    }, [])
 
     //code for adding data in list
     const listdata = () => {
@@ -255,82 +255,161 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
             setLoader(false);
         }
     }
+    //simple url validation pattern
+    const validateUrl = (url) => {
+        const urlRegex = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/;
+        return urlRegex.test(url);
+    };
+    const linkErrStyle = {
+        fontSize: 12, height: 13,
+        fontFamily: 'inter', fontWeight: '400',
+        color: '#FF0100',
+        // marginLeft: 50
+    }
 
     return (
-        <div className='w-full' style={{ height: "60vh", overflow: "auto" }}>
-            <div className='p-4 rounded-xl mt-4' style={{ border: "2px solid #EDEDED78" }} >
-                <div style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter" }}>
-                    Select Type
-                </div>
-                <FormControl className='w-full mt-4'>
-                    <Select
-                        className=' border-none rounded-md'
-                        displayEmpty
-                        value={questionType}
-                        onChange={(e) => {
-                            handleChange(e);
-                            setTextData("");
-                            setDocumentName("");
-                            setDocumentDescription("");
-                            setUrlData("");
-                        }}
-                        renderValue={(selected) => {
-                            if (selected.length === 0) {
-                                return <em>Select Type</em>;
-                            }
-                            return selected;
-                        }}
-                        sx={{
-                            backgroundColor: '#EDEDED80',
-                            '& .MuiOutlinedInput-notchedOutline': {
-                                border: 'none',
-                            },
-                        }}
-                        MenuProps={{
-                            PaperProps: {
-                                sx: { backgroundColor: '#ffffff' },
-                            },
-                        }}
-                    >
-                        <MenuItem value="none">
-                            <em>Select Type</em>
-                        </MenuItem>
-                        <MenuItem value="Document">Document</MenuItem>
-                        <MenuItem value="Text">Plain Text</MenuItem>
-                        <MenuItem value="Web URL">Web URL</MenuItem>
-                    </Select>
-                </FormControl>
+        <div className='w-full' style={{
+            // border: "2px solid blue", 
+            backgroundColor: '#ffffff23',
+            padding: 30,
+            borderRadius: 5
+            //height: "60vh", overflow: "auto"
 
-                {
-                    showDocument &&
+        }}>
+            <div className='w-full' style={{ border: "", backgroundColor: 'white', padding: 10 }}>
+                <div className='p-4 rounded-xl mt-4' style={{ border: "" }} >
+                    <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
+                        Select Type
+                    </div>
+                    <FormControl className='w-full mt-4'>
+                        <Select
+                            className=' border-none rounded-md'
+                            displayEmpty
+                            value={questionType}
+                            onChange={(e) => {
+                                handleChange(e);
+                                setTextData("");
+                                setDocumentName("");
+                                setDocumentDescription("");
+                                setUrlData("");
+                            }}
+                            renderValue={(selected) => {
+                                if (selected.length === 0) {
+                                    return <em>Select Type</em>;
+                                }
+                                return selected;
+                            }}
+                            sx={{
+                                backgroundColor: '#EDEDED80',
+                                '& .MuiOutlinedInput-notchedOutline': {
+                                    border: 'none',
+                                },
+                            }}
+                            MenuProps={{
+                                PaperProps: {
+                                    sx: { backgroundColor: '#ffffff' },
+                                },
+                            }}
+                        >
+                            <MenuItem value="none">
+                                <em>Select Type</em>
+                            </MenuItem>
+                            <MenuItem value="Document">Document</MenuItem>
+                            <MenuItem value="Text">Plain Text</MenuItem>
+                            <MenuItem value="Web URL">Web URL</MenuItem>
+                        </Select>
+                    </FormControl>
 
-                    <div>
+                    {
+                        showDocument &&
+
                         <div>
-                            <TextField className=' w-full mt-10'
-                                autofill='off'
-                                id="filled-basic"
-                                value={documentName}
-                                onChange={(e) => setDocumentName(e.target.value)}
-                                // label="Name Document"
-                                variant="outlined"
-                                placeholder='Name Document'
-                                sx={MuiFieldStyle}
-                                inputProps={{
-                                    style: {
-                                        color: 'black !important',  // Apply black color directly
-                                    },
-                                }}
-                                style={{ color: "black" }}
-                            />
+                            <div>
+                                <TextField className=' w-full mt-8'
+                                    autofill='off'
+                                    id="filled-basic"
+                                    value={documentName}
+                                    onChange={(e) => setDocumentName(e.target.value)}
+                                    // label="Name Document"
+                                    variant="outlined"
+                                    placeholder='Name Document'
+                                    sx={MuiFieldStyle}
+                                    inputProps={{
+                                        style: {
+                                            color: 'black !important',  // Apply black color directly
+                                        },
+                                    }}
+                                    style={{ color: "black" }}
+                                />
 
-                            <TextField className=' w-full mt-10'
+                                <TextField className=' w-full mt-4'
+                                    autofill='off'
+                                    id="filled-basic"
+                                    value={documentDescription}
+                                    onChange={(e) => setDocumentDescription(e.target.value)}
+                                    // label="Description" 
+                                    variant="outlined"
+                                    placeholder='Description'
+                                    sx={MuiFieldStyle}
+                                    multiline
+                                    rows={4}
+                                    inputProps={{
+                                        style: {
+                                            color: 'black !important',  // Apply black color directly
+                                        },
+                                    }}
+                                    style={{ color: "black" }}
+                                />
+
+                            </div>
+
+                            <div className='mt-4' style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter" }}>
+                                Upload Document
+                            </div>
+
+                            <div className="flex flex-row items-center gap-6 mt-4">
+                                <div className='flex flex-row justify-center rounded items-center' style={{ height: "100px", border: "2px dashed #0000001006", backgroundColor: "#EDEDED80" }}>
+                                    <button
+                                        onClick={handleButtonClick}
+                                        className="px-4 py-2 h-full" style={{ fontWeight: "500", fontSize: 11, fontFamily: "inter" }}
+                                    >
+                                        Drop file or
+                                        <br /> <span className='text-purple'> Browse</span>
+                                    </button>
+                                </div>
+                                <input
+                                    type="file"
+                                    id="fileInput"
+                                    accept=".pdf,.doc,.docx,.txt"
+                                    className="hidden"
+                                    onChange={handleFileChange}
+                                />
+                                {fileName && (
+                                    <div className="flex items-center text-gray-700 p-4 rounded gap-2" style={{ backgroundColor: "#EDEDED80", fontSize: 13, fontFamily: "inter" }}>
+                                        <span>{fileName}</span>
+                                        <button
+                                            onClick={handleDeselect}
+                                        >
+                                            <Image src="/assets/croseBtn.png" alt='cross' height={20} width={20} />
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                    }
+
+                    {
+                        text &&
+                        <div>
+                            <TextField className=' w-full mt-8'
                                 autofill='off'
                                 id="filled-basic"
-                                value={documentDescription}
-                                onChange={(e) => setDocumentDescription(e.target.value)}
-                                // label="Description" 
+                                value={textData}
+                                onChange={(e) => setTextData(e.target.value)}
+                                // label="Text" 
                                 variant="outlined"
-                                placeholder='Description'
+                                placeholder='Type or paste your text'
                                 sx={MuiFieldStyle}
                                 multiline
                                 rows={4}
@@ -341,116 +420,82 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
                                 }}
                                 style={{ color: "black" }}
                             />
-
                         </div>
+                    }
 
-                        <div className='mt-4' style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter" }}>
-                            Upload Document
-                        </div>
+                    {
+                        webUrl &&
+                        <div>
+                            <TextField className=' w-full mt-8'
+                                autofill='off'
+                                id="filled-basic"
+                                value={urlData}
+                                onChange={(e) => {
+                                    setUrlData(e.target.value);
+                                    const url = e.target.value;
 
-                        <div className="flex flex-row items-center gap-6 mt-4">
-                            <div className='flex flex-row justify-center rounded items-center' style={{ height: "100px", border: "2px dashed #0000001006", backgroundColor: "#EDEDED80" }}>
-                                <button
-                                    onClick={handleButtonClick}
-                                    className="px-4 py-2 h-full" style={{ fontWeight: "500", fontSize: 11, fontFamily: "inter" }}
-                                >
-                                    Drop file or
-                                    <br /> <span className='text-purple'> Browse</span>
-                                </button>
-                            </div>
-                            <input
-                                type="file"
-                                id="fileInput"
-                                accept=".pdf,.doc,.docx,.txt"
-                                className="hidden"
-                                onChange={handleFileChange}
+                                    if (urlData) {
+                                        if (validateUrl(url)) {
+                                            console.log("Valid URL");
+                                            setValidLinkErr(false);
+                                        } else {
+                                            console.log("Invalid URL");
+                                            setValidLinkErr(true);
+                                        }
+                                    }
+                                }}
+                                // label="URL" 
+                                variant="outlined"
+                                placeholder='Enter URL'
+                                sx={MuiFieldStyle}
+                                inputProps={{
+                                    style: {
+                                        color: 'black !important',  // Apply black color directly
+                                    },
+                                }}
+                                style={{ color: "black" }}
                             />
-                            {fileName && (
-                                <div className="flex items-center text-gray-700 p-4 rounded gap-2" style={{ backgroundColor: "#EDEDED80", fontSize: 13, fontFamily: "inter" }}>
-                                    <span>{fileName}</span>
-                                    <button
-                                        onClick={handleDeselect}
-                                    >
-                                        <Image src="/assets/croseBtn.png" alt='cross' height={20} width={20} />
-                                    </button>
-                                </div>
-                            )}
+                            <div>
+                                {
+                                    urlData && validLinkErr ?
+                                        <div style={linkErrStyle}>
+                                            Invalid link
+                                        </div> : ""
+                                }
+                            </div>
                         </div>
-                    </div>
+                    }
 
-                }
-
+                </div>
                 {
-                    text &&
-                    <div>
-                        <TextField className=' w-full mt-10'
-                            autofill='off'
-                            id="filled-basic"
-                            value={textData}
-                            onChange={(e) => setTextData(e.target.value)}
-                            // label="Text" 
-                            variant="outlined"
-                            placeholder='Type or paste your text'
-                            sx={MuiFieldStyle}
-                            multiline
-                            rows={4}
-                            inputProps={{
-                                style: {
-                                    color: 'black !important',  // Apply black color directly
-                                },
-                            }}
-                            style={{ color: "black" }}
-                        />
-                    </div>
+                    loader ?
+                        <div className='mt-8 flex flex-row justify-center'>
+                            <CircularProgress size={30} />
+                        </div> :
+                        <div className='w-full flex flex-row justify-center mt-4'>
+                            <button className='w-full text-white bg-purple py-2' onClick={handleKnowledgeClick} style={{
+                                fontWeight: "400", fontSize: 13, fontFamily: "inter", textAlign: "center",
+                                borderRadius: '50px'
+                            }}>
+                                Save
+                            </button>
+                        </div>
                 }
-
-                {
-                    webUrl &&
-                    <div>
-                        <TextField className=' w-full mt-10'
-                            autofill='off'
-                            id="filled-basic"
-                            value={urlData}
-                            onChange={(e) => setUrlData(e.target.value)}
-                            // label="URL" 
-                            variant="outlined"
-                            placeholder='Enter URL'
-                            sx={MuiFieldStyle}
-                            inputProps={{
-                                style: {
-                                    color: 'black !important',  // Apply black color directly
-                                },
-                            }}
-                            style={{ color: "black" }}
-                        />
-                    </div>
-                }
-
-            </div>
-            {
-                loader ?
-                    <div className='mt-8 flex flex-row justify-center'>
-                        <CircularProgress size={30} />
-                    </div> :
-                    <button className='w-full text-purple mt-10' onClick={handleKnowledgeClick} style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter", textAlign: "center" }}>
-                        Save
-                    </button>
-            }
-            <div className='w-full flex flex-row justify-center'>
-                {/* <Button onClick={handleContinue}
+                <div className='w-full flex flex-row justify-center'>
+                    {/* <Button onClick={handleContinue}
                     className='bg-purple hover:bg-purple text-white w-11/12 mt-8'
                     style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
                     Continue
                 </Button> */}
-            </div>
+                </div>
 
-            {
+                {/* {
                 aiLoader ?
                     <div className='w-full flex flex-row justify-center mt-8'>
                         <CircularProgress size={25} />
                     </div> :
                     <div>
-                        {/* {
+                        {
                             userSelectedData.map((item) => (
                                 <div key={item.id} className='bg-gray-200 mt-8 p-4 rounded-lg'>
                                     <div className='flex flex-row w-full justify-between items-center'>
@@ -468,40 +513,41 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
                                     </div>
                                 </div>
                             ))
-                        } */}
+                        }
                     </div>
-            }
+            } */}
 
-            {/* Error snack message */}
+                {/* Error snack message */}
 
-            {
-                showError &&
-                <Snackbar
-                    open={credentialsErr}
-                    autoHideDuration={3000}
-                    onClose={() => {
-                        setShowError(false)
-                    }}
-                    anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'center'
-                    }}
-                    TransitionComponent={Fade}
-                    TransitionProps={{
-                        direction: 'center'
-                    }}
-                >
-                    <Alert
+                {
+                    showError &&
+                    <Snackbar
+                        open={credentialsErr}
+                        autoHideDuration={3000}
                         onClose={() => {
                             setShowError(false)
-                        }} severity="error"
-                        sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}>
+                        }}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'center'
+                        }}
+                        TransitionComponent={Fade}
+                        TransitionProps={{
+                            direction: 'center'
+                        }}
+                    >
+                        <Alert
+                            onClose={() => {
+                                setShowError(false)
+                            }} severity="error"
+                            sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}>
 
-                    </Alert>
-                </Snackbar>
-            }
+                        </Alert>
+                    </Snackbar>
+                }
 
 
+            </div>
         </div>
     )
 }

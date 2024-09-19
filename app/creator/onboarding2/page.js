@@ -93,25 +93,25 @@ export default function Home() {
                         >
                             {
                                 currentIndex < 7 &&
-                                <Image src={'/assets/applogo.png'}
+                                <Image src={'/creatorXlogo.png'}
                                     alt='logo'
-                                    height={40}
-                                    width={37}
+                                    height={410}
+                                    width={116}
                                 />
                             }
                             {/* <div>Onboarding 2</div> */}
                         </div>
-                        <div className={currentIndex === 7 ? 'w-full flex justify-center items-center' : 'w-full flex justify-center items-center -mt-12'} style={{ backgroundColor: '' }}
+                        {/* <div className={currentIndex === 7 ? 'w-full flex justify-center items-center' : 'w-full flex justify-center items-center -mt-12'} style={{ backgroundColor: '' }}
                         >
                             <Animation onChangeIndex={handleCurrentIndex} />
-                        </div>
-                        {/* <div className={currentIndex === 7 ? 'pt-28 sm:pt-0 sm:w-full w-10/12' : 'pt-28 sm:pt-28 sm:w-full w-10/12'}  //'pt-28 sm:w-full w-10/12' //{currentIndex === 7 ? 'pt-28 sm:pt-28 sm:w-full w-10/12' : 'sm:w-full w-10/12'} 
-                            style={{ backgroundColor: '', height: currentIndex === 7 ? '100%' : '75%', }}>
+                        </div> */}
+                        <div className={currentIndex === 7 ? 'pt-28 sm:pt-0 sm:w-full w-10/12' : 'pt-28 sm:pt-28 sm:w-full w-10/12'}  //'pt-28 sm:w-full w-10/12' //{currentIndex === 7 ? 'pt-28 sm:pt-28 sm:w-full w-10/12' : 'sm:w-full w-10/12'} 
+                            style={{ backgroundColor: '', height: currentIndex === 7 ? '100%' : '85%', }}>
                             <div className='w-full flex justify-center items-center' style={{ backgroundColor: '' }}
                             >
                                 <Animation onChangeIndex={handleCurrentIndex} />
                             </div>
-                        </div> */}
+                        </div>
                         <div style={{ height: 0 }} />
 
                     </div>

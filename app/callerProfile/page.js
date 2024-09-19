@@ -253,8 +253,17 @@ const Page = () => {
 
     //code to validate email
     const validateEmail = (email) => { // Accept email directly as a string
+        // const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        // return emailPattern.test(email); // Test the email string directly
         const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        return emailPattern.test(email); // Test the email string directly
+
+        // Check if email contains consecutive dots, which are invalid
+        if (/\.\./.test(email)) {
+            return false;
+        }
+
+        // Check the general pattern for a valid email
+        return emailPattern.test(email);
     };
 
 
@@ -265,7 +274,7 @@ const Page = () => {
                     <div style={{ fontSize: 20, fontWeight: "bold", fontFamily: 'inter', paddingLeft: 10 }}>
                         My Account
                     </div>
-                    <button onClick={() => {router.push(`/${assistantData && assistantData.assitant.name}`)}} className='text-purple'>
+                    <button onClick={() => { router.push(`/${assistantData && assistantData.assitant.name}`) }} className='text-purple'>
                         Go Back to {assistantData && assistantData.assitant.name}
                     </button>
                 </div>

@@ -406,8 +406,17 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
 
     //code to validate email
     const validateEmail = (email) => { // Accept email directly as a string
+        // const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        // return emailPattern.test(email); // Test the email string directly
         const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        return emailPattern.test(email); // Test the email string directly
+
+        // Check if email contains consecutive dots, which are invalid
+        if (/\.\./.test(email)) {
+            return false;
+        }
+
+        // Check the general pattern for a valid email
+        return emailPattern.test(email);
     };
 
 
