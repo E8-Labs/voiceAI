@@ -222,10 +222,10 @@ const Page = () => {
         console.log("Login details from localstorage", D);
         if (LocalData) {
             setShowProfileIcon(true);
-            if (D.data.user.role === "caller") {
-                setShowCreatorBtn(true);
-            } else {
+            if (D.data.user.role === "creator") {
                 setShowCreatorBtn(false);
+            } else {
+                setShowCreatorBtn(true);
             }
         } else {
             setShowProfileIcon(false);
@@ -1241,19 +1241,26 @@ const Page = () => {
 
                         {/* CreatorX Button and Calls array */}
                         <div style={{ position: "absolute", bottom: 10 }} className='w-full flex items-end justify-between mb-12 rounded md:flex hidden'>
-                            <div ref={buttonRef} className='flex items-end ms-8 px-4' style={{ backgroundColor: "#620FEB66", width: "fit-content", borderRadius: "70px" }}>
-                                <button className='flex flex-row p-4 items-center gap-4'>
-                                    <Image src={"/assets/stars.png"} alt='phone' height={20} width={20} />
-                                    <div onClick={
-                                        // handleCreatorXClick
-                                        () => {
-                                            window.open('https://www.jotform.com/form/242259184814461', "_blank")
-                                        }
-                                    } className='text-white' style={{ fontSize: 17, fontWeight: "600" }}>
-                                        Build Your CreatorX
-                                    </div>
-                                </button>
+                            <div>
+                                {
+                                    showCreatorBtn ?
+                                        <div ref={buttonRef} className='flex items-end ms-8 px-4' style={{ backgroundColor: "#620FEB66", width: "fit-content", borderRadius: "70px" }}>
+                                            <button className='flex flex-row p-4 items-center gap-4'>
+                                                <Image src={"/assets/stars.png"} alt='phone' height={20} width={20} />
+                                                <div onClick={
+                                                    // handleCreatorXClick
+                                                    () => {
+                                                        window.open('https://www.jotform.com/form/242259184814461', "_blank")
+                                                    }
+                                                } className='text-white' style={{ fontSize: 17, fontWeight: "600" }}>
+                                                    Build Your CreatorX
+                                                </div>
+                                            </button>
+                                        </div> :
+                                        ""
+                                }
                             </div>
+
                             <div ref={buttonRef5} className='me-8 md:flex hidden'>
                                 <CycleArray onLargeScreen={true} data={getRecentCallData} assistantData={getAssistantData} />
                             </div>

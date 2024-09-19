@@ -354,6 +354,7 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
                                     multiline
                                     rows={4}
                                     inputProps={{
+                                        maxLength: 250,
                                         style: {
                                             color: 'black !important',  // Apply black color directly
                                         },
@@ -414,6 +415,7 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
                                 multiline
                                 rows={4}
                                 inputProps={{
+                                    // maxLength: 250,
                                     style: {
                                         color: 'black !important',  // Apply black color directly
                                     },
@@ -470,7 +472,7 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
                 {
                     loader ?
                         <div className='mt-8 flex flex-row justify-center'>
-                            <CircularProgress size={30} />
+                            <CircularProgress size={25} />
                         </div> :
                         <div className='w-full flex flex-row justify-center mt-4'>
                             <button className='w-full text-white bg-purple py-2' onClick={handleKnowledgeClick} style={{

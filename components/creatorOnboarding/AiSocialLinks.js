@@ -201,7 +201,8 @@ function AiSocialLinks({ handleContinue, aiName }) {
                 </div>
 
                 <div className='text-gray-400 text-sm mt-3 mb-10 mb-5 w-11/12'>
-                    This is used as your knowledge base to train your ai model.
+                    {/* This is used as your knowledge base to train your ai model. */}
+                    Add your social media pages
                 </div>
                 <div className='flex flex-row gap-5'>
                     <Image style={styles.image}

@@ -377,7 +377,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
             const dataToSend = {
                 sub_type: plan
             }
-            console.log("Data sending in api", dataToSend);
+            console.log("Data sending in subscribe plan api", dataToSend);
             // return
             const response = await axios.post(ApiPath, dataToSend, {
                 headers: {
@@ -393,6 +393,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                     // handleSubLoader(false);
                     handleContinue();
                 } else {
+                    console.log("Response fo subscibe plan api is", response.data)
                     setsubscribeLoader(false);
                     setSubscribeFailureErr(response.data.message);
                 }

@@ -1038,7 +1038,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                         skipLoader ?
                           <CircularProgress size={25} /> :
                           <button onClick={(event) => handleBuildAI(event)}>
-                            <u>Skip</u>
+                            Skip
                           </button>
                       }
                     </div>

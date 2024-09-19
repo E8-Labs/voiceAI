@@ -1749,7 +1749,7 @@ export default function Animation({ onChangeIndex }) {
                                         Add your phone number
                                     </div>
                                     <div className='text-lightWhite mt-2'>
-                                        We can use this to share important updates to you
+                                        We use this to share important updates with you
                                     </div>
                                     <div className='mt-12 w-full sm:w-full lg:w-8/12'>
                                         <PhoneNumberInput phonenumber={userNumber} formatErr={getNumberFormat} />
