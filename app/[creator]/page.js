@@ -1309,9 +1309,12 @@ const Page = () => {
                                         <Image src={"/assets/stars.png"} alt='phone' height={15} width={15} /> */}
                                         </button>
                                     </div>
-                                    <div>
-                                        {/* <AnimatedButton snackMessage={snackMessage} wideScreen={isWideScreen} profileData={profileData} /> */}
-                                    </div>
+                                    {
+                                        showProfileIcon &&
+                                        <div>
+                                            <AnimatedButton snackMessage={snackMessage} wideScreen={isWideScreen} profileData={profileData} />
+                                        </div>
+                                    }
                                 </div>
 
 

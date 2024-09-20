@@ -1156,7 +1156,7 @@ export default function Animation({ onChangeIndex }) {
                       ) : (
                         <button
                           className="bg-purple text-white w-full"
-                          onClick={() => handleLogin(null)}
+                          onClick={() => handleLogin()}
                           style={{
                             fontSize: 15,
                             fontWeight: "400",

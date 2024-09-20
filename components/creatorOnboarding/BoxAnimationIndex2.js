@@ -166,7 +166,7 @@ const BoxAnimationIndex2 = ({ currentIndex }) => {
                         }}
                     >
                         <div
-                            // className="flex flex-row items-center" //</motion.div>items-center' style={{}}
+                        // className="flex flex-row items-center" //</motion.div>items-center' style={{}}
                         >
                             <Image
                                 src="/mkbhd.png"
@@ -186,7 +186,7 @@ const BoxAnimationIndex2 = ({ currentIndex }) => {
                                 width={50}
                             />
                             <div>
-                                hrkshdipsrisdg
+                                MKBHD Content Creator
                             </div>
                             {/* <div className="" style={{ color: "#00000060" }}>
                                 MKBHD
