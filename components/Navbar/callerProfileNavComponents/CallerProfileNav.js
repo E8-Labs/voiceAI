@@ -14,6 +14,7 @@ const CallerProfileNav = ({ handleCloseMenu }) => {
     const [separateLetters, setSeparateLetters] = useState('');
     const [getAssistantData, setGetAssistantData] = useState(null);
     const [userDetails, setUserDetails] = useState(null);
+    const [showFullName, setShowFullName] = useState(false);
 
 
     const links = [
@@ -176,7 +177,7 @@ const CallerProfileNav = ({ handleCloseMenu }) => {
                                 <div className='px-4 flex gap-4 flex-row items-center py-1'
                                     style={{ borderRadius: 50, backgroundColor: "#ffffff30", width: "fit-content" }}>
                                     <div className='flex flex-row items-center'>
-                                        <div style={{ border: "2px solid black", borderRadius: "50%" }}>
+                                        <button style={{ border: "2px solid black", cursor: 'pointer', borderRadius: "50%" }}>
                                             {/* <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={40} width={40} style={{ resize: "cover", padding: 2, borderRadius: "50%" }} /> */}
                                             {
                                                 userDetails && userDetails.profile_image ?
@@ -200,7 +201,7 @@ const CallerProfileNav = ({ handleCloseMenu }) => {
                                                     :
                                                     <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={40} width={40} style={{ resize: "cover", padding: 2, borderRadius: "50%" }} />
                                             }
-                                        </div>
+                                        </button>
                                         {/* <div style={triangle} /> */}
                                     </div>
                                     <div>

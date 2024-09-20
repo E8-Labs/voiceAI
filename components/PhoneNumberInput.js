@@ -172,7 +172,7 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
                     border: '#00000070',
                     paddingLeft: '60px',
                     height: 50,
-                    backgroundColor: myCallerAccount ? 'transparent' : '#EDEDED',
+                    backgroundColor: myCallerAccount ? '#EDEDED78' : '#EDEDED',
                 }}
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}

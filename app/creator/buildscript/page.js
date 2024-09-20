@@ -85,7 +85,7 @@ export default function Home() {
         <div
           // className='flex flex-row justify-center md:w-5/12 w-full items-center'
           className={`flex flex-row justify-center h-screen ${
-            currentIndex === 6 ? "w-full" : "lg:w-5/12 w-full"
+            currentIndex === 4 ? "2xl:w-3/12" : "lg:w-5/12 w-full"//, currentIndex === 4 ? "w-full" : "lg:w-4/12 w-full", 
           }`}
           style={{ backgroundColor: "" }}
         >
@@ -159,7 +159,7 @@ export default function Home() {
               <Box
                 sx={{
                   position: "absolute",
-                  top: 70,
+                  top: 90,
                   right: 140,
                   zIndex: 2, // Ensure it's above the main GIF
                 }}

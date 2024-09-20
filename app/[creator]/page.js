@@ -951,7 +951,7 @@ const Page = () => {
                                                         }
                                                     </div>
                                                 </div>
-                                                {/* <div className='flex flex-row pe-4'>
+                                                <div className='flex flex-row pe-4'>
                                                     <div style={{ fontSize: 12, color: "grey", fontWeight: "400", fontFamily: "inter" }}>
                                                         Calls:
                                                     </div>
@@ -988,11 +988,12 @@ const Page = () => {
                                                             </div>
                                                         }
                                                     </div>
-                                                </div> */}
+                                                </div>
                                             </div>
                                         </div>
                                         {/* code for socials */}
-                                        <div className='flex flex-row items-center justify-center pb-3 px-4' //ref={buttonRef3}
+                                        <div //className='flex flex-row items-center justify-center pb-3 px-4' //ref={buttonRef3}
+                                            className='flex flex-row items-center justify-center pb-6 px-6'
                                             style={{
                                                 border: "2px solid #ffffff", borderTop: "8px solid #e7f3fe",
                                                 borderBottomLeftRadius: 50,
@@ -1118,12 +1119,8 @@ const Page = () => {
                                     Tap to call
                                 </div> */}
                                 <motion.div
-                                    // src="/borderedAppLogo.png"
-                                    // alt="Animating Image"
                                     animate={{
-                                        // width: ["150px", "150px", "150px"], // Keyframes for width
-                                        // height: ["50px", "50px", "50px"], // Keyframes for height
-                                        y: [0, -30, 0]
+                                        y: [0, -30, 0],
                                     }}
                                     transition={{
                                         duration: 3.5,
@@ -1131,11 +1128,34 @@ const Page = () => {
                                         repeatType: "loop",
                                         ease: "easeInOut",
                                     }}
-                                    className='-mb-24 rounded-lg flex flex-col justify-center'
-                                    style={{ fontSize: 14, fontWeight: '500', fontFamily: 'inter', backgroundColor: '#ffffff80' }}
+                                    className="-mb-16 rounded-lg flex flex-col justify-center"
+                                    style={{
+                                        fontSize: 14,
+                                        fontWeight: '500',
+                                        fontFamily: 'inter',
+                                        backgroundColor: '#ffffff80',
+                                        padding: '10px 20px', // Add padding to the content inside the box
+                                        position: 'relative',  // Required for positioning the triangle
+                                    }}
                                 >
                                     Tap to call
+
+                                    {/* Triangle at the bottom center */}
+                                    <div
+                                        style={{
+                                            position: 'absolute',
+                                            bottom: '-10px',
+                                            left: '50%',
+                                            transform: 'translateX(-50%)',
+                                            width: 0,
+                                            height: 0,
+                                            borderLeft: '15px solid transparent',
+                                            borderRight: '15px solid transparent',
+                                            borderTop: '15px solid #ffffff80',
+                                        }}
+                                    />
                                 </motion.div>
+
 
                                 <div
                                     style={gifBackgroundImageSmallScreen}
@@ -1239,7 +1259,7 @@ const Page = () => {
 
 
                         {/* CreatorX Button and Calls array */}
-                        <div style={{ position: "absolute", bottom: 5, border: '' }} className='w-full flex items-end justify-between mb-6 rounded md:flex hidden'>
+                        <div style={{ position: "absolute", bottom: 10, border: '' }} className='w-full flex items-end justify-between mb-10 rounded md:flex hidden'>
                             <div>
                                 {
                                     showCreatorBtn ?
@@ -1266,8 +1286,8 @@ const Page = () => {
                         </div>
 
                         {/* for small screen creatorX button */}
-                        <div style={{ position: "absolute", bottom: 10 }} className='w-full flex items-end justify-center mb-12 rounded md:hidden'>
-                            <div className='flex flex-col justify-between w-full px-10 items-start'>
+                        <div style={{ position: "absolute", bottom: 0 }} className='w-full flex items-end justify-center mb-8 rounded md:hidden'>
+                            <div className='flex flex-col gap-8 justify-between w-full px-10 items-start'>
 
                                 <div className='w-full flex flex-row justify-center'>
                                     <CycleArray data={getRecentCallData} assistantData={getAssistantData} />
@@ -1290,7 +1310,7 @@ const Page = () => {
                                         </button>
                                     </div>
                                     <div>
-                                        <AnimatedButton snackMessage={snackMessage} wideScreen={isWideScreen} profileData={profileData} />
+                                        {/* <AnimatedButton snackMessage={snackMessage} wideScreen={isWideScreen} profileData={profileData} /> */}
                                     </div>
                                 </div>
 

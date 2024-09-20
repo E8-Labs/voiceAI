@@ -67,6 +67,20 @@ const Page = () => {
     // }, [userEmail]);
 
     const checkUserEmail = async (emailValue) => {
+        const localData = localStorage.getItem('User');
+        let oldEmail = null;
+        if (localData) {
+            const Data = JSON.parse(localData);
+            console.log("user data is", Data);
+            if (Data.data.user.email) {
+                // setUserEmail(Data.data.user.email)
+                oldEmail = Data.data.user.email;
+            }
+        }
+        if(oldEmail === emailValue){
+            console.log("it is old email value");
+            return;
+        }
         const ApiPath = Apis.checkUserEmail;
         const data = {
             email: emailValue
@@ -270,13 +284,13 @@ const Page = () => {
     return (
         <div className='h-screen w-full' style={{ backgroundColor: "#ffffff30", }}>
             <div className='w-full py-10 px-2 lg:px-5' style={{}}>
-                <div className='flex flex-row justify-between items-center w-8/12'>
-                    <div style={{ fontSize: 20, fontWeight: "bold", fontFamily: 'inter', paddingLeft: 10 }}>
+                <div className='flex flex-col items-start w-8/12 ms-8'>
+                    <button onClick={() => { router.push(`/${assistantData && assistantData.assitant.name}`) }} className='text-purple' style={{ cursor: 'pointer' }}>
+                        Go Back
+                    </button>
+                    <div style={{ fontSize: 20, fontWeight: "bold", fontFamily: 'inter' }}>
                         My Account
                     </div>
-                    <button onClick={() => { router.push(`/${assistantData && assistantData.assitant.name}`) }} className='text-purple'>
-                        Go Back to {assistantData && assistantData.assitant.name}
-                    </button>
                 </div>
                 <div className='w-11/12 pe-4 lg:w-8/12 py-6 px-8 mt-3 flex flex-col gap-5' style={{
                     backgroundColor: '#FFFFFF40', borderRadius: 10
@@ -430,7 +444,7 @@ const Page = () => {
                         />
                     </div>
 
-                    <div className='lg:w-7/12 pe-4'>
+                    <div className='lg:w-7/12 pe-4' style={{ border: '' }}>
                         <input
                             className='w-full '
                             placeholder='Email address'
@@ -451,7 +465,7 @@ const Page = () => {
                                         setShowSaveBtn(false);
                                     } else {
                                         setEmailValidationError(false);
-                                        checkUserEmail(value); // Pass the input value directly to the API call
+                                        checkUserEmail(value);
                                     }
                                 }, 500); // Delay of 500ms after the last keystroke
 
@@ -463,16 +477,16 @@ const Page = () => {
 
                         {
                             emailValidationError ?
-                                <div className='mt-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100", height: 13 }}>
+                                <div className='' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100", height: 13 }}>
                                     Enter valid email
                                 </div> :
                                 <div>
                                     {
                                         checkUserEmailData && checkUserEmailData.status === true ?
-                                            <div className='mt-2 ms-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "green", height: 13 }}>
+                                            <div className='ms-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "green", height: 13 }}>
                                                 Email available
                                             </div> :
-                                            <div className='mt-2 ms-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100", height: 13 }}>
+                                            <div className='ms-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100", height: 13 }}>
                                                 {checkUserEmailData && checkUserEmailData.status === false && "Email already taken"}
                                             </div>
                                     }
@@ -484,7 +498,9 @@ const Page = () => {
                         </div> */}
                     </div>
 
-                    <PhoneNumberInput editAccess={accessDenied} phonenumber={getPhoneNumber} myCallerAccount={myCallerAccountStatus} />
+                    <div className='lg:w-7/12 pe-4' style={{ border: '', marginTop: -15 }}>
+                        <PhoneNumberInput editAccess={accessDenied} phonenumber={getPhoneNumber} myCallerAccount={myCallerAccountStatus} />
+                    </div>
 
                     <div className='flex flex-row w-full justify-between items-center'>
                         <button className='lg:hidden px-2 py-1' onClick={handleLogout}

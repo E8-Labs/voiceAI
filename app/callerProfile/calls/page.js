@@ -142,14 +142,17 @@ const Page = () => {
     return (
         <div className='h-screen w-full' style={{ backgroundColor: "#ffffff40", overflow: 'hidden', scrollbarWidth: 0, }}>
             <div className='w-full pe-4 lg:w-9/12 flex flex-col gap-2 pt-10 ps-2 lg:ps-10' style={{ maxHeight: '90vh', overflow: "hidden", scrollbarWidth: "none" }}>
-                <div style={{ fontSize: 20, fontWeight: 400, fontFamily: 'inter' }}>
+                <div className='ms-5' style={{ fontSize: 20, fontWeight: 400, fontFamily: 'inter' }}>
                     Call Logs
                 </div>
 
                 <div className='w-full p-5 rounded-xl border-2'
                     style={{ backgroundColor: "#FFFFFF40", maxHeight: '', overflow: 'auto' }}
                 >
-                    <div className='w-full flex flex-row justify-between lg:flex hidden'>
+                    <div className='w-full flex flex-row justify-between lg:flex hidden'
+                        style={{
+                            backgroundColor: '#ffffff40', paddingTop: 5, paddingBottom: 5
+                        }}>
                         <div className='w-3/12'>
                             <div style={styles.text}>Spoke to</div>
                         </div>
@@ -160,7 +163,7 @@ const Page = () => {
                             <div style={styles.text}>Amount</div>
                         </div>
                         <div className='w-3/12 lg:w-2/12'>
-                            <div style={styles.text}>Duration</div>
+                            <div style={{ ...styles.text, paddingLeft: 13 }}>Duration</div>
                         </div>
                         <div className='w-3/12 lg:w-2/12'>
                             <div style={styles.text}>Date</div>
@@ -222,7 +225,8 @@ const Page = () => {
                                                                         overflow: 'hidden',    // Hide overflow text
                                                                         textOverflow: 'ellipsis'  // Add ellipsis for overflow text
                                                                     }}>
-                                                                        {item.status}
+                                                                        {/* {item.status} */}
+                                                                        {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
                                                                     </div>
                                                                 </div>
                                                                 <div className='w-2/12 lg:w-1/12'>
@@ -231,7 +235,7 @@ const Page = () => {
                                                                     </div>
                                                                 </div>
                                                                 <div className='w-3/12 lg:w-2/12 '>
-                                                                    <div style={styles.text2}>
+                                                                    <div style={{ ...styles.text2, paddingLeft: 13 }}>
                                                                         {item.durationString}
                                                                     </div>
                                                                 </div>

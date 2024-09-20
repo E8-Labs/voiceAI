@@ -3,10 +3,11 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Apis from '@/components/apis/Apis'
 import axios from 'axios'
-import { Alert, CircularProgress, Drawer, Fade, Snackbar } from '@mui/material'
+import { Alert, Box, CircularProgress, Drawer, Fade, Snackbar } from '@mui/material'
 import moment from 'moment'
 import { useRouter } from 'next/navigation'
 import { AnimatePresence, motion } from 'framer-motion'
+import zIndex from '@mui/material/styles/zIndex'
 const Page = () => {
 
     const router = useRouter();
@@ -188,7 +189,11 @@ const Page = () => {
     const [apiData, setApiData] = useState(false);
     const [opensearchBar, setOpensearchBar] = useState(false);
     const [searchValue, setsearchValue] = useState("");
+    const [isOpen, setIsOpen] = useState(false);
 
+    const handleClick = () => {
+        setIsOpen(!isOpen);
+    };
 
     const styles = {
         text: {
@@ -382,7 +387,7 @@ const Page = () => {
     return (
         <div className='h-screen w-full' style={{ backgroundColor: "#ffffff40", overflow: 'auto', scrollbarWidth: 0, }}>
             <div className='w-11/12 pe-4 lg:w-10/12 flex flex-col gap-2 pt-10 ps-2 lg:ps-10'>
-                <div style={{ fontSize: 20, fontWeight: 400, fontFamily: 'inter' }}>
+                <div className='ps-8' style={{ fontSize: 20, fontWeight: 400, fontFamily: 'inter' }}>
                     Products
                 </div>
 
@@ -403,7 +408,7 @@ const Page = () => {
                                         <div className='flex flex-col justify-center' style={{ height: 50, fontSize: 20, fontWeight: 400 }}>
                                             Creators
                                         </div>
-                                        <AnimatePresence>
+                                        <AnimatePresence style={{ zIndex: 0 }}>
                                             {
                                                 opensearchBar &&
                                                 <motion.div
@@ -412,11 +417,13 @@ const Page = () => {
                                                     exit={{ opacity: 0, x: 20 }}
                                                     transition={{ duration: 0.3 }}
                                                     style={{
-                                                        width: '50%',
+                                                        width: '70%',
+                                                        marginRight: -80,
+                                                        zIndex: 1
                                                         // border: '2px solid green'
                                                     }}
                                                 >
-                                                    <div className='w-full'>
+                                                    <div className='w-full' style={{ zIndex: 1 }}>
                                                         <input className='w-full py-2 bg-transparent outline-none border-none px-4'
                                                             value={searchValue}
                                                             onChange={(e) => setsearchValue(e.target.value)}
@@ -431,14 +438,16 @@ const Page = () => {
                                         </AnimatePresence>
                                         {
                                             opensearchBar ?
-                                                <button onClick={() => setOpensearchBar(!opensearchBar)} className='outline-none border-none'>
+                                                <button onClick={() => setOpensearchBar(!opensearchBar)} className='outline-none border-none' style={{ zIndex: 2 }}>
                                                     <Image src="/assets/croseBtn.png" height={24} width={24} alt='search' />
                                                 </button> :
                                                 <button onClick={() => setOpensearchBar(!opensearchBar)} className='outline-none border-none'>
                                                     <Image src="/assets/searchIcon.png" height={24} width={24} alt='search' />
                                                 </button>
                                         }
+
                                     </div>
+
 
                                     <div>
                                         {
@@ -448,7 +457,7 @@ const Page = () => {
                                                 </div> :
                                                 <div>
                                                     {
-                                                        callerDashboardData === null || openProducts.length < 1 ?
+                                                        callerDashboardData === null ?
                                                             <div className='ms-4 mt-2' style={{ fontWeight: '500', fontFamily: 'inter', fontSize: 15, }}>
                                                                 No creator
                                                             </div> :
@@ -507,9 +516,6 @@ const Page = () => {
                                                     <div>
                                                         <div className='w-full flex flex-col gap-5 px-4 pb-4'
                                                             style={{ maxHeight: "30vh", overflow: "auto", scrollbarWidth: "none", backgroundColor: "#ffffff69" }}>
-                                                            <div className='mt-6' style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
-                                                                {openProducts.profile.name}'s Products
-                                                            </div>
                                                             {
                                                                 openProducts.products.map((product) => (
                                                                     <div key={product.id} className='w-full flex flex-col'>
@@ -621,7 +627,9 @@ const Page = () => {
                                                             }
                                                         </div>
 
-                                                        <div className='w-full flex flex-row justify-between mt-10'>
+                                                        <div className='w-full flex flex-row justify-between mt-10' style={{
+                                                            backgroundColor: '#ffffff40', paddingTop: 5, paddingBottom: 5, paddingLeft: 3
+                                                        }}>
                                                             <div className='w-4/12'>
                                                                 <div style={styles.text}>Name</div>
                                                             </div>

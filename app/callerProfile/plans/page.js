@@ -393,7 +393,10 @@ const Page = () => {
                         <div style={{ fontSize: 20, fontWeight: 400, fontFamily: 'inter', }}>
                             Payment History
                         </div>
-                        <div className='w-full flex flex-row justify-between mt-5 gap-2 lg:flex hidden'>
+                        <div className='w-full flex flex-row justify-between mt-5 gap-2 lg:flex hidden'
+                            style={{
+                                backgroundColor: '#ffffff40', paddingTop: 5, paddingBottom: 5
+                            }}>
                             <div className='w-3/12 lg:w-2/12'>
                                 <div style={styles.text}>ID</div>
                             </div>

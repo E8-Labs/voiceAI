@@ -634,43 +634,45 @@ export default function ScriptAnimation({ onChangeIndex }) {
                   >
                     What does {aiName} help your community with?
                   </div>
-                  <TextField
-                    className="w-full sm:w-9/12 mt-8"
-                    autofill="off"
-                    id="filled-basic"
-                    // label="Ai help tagline"
-                    variant="filled"
-                    multiline
-                    rows={3}
-                    value={helpTagline}
-                    onChange={(e) => setHelpTagline(e.target.value)}
-                    placeholder="I help my community of followers with understanding their feelings for others, overcoming obstacles with their relationships, etc"
-                    sx={{
-                      "& label.Mui-focused": {
-                        color: "#050A0890",
-                      },
-                      "& .MuiFilledInput-root": {
-                        backgroundColor: "#EDEDED78", // Optional: Removes the background color
-                        // padding: '6px 8px', // Decrease the padding inside the input container
-                        fontSize: 13,
-                        fontWeight: "400",
-                        fontFamily: "inter",
-                        borderRadius: 2
-                      },
-                      "& .MuiFilledInput-root:before": {
-                        borderBottom: "none", // Remove the default inactive state bottom border
-                      },
-                      "& .MuiFilledInput-root:after": {
-                        borderBottom: "none", // Remove the focused state bottom border
-                      },
-                      "& .MuiFilledInput-root:hover:before": {
-                        borderBottom: "none", // Remove the hover state bottom border
-                      },
-                      "& .MuiFilledInput-root.Mui-focused:before": {
-                        borderBottom: "none", // Ensure no border is shown when the field is focused
-                      },
-                    }}
-                  />
+                  <div className="mt-8">
+                    <TextField
+                      className="w-full sm:w-9/12"
+                      autofill="off"
+                      id="filled-basic"
+                      // label="Ai help tagline"
+                      variant="filled"
+                      multiline
+                      rows={3}
+                      value={helpTagline}
+                      onChange={(e) => setHelpTagline(e.target.value)}
+                      placeholder="I help my community of followers with understanding their feelings for others, overcoming obstacles with their relationships, etc"
+                      sx={{
+                        "& label.Mui-focused": {
+                          color: "#050A0890",
+                        },
+                        "& .MuiFilledInput-root": {
+                          backgroundColor: "#EDEDED78", // Optional: Removes the background color
+                          // padding: '6px 8px', // Decrease the padding inside the input container
+                          fontSize: 13,
+                          fontWeight: "400",
+                          fontFamily: "inter",
+                          borderRadius: 2
+                        },
+                        "& .MuiFilledInput-root:before": {
+                          borderBottom: "none", // Remove the default inactive state bottom border
+                        },
+                        "& .MuiFilledInput-root:after": {
+                          borderBottom: "none", // Remove the focused state bottom border
+                        },
+                        "& .MuiFilledInput-root:hover:before": {
+                          borderBottom: "none", // Remove the hover state bottom border
+                        },
+                        "& .MuiFilledInput-root.Mui-focused:before": {
+                          borderBottom: "none", // Ensure no border is shown when the field is focused
+                        },
+                      }}
+                    />
+                  </div>
 
                   <div className="w-full sm:w-9/12">
                     {helpTagline ? (
@@ -861,8 +863,8 @@ export default function ScriptAnimation({ onChangeIndex }) {
                           style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 15, }}>
                           Skip
                         </button> :
-                        <button onClick={() => { setKnowledgeModal(true) }} className="bg-purple px-2 py-1 sm:py-2 "
-                          style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 15, color: 'white', borderRadius: "50px" }}>
+                        <button onClick={() => { setKnowledgeModal(true) }} className="bg-purple px-1 lg:px-2 px-1 py-1 sm:py-2 text-xs"// text-sm"
+                          style={{ fontWeight: '400', fontFamily: 'inter', color: 'white', borderRadius: "50px" }}>
                           Add Knowledge
                         </button>
                     }
@@ -998,6 +1000,10 @@ export default function ScriptAnimation({ onChangeIndex }) {
                       For best results, upload at least 10 minutes of audio.
                     </div>
 
+                    <div className="mt-6">
+                      Upload mp3, wave mov.
+                    </div>
+
                     <div className="flex flex-col items-center mt-6">
                       <input
                         type="file"
@@ -1008,14 +1014,14 @@ export default function ScriptAnimation({ onChangeIndex }) {
                         className="hidden"
                       />
                       {audioUrl && (
-                        <audio controls className="mb-4">
+                        <audio controls className="mb-">
                           <source src={audioUrl} type="audio/mpeg" />
                           Your browser does not support the audio element.
                         </audio>
                       )}
                     </div>
 
-                    <div className="flex flex-row items-center gap-6 mt-12">
+                    <div className="mt-6">
                       <div className="w-7/12">
                         {
                           uploadLoader ?
@@ -1035,6 +1041,10 @@ export default function ScriptAnimation({ onChangeIndex }) {
                             </button>
                         }
                       </div>
+
+                    </div>
+
+                    <div className="w-7/12 flex flex-row mt-4 justify-center">
                       {
                         skipLoader ?
                           <CircularProgress size={25} /> :
@@ -1043,6 +1053,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                           </button>
                       }
                     </div>
+
                     <div className="w-full flex flex-row justify-end">
                       <div className="w-6/12">
                         {/*<button

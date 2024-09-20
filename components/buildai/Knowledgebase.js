@@ -362,8 +362,8 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
                         showDocument &&
 
                         <div>
-                            <div>
-                                <TextField className=' w-full mt-8'
+                            <div className='flex flex-col gap-8 mt-8'>
+                                <TextField className=' w-full'
                                     autofill='off'
                                     id="filled-basic"
                                     value={documentName}
@@ -375,6 +375,7 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
                                     inputProps={{
                                         style: {
                                             color: 'black !important',  // Apply black color directly
+                                            // marginTop: 15
                                         },
                                     }}
                                     style={{ color: "black" }}
@@ -426,7 +427,7 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
                                 <input
                                     type="file"
                                     id="fileInput"
-                                    accept=".pdf,.doc,.docx,.txt"
+                                    accept=".pdf,.doc,.docx,.txt,.csv"
                                     className="hidden"
                                     onChange={handleFileChange}
                                 />
