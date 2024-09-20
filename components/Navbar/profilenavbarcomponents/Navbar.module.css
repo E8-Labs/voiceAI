@@ -1,0 +1,23 @@
+.navbar {
+    height: 100vh; /* Full screen height */
+    background-image: url('/assets/navBg.png');
+    background-size: cover; /* Cover the entire container */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Prevent repeating the image */
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+    color:black; /* Add your desired text color */
+    }
+   
+    .navbarcomponent {
+    height: 100vh; /* Full screen height */
+    background-image: url('/assets/navComponentBg.png');
+    background-size: cover; /* Cover the entire container */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Prevent repeating the image */
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+    color: black; /* Add your desired text color */
+    }
