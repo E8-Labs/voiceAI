@@ -852,7 +852,7 @@ const Page = () => {
 
                                 {
                                     showProfileIcon &&
-                                    <div ref={buttonRef2} style={{  }}>
+                                    <div ref={buttonRef2} style={{}}>
 
                                         <AnimatedButton snackMessage={snackMessage} profileData={profileData} />
 
@@ -1018,7 +1018,6 @@ const Page = () => {
                                     showProfileIcon &&
                                     <div className='flex flex-row gap-4 items-center'>
                                         <div className='me-8' style={{ zIndex: 2 }}>
-                                            <AnimatedButton snackMessage={snackMessage} wideScreen={isWideScreen} profileData={profileData} />
                                             {/* {
                                                 profileData && profileData.profile_image ?
                                                     <div className='flex flex-row justify-center items-center p-2' style={{ borderRadius: "50%", backgroundColor: "" }}>
@@ -1275,19 +1274,24 @@ const Page = () => {
                                 </div>
 
 
-                                <div className='flex items-end' style={{ backgroundColor: "transparent", width: "fit-content", borderRadius: "70px" }}>
-                                    <button
-                                        onClick={
-                                            // handleCreatorXClick
-                                            () => {
-                                                window.open('https://www.jotform.com/form/242259184814461', "_blank")
+                                <div className='flex items-center justify-between w-full'>
+                                    <div style={{ backgroundColor: "transparent", width: "fit-content", borderRadius: "70px" }}>
+                                        <button
+                                            onClick={
+                                                // handleCreatorXClick
+                                                () => {
+                                                    window.open('https://www.jotform.com/form/242259184814461', "_blank")
+                                                }
                                             }
-                                        }
-                                        className='flex flex-row items-center gap-1'>
-                                        <Image src={"/assets/CreatorXIcon.png"} alt='phone' height={41} width={93} />
-                                        {/* <Image src={"/assets/Union.png"} alt='phone' height={20} width={20} />
+                                            className='flex flex-row items-center gap-1'>
+                                            <Image src={"/assets/CreatorXIcon.png"} alt='phone' height={41} width={93} />
+                                            {/* <Image src={"/assets/Union.png"} alt='phone' height={20} width={20} />
                                         <Image src={"/assets/stars.png"} alt='phone' height={15} width={15} /> */}
-                                    </button>
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <AnimatedButton snackMessage={snackMessage} wideScreen={isWideScreen} profileData={profileData} />
+                                    </div>
                                 </div>
 
 
