@@ -2565,7 +2565,7 @@ export default function Animation({ onChangeIndex }) {
                   transition={{ duration: 0 }}
                 //   style={styles}
                 >
-                  <div style={{ height: "auto" }}>
+                  <div style={{  justifyContent: 'center', alignItems: 'center', backgroundColor: '' }}>
                     <div style={{ height: 14 }}>
                       {/* Back Button or Other Elements */}
                     </div>
@@ -2615,11 +2615,12 @@ export default function Animation({ onChangeIndex }) {
                     </div>
         
                     <div
-                      className="w-full flex flex-col text-center justify-center mt-4"
+                      className="w-full flex flex-col text-center justify-center items-center align-self-center mt-4"
                       style={{
                         color: "#050A0885",
                         fontWeight: "400",
                         fontSize: 13,
+                        backgroundColor: ''
                       }}
                     >
                       Welcome to Voice.ai {userName}, where creators like you build a
@@ -2632,8 +2633,8 @@ export default function Animation({ onChangeIndex }) {
                         }}
                       >
                         experience for their community. With Voice, you're able to build
-                        an AI version of yourself so people can come talk directly with
-                        your AI twin. In the next steps, we'll be creating your AI based
+                        an AI version of yourself <br></br> so people can come talk directly with
+                        your AI twin. In the next steps,<br></br>  we'll be creating your AI based
                         on what makes you- you.
                       </span>
                     </div>
