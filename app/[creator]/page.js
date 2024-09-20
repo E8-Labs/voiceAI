@@ -212,7 +212,7 @@ const Page = () => {
         setTimeout(() => {
             localStorage.removeItem('route')
         }, 1000);
-    }, [])
+    }, []);
 
     //getting user data when logged in
 
@@ -699,7 +699,7 @@ const Page = () => {
                     </div> :
                     <div style={backgroundImage} className='h-screen' onMouseMove={handleMouseMove}>
                         <div className='pt-8 ps-8'>
-                            <div className='lg:flex hidden w-full flex flex-row justify-between'>
+                            <div className='lg:flex hidden w-full flex flex-row justify-between items-start' style={{}}>
                                 <div className='flex flex-col items-start'>
                                     <div className='px-2 py-2 flex gap-4 flex-row items-center' ref={buttonRef4}
                                         style={{
@@ -761,7 +761,7 @@ const Page = () => {
                                                             </div>
                                                         </div>
                                                     </button>
-                                                    <div style={triangle} />
+                                                    {/* <div style={triangle} /> */}
                                                 </div>
                                             </div>
                                         </div>
@@ -788,7 +788,7 @@ const Page = () => {
                                                 </div>
                                             </div>
                                             <div className='flex flex-row pe-4'>
-                                                <div style={{ fontSize: 12, color: "grey", fontWeight: "400", fontFamily: "inter" }}>
+                                                <div style={{ fontSize: 12, color: "#000000", fontWeight: "400", fontFamily: "inter" }}>
                                                     Calls:
                                                 </div>
                                                 <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 12 }}>
@@ -806,7 +806,7 @@ const Page = () => {
                                                         </div>
                                                     }
                                                 </div>
-                                                <div className='ms-2' style={{ fontSize: 12, color: "grey", fontWeight: "400", fontFamily: "inter" }}>
+                                                <div className='ms-2' style={{ fontSize: 12, color: "#000000", fontWeight: "400", fontFamily: "inter" }}>
                                                     Earned:
                                                 </div>
                                                 <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
@@ -852,7 +852,7 @@ const Page = () => {
 
                                 {
                                     showProfileIcon &&
-                                    <div ref={buttonRef2} style={{ width: "10%" }}>
+                                    <div ref={buttonRef2} style={{}}>
 
                                         <AnimatedButton snackMessage={snackMessage} profileData={profileData} />
 
@@ -926,7 +926,7 @@ const Page = () => {
                                                                 </div>
                                                             </div>
                                                         </button>
-                                                        <div style={triangle} />
+                                                        {/* <div style={triangle} /> */}
                                                     </div>
                                                 </div>
                                             </div>
@@ -1018,7 +1018,6 @@ const Page = () => {
                                     showProfileIcon &&
                                     <div className='flex flex-row gap-4 items-center'>
                                         <div className='me-8' style={{ zIndex: 2 }}>
-                                            <AnimatedButton snackMessage={snackMessage} wideScreen={isWideScreen} profileData={profileData} />
                                             {/* {
                                                 profileData && profileData.profile_image ?
                                                     <div className='flex flex-row justify-center items-center p-2' style={{ borderRadius: "50%", backgroundColor: "" }}>
@@ -1240,7 +1239,7 @@ const Page = () => {
 
 
                         {/* CreatorX Button and Calls array */}
-                        <div style={{ position: "absolute", bottom: 10 }} className='w-full flex items-end justify-between mb-12 rounded md:flex hidden'>
+                        <div style={{ position: "absolute", bottom: 5, border: '' }} className='w-full flex items-end justify-between mb-6 rounded md:flex hidden'>
                             <div>
                                 {
                                     showCreatorBtn ?
@@ -1275,19 +1274,24 @@ const Page = () => {
                                 </div>
 
 
-                                <div className='flex items-end' style={{ backgroundColor: "transparent", width: "fit-content", borderRadius: "70px" }}>
-                                    <button
-                                        onClick={
-                                            // handleCreatorXClick
-                                            () => {
-                                                window.open('https://www.jotform.com/form/242259184814461', "_blank")
+                                <div className='flex items-center justify-between w-full'>
+                                    <div style={{ backgroundColor: "transparent", width: "fit-content", borderRadius: "70px" }}>
+                                        <button
+                                            onClick={
+                                                // handleCreatorXClick
+                                                () => {
+                                                    window.open('https://www.jotform.com/form/242259184814461', "_blank")
+                                                }
                                             }
-                                        }
-                                        className='flex flex-row items-center gap-1'>
-                                        <Image src={"/assets/CreatorXIcon.png"} alt='phone' height={41} width={93} />
-                                        {/* <Image src={"/assets/Union.png"} alt='phone' height={20} width={20} />
+                                            className='flex flex-row items-center gap-1'>
+                                            <Image src={"/assets/CreatorXIcon.png"} alt='phone' height={41} width={93} />
+                                            {/* <Image src={"/assets/Union.png"} alt='phone' height={20} width={20} />
                                         <Image src={"/assets/stars.png"} alt='phone' height={15} width={15} /> */}
-                                    </button>
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <AnimatedButton snackMessage={snackMessage} wideScreen={isWideScreen} profileData={profileData} />
+                                    </div>
                                 </div>
 
 

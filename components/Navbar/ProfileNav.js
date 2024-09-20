@@ -159,7 +159,7 @@ const ProfileNav = () => {
                                         <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={40} width={40} style={{ resize: "cover", padding: 2, borderRadius: "50%" }} />
                                 }
                             </div>
-                            <div style={triangle} />
+                            {/* <div style={triangle} /> */}
                         </div>
                         <div>
                             <div className='flex flex-row items-center gap-8' style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>

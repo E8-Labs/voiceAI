@@ -65,16 +65,6 @@ function SocialOAuth({ handleContinue, aiName, currentIndex }) {
         }
     }
 
-    //code to make triangle
-    const triangle = {
-        width: 5,
-        height: 5,
-        // border: "2px solid red",
-        borderTop: "4px solid transparent",
-        borderBottom: "4px solid transparent",
-        borderLeft: "6px solid #000000"
-    }
-
     const connectButtonStyle = {
         borderRadius: '50px',
         fontWeight: '400',

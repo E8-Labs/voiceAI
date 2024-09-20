@@ -141,7 +141,7 @@ function AiSocialLinks({ handleContinue, aiName }) {
                                 padding: 4
                                 // backgroundColor: 'red'
                             }} />
-                        <div style={triangle} />
+                        {/* <div style={triangle} /> */}
                     </div>
                     <div className='sm:flex sm:flex-row sm:gap-2 items-center'>
                         <div style={{ fontWeight: '400', fontSize: 15, fontFamily: 'inter' }}>

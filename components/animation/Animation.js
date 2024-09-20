@@ -1430,7 +1430,7 @@ export default function Animation({ onChangeIndex }) {
                 ) : (
                   <button
                     onClick={(e) => handleLogin(e)}
-                    className="text-purple underline mt-2"
+                    className="text-purple mt-2"
                     style={{
                       fontSize: 15,
                       fontWeight: "500",

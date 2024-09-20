@@ -45,13 +45,13 @@ export default function AnimatedButton({ snackMessage, error = false, profileDat
         <div className="flex items-center justify-start  bg-none" style={{ backgroundColor: 'transparent' }}>
             <button
                 // onClick={() => setIsExpanded(!isExpanded)}
-                className="relative bg-none flex flex-col items-center pe-1 md:p-4 rounded-full focus:outline-none"
+                className="relative bg-none flex flex-col items-center pe-1 md:pe-4 rounded-full focus:outline-none"
             >
                 <div className="flex items-center justify-start">
                     <span className="material-icons">
                         {
                             profileData && profileData.profile_image ?
-                                <div className='flex flex-row justify-center items-center p-2' style={{ borderRadius: "50%", backgroundColor: "" }}>
+                                <div className='flex flex-row justify-center items-center pe-2' style={{ borderRadius: "50%", backgroundColor: "" }}>
                                     <img
                                         onClick={handleProfileClick}
                                         src={profileData.profile_image} alt='profile'

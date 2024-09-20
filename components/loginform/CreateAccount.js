@@ -437,10 +437,10 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                             <div>
                                 {modalData.name ?
                                     <div>
-                                        {modalData.name}
+                                        Talk to {modalData.name}
                                     </div> :
                                     <div style={{ fontWeight: "600", fontSize: 28, textAlign: "center" }}>
-                                        {modalData.assitant.name}
+                                        Talk to {modalData.assitant.name}
                                     </div>}
                             </div>
                         }
@@ -635,7 +635,8 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                                             loginLoader ?
                                                 <CircularProgress size={20} /> :
                                                 <div>
-                                                    {modalData &&
+                                                    Call
+                                                    {/* {modalData &&
                                                         <div>
                                                             {modalData.name ?
                                                                 <div>
@@ -645,7 +646,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                                                                     Call {modalData.assitant.name}
                                                                 </div>}
                                                         </div>
-                                                    }
+                                                    } */}
                                                 </div>
                                         }
                                     </div>
