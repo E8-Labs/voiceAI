@@ -168,6 +168,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
 
   useEffect(() => {
     if (selectedAudio) {
+      console.log("Trying to call api")
       handleBuildAI();
     }
   }, [selectedAudio])

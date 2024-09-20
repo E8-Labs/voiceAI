@@ -42,6 +42,7 @@ const AddCardDetails = ({
     const [addCardSuccess, setAddCardSuccess] = useState(false);
     const [addCardFailure, setAddCardFailure] = useState(false);
     const [addCardDetails, setAddCardDetails] = useState(null);
+    const [addCardErrtxt, setAddCardErrtxt] = useState(null);
     // const [selectedUserPlan, setSelectedUserPlan] = useState(null);
 
     const elementOptions = {
@@ -170,6 +171,7 @@ const AddCardDetails = ({
                         // setAddCardDetails(response.data.message);
                         if (response.data.status === false) {
                             setAddCardFailure(true);
+                            setAddCardErrtxt(response.data.message);
                         } else {
                             //console.log("Here in subscribe plan else", fromBuildAiScreen)
                             setAddCardSuccess(true);
@@ -399,7 +401,8 @@ const AddCardDetails = ({
                         }} severity="error"
                         sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}>
                         {/* {addCardDetails} */}
-                        Card not added
+                        {/* Card not added */}
+                        {addCardErrtxt}
                     </Alert>
                 </Snackbar>
             </div>
