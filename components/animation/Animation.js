@@ -209,7 +209,13 @@ export default function Animation({ onChangeIndex }) {
 
         setVerificationId(confirmation.verificationId);
         console.log("OTP sent successfully");
-        handleContinue();
+        console.log("Event valus is", e);
+
+        if (e === "Resend") {
+          return
+        } else {
+          handleContinue();
+        }
       } catch (error) {
         console.error("Error during OTP sending:", error);
       } finally {
@@ -936,7 +942,7 @@ export default function Animation({ onChangeIndex }) {
     alignItems: "center",
     justifyContent: "center",
     marginInline: 10,
-    
+
   };
 
   //code for wide screen
@@ -1429,7 +1435,8 @@ export default function Animation({ onChangeIndex }) {
                   <CircularProgress className="mt-4 ms-6" size={20} />
                 ) : (
                   <button
-                    onClick={(e) => handleLogin(e)}
+                    // onClick={(e) => handleLogin(e)}
+                    onClick={(e) => sendOtp("Resend")}
                     className="text-purple mt-2"
                     style={{
                       fontSize: 15,
@@ -1600,7 +1607,7 @@ export default function Animation({ onChangeIndex }) {
                       {userName ? (
                         <div>
                           {checkUserNameData &&
-                          checkUserNameData.status === true ? (
+                            checkUserNameData.status === true ? (
                             <div
                               style={{
                                 fontWeight: "400",
@@ -1826,7 +1833,7 @@ export default function Animation({ onChangeIndex }) {
                         ) : (
                           <div>
                             {checkUserEmailData &&
-                            checkUserEmailData.status === true ? (
+                              checkUserEmailData.status === true ? (
                               <div
                                 style={{
                                   fontWeight: "400",
@@ -2205,7 +2212,7 @@ export default function Animation({ onChangeIndex }) {
                   </div>
                   <div>
                     {checkUserPhoneNumberData &&
-                    checkUserPhoneNumberData.status === true ? (
+                      checkUserPhoneNumberData.status === true ? (
                       <div
                         style={{
                           fontWeight: "400",
@@ -2491,172 +2498,172 @@ export default function Animation({ onChangeIndex }) {
         )}
         {currentIndex === 7 && (
           <Box
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            height: "100%",
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            // backgroundColor: "yellow",
-          }}
-        >
-          <Box
             sx={{
-              position: "relative",
-            //   width: "100%",
+              position: "absolute",
+              top: 0,
+              left: 0,
               height: "100%",
+              width: "100%",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-            //   backgroundColor: "yellow",
-             
+              // backgroundColor: "yellow",
             }}
           >
-            {/* Lottie Animation Box */}
             <Box
               sx={{
-                position: "absolute",
-                zIndex: 2,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                top: -15
-              }}
-            >
-              <Lottie
-                animationData={require("/public/congratsanimation.json")}
-                lottieRef={lottieRef}
-                
-                loop={true}
-                style={{ height: "700px", width: "700px" }}
-                onComplete={() => {
-                    lottieRef.current.goToAndStop(3, true)
-                }}
-              />
-            </Box>
-        
-            {/* Motion Div Content */}
-            <Box
-              sx={{
-                zIndex: 1,
                 position: "relative",
+                //   width: "100%",
+                height: "100%",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                width: "100%",
-                height: "100%",
-                backgroundColor: "",
+                //   backgroundColor: "yellow",
+
               }}
             >
-              <div
-                className="flex flex-col justify-center h-screen"
-                style={{ backgroundColor: "" }}
+              {/* Lottie Animation Box */}
+              <Box
+                sx={{
+                  position: "absolute",
+                  zIndex: 2,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  top: -15
+                }}
               >
-                <motion.div
-                  key="box8"
-                  custom={direction}
-                  variants={boxVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{ duration: 0 }}
-                //   style={styles}
+                <Lottie
+                  animationData={require("/public/congratsanimation.json")}
+                  lottieRef={lottieRef}
+
+                  loop={true}
+                  style={{ height: "700px", width: "700px" }}
+                  onComplete={() => {
+                    lottieRef.current.goToAndStop(3, true)
+                  }}
+                />
+              </Box>
+
+              {/* Motion Div Content */}
+              <Box
+                sx={{
+                  zIndex: 1,
+                  position: "relative",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  height: "100%",
+                  backgroundColor: "",
+                }}
+              >
+                <div
+                  className="flex flex-col justify-center h-screen"
+                  style={{ backgroundColor: "" }}
                 >
-                  <div style={{  justifyContent: 'center', alignItems: 'center', backgroundColor: '' }}>
-                    <div style={{ height: 14 }}>
-                      {/* Back Button or Other Elements */}
-                    </div>
-                    <div>
-                      <div
-                        style={{
-                          fontSize: 24,
-                          fontWeight: "600",
-                          textAlign: "center",
-                        }}
-                      >
-                        Congratulations!
+                  <motion.div
+                    key="box8"
+                    custom={direction}
+                    variants={boxVariants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{ duration: 0 }}
+                  //   style={styles}
+                  >
+                    <div style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '' }}>
+                      <div style={{ height: 14 }}>
+                        {/* Back Button or Other Elements */}
                       </div>
-                      <div
-                        style={{
-                          fontSize: 16,
-                          fontWeight: "500",
-                          textAlign: "center",
-                        }}
-                      >
-                        Your account is created
-                      </div>
-                    </div>
-        
-                    {/* Additional Content */}
-                    <div
-                      className="w-full flex flex-row justify-center"
-                      style={{ marginTop: 20 }}
-                    >
-                      <div
-                        style={gifBackgroundImage}
-                        className="flex flex-row justify-center items-center"
-                      >
-                        <Image
-                          src="/mainAppGif3.gif"
-                          alt="gif"
+                      <div>
+                        <div
                           style={{
-                            backgroundColor: "",
-                            borderRadius: "50%",
-                            height: isHighScreen ? "580px" : "350px",
-                            width: isHighScreen ? "580px" : "350px",
+                            fontSize: 24,
+                            fontWeight: "600",
+                            textAlign: "center",
                           }}
-                          height={600}
-                          width={600}
-                        />
+                        >
+                          Congratulations!
+                        </div>
+                        <div
+                          style={{
+                            fontSize: 16,
+                            fontWeight: "500",
+                            textAlign: "center",
+                          }}
+                        >
+                          Your account is created
+                        </div>
                       </div>
-                    </div>
-        
-                    <div
-                      className="w-full flex flex-col text-center justify-center items-center align-self-center mt-4"
-                      style={{
-                        color: "#050A0885",
-                        fontWeight: "400",
-                        fontSize: 13,
-                        backgroundColor: ''
-                      }}
-                    >
-                      Welcome to Voice.ai {userName}, where creators like you build a
-                      more engaging and personalized{" "}
-                      <span
+
+                      {/* Additional Content */}
+                      <div
+                        className="w-full flex flex-row justify-center"
+                        style={{ marginTop: 20 }}
+                      >
+                        <div
+                          style={gifBackgroundImage}
+                          className="flex flex-row justify-center items-center"
+                        >
+                          <Image
+                            src="/mainAppGif3.gif"
+                            alt="gif"
+                            style={{
+                              backgroundColor: "",
+                              borderRadius: "50%",
+                              height: isHighScreen ? "580px" : "350px",
+                              width: isHighScreen ? "580px" : "350px",
+                            }}
+                            height={600}
+                            width={600}
+                          />
+                        </div>
+                      </div>
+
+                      <div
+                        className="w-full flex flex-col text-center justify-center items-center align-self-center mt-4"
                         style={{
-                          color: "#050A0830",
+                          color: "#050A0885",
                           fontWeight: "400",
                           fontSize: 13,
+                          backgroundColor: ''
                         }}
                       >
-                        experience for their community. With Voice, you're able to build
-                        an AI version of yourself <br></br> so people can come talk directly with
-                        your AI twin. In the next steps,<br></br>  we'll be creating your AI based
-                        on what makes you- you.
-                      </span>
+                        Welcome to Voice.ai {userName}, where creators like you build a
+                        more engaging and personalized{" "}
+                        <span
+                          style={{
+                            color: "#050A0830",
+                            fontWeight: "400",
+                            fontSize: 13,
+                          }}
+                        >
+                          experience for their community. With Voice, you're able to build
+                          an AI version of yourself <br></br> so people can come talk directly with
+                          your AI twin. In the next steps,<br></br>  we'll be creating your AI based
+                          on what makes you- you.
+                        </span>
+                      </div>
+
+                      <div className="w-full flex justify-center mt-4">
+                        <button
+                          onClick={handleCongratsClick}
+                          className="bg-purple text-white px-6 py-2"
+                          style={{ borderRadius: "50px" }}
+                        >
+                          Continue
+                        </button>
+                      </div>
+
+                      {/* Additional Footer Content */}
                     </div>
-        
-                    <div className="w-full flex justify-center mt-4">
-                      <button
-                        onClick={handleCongratsClick}
-                        className="bg-purple text-white px-6 py-2"
-                        style={{ borderRadius: "50px" }}
-                      >
-                        Continue
-                      </button>
-                    </div>
-        
-                    {/* Additional Footer Content */}
-                  </div>
-                </motion.div>
-              </div>
+                  </motion.div>
+                </div>
+              </Box>
             </Box>
           </Box>
-        </Box>
-        
+
         )}
       </AnimatePresence>
     </div>

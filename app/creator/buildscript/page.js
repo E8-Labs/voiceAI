@@ -108,6 +108,8 @@ export default function Home() {
               style={{
                 backgroundColor: "",
                 height: currentIndex === 3 ? "85%" : "68%",
+                overflow: 'auto',
+                scrollbarWidth: 'none'
               }}
             >
               <div

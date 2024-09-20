@@ -151,7 +151,7 @@ const BoxAnimationIndex2 = ({ currentIndex }) => {
                         }} // This sets the origin to the center
                         animate={{
                             opacity: [0, 1, 0, 0], // Animates opacity
-                            height: ["30px", "70px", "70px", "30px"], // Only animates height
+                            height: ["30px", "170px", "170px", "30px"], // Only animates height
                         }}
                         onUpdate={() => {
                             setRandomDelayAnim2(getRandomDelay(4))
@@ -173,8 +173,8 @@ const BoxAnimationIndex2 = ({ currentIndex }) => {
                                 alt="123"
                                 // style={{ borderRadius: '50%', height: '50px', width: '50px',objectFit: 'cover', objectPosition: 'center', backgroundColor: '' }}
                                 style={{
-                                    width: "50px",
-                                    height: "50px",
+                                    width: "30px",
+                                    height: "30px",
                                     backgroundColor: "",
                                     borderRadius: "50%",
                                     border: "3px solid white",
@@ -182,11 +182,11 @@ const BoxAnimationIndex2 = ({ currentIndex }) => {
                                     objectPosition: "center",
                                     // backgroundColor: 'red'
                                 }}
-                                height={50}
-                                width={50}
+                                height={30}
+                                width={30}
                             />
                             <div>
-                                MKBHD Content Creator
+                                MKBHD, also known as Marques Brownlee, revolutionizes the tech community with his in-depth reviews and analysis of the latest gadgets and
                             </div>
                             {/* <div className="" style={{ color: "#00000060" }}>
                                 MKBHD
@@ -220,7 +220,7 @@ const BoxAnimationIndex2 = ({ currentIndex }) => {
                         }} // This sets the origin to the center
                         animate={{
                             opacity: [0, 1, 0, 0], // Animates opacity
-                            height: ["30px", "70px", "70px", "30px"], // Onlyanimates height
+                            height: ["30px", "170px", "170px", "30px"], // Onlyanimates height
                         }}
                         onUpdate={() => {
                             setRandomDelayAnim3(getRandomDelay(8))
@@ -235,15 +235,15 @@ const BoxAnimationIndex2 = ({ currentIndex }) => {
                         }}
                     >
                         <div
-                            className="flex flex-row items-center" //</motion.div>items-center' style={{}}
+                            className="" //</motion.div>items-center' style={{}}
                         >
                             <Image
                                 src="/alex.png"
                                 alt="123"
                                 // style={{ borderRadius: '50%', height: '50px', width: '50px',objectFit: 'cover', objectPosition: 'center', backgroundColor: '' }}
                                 style={{
-                                    width: "50px",
-                                    height: "50px",
+                                    width: "30px",
+                                    height: "30px",
                                     backgroundColor: "",
                                     borderRadius: "50%",
                                     border: "3px solid white",
@@ -251,17 +251,11 @@ const BoxAnimationIndex2 = ({ currentIndex }) => {
                                     objectPosition: "center",
                                     // backgroundColor: 'red'
                                 }}
-                                height={50}
-                                width={50}
+                                height={30}
+                                width={30}
                             />
-                            <div
-                                className="flex justify-start items-start"
-                                style={{ color: "#00000060", width: "130px" }}
-                            >
-                                Alex Hormozi
-                            </div>
-                            <div className="" style={{ width: "150px" }}>
-                                Business Coach
+                            <div>
+                                Jay Shetty empowers his community by sharing profound wisdom and practical advice on building meaningful relationships. He uses his background
                             </div>
                         </div>
                     </motion.div>
@@ -291,7 +285,7 @@ const BoxAnimationIndex2 = ({ currentIndex }) => {
                         }} // This sets the origin to the center
                         animate={{
                             opacity: [0, 1, 0, 0], // Animates opacity
-                            height: ["30px", "70px", "70px", "30px"], // Onlyanimates height
+                            height: ["30px", "130px", "130px", "30px"], // Onlyanimates height
                         }}
                         onUpdate={() => {
                             setRandomDelayAnim4(getRandomDelay(5))
@@ -306,15 +300,15 @@ const BoxAnimationIndex2 = ({ currentIndex }) => {
                         }}
                     >
                         <div
-                            className="flex flex-row items-center" //</motion.div>items-center' style={{}}
+                            // className="flex flex-row items-center" //</motion.div>items-center' style={{}}
                         >
                             <Image
                                 src="/andrew.png"
                                 alt="123"
                                 // style={{ borderRadius: '50%', height: '50px', width: '50px',objectFit: 'cover', objectPosition: 'center', backgroundColor: '' }}
                                 style={{
-                                    width: "50px",
-                                    height: "50px",
+                                    width: "30px",
+                                    height: "30px",
                                     backgroundColor: "",
                                     borderRadius: "50%",
                                     border: "3px solid white",
@@ -322,17 +316,14 @@ const BoxAnimationIndex2 = ({ currentIndex }) => {
                                     objectPosition: "center",
                                     // backgroundColor: 'red'
                                 }}
-                                height={50}
-                                width={50}
+                                height={30}
+                                width={30}
                             />
                             <div
                                 className="flex justify-start items-start"
                                 style={{ color: "#00000060", width: "120px" }}
                             >
-                                Andrew Tate
-                            </div>
-                            <div className="" style={{ width: "150px" }}>
-                                Influencer
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit....
                             </div>
                         </div>
                     </motion.div>

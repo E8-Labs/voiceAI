@@ -55,8 +55,8 @@ export default function ScriptAnimation({ onChangeIndex }) {
     // }
   })
   const router = useRouter();
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(2);
+  const [direction, setDirection] = useState(2);
 
   //code for getting value of input fields
   const [aiName, setAiName] = useState("");
@@ -726,7 +726,8 @@ export default function ScriptAnimation({ onChangeIndex }) {
               style={styles}
             >
               <div className="w-full flex sm:justify-center justify-start">
-                <div className="w-full">
+                <div className="w-full" //style={{ border: '2px solid red',  }}>
+                >
                   <div className="flex flex-row w-full sm:w-9/12 justify-between items-center">
                     <button onClick={handleBack}>
                       <Image
@@ -747,7 +748,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     </button>
                   </div>
 
-                  <div style={{ border: '2px solid red', height: "auto", scrollbarWidth: 'none' }}>
+                  <div>
                     <AiSocialLinks handleContinue={handleContinue} aiName={aiName} />
                   </div>
 
