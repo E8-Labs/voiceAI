@@ -747,7 +747,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     </button>
                   </div>
 
-                  <div style={{ border: '', height: "auto", scrollbarWidth: 'none' }}>
+                  <div style={{ border: '2px solid red', height: "auto", scrollbarWidth: 'none' }}>
                     <AiSocialLinks handleContinue={handleContinue} aiName={aiName} />
                   </div>
 

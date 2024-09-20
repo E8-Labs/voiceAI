@@ -1,5 +1,7 @@
 "use client";
 import Animation from "@/components/animation/Animation";
+import BoxAnimationIndex1 from "@/components/creatorOnboarding/BoxAnimationIndex1";
+import BoxAnimationIndex2 from "@/components/creatorOnboarding/BoxAnimationIndex2";
 import ScriptAnimation from "@/components/creatorOnboarding/ScriptAnimation";
 import ScriptAiAnimation from "@/components/creatorOnboarding/ScriptAnimation";
 import { Box } from "@mui/material";
@@ -84,9 +86,8 @@ export default function Home() {
       >
         <div
           // className='flex flex-row justify-center md:w-5/12 w-full items-center'
-          className={`flex flex-row justify-center h-screen ${
-            currentIndex === 4 ? "2xl:w-3/12" : "lg:w-5/12 w-full"//, currentIndex === 4 ? "w-full" : "lg:w-4/12 w-full", 
-          }`}
+          className={`flex flex-row justify-center h-screen ${currentIndex === 4 ? "2xl:w-3/12" : "lg:w-5/12 w-full"//, currentIndex === 4 ? "w-full" : "lg:w-4/12 w-full", 
+            }`}
           style={{ backgroundColor: "" }}
         >
           <div className="sm:w-10/12 w-full h-screen flex flex-col justify-between">
@@ -128,304 +129,26 @@ export default function Home() {
             style={gifBackgroundImage}
             className="flex flex-row justify-center items-center"
           >
-            {/*<Image
-                            // onClick={handleContinue}
-                            src="/mainAppGif3.gif" alt='gif' style={{
-                                backgroundColor: "",
-                                borderRadius: "50%", height: isHighScreen ? '780px' : '450px', width: isHighScreen ? '780px' : '450px'
-                            }} height={600} width={600} />*/}
-            <Box
-              sx={{
-                position: "relative",
-                height: isHighScreen ? "780px" : "450px",
-                width: isHighScreen ? "780px" : "450px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                // backgroundColor: 'yellow',
-                borderRadius: "50%",
-                overflow: "hidden", // This ensures that the images don't overflow out of the circular container
-              }}
-            >
-              {/* Main GIF */}
-              <Image
-                src="/mainAppGif3.gif"
-                alt="gif"
-                layout="fill"
-                objectFit="cover"
-              />
-
-              {/* First Animated Image Jay Shetty*/}
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: 90,
-                  right: 140,
-                  zIndex: 2, // Ensure it's above the main GIF
-                }}
-              >
-                <motion.div
-                  alt="user11"
-                  className="flex flex-row items-center justify-center"
-                  style={{
-                    transformOrigin: "center center",
-                    border: "2px solid white",
-                    paddingInline: 10,
-                    // borderRadius: 15,
-                    paddingTop: 10,
-                    backgroundColor: "#FFFFFF80",
-                  }} // This sets the origin to the center
-                  animate={{
-                    opacity: [0, 1, 0, 0], // Animates opacity
-                    height: ["30px", "70px", "70px", "30px"], // Only animates height
-                  }}
-                  onUpdate={()=>{
-                    setRandomDelayAnim1(getRandomDelay(5))
-                  }}
-                  transition={{
-                    duration: 7,
-                    repeat: Infinity,
-                    times: [0, 0.3, 0.5, 1], // Defines keyframe timings
-                    repeatDelay: 0.2,
-                    ease: "easeInOut",
-                    delay: randomDelayAnim1,
-                  }}
-                >
-                  {
-                    currentIndex == 1 && (
-                        <div
-                    className="flex flex-row justify-center" //</motion.div>items-center' style={{}}
-                  >
-                    <Image
-                      src="/assets/jay.png"
-                      alt="123"
-                      style={{
-                        borderRadius: "50%",
-                        height: "50px",
-                        width: "50px",
-                        backgroundColor: "",
-                      }}
-                      height={50}
-                      width={50}
-                    />
-                    <div className="" style={{ color: "#00000060" }}>
-                      Jay Shetty
-                    </div>
-                    <div className=" ml-2">Relationship Coach</div>
-                  </div>
-                    )
-                  }
-                  
-                </motion.div>
-              </Box>
-
-              {/* Second Animated Image MKBHD*/}
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: 180,
-                  right: 280,
-                  zIndex: 2, // Ensure it's above the main GIF
-                }}
-              >
-                <motion.div
-                  alt="user11"
-                  className="flex flex-row items-center justify-center"
-                  style={{
-                    transformOrigin: "center center",
-                    border: "2px solid white",
-                    paddingInline: 10,
-                    borderRadius: 15,
-                    // paddingTop: 10,
-                    width: "300px",
-                    backgroundColor: "#FFFFFF80",
-                  }} // This sets the origin to the center
-                  animate={{
-                    opacity: [0, 1, 0, 0], // Animates opacity
-                    height: ["30px", "70px", "70px", "30px"], // Only animates height
-                  }}
-                  onUpdate={()=>{
-                    setRandomDelayAnim2(getRandomDelay(4))
-                  }}
-                  transition={{
-                    duration: 8,
-                    repeat: Infinity,
-                    times: [0, 0.3, 0.5, 1], // Defines keyframe timings
-                    repeatDelay: 0.2,
-                    ease: "easeInOut",
-                    delay: randomDelayAnim2,
-                  }}
-                >
-                  <div
-                    className="flex flex-row items-center" //</motion.div>items-center' style={{}}
-                  >
-                    <Image
-                      src="/mkbhd.png"
-                      alt="123"
-                      // style={{ borderRadius: '50%', height: '50px', width: '50px',objectFit: 'cover', objectPosition: 'center', backgroundColor: '' }}
-                      style={{
-                        width: "50px",
-                        height: "50px",
-                        backgroundColor: "",
-                        borderRadius: "50%",
-                        border: "3px solid white",
-                        objectFit: "cover",
-                        objectPosition: "center",
-                        // backgroundColor: 'red'
-                      }}
-                      height={50}
-                      width={50}
-                    />
-                    <div className="" style={{ color: "#00000060" }}>
-                      MKBHD
-                    </div>
-                    <div className=" ml-1">Content Creator</div>
-                  </div>
-                </motion.div>
-              </Box>
-
-              {/* Third Animated Image Alex Hormozi*/}
-              <Box
-                sx={{
-                  position: "absolute",
-                  bottom: 250,
-                  right: 180,
-                  zIndex: 2, // Ensure it's above the main GIF
-                  width: "200px",
-                }}
-              >
-                <motion.div
-                  alt="user11"
-                  className="flex flex-row items-center justify-center"
-                  style={{
-                    transformOrigin: "center center",
-                    border: "2px solid white",
-                    paddingInline: 10,
-                    borderRadius: 15,
-                    // paddingTop: 10,
-                    width: "300px",
-                    backgroundColor: "#FFFFFF80",
-                  }} // This sets the origin to the center
-                  animate={{
-                    opacity: [0, 1, 0, 0], // Animates opacity
-                    height: ["30px", "70px", "70px", "30px"], // Onlyanimates height
-                  }}
-                  onUpdate={()=>{
-                    setRandomDelayAnim3(getRandomDelay(8))
-                  }}
-                  transition={{
-                    duration: 8,
-                    repeat: Infinity,
-                    times: [0, 0.3, 0.5, 1], // Defines keyframe timings
-                    repeatDelay: 0.2,
-                    ease: "easeInOut",
-                    delay: randomDelayAnim3,
-                  }}
-                >
-                  <div
-                    className="flex flex-row items-center" //</motion.div>items-center' style={{}}
-                  >
-                    <Image
-                      src="/alex.png"
-                      alt="123"
-                      // style={{ borderRadius: '50%', height: '50px', width: '50px',objectFit: 'cover', objectPosition: 'center', backgroundColor: '' }}
-                      style={{
-                        width: "50px",
-                        height: "50px",
-                        backgroundColor: "",
-                        borderRadius: "50%",
-                        border: "3px solid white",
-                        objectFit: "cover",
-                        objectPosition: "center",
-                        // backgroundColor: 'red'
-                      }}
-                      height={50}
-                      width={50}
-                    />
-                    <div
-                      className="flex justify-start items-start"
-                      style={{ color: "#00000060", width: "130px" }}
-                    >
-                      Alex Hormozi
-                    </div>
-                    <div className="" style={{ width: "150px" }}>
-                      Business Coach
-                    </div>
-                  </div>
-                </motion.div>
-              </Box>
-
-              {/* Forth Animated Image */}
-              <Box
-                sx={{
-                  position: "absolute",
-                  bottom: 330,
-                  left: 110,
-                  zIndex: 2, // Ensure it's above the main GIF
-                  width: "200px",
-                }}
-              >
-                <motion.div
-                  alt="user11"
-                  className="flex flex-row items-center justify-center"
-                  style={{
-                    transformOrigin: "center center",
-                    border: "2px solid white",
-                    paddingInline: 10,
-                    borderRadius: 15,
-                    // paddingTop: 10,
-                    width: "300px",
-                    backgroundColor: "#FFFFFF80",
-                  }} // This sets the origin to the center
-                  animate={{
-                    opacity: [0, 1, 0, 0], // Animates opacity
-                    height: ["30px", "70px", "70px", "30px"], // Onlyanimates height
-                  }}
-                  onUpdate={()=>{
-                    setRandomDelayAnim4(getRandomDelay(5))
-                  }}
-                  transition={{
-                    duration: 8,
-                    repeat: Infinity,
-                    times: [0, 0.3, 0.5, 1], // Defines keyframe timings
-                    repeatDelay: 0.2,
-                    ease: "easeInOut",
-                    delay: randomDelayAnim4,
-                  }}
-                >
-                  <div
-                    className="flex flex-row items-center" //</motion.div>items-center' style={{}}
-                  >
-                    <Image
-                      src="/andrew.png"
-                      alt="123"
-                      // style={{ borderRadius: '50%', height: '50px', width: '50px',objectFit: 'cover', objectPosition: 'center', backgroundColor: '' }}
-                      style={{
-                        width: "50px",
-                        height: "50px",
-                        backgroundColor: "",
-                        borderRadius: "50%",
-                        border: "3px solid white",
-                        objectFit: "cover",
-                        objectPosition: "center",
-                        // backgroundColor: 'red'
-                      }}
-                      height={50}
-                      width={50}
-                    />
-                    <div
-                      className="flex justify-start items-start"
-                      style={{ color: "#00000060", width: "120px" }}
-                    >
-                      Andrew Tate
-                    </div>
-                    <div className="" style={{ width: "150px" }}>
-                      Influencer
-                    </div>
-                  </div>
-                </motion.div>
-              </Box>
-            </Box>
+            {
+              (currentIndex === 0 || currentIndex > 2) && (
+                <Image
+                  // onClick={handleContinue}
+                  src="/mainAppGif3.gif"
+                  alt="gif"
+                  className={`rounded-full ${isHighScreen ? 'h-[780px] w-[780px]' : 'h-[450px] w-[450px]'}`}
+                  height={600}
+                  width={600}
+                />
+              )
+            }
+            {
+              currentIndex === 1 &&
+              <BoxAnimationIndex1 currentIndex={currentIndex} />
+            }
+            {
+              currentIndex === 2 &&
+              <BoxAnimationIndex2 currentIndex={currentIndex} />
+            }
           </div>
         </div>
       </div>
