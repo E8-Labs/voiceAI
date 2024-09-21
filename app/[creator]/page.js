@@ -564,6 +564,16 @@ const Page = () => {
 
 
     return (
+        <>
+        {
+            getAssistantData && (
+                <MetaTags
+                                title={`Creator: ${getAssistantData ? getAssistantData.assitant.name : ""}`}
+                                description={`Explore amazing content from ${getAssistantData ? getAssistantData.assitant.name : ""} on CreatorX!`}
+                                image={getAssistantData ? getAssistantData.profile_image : "" } // URL fetched from your API
+                            />
+            )
+        }
         <div className='h-screen overflow-none'>
             {
                 assistantDataErr ?
@@ -705,11 +715,7 @@ const Page = () => {
                     </div> :
                     <>
                         <div style={backgroundImage} className='h-screen' onMouseMove={handleMouseMove}>
-                            <MetaTags
-                                title={`Creator: ${getAssistantData && getAssistantData.assitant.name}`}
-                                description={`Explore amazing content from ${getAssistantData && getAssistantData.assitant.name} on CreatorX!`}
-                                image={getAssistantData && getAssistantData.profile_image } // URL fetched from your API
-                            />
+                            
                             <div className='pt-8 ms-8'>
                                 <div className='sm:flex hidden w-full flex flex-row justify-between items-start' style={{}}>
                                     <div className='flex flex-col items-start'>
@@ -1545,6 +1551,8 @@ const Page = () => {
                     </>
             }
         </div>
+        </>
+        
     );
 }
 
