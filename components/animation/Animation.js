@@ -990,6 +990,21 @@ export default function Animation({ onChangeIndex }) {
     }
   };
 
+  const handlePaste = (e) => {
+    e.preventDefault();
+    const paste = e.clipboardData.getData("text").split("");
+    paste.forEach((char, index) => {
+      if (index < 6) {
+        const inputId = `P${index + 1}`;
+        const input = document.getElementById(inputId);
+        if (input) {
+          input.value = char;
+          input.dispatchEvent(new Event("input", { bubbles: true })); // Trigger input change event
+        }
+      }
+    });
+  };
+
   const handleVerifyLoginCode = async () => {
     setVerifyLoader(true);
     verifyOtp();
@@ -1249,6 +1264,7 @@ export default function Animation({ onChangeIndex }) {
                       border: "none",
                     }}
                     onKeyDown={(e) => handleBackspace2(e, setVP1, null)}
+                    onPaste={handlePaste}
                   />
                   <input
                     id="P2"
@@ -1271,6 +1287,7 @@ export default function Animation({ onChangeIndex }) {
                       border: "none",
                     }}
                     onKeyDown={(e) => handleBackspace2(e, setVP2, "P1")}
+                    onPaste={handlePaste}
                   />
                   <input
                     id="P3"
@@ -1293,6 +1310,7 @@ export default function Animation({ onChangeIndex }) {
                       border: "none",
                     }}
                     onKeyDown={(e) => handleBackspace2(e, setVP3, "P2")}
+                    onPaste={handlePaste}
                   />
                   <input
                     id="P4"
@@ -1315,6 +1333,7 @@ export default function Animation({ onChangeIndex }) {
                       border: "none",
                     }}
                     onKeyDown={(e) => handleBackspace2(e, setVP4, "P3")}
+                    onPaste={handlePaste}
                   />
                   <input
                     id="P5"
@@ -1342,6 +1361,7 @@ export default function Animation({ onChangeIndex }) {
                       //     handleVerifyLoginCode();
                       // }
                     }}
+                    onPaste={handlePaste}
                   />
                   <input
                     id="P6"
@@ -1369,6 +1389,7 @@ export default function Animation({ onChangeIndex }) {
                         handleVerifyLoginCode();
                       }
                     }}
+                    onPaste={handlePaste}
                   />
                 </div>
 

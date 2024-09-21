@@ -4,7 +4,7 @@ import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
-const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr, fromCreateAccount, fromSignIn }) => {
+const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr, fromCreateAccount, fromSignIn, userLocation }) => {
     const [phone, setPhone] = useState('');
     const [focus, setFocus] = useState(false);
     const [countryCode, setCountryCode] = useState(''); // Default to US
@@ -64,6 +64,32 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
 
     //getting user location
 
+    // const getGeoLocation = () => {
+    //     if (navigator.geolocation) {
+    //         navigator.geolocation.getCurrentPosition(
+    //             async (position) => {
+    //                 const { latitude, longitude } = position.coords;
+    //                 try {
+    //                     const response = await fetch(
+    //                         `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+    //                     );
+    //                     const data = await response.json();
+    //                     if (data.countryCode) {
+    //                         setCountryCode(data.countryCode.toLowerCase());
+    //                     }
+    //                 } catch (error) {
+    //                     console.error('Error fetching location data:', error);
+    //                 }
+    //             },
+    //             (error) => {
+    //                 console.error('Error getting geolocation:', error);
+    //             }
+    //         );
+    //     }
+    // }
+
+
+    //test code to get the user location and saving it on the localstorage
     const getGeoLocation = () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -77,6 +103,16 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
                         if (data.countryCode) {
                             setCountryCode(data.countryCode.toLowerCase());
                         }
+
+                        // Save location data to local storage
+                        const locationData = {
+                            state: data.principalSubdivision, // State/Province
+                            city: data.city || data.locality, // City
+                            country: data.countryName // Country
+                        };
+                        localStorage.setItem('userLocation', JSON.stringify(locationData));
+                        console.log('Location data saved to local storage:', locationData);
+                        userLocation(locationData);
                     } catch (error) {
                         console.error('Error fetching location data:', error);
                     }
@@ -87,6 +123,8 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
             );
         }
     }
+
+
 
     useEffect(() => {
         if (editAccess) {

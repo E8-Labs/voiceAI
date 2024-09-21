@@ -42,7 +42,7 @@ export default function AnimatedButton({ snackMessage, error = false, profileDat
     }
 
     return (
-        <div className="flex items-center justify-start  bg-none" style={{ backgroundColor: 'transparent' }}>
+        <div className="flex items-center justify-start pe-6 bg-none" style={{ backgroundColor: 'transparent' }}>
             <button
                 // onClick={() => setIsExpanded(!isExpanded)}
                 className="relative bg-none flex flex-col items-center pe-1 md:pe-4 rounded-full focus:outline-none"

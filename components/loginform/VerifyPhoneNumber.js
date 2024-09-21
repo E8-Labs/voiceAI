@@ -6,7 +6,7 @@ import axios from 'axios'
 import { CircularProgress } from '@mui/material'
 import { auth, RecaptchaVerifier, signInWithPhoneNumber, PhoneAuthProvider, signInWithCredential } from '../firebase.js';
 
-const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handleSignin, verificationId }) => {
+const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handleSignin, verificationId, currentIndex }) => {
 
 
     const inputFocusRef = useRef(null);
@@ -43,13 +43,13 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
     }, []);
 
     useEffect(() => {
-        inputFocusRef.current.focus();
-        // if (currentIndex === 1 && inputFocusRef.current) {
-        //     // Using a small timeout to ensure rendering of the input after animation
-        //     setTimeout(() => {
-        //         inputFocusRef.current.focus();
-        //     }, 300); // Adjust this delay according to the animation timing
-        // }
+        // inputFocusRef.current.focus();
+        if (currentIndex === 2 && inputFocusRef.current) {
+            // Using a small timeout to ensure rendering of the input after animation
+            setTimeout(() => {
+                inputFocusRef.current.focus();
+            }, 300); // Adjust this delay according to the animation timing
+        }
     }, []);
 
     useEffect(() => {

@@ -155,6 +155,7 @@ const AddCardDetails = ({
                     const D = JSON.parse(LocalData);
                     console.log("Local data is", D);
                     const AuthToken = D.data.token;
+                    // const AuthToken = "bgabgakjhaslidfhgkerhiuhkmxvnidfuhgiehlmklhn";
                     console.log("Token for add card ", D.data.token);
                     // return
                     //console.log('Data sending in api is :', AddCardData);

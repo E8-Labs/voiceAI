@@ -26,10 +26,16 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
     const [emailValidationError, setEmailValidationError] = useState(false);
     const [verificationId, setVerificationId] = useState('');
     const [isWideScreen, setIsWideScreen] = useState(false);
+    const [userLocation, setUserLocation] = useState(null);
 
     const handlePhoneNumber = (number) => {
         // console.log("Number is", number);
         setUserPhoneNumber(number);
+    }
+
+    const getUserLocation = (location) => {
+        console.log("User location recieved is", location.city);
+        setUserLocation(location);
     }
 
     const handleNumberFormatErr = (status) => {
@@ -79,7 +85,11 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
             name: userName + " " + userLastName,
             email: userEmail,
             phone: userPhoneNumber,
-            password: userPassword
+            password: userPassword,
+            ...(userLocation && {
+                city: userLocation.city,
+                state: userLocation.state
+            })
         }
         console.log("Data for create account", userData);
 
@@ -532,7 +542,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
             }
             {/* <TextField className='mt-4' id="outlined-basic" label="Outlined" variant="outlined" sx={MuiFieldStyle} /> */}
             <div style={{ marginTop: isWideScreen ? 5 : 5 }}>
-                <PhoneNumberInput phonenumber={handlePhoneNumber} fromCreateAccount={true} formatErr={handleNumberFormatErr} />
+                <PhoneNumberInput phonenumber={handlePhoneNumber} userLocation={getUserLocation} fromCreateAccount={true} formatErr={handleNumberFormatErr} />
             </div>
             {
                 numberFormatError ?
@@ -612,7 +622,8 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                                 loginLoader ?
                                     <CircularProgress size={20} /> :
                                     <div>
-                                        {modalData &&
+                                        Call
+                                        {/* {modalData &&
                                             <div>
                                                 {modalData.name ?
                                                     <div>
@@ -622,7 +633,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                                                         Call {modalData.assitant.name}
                                                     </div>}
                                             </div>
-                                        }
+                                        } */}
                                     </div>
                             }
                         </button> :

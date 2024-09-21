@@ -57,6 +57,13 @@ const LoginModal = ({ closeForm, creator, assistantData }) => {
         setCurrentIndex((prevIndex) => prevIndex + 1);
         setUserLoginDetails(details);
     };
+
+    const handleContinueLocation = (details) => {
+        // handleCurrentIndex();
+        setDirection(2);
+        setCurrentIndex((prevIndex) => prevIndex + 2);
+        setUserLoginDetails(details);
+    };
     const getVerificationId = (id) => {
         setVerificationId(id)
     }
@@ -184,9 +191,91 @@ const LoginModal = ({ closeForm, creator, assistantData }) => {
         } catch (error) {
             console.error("ERR occured in getlocation api");
         } finally {
-            // setLocationLoader(false);
+            setLocationLoader(false);
         }
     };
+
+    const getGeoLocation = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    const { latitude, longitude } = position.coords;
+                    try {
+                        setLocationLoader(true);
+                        const response = await fetch(
+                            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+                        );
+                        const data = await response.json();
+                        if (data.countryCode) {
+                            // setCountryCode(data.countryCode.toLowerCase());
+                        }
+
+                        // Save location data to local storage
+                        const locationData = {
+                            state: data.principalSubdivision, // State/Province
+                            city: data.city || data.locality, // City
+                            country: data.countryName // Country
+                        };
+                        localStorage.setItem('userLocation', JSON.stringify(locationData));
+                        console.log('Location data saved to local storage:', locationData);
+                        if (locationData) {
+                            const localData = localStorage.getItem('User');
+                            if (localData) {
+                                try {
+                                    const Data = JSON.parse(localData);
+                                    console.log("localstorage data is:", locationData.user);
+                                    // return
+                                    const AuthToken = Data.data.token;
+                                    const formData = new FormData();
+                                    console.log("City sending in api", locationData.city);
+                                    console.log("State sending in api", locationData.state);
+                                    if (locationData.city) {
+                                        formData.append('city', locationData.city);
+                                    }
+                                    formData.append('state', locationData.state);
+
+                                    // Log all the form data key-value pairs
+                                    for (const [key, value] of formData.entries()) {
+                                        console.log(`${key}: ${value}`);
+                                    }
+
+                                    const response = await axios.post(Apis.updateProfile, formData, {
+                                        headers: {
+                                            "Authorization": "Bearer " + AuthToken
+                                        }
+                                    });
+                                    if (response) {
+                                        console.log("response of api is", response.data);
+
+                                        if (response.data.status === true) {
+                                            handleContinue();
+                                        } else {
+                                            console.log("status is false due to", response.data.message);
+                                        }
+                                    }
+                                } catch (error) {
+                                    console.error("Error occured in update api", error);
+                                } finally {
+                                    setLocationLoader(false);
+                                }
+                            } else {
+                                console.error("No data stored on localstorage");
+                            }
+                        }
+                        // userLocation(locationData);
+                    } catch (error) {
+                        console.error('Error fetching location data:', error);
+                    }
+                    finally {
+                        setLocationLoader(false);
+                    }
+                },
+                (error) => {
+                    console.error('Error getting geolocation:', error);
+                }
+            );
+        }
+    }
 
     return (
         <div className='flex flex-row justify-center' style={containerStyles}>
@@ -245,7 +334,8 @@ const LoginModal = ({ closeForm, creator, assistantData }) => {
                             style={styles}
                         >
                             <div className='w-full lg:w-full '>
-                                <VerifyPhoneNumber handleContinue={handleContinue} verificationId={verificationId} userLoginDetails={userLoginDetails} handleBack={handleBack} handleSignin={handleSignin} />
+                                <VerifyPhoneNumber currentIndex={currentIndex} handleContinue={handleContinue}
+                                    verificationId={verificationId} userLoginDetails={userLoginDetails} handleBack={handleBack} handleSignin={handleSignin} />
                             </div>
                         </motion.div>
                     </div>
@@ -283,7 +373,15 @@ const LoginModal = ({ closeForm, creator, assistantData }) => {
                                             </button> */}
                                         </div>
                                         <div>
-                                            <button onClick={handleContinue} className='bg-purple px-6 py-2 text-white' style={{ fontWeight: "400", fontFamily: "inter", fontSize: 15, borderRadius: "50px" }}>
+                                            <button onClick={() => {
+                                                const userLocation = localStorage.getItem('userLocation');
+                                                if (userLocation) {
+                                                    console.log("User location is", JSON.parse(userLocation));
+                                                    handleContinueLocation();
+                                                } else {
+                                                    handleContinue();
+                                                }
+                                            }} className='bg-purple px-6 py-2 text-white' style={{ fontWeight: "400", fontFamily: "inter", fontSize: 15, borderRadius: "50px" }}>
                                                 Continue
                                             </button>
                                         </div>
@@ -308,8 +406,6 @@ const LoginModal = ({ closeForm, creator, assistantData }) => {
                             style={styles}
                         >
                             <div className='w-full px-6 py-4'>
-                                {/* <button onClick={handleBack}>h</button> */}
-                                {/* <AddCard handleBack={handleBack} closeForm={closeForm} /> */}
 
                                 <div style={{ fontWeight: '600', fontSize: 24, fontFamily: 'inter' }}>
                                     Location Permission
@@ -319,9 +415,7 @@ const LoginModal = ({ closeForm, creator, assistantData }) => {
                                     Allow mycreatorx to access your location while using the app
                                 </div>
 
-                                {/* Display location or error */}
                                 <div className='mt-4' style={{ height: 15 }}>
-                                    {/* <p>City: {city}</p> */}
                                     {/* {city != '' && state != '' && (
                                         <div>
                                             <p>City: {city}</p>
@@ -337,7 +431,7 @@ const LoginModal = ({ closeForm, creator, assistantData }) => {
                                             <CircularProgress size={25} /> :
                                             <button
                                                 className='bg-purple'
-                                                onClick={getUserLocation}
+                                                onClick={getGeoLocation}
                                                 style={{
                                                     padding: '10px 20px',
                                                     fontSize: '16px', fontFamily: 'inter',

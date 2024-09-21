@@ -71,6 +71,7 @@ const Page = () => {
     // for side animation
     const [isVisible, setisVisible] = useState(true);
     const [callErr, setCallErr] = useState(false);
+    const [callErrMsg, setCallErrMsg] = useState(null);
     const [profileData, setProfileData] = useState(null);
     const [assistantDataErr, setAssistantDataErr] = useState(null);
     const [creatorErr, setCreatorErr] = useState(true);
@@ -462,11 +463,13 @@ const Page = () => {
                     console.log("Data of call removed");
                     if (response.data.status === false) {
                         setCallErr(true);
+                        setCallErrMsg(response.data.message);
                     }
                 })
                 .catch((error) => {
                     console.log(error);
                     setCallErr(true);
+                    setCallErrMsg("Some error occured!!")
                 });
         } catch (error) {
             console.error('Error occurred:', error);
@@ -698,7 +701,7 @@ const Page = () => {
 
                     </div> :
                     <div style={backgroundImage} className='h-screen' onMouseMove={handleMouseMove}>
-                        <div className='pt-8 ps-8'>
+                        <div className='pt-8 ms-8'>
                             <div className='lg:flex hidden w-full flex flex-row justify-between items-start' style={{}}>
                                 <div className='flex flex-col items-start'>
                                     <div className='px-2 py-2 flex gap-4 flex-row items-center' ref={buttonRef4}
@@ -1280,7 +1283,7 @@ const Page = () => {
                                 }
                             </div>
 
-                            <div ref={buttonRef5} className='me-8 md:flex hidden'>
+                            <div ref={buttonRef5} className='me-12 md:flex hidden'>
                                 <CycleArray onLargeScreen={true} data={getRecentCallData} assistantData={getAssistantData} />
                             </div>
                         </div>
@@ -1367,8 +1370,11 @@ const Page = () => {
                                     <div className='sm:w-7/12 w-full' style={{ backgroundColor: "#ffffff23", padding: 20, borderRadius: 10 }}>
                                         {/* <AddCard handleBack={handleBack} closeForm={closeForm} /> */}
                                         <div style={{ backgroundColor: 'white', padding: 18, borderRadius: 10 }}>
-                                            <div className='mt-2'>
-                                                <Image src="/assets/claimIcon.png" alt='claimimg' height={24} width={24} />
+                                            <div className='mt-2 flex flex-row justify-between items-center'>
+                                                <Image src="/assets/claimIcon.png" alt='claimimg' height={32} width={32} />
+                                                <button onClick={(() => setOpenClaimPopup(false))}>
+                                                    <Image src="/assets/crossBtn.png" alt='cross' height={14} width={14} />
+                                                </button>
                                             </div>
                                             <div className='mt-8' style={{ fontWeight: '600', fontSize: 24, fontFamily: 'inter' }}>
                                                 Claim Account
@@ -1525,6 +1531,7 @@ const Page = () => {
                                         Error
                                     </div>
                                     <div>
+                                        {/* {callErrMsg} */}
                                         We were unable to process your payment method, please update to start a call.
                                     </div>
                                 </div>
