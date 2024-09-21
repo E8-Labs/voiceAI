@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Apis from '../apis/Apis';
 import axios from 'axios';
 
-const ProfileAnimation = ({ creator }) => {
+const ProfileAnimation = ({ creator, openClaimPopup, showBorderedProfile }) => {
 
     const [isOpen, setIsOpen] = useState(false);
     const [getAssistantData, setGetAssistantData] = useState(null);
@@ -14,7 +14,11 @@ const ProfileAnimation = ({ creator }) => {
 
 
     const handleClick = () => {
-        setIsOpen(!isOpen);
+        if (isOpen === true) {
+            openClaimPopup(true);
+        } else {
+            setIsOpen(!isOpen);
+        }
     };
 
     //code for getting the assistant api
@@ -53,7 +57,7 @@ const ProfileAnimation = ({ creator }) => {
     // }, [])
 
     return (
-        <div>
+        <div className='ps-2 pt-3'>
             <Box position="relative" display="inline-block">
                 <button onClick={handleClick}>
                     <div style={{ border: "2px solid black", borderRadius: "50%", padding: 4 }}>
@@ -78,7 +82,7 @@ const ProfileAnimation = ({ creator }) => {
                                 transition={{ duration: 0.3 }}
                                 style={{
                                     position: 'absolute',
-                                    top: '25%',
+                                    top: '11%',
                                     left: '100%',
                                     // transform: 'translateY(-50%)',
                                     // marginLeft: '0px',
@@ -86,6 +90,7 @@ const ProfileAnimation = ({ creator }) => {
                                     // backgroundColor: "red",
                                     // height: 40
                                 }}
+                                onAnimationComplete={() => { showBorderedProfile(true) }}
                             >
                                 <div>
                                     <div style={{ fontSize: 15, fontWeight: "400" }}>
@@ -103,7 +108,7 @@ const ProfileAnimation = ({ creator }) => {
                                             </div>
                                         }
                                     </div>
-                                    {/* <div className='flex flex-row'>
+                                    <div className='flex flex-row'>
                                         <div style={{ fontSize: 12, color: "grey", fontWeight: "400", fontFamily: "inter" }}>
                                             Calls:
                                         </div>
@@ -140,7 +145,7 @@ const ProfileAnimation = ({ creator }) => {
                                                 </div>
                                             }
                                         </div>
-                                    </div> */}
+                                    </div>
                                 </div>
                             </motion.div>
 

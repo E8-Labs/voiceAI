@@ -246,7 +246,11 @@ export default function Animation({ onChangeIndex }) {
 
         setVerificationId(confirmation.verificationId);
         console.log("OTP sent successfully");
-        handleContinue();
+        if (e === "Resend") {
+          return
+        } else {
+          handleContinue();
+        }
       } catch (error) {
         console.error("Error during OTP sending:", error);
       } finally {
@@ -448,6 +452,7 @@ export default function Animation({ onChangeIndex }) {
   useEffect(() => {
     if (currentIndex === 1 && inputFocusRef.current) {
       // Using a small timeout to ensure rendering of the input after animation
+      console.log("Focusing on verify code")
       setTimeout(() => {
         inputFocusRef.current.focus();
       }, 300); // Adjust this delay according to the animation timing
@@ -1005,6 +1010,15 @@ export default function Animation({ onChangeIndex }) {
     });
   };
 
+  const loginBoxesstyle = {
+    height: isWideScreen2 ? "40px" : "30px", width: isWideScreen2 ? "40px" : "30px",
+    borderRadius: 6,
+    backgroundColor: "#EDEDEDC7",
+    textAlign: "center",
+    outline: "none",
+    border: "none",
+  }
+
   const handleVerifyLoginCode = async () => {
     setVerifyLoader(true);
     verifyOtp();
@@ -1254,15 +1268,7 @@ export default function Animation({ onChangeIndex }) {
                       setVerifyErr(false);
                     }}
                     maxLength={1}
-                    style={{
-                      height: "40px",
-                      width: "40px",
-                      borderRadius: 6,
-                      backgroundColor: "#EDEDEDC7",
-                      textAlign: "center",
-                      outline: "none",
-                      border: "none",
-                    }}
+                    style={loginBoxesstyle}
                     onKeyDown={(e) => handleBackspace2(e, setVP1, null)}
                   />
                   <input
@@ -1276,15 +1282,7 @@ export default function Animation({ onChangeIndex }) {
                       setVerifyErr(false);
                     }}
                     maxLength={1}
-                    style={{
-                      height: "40px",
-                      width: "40px",
-                      borderRadius: 6,
-                      backgroundColor: "#EDEDEDC7",
-                      textAlign: "center",
-                      outline: "none",
-                      border: "none",
-                    }}
+                    style={loginBoxesstyle}
                     onKeyDown={(e) => handleBackspace2(e, setVP2, "P1")}
                   />
                   <input
@@ -1298,15 +1296,7 @@ export default function Animation({ onChangeIndex }) {
                       setVerifyErr(false);
                     }}
                     maxLength={1}
-                    style={{
-                      height: "40px",
-                      width: "40px",
-                      borderRadius: 6,
-                      backgroundColor: "#EDEDEDC7",
-                      textAlign: "center",
-                      outline: "none",
-                      border: "none",
-                    }}
+                    style={loginBoxesstyle}
                     onKeyDown={(e) => handleBackspace2(e, setVP3, "P2")}
                   />
                   <input
@@ -1320,15 +1310,7 @@ export default function Animation({ onChangeIndex }) {
                       setVerifyErr(false);
                     }}
                     maxLength={1}
-                    style={{
-                      height: "40px",
-                      width: "40px",
-                      borderRadius: 6,
-                      backgroundColor: "#EDEDEDC7",
-                      textAlign: "center",
-                      outline: "none",
-                      border: "none",
-                    }}
+                    style={loginBoxesstyle}
                     onKeyDown={(e) => handleBackspace2(e, setVP4, "P3")}
                   />
                   <input
@@ -1342,15 +1324,7 @@ export default function Animation({ onChangeIndex }) {
                       setVerifyErr(false);
                     }}
                     maxLength={1}
-                    style={{
-                      height: "40px",
-                      width: "40px",
-                      borderRadius: 6,
-                      backgroundColor: "#EDEDEDC7",
-                      textAlign: "center",
-                      outline: "none",
-                      border: "none",
-                    }}
+                    style={loginBoxesstyle}
                     onKeyDown={(e) => {
                       handleBackspace2(e, setVP5, "P4");
                       // if (e.key === 'Enter') {
@@ -1369,15 +1343,7 @@ export default function Animation({ onChangeIndex }) {
                       setVerifyErr(false);
                     }}
                     maxLength={1}
-                    style={{
-                      height: "40px",
-                      width: "40px",
-                      borderRadius: 6,
-                      backgroundColor: "#EDEDEDC7",
-                      textAlign: "center",
-                      outline: "none",
-                      border: "none",
-                    }}
+                    style={loginBoxesstyle}
                     onKeyDown={(e) => {
                       handleBackspace2(e, setVP6, "P5");
                       if (e.key === "Enter") {

@@ -90,7 +90,7 @@ export default function Home() {
                 >
                     <div className='w-full flex flex-col justify-between sm:w-9/12 justify-start items-center h-screen' //style={{backgroundColor: 'green'}}
                     >
-                        <div className='sm:flex hidden justify-between sm:pt-10 md:pt-14 w-full' style={{ backgroundColor: '' }}
+                        <div className='justify-between sm:pt-10 md:pt-14 md:w-full w-10/12' style={{ backgroundColor: '' }}
                         >
                             {
                                 currentIndex < 7 &&
@@ -106,7 +106,7 @@ export default function Home() {
                         >
                             <Animation onChangeIndex={handleCurrentIndex} />
                         </div> */}
-                        <div className={currentIndex === 7 ? 'pt-28 sm:pt-0 sm:w-full w-10/12' : 'pt-28 sm:pt-28 sm:w-full w-10/12'}  //'pt-28 sm:w-full w-10/12' //{currentIndex === 7 ? 'pt-28 sm:pt-28 sm:w-full w-10/12' : 'sm:w-full w-10/12'} 
+                        <div className={currentIndex === 7 ? 'pt-4 sm:pt-0 sm:w-full w-10/12' : 'pt-0 sm:pt-28 sm:w-full w-10/12'}  //'pt-28 sm:w-full w-10/12' //{currentIndex === 7 ? 'pt-28 sm:pt-28 sm:w-full w-10/12' : 'sm:w-full w-10/12'} 
                             style={{ backgroundColor: '', height: currentIndex === 7 ? '100%' : '85%', }}>
                             <div className='w-full flex justify-center items-center' style={{ backgroundColor: '' }}
                             >

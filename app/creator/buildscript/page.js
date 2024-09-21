@@ -90,9 +90,9 @@ export default function Home() {
             }`}
           style={{ backgroundColor: "" }}
         >
-          <div className="sm:w-10/12 w-full h-screen flex flex-col justify-between">
+          <div className="sm:w-10/12 w-full h-screen flex flex-col justify-between px-8 sm:px-0">
             <div
-              className="mt-24 sm:flex hidden"
+              className="mt-4 sm:mt-24"
               style={{ backgroundColor: "" }}
             >
               <Image
@@ -100,6 +100,7 @@ export default function Home() {
                 alt="logo"
                 height={410}
                 width={116}
+                style={{ backgroundColor: '' }}
               />
               {/* <div>Onboarding 2</div> */}
             </div>

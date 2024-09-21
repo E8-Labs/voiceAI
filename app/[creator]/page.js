@@ -68,6 +68,7 @@ const Page = () => {
     const [isWideScreen2, setIsWideScreen2] = useState(false);
     const [isHighScreen, setIsHighScreen] = useState(false);
     const [openClaimPopup, setOpenClaimPopup] = useState(false);
+    const [showBorderProfile, setShowBorderedProfile] = useState(false);
     // for side animation
     const [isVisible, setisVisible] = useState(true);
     const [callErr, setCallErr] = useState(false);
@@ -109,22 +110,6 @@ const Page = () => {
         }
     }, []);
 
-
-    // useEffect(() => {
-    //     const handleResize = () => {
-    //         setIsWideScreen(window.innerWidth >= 1024);
-    //         setIsHighScreen(window.innerHeight <= 1204);
-    //     };
-
-    //     handleResize(); // Set initial state
-    //     window.addEventListener('resize', handleResize);
-
-    //     return () => {
-    //         window.removeEventListener('resize', handleResize);
-    //     };
-    // }, []);
-
-    //move to become creator
 
 
     useEffect(() => {
@@ -169,6 +154,14 @@ const Page = () => {
             }
         }
         // return
+    }
+
+    const handleopenClaimpopup = (status) => {
+        setOpenClaimPopup(status);
+    }
+
+    const handleShowBorderProfile = (status) => {
+        setShowBorderedProfile(status);
     }
 
 
@@ -702,7 +695,7 @@ const Page = () => {
                     </div> :
                     <div style={backgroundImage} className='h-screen' onMouseMove={handleMouseMove}>
                         <div className='pt-8 ms-8'>
-                            <div className='lg:flex hidden w-full flex flex-row justify-between items-start' style={{}}>
+                            <div className='sm:flex hidden w-full flex flex-row justify-between items-start' style={{}}>
                                 <div className='flex flex-col items-start'>
                                     <div className='px-2 py-2 flex gap-4 flex-row items-center' ref={buttonRef4}
                                         style={{
@@ -719,7 +712,6 @@ const Page = () => {
                                         }}>
                                         <div className='flex flex-col items-center'>
                                             <div className='relative'>
-                                                {/* Profile Image with Claim Button */}
                                                 <div className='flex flex-row items-center'>
                                                     <button
                                                         onClick={() => {
@@ -749,12 +741,7 @@ const Page = () => {
                                                                         style={{ padding: 4, borderRadius: "50%" }} />
                                                             }
                                                         </div>
-                                                        {/* Claim Button */}
                                                         <div className='absolute top-0 -left-2' style={{ backgroundColor: "transparent" }}>
-                                                            {/* <Image onClick={() => {
-     console.log("Sary gama pada na ri sa");
-     }} src="/assets/claimLogo.png" alt='claimbtn' height={35} width={35}
-     style={{ cursor: "pointer", backgroundColor: "" }} /> */}
                                                             <div style={{ height: "30px", width: "30px", backgroundColor: "transparent" }}>
                                                                 <Image onClick={() => {
                                                                     // console.log("Sary gama pada na ri sa");
@@ -764,7 +751,6 @@ const Page = () => {
                                                             </div>
                                                         </div>
                                                     </button>
-                                                    {/* <div style={triangle} /> */}
                                                 </div>
                                             </div>
                                         </div>
@@ -866,157 +852,158 @@ const Page = () => {
 
                             </div>
 
-                            {/* Profile icon for small screens */}
-                            <div className='lg:hidden flex items-start justify-between'>
+                            {/* Assistant Profile icon for small screens */}
+                            <div className='sm:hidden flex items-start justify-between'>
                                 <div style={{ zIndex: 2 }}>
-                                    {/* <ProfileAnimation creator={creator} /> */}
-                                    <div className='flex flex-col items-start'>
-                                        <div className='px-2 py-1 flex gap-4 flex-row items-center' //ref={buttonRef4}
-                                            style={{
-                                                border: "2px solid #ffffff",
-                                                // borderTopLeftRadius: 50, borderTopRightRadius: 50,
-                                                // borderBottomRightRadius: 50,
-                                                // borderRadiusTopright: 50,
-                                                // borderRadiusTopright : 50,
-                                                borderTopLeftRadius: 50,
-                                                borderBottomRightRadius: 50,
-                                                borderTopRightRadius: 50,
-                                                backgroundColor: "#ffffff20",
-                                                zIndex: 1
-                                            }}>
-                                            <div className='flex flex-col items-center'>
-                                                <div className='relative'>
-                                                    {/* Profile Image with Claim Button */}
-                                                    <div className='flex flex-row items-center'>
-                                                        <button
-                                                            onClick={() => {
-                                                                // console.log("Sary gama pada na ri sa");
-                                                                setOpenClaimPopup(true);
-                                                            }}
-                                                            style={{ position: 'relative' }}>
-                                                            <div style={{ border: "2px solid black", borderRadius: "50%" }}>
-                                                                {/* <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={40} width={40}
-                                                                    style={{ padding: 4, borderRadius: "50%" }} /> */}
-                                                                {
-                                                                    getAssistantData && getAssistantData.profile_image ?
-                                                                        <Image src={getAssistantData.profile_image} alt='profilephoto' //height={50} width={50}
-                                                                            height={50}
-                                                                            width={50}
-                                                                            style={{
-                                                                                width: '50px',
-                                                                                height: '50px',
-                                                                                backgroundColor: "",
-                                                                                borderRadius: "50%",
-                                                                                border: "3px solid white",
-                                                                                objectFit: 'cover',
-                                                                                objectPosition: 'center',
-                                                                                // backgroundColor: 'red'
-                                                                            }}
-                                                                        // style={{ padding: 4, borderRadius: "50%" }} 
-                                                                        /> :
-                                                                        <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={50} width={50}
-                                                                            style={{ padding: 4, borderRadius: "50%" }} />
-                                                                }
-                                                            </div>
-                                                            {/* Claim Button */}
-                                                            <div className='absolute top-0 -left-2' style={{ backgroundColor: "transparent" }}>
-                                                                <div style={{ height: "30px", width: "30px", backgroundColor: "transparent" }}>
-                                                                    <Image onClick={() => {
-                                                                        console.log("Sary gama pada na ri sa");
+                                    {
+                                        showBorderProfile ?
+                                            <div className='flex flex-col items-start'>
+                                                <div className='px-2 py-2 flex gap-4 flex-row items-center' ref={buttonRef4}
+                                                    style={{
+                                                        border: "2px solid #ffffff",
+                                                        // borderTopLeftRadius: 50, borderTopRightRadius: 50,
+                                                        // borderBottomRightRadius: 50,
+                                                        // borderRadiusTopright: 50,
+                                                        // borderRadiusTopright : 50,
+                                                        borderTopLeftRadius: 50,
+                                                        borderBottomRightRadius: 50,
+                                                        borderTopRightRadius: 50,
+                                                        backgroundColor: "#ffffff20",
+                                                        zIndex: 1
+                                                    }}>
+                                                    <div className='flex flex-col items-center'>
+                                                        <div className='relative'>
+                                                            <div className='flex flex-row items-center'>
+                                                                <button
+                                                                    onClick={() => {
+                                                                        // console.log("Sary gama pada na ri sa");
                                                                         setOpenClaimPopup(true);
-                                                                    }} src="/assets/claimLogo.png" alt='claimbtn' height={40} width={40}
-                                                                        style={{ cursor: "pointer", backgroundColor: "transparent" }} />
-                                                                </div>
+                                                                    }}
+                                                                    style={{ position: 'relative' }}>
+                                                                    <div style={{ border: "2px solid black", borderRadius: "50%" }}>
+                                                                        {
+                                                                            getAssistantData && getAssistantData.profile_image ?
+                                                                                <Image src={getAssistantData.profile_image} alt='profilephoto' //height={50} width={50}
+                                                                                    height={50}
+                                                                                    width={50}
+                                                                                    style={{
+                                                                                        width: '50px',
+                                                                                        height: '50px',
+                                                                                        backgroundColor: "",
+                                                                                        borderRadius: "50%",
+                                                                                        border: "3px solid white",
+                                                                                        objectFit: 'cover',
+                                                                                        objectPosition: 'center',
+                                                                                        // backgroundColor: 'red'
+                                                                                    }}
+                                                                                //style={{ padding: 4, borderRadius: "50%" }} 
+                                                                                /> :
+                                                                                <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={50} width={50}
+                                                                                    style={{ padding: 4, borderRadius: "50%" }} />
+                                                                        }
+                                                                    </div>
+                                                                    <div className='absolute top-0 -left-2' style={{ backgroundColor: "transparent" }}>
+                                                                        <div style={{ height: "30px", width: "30px", backgroundColor: "transparent" }}>
+                                                                            <Image onClick={() => {
+                                                                                // console.log("Sary gama pada na ri sa");
+                                                                                setOpenClaimPopup(true);
+                                                                            }} src="/assets/claimLogo.png" alt='claimbtn' height={40} width={40}
+                                                                                style={{ cursor: "pointer", backgroundColor: "transparent" }} />
+                                                                        </div>
+                                                                    </div>
+                                                                </button>
                                                             </div>
-                                                        </button>
-                                                        {/* <div style={triangle} /> */}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
 
-                                            {/* code for assistant name and calls */}
-                                            <div>
-                                                <div className='flex flex-row items-center gap-8'>
-                                                    <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                        {
-                                                            getAssistantData &&
+
+                                                    <div>
+                                                        {/* code for assistant name and calls */}
+                                                        <div className='flex flex-row items-center gap-8'>
                                                             <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
                                                                 {
-                                                                    getAssistantData.name ?
-                                                                        <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                                            {getAssistantData.name}
-                                                                        </div> :
-                                                                        <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                                            {getAssistantData.assitant.name}
-                                                                        </div>
-                                                                }
-                                                            </div>
-                                                        }
-                                                    </div>
-                                                </div>
-                                                <div className='flex flex-row pe-4'>
-                                                    <div style={{ fontSize: 12, color: "grey", fontWeight: "400", fontFamily: "inter" }}>
-                                                        Calls:
-                                                    </div>
-                                                    <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 12 }}>
-                                                        {
-                                                            getAssistantData &&
-                                                            <div>
-                                                                {getAssistantData.calls ?
-                                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
-                                                                        {getAssistantData.calls}
-                                                                    </div> :
-                                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
-                                                                        0
+                                                                    getAssistantData &&
+                                                                    <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                                                        {
+                                                                            getAssistantData.name ?
+                                                                                <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                                                                    {getAssistantData.name}
+                                                                                </div> :
+                                                                                <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                                                                    {getAssistantData.assitant.name}
+                                                                                </div>
+                                                                        }
                                                                     </div>
                                                                 }
                                                             </div>
-                                                        }
-                                                    </div>
-                                                    <div className='ms-2' style={{ fontSize: 12, color: "grey", fontWeight: "400", fontFamily: "inter" }}>
-                                                        Earned:
-                                                    </div>
-                                                    <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
-                                                        {
-                                                            getAssistantData &&
-                                                            <div>
-                                                                {getAssistantData.earned ?
-                                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
-                                                                        ${Number(getAssistantData.earned).toFixed(2)}
-                                                                    </div> :
-                                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
-                                                                        $ 0
+                                                        </div>
+                                                        <div className='flex flex-row pe-4'>
+                                                            <div style={{ fontSize: 12, color: "#000000", fontWeight: "400", fontFamily: "inter" }}>
+                                                                Calls:
+                                                            </div>
+                                                            <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 12 }}>
+                                                                {
+                                                                    getAssistantData &&
+                                                                    <div>
+                                                                        {getAssistantData.calls ?
+                                                                            <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
+                                                                                {getAssistantData.calls}
+                                                                            </div> :
+                                                                            <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
+                                                                                0
+                                                                            </div>
+                                                                        }
                                                                     </div>
                                                                 }
                                                             </div>
-                                                        }
+                                                            <div className='ms-2' style={{ fontSize: 12, color: "#000000", fontWeight: "400", fontFamily: "inter" }}>
+                                                                Earned:
+                                                            </div>
+                                                            <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
+                                                                {
+                                                                    getAssistantData &&
+                                                                    <div>
+                                                                        {getAssistantData.earned ?
+                                                                            <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
+                                                                                ${Number(getAssistantData.earned).toFixed(2)}
+                                                                            </div> :
+                                                                            <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
+                                                                                $ 0
+                                                                            </div>
+                                                                        }
+                                                                    </div>
+                                                                }
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        {/* code for socials */}
-                                        <div //className='flex flex-row items-center justify-center pb-3 px-4' //ref={buttonRef3}
-                                            className='flex flex-row items-center justify-center pb-6 px-6'
-                                            style={{
-                                                border: "2px solid #ffffff", borderTop: "8px solid #e7f3fe",
-                                                borderBottomLeftRadius: 50,
-                                                borderBottomRightRadius: 50, marginTop: "-2px",
-                                                zIndex: 2, backgroundColor: "#ffffff20",
-                                            }}>
-                                            <div className='flex flex-col gap-4' style={{ marginTop: 10 }}>
-                                                <button>
-                                                    <Image
-                                                        // layout='responsive'
-                                                        objectFit='contain' src={"/assets/instagram.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
-                                                </button>
-                                                <button>
-                                                    <Image
-                                                        // layout='responsive'
-                                                        objectFit='contain' src={"/assets/twitter.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                                {/* code for socials */}
+                                                <div className='flex flex-row items-center justify-center pb-6 px-6' ref={buttonRef3}
+                                                    style={{
+                                                        border: "2px solid #ffffff", borderTop: "8px solid #e7f3fe",
+                                                        borderBottomLeftRadius: 50,
+                                                        borderBottomRightRadius: 50, marginTop: "-4px",
+                                                        zIndex: 2, backgroundColor: "#ffffff20",
+                                                    }}>
+                                                    <div className='flex flex-col gap-4' style={{ marginTop: 10 }}>
+                                                        <button>
+                                                            <Image
+                                                                // layout='responsive'
+                                                                objectFit='contain' src={"/assets/instagram.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
+                                                        </button>
+                                                        <button>
+                                                            <Image
+                                                                // layout='responsive'
+                                                                objectFit='contain' src={"/assets/twitter.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div> :
+                                            <ProfileAnimation creator={creator} openClaimPopup={handleopenClaimpopup} showBorderedProfile={handleShowBorderProfile} />
+                                    }
+
+
+
                                 </div>
                                 {
                                     showProfileIcon &&

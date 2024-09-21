@@ -43,7 +43,32 @@ const AddCardDetails = ({
     const [addCardFailure, setAddCardFailure] = useState(false);
     const [addCardDetails, setAddCardDetails] = useState(null);
     const [addCardErrtxt, setAddCardErrtxt] = useState(null);
+    const [isWideScreen, setIsWideScreen] = useState(false);
     // const [selectedUserPlan, setSelectedUserPlan] = useState(null);
+
+    //code for wide screen
+    useEffect(() => {
+        const handleResize = () => {
+            // Check if width is greater than or equal to 1024px
+            setIsWideScreen(window.innerWidth >= 950);
+
+            // setIsWideScreen2(window.innerWidth >= 500);
+            // Check if height is greater than or equal to 1024px
+            // setIsHighScreen(window.innerHeight >= 640);
+
+            // Log the updated state values for debugging (Optional)
+            console.log("isWideScreen: ", window.innerWidth >= 640);
+            console.log("isWideScreen2: ", window.innerWidth >= 500);
+            console.log("isHighScreen: ", window.innerHeight >= 1024);
+        };
+
+        handleResize(); // Set initial state
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
 
     const elementOptions = {
         style: {
