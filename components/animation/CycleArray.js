@@ -63,7 +63,7 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
                                     <div className='flex flex-row w-full gap-1'>
                                         <div className='flex flex-row'>
                                             {/* <Image src="/assets/callLogo.png" alt='logo' height={10} width={13} /> */}
-                                            <div style={{ fontSize: 13, fontWeight: "600", color: "grey" }}>
+                                            <div style={{ fontSize: 13, fontWeight: "600", color: "#00000090" }}>
                                                 Live Call with
                                             </div>
                                         </div>
@@ -107,7 +107,7 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
                                     <div className='flex flex-row w-full gap-1'>
                                         <div className='flex flex-row'>
                                             {/* <Image src="/assets/callLogo.png" alt='logo' height={10} width={13} /> */}
-                                            <div style={{ fontSize: 13, fontWeight: "600", color: "grey" }}>
+                                            <div style={{ fontSize: 13, fontWeight: "600", color: "#00000090" }}>
                                                 Live Call with
                                             </div>
                                         </div>

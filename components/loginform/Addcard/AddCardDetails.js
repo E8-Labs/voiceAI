@@ -50,16 +50,14 @@ const AddCardDetails = ({
     useEffect(() => {
         const handleResize = () => {
             // Check if width is greater than or equal to 1024px
-            setIsWideScreen(window.innerWidth >= 950);
+            setIsWideScreen(window.innerWidth >= 500);
 
             // setIsWideScreen2(window.innerWidth >= 500);
             // Check if height is greater than or equal to 1024px
             // setIsHighScreen(window.innerHeight >= 640);
 
             // Log the updated state values for debugging (Optional)
-            console.log("isWideScreen: ", window.innerWidth >= 640);
-            console.log("isWideScreen2: ", window.innerWidth >= 500);
-            console.log("isHighScreen: ", window.innerHeight >= 1024);
+            console.log("isWideScreen: ", window.innerWidth >= 500);
         };
 
         handleResize(); // Set initial state
@@ -297,7 +295,7 @@ const AddCardDetails = ({
             {
                 fromBuildAiScreen ?
                     "" :
-                    <div style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
+                    <div style={{ fontSize: isWideScreen ? 18 : 24, fontWeight: "600", fontFamily: "inter" }}>
                         Add Payment Method
                     </div>
             }

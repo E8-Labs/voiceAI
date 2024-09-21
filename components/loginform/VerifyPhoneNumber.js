@@ -6,7 +6,8 @@ import axios from 'axios'
 import { CircularProgress } from '@mui/material'
 import { auth, RecaptchaVerifier, signInWithPhoneNumber, PhoneAuthProvider, signInWithCredential } from '../firebase.js';
 
-const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handleSignin, verificationId, currentIndex }) => {
+const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handleSignin,
+    resendVerification, verificationId, currentIndex }) => {
 
 
     const inputFocusRef = useRef(null);
@@ -19,6 +20,8 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
     const [verifyLoader, setVerifyLoader] = useState(false);
     const [showError, setShowError] = useState(null)
     const [isWideScreen, setIsWideScreen] = useState(false);
+    const [verificationIdConfirm, setVerificationIdConfirm] = useState(verificationId);
+    const [resendLoader, setResendLoader] = useState(false);
 
     const data = {
         code: P1 + P2 + P3 + P4 + P5 + P6,
@@ -43,12 +46,43 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
     }, []);
 
     useEffect(() => {
+        if (!auth) {
+            return;
+        }
+        console.log("Init recaptcha");
+        // Initialize RecaptchaVerifier when 'auth' changes
+        window.recaptchaVerifier = new RecaptchaVerifier(
+            auth,
+            "recaptcha-container",
+            {
+                size: "invisible",
+                callback: (response) => {
+                    // reCAPTCHA solved, allow signInWithPhoneNumber.
+                    // ...
+                },
+                "expired-callback": () => {
+                    // Response expired. Ask user to solve reCAPTCHA again.
+                    // ...
+                },
+            }
+        );
+        // Cleanup function for RecaptchaVerifier if you want you can add
+        return () => {
+            window.recaptchaVerifier.clear();
+        };
+    }, [auth]);
+
+    useEffect(() => {
         // inputFocusRef.current.focus();
         if (currentIndex === 2 && inputFocusRef.current) {
             // Using a small timeout to ensure rendering of the input after animation
-            setTimeout(() => {
+            const timer = setTimeout(() => {
+                console.log("trying to focus")
+                inputFocusRef.current.click();
                 inputFocusRef.current.focus();
-            }, 300); // Adjust this delay according to the animation timing
+            }, 2000); // Adjust this delay according to the animation timing
+
+            return () => clearTimeout(timer);
         }
     }, []);
 
@@ -77,6 +111,104 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
         }
     };
 
+    //resend code
+    const sendOtp = async (e) => {
+
+
+        try {
+            setResendLoader(true);
+            if (!userLoginDetails.phone) {
+                console.log("Please enter a valid phone number");
+                return;
+            }
+
+            const appVerifier = window.recaptchaVerifier;
+
+            // Send OTP
+            const formattedPhoneNumber = `+${userLoginDetails.phone.replace(
+                /\D/g,
+                ""
+            )}`;
+            const confirmation = await signInWithPhoneNumber(
+                auth,
+                formattedPhoneNumber,
+                window.recaptchaVerifier
+            );
+
+            setVerificationIdConfirm(confirmation.verificationId);
+            console.log("OTP sent successfully");
+        } catch (error) {
+            console.error("Error during OTP sending:", error);
+        } finally {
+            setResendLoader(false);
+        }
+
+
+        // console.log('Event value is:', e);
+        // if (e === "signup") {
+        //     console.log("Log is", e);
+        //     try {
+        //         setVerifiyNumberLoader(true);
+        //         if (!userPhoneNumber) {
+        //             console.log("Please enter a valid phone number");
+        //             return;
+        //         }
+
+        //         // Send OTP
+        //         const formattedPhoneNumber = `+${userPhoneNumber.replace(/\D/g, "")}`;
+        //         const confirmation = await signInWithPhoneNumber(
+        //             auth,
+        //             formattedPhoneNumber,
+        //             window.recaptchaVerifier
+        //         );
+
+        //         setVerificationId(confirmation.verificationId);
+        //         console.log("OTP sent successfully");
+        //         console.log("Event valus is", e);
+
+        //         if (e === "Resend") {
+        //             return
+        //         } else {
+        //             handleContinue();
+        //         }
+        //     } catch (error) {
+        //         console.error("Error during OTP sending:", error);
+        //     } finally {
+        //         setVerifiyNumberLoader(false);
+        //         // setIndex1Loader(false);
+        //         // setResendCodeLoader(false);
+        //     }
+        // } else {
+        //     // return
+        //     try {
+        //         if (!signinVerificationNumber) {
+        //             console.log("Please enter a valid phone number");
+        //             return;
+        //         }
+
+        //         const appVerifier = window.recaptchaVerifier;
+
+        //         // Send OTP
+        //         const formattedPhoneNumber = `+${signinVerificationNumber.replace(
+        //             /\D/g,
+        //             ""
+        //         )}`;
+        //         const confirmation = await signInWithPhoneNumber(
+        //             auth,
+        //             formattedPhoneNumber,
+        //             window.recaptchaVerifier
+        //         );
+
+        //         // setVerificationId(confirmation.verificationId);
+        //         console.log("OTP sent successfully");
+        //     } catch (error) {
+        //         console.error("Error during OTP sending:", error);
+        //     } finally {
+        //         setIndex1Loader(false);
+        //         setResendCodeLoader(false);
+        //     }
+        // }
+    };
 
     const verifyOtp = async () => {
         setVerifyLoader(true);
@@ -94,12 +226,12 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
             console.log("Otp sending in firebase", P1 + P2 + P3 + P4 + P5 + P6);
             let OtpCode = P1 + P2 + P3 + P4 + P5 + P6
             console.log("Otp code sending in firebase", OtpCode);
-            console.log("Verification id :", verificationId)
+            console.log("Verification id :", verificationIdConfirm)
 
             // const credential = auth.PhoneAuthProvider.credential(verificationId, OtpCode);
             // await auth.signInWithCredential(credential);
 
-            const credential = PhoneAuthProvider.credential(verificationId, OtpCode);
+            const credential = PhoneAuthProvider.credential(verificationIdConfirm, OtpCode);
             await signInWithCredential(auth, credential);
             console.log("Phone number verified successfully");
 
@@ -179,6 +311,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
 
     return (
         <div>
+            <div id="recaptcha-container" />
             <div style={{ fontSize: 24, fontWeight: "600" }}>
                 Verify Phone Number
             </div>
@@ -296,14 +429,30 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                     </button>
                 </div>
             </div>
-            <div className='flex flex-row gap-1 mt-6'>
+            <div className='flex flex-row gap-1 mt-6 items-center'>
+                <div style={{ fontSize: 13, fontWeight: "400" }}>
+                    Didn't recieve a code?
+                </div>
+                {
+                    resendLoader ?
+                        <CircularProgress size={20} /> :
+                        <button onClick={() => {
+                            sendOtp();
+                            // resendVerification(true);
+                        }}
+                            className='text-purple' style={{ fontSize: 13, fontWeight: "400" }}>
+                            Resend
+                        </button>
+                }
+            </div>
+            {/* <div className='flex flex-row gap-1 mt-6'>
                 <div style={{ fontSize: 13, fontWeight: "400" }}>
                     Have an account?
                 </div>
                 <button onClick={() => handleSignin()} className='text-purple' style={{ fontSize: 13, fontWeight: "400" }}>
                     Sign in
                 </button>
-            </div>
+            </div> */}
         </div>
     )
 }

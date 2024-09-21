@@ -142,7 +142,7 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
         } else {
             setCountryCode("us");
             setSelectedCountry("us");
-            getGeoLocation();
+            // getGeoLocation();
         }
     }, []);
 
@@ -212,7 +212,10 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
                     height: 50,
                     backgroundColor: myCallerAccount ? '#EDEDED78' : '#EDEDED',
                 }}
-                onFocus={() => setFocus(true)}
+                onFocus={() => {
+                    setFocus(true);
+                    getGeoLocation();
+                }}
                 onBlur={() => setFocus(false)}
                 containerStyle={{
                     // marginBottom: '15px',

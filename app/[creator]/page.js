@@ -110,6 +110,15 @@ const Page = () => {
         }
     }, []);
 
+    const handleInstaClick = () => {
+        console.log("insta link recieved is", getAssistantData.ai.instaUrl);
+        window.open(getAssistantData.ai.instaUrl, '_blank')
+    }
+
+    const handleTwitterClick = () => {
+        console.log("insta link recieved is", getAssistantData.ai.twitterUrl);
+        window.open(getAssistantData.ai.twitterUrl, '_blank');
+    }
 
 
     useEffect(() => {
@@ -825,12 +834,12 @@ const Page = () => {
                                             zIndex: 2, backgroundColor: "#ffffff20",
                                         }}>
                                         <div className='flex flex-col gap-4' style={{ marginTop: 10 }}>
-                                            <button>
+                                            <button onClick={handleInstaClick}>
                                                 <Image
                                                     // layout='responsive'
                                                     objectFit='contain' src={"/assets/instagram.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
                                             </button>
-                                            <button>
+                                            <button onClick={handleTwitterClick}>
                                                 <Image
                                                     // layout='responsive'
                                                     objectFit='contain' src={"/assets/twitter.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
@@ -986,12 +995,12 @@ const Page = () => {
                                                         zIndex: 2, backgroundColor: "#ffffff20",
                                                     }}>
                                                     <div className='flex flex-col gap-4' style={{ marginTop: 10 }}>
-                                                        <button>
+                                                        <button onClick={handleInstaClick}>
                                                             <Image
                                                                 // layout='responsive'
                                                                 objectFit='contain' src={"/assets/instagram.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
                                                         </button>
-                                                        <button>
+                                                        <button onClick={handleTwitterClick}>
                                                             <Image
                                                                 // layout='responsive'
                                                                 objectFit='contain' src={"/assets/twitter.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
