@@ -1241,7 +1241,7 @@ export default function Animation({ onChangeIndex }) {
                   Enter verification code sent to ****
                   {Number(signinVerificationNumber.slice(-4))}
                 </div>
-                <div className="flex flex-row gap-4 mt-4">
+                <div className="flex flex-row gap-4 mt-4" onPaste={handlePaste}>
                   <input
                     id="P1"
                     ref={inputFocusRef}
@@ -1264,7 +1264,6 @@ export default function Animation({ onChangeIndex }) {
                       border: "none",
                     }}
                     onKeyDown={(e) => handleBackspace2(e, setVP1, null)}
-                    onPaste={handlePaste}
                   />
                   <input
                     id="P2"
@@ -1287,7 +1286,6 @@ export default function Animation({ onChangeIndex }) {
                       border: "none",
                     }}
                     onKeyDown={(e) => handleBackspace2(e, setVP2, "P1")}
-                    onPaste={handlePaste}
                   />
                   <input
                     id="P3"
@@ -1310,7 +1308,6 @@ export default function Animation({ onChangeIndex }) {
                       border: "none",
                     }}
                     onKeyDown={(e) => handleBackspace2(e, setVP3, "P2")}
-                    onPaste={handlePaste}
                   />
                   <input
                     id="P4"
@@ -1333,7 +1330,6 @@ export default function Animation({ onChangeIndex }) {
                       border: "none",
                     }}
                     onKeyDown={(e) => handleBackspace2(e, setVP4, "P3")}
-                    onPaste={handlePaste}
                   />
                   <input
                     id="P5"
@@ -1361,7 +1357,6 @@ export default function Animation({ onChangeIndex }) {
                       //     handleVerifyLoginCode();
                       // }
                     }}
-                    onPaste={handlePaste}
                   />
                   <input
                     id="P6"
@@ -1389,7 +1384,6 @@ export default function Animation({ onChangeIndex }) {
                         handleVerifyLoginCode();
                       }
                     }}
-                    onPaste={handlePaste}
                   />
                 </div>
 
