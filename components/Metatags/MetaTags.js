@@ -3,14 +3,19 @@
 import Head from 'next/head';
 
 const MetaTags = ({ title, description, image }) => {
+    console.log("Meta tags are ", {title, description, image})
     return (
         <Head>
             <meta property="og:type" content="website" />
-            <meta property="og:title" content={"Andrew Tate"} />
-            <meta property="og:description" content={"Andrew tate's CreatorX"} />
-            <meta property="og:image" content={"https://static.independent.co.uk/2022/08/11/16/Andrew%20Tate.jpg?quality=75&width=1200&auto=webp"} />
+            <meta property="og:title" content={title} />
+            <meta property="og:description" content={description} />
+            {/* <meta property="og:image" content={image} /> */}
+            <meta property="og:image:secure_url" content={image} />
             <meta property="og:url" content={typeof window !== 'undefined' ? window.location.href : ''} />
-            
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:title" content={title} />
+            <meta name="twitter:description" content={description} />
+            <meta name="twitter:image" content={image} />
             <title>{title}</title>
         </Head>
     );

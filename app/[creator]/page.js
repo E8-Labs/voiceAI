@@ -570,7 +570,7 @@ const Page = () => {
                 <MetaTags
                                 title={`Creator: ${getAssistantData ? getAssistantData.assitant.name : ""}`}
                                 description={`Explore amazing content from ${getAssistantData ? getAssistantData.assitant.name : ""} on CreatorX!`}
-                                image={getAssistantData ? getAssistantData.profile_image : "" } // URL fetched from your API
+                                image={getAssistantData ? getAssistantData.full_profile_image : "" } // URL fetched from your API
                             />
             )
         }
