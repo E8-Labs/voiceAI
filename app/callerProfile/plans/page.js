@@ -224,6 +224,7 @@ const Page = () => {
                     }
                 });
                 if (response.data) {
+                    console.log("Response of delete card api is", response.data);
                     if (response.data.status === true) {
                         getCards();
                         handleClose();

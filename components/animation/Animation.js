@@ -2447,9 +2447,14 @@ export default function Animation({ onChangeIndex }) {
                     >
                       Didn't receive code?
                     </div>
-                    <button style={{ fontSize: 13, fontWeight: "400" }}>
-                      Resend
-                    </button>
+                    {resendCodeLoader ? (
+                      <CircularProgress className="mt-4 ms-6" size={20} />
+                    ) : (
+                      <button style={{ fontSize: 13, fontWeight: "400" }}
+                        onClick={(e) => sendOtp("Resend")}>
+                        Resend
+                      </button>
+                    )}
                   </div>
                   <div //style={{ height: 50 }}
                   >

@@ -80,6 +80,7 @@ const Creator = () => {
     const [callErr, setCallErr] = useState(false);
     const [callErrMsg, setCallErrMsg] = useState(null);
     const [profileData, setProfileData] = useState(null);
+    const [myProfileData, setMyProfileData] = useState(null);
     const [assistantDataErr, setAssistantDataErr] = useState(null);
     const [creatorErr, setCreatorErr] = useState(true);
     // useEffect(() => {
@@ -89,6 +90,42 @@ const Creator = () => {
     //         setProfileData(Data.data.user);
     //     }
     // }, []);
+
+    //code for my profile dATA API
+
+    const getMyProfile = async () => {
+        const localData = localStorage.getItem('User');
+        if (localData) {
+            const Data = JSON.parse(localData);
+            console.log("localdata  of user is", Data.data.user);
+            // return
+            const AuthToken = Data.data.token;
+            const response = await axios.get(Apis.MyProfile, {
+                headers: {
+                    'Authorization': 'Bearer ' + AuthToken,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (response) {
+                console.log("Response of get profile api", response.data);
+                localStorage.setItem('MyProfileData', JSON.stringify(response.data.data));
+                setMyProfileData(response.data.data);
+
+                console.log("State updated, myProfileData:", response.data.data);
+                // localStorage.getItem('User', JSON.stringify(response.data));
+            }
+        }
+    }
+
+    useEffect(() => {
+        getMyProfile();
+    }, []);
+
+    useEffect(() => {
+        console.log("Api dtaaksdfsdfo", myProfileData);
+    }, [myProfileData])
+
+
     useEffect(() => {
         if (from) {
             console.log("From akdsjfhiuwqfh", from);
@@ -420,7 +457,6 @@ const Creator = () => {
     //code for apicall
     const handleTalktoBlandy = async () => {
         setLoading(true);
-        setSnackMessage(true);
         // return
         const LocalData = localStorage.getItem('User');
         let D = null;
@@ -430,6 +466,18 @@ const Creator = () => {
             return;
         }
         console.log("Trying to call", D.data.user.phone);
+        const localProfile = localStorage.getItem('MyProfileData');
+        // if(localProfile){
+        const localProfileData = JSON.parse(localProfile);
+        // }
+        console.log("data of payment status", localProfileData)
+        if (localProfileData && localProfileData.payment_added === true) {
+            console.log("User has added the payment source");
+            setSnackMessage(true);
+        } else {
+            setCallErr(true);
+            return
+        }
         // console.log("Id to send is", getAssistantData);
         const localAssistanData = localStorage.getItem('assistantData');
         let modelId = null;
@@ -570,7 +618,7 @@ const Creator = () => {
 
     return (
         <>
-            {
+            {/* {
                 getAssistantData && (
                     <MetaTags
                         title={`Creator: ${getAssistantData ? getAssistantData.assitant.name : ""}`}
@@ -578,7 +626,7 @@ const Creator = () => {
                         image={getAssistantData ? getAssistantData.full_profile_image : ""} // URL fetched from your API
                     />
                 )
-            }
+            } */}
             <div className='h-screen overflow-none'>
                 {
                     assistantDataErr ?
@@ -711,7 +759,7 @@ const Creator = () => {
                                             Error
                                         </div>
                                         <div>
-                                            The creator is no longer active
+                                            This creator is no longer active
                                         </div>
                                     </div>
                                 </Alert>

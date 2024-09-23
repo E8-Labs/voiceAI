@@ -474,45 +474,47 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         How would you like to greet your callers?
                                     </div>
 
-                                    <TextField
-                                        className='w-full sm:w-10/12 bg-grayBg mt-5'
-                                        // label="Greeting"
-                                        style={{ borderRadius: 5 }}
-                                        multiline
-                                        rows={6} // Controls the number of visible rows
-                                        variant="filled" // You can choose between outlined, filled, or standard
-                                        // fullWidth
-                                        value={greetText}
-                                        onChange={e => setGreetText(e.target.value)}
-                                        placeholder="Hey this is James. Feel free to ask me anything about...."
-                                        sx={{
-                                            '& label.Mui-focused': {
-                                                color: '#050A0890',
-                                            },
-                                            '& .MuiFilledInput-root': {
-                                                backgroundColor: '#EDEDED', // Background color of the input
-                                                fontSize: 13,
-                                                fontWeight: '400',
-                                                fontFamily: "inter"
-                                            },
-                                            '& .MuiFilledInput-root:before': {
-                                                borderBottom: 'none', // Remove the default inactive state bottom border
-                                            },
-                                            '& .MuiFilledInput-root:after': {
-                                                borderBottom: 'none', // Remove the focused state bottom border
-                                            },
-                                            '& .MuiFilledInput-root:hover:not(.Mui-disabled):before': {
-                                                borderBottom: 'none', // Remove the hover state bottom border
-                                            },
-                                            '& .MuiFilledInput-root.Mui-focused:before': {
-                                                borderBottom: 'none', // Ensure no border is shown when the field is focused
-                                            },
-                                            '& .MuiFilledInput-root.Mui-focused': {
-                                                borderBottom: 'none', // Ensure no border is shown when the field is focused
-                                                boxShadow: 'none', // Remove any box-shadow
-                                            }
-                                        }}
-                                    />
+                                    <div className='mt-5'>
+                                        <TextField
+                                            className='w-full sm:w-10/12 bg-grayBg'
+                                            // label="Greeting"
+                                            style={{ borderRadius: 5 }}
+                                            multiline
+                                            rows={6} // Controls the number of visible rows
+                                            variant="filled" // You can choose between outlined, filled, or standard
+                                            // fullWidth
+                                            value={greetText}
+                                            onChange={e => setGreetText(e.target.value)}
+                                            placeholder="Hey this is James. Feel free to ask me anything about...."
+                                            sx={{
+                                                '& label.Mui-focused': {
+                                                    color: '#050A0890',
+                                                },
+                                                '& .MuiFilledInput-root': {
+                                                    backgroundColor: '#EDEDED', // Background color of the input
+                                                    fontSize: 13,
+                                                    fontWeight: '400',
+                                                    fontFamily: "inter"
+                                                },
+                                                '& .MuiFilledInput-root:before': {
+                                                    borderBottom: 'none', // Remove the default inactive state bottom border
+                                                },
+                                                '& .MuiFilledInput-root:after': {
+                                                    borderBottom: 'none', // Remove the focused state bottom border
+                                                },
+                                                '& .MuiFilledInput-root:hover:not(.Mui-disabled):before': {
+                                                    borderBottom: 'none', // Remove the hover state bottom border
+                                                },
+                                                '& .MuiFilledInput-root.Mui-focused:before': {
+                                                    borderBottom: 'none', // Ensure no border is shown when the field is focused
+                                                },
+                                                '& .MuiFilledInput-root.Mui-focused': {
+                                                    borderBottom: 'none', // Ensure no border is shown when the field is focused
+                                                    boxShadow: 'none', // Remove any box-shadow
+                                                }
+                                            }}
+                                        />
+                                    </div>
 
                                     <div className='w-full sm:w-10/12'>
                                         {
@@ -562,40 +564,42 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         What might users ask you about <br /> during the calls?
                                     </div>
 
-                                    <TextField className='w-full sm:w-9/12 mt-8'
-                                        autofill='off'
-                                        id="filled-basic"
-                                        // label="Description" 
-                                        variant="filled"
-                                        multiline
-                                        rows={6}
-                                        value={serviceDetails}
-                                        onChange={(e) => setServiceDetails(e.target.value)}
-                                        placeholder='How to scale my business, how to overcome a breakup, etc '
-                                        sx={{
-                                            '& label.Mui-focused': {
-                                                color: '#050A0890',
-                                            },
-                                            '& .MuiFilledInput-root': {
-                                                backgroundColor: '#EDEDED', // Optional: Removes the background color
-                                                // padding: '6px 8px', // Decrease the padding inside the input container
-                                                fontSize: 13,
-                                                fontWeight: '400'
-                                            },
-                                            '& .MuiFilledInput-root:before': {
-                                                borderBottom: 'none', // Remove the default inactive state bottom border
-                                            },
-                                            '& .MuiFilledInput-root:after': {
-                                                borderBottom: 'none', // Remove the focused state bottom border
-                                            },
-                                            '& .MuiFilledInput-root:hover:before': {
-                                                borderBottom: 'none', // Remove the hover state bottom border
-                                            },
-                                            '& .MuiFilledInput-root.Mui-focused:before': {
-                                                borderBottom: 'none', // Ensure no border is shown when the field is focused
-                                            }
-                                        }}
-                                    />
+                                    <div className='mt-8'>
+                                        <TextField className='w-full sm:w-9/12'
+                                            autofill='off'
+                                            id="filled-basic"
+                                            // label="Description" 
+                                            variant="filled"
+                                            multiline
+                                            rows={6}
+                                            value={serviceDetails}
+                                            onChange={(e) => setServiceDetails(e.target.value)}
+                                            placeholder='How to scale my business, how to overcome a breakup, etc '
+                                            sx={{
+                                                '& label.Mui-focused': {
+                                                    color: '#050A0890',
+                                                },
+                                                '& .MuiFilledInput-root': {
+                                                    backgroundColor: '#EDEDED', // Optional: Removes the background color
+                                                    // padding: '6px 8px', // Decrease the padding inside the input container
+                                                    fontSize: 13,
+                                                    fontWeight: '400'
+                                                },
+                                                '& .MuiFilledInput-root:before': {
+                                                    borderBottom: 'none', // Remove the default inactive state bottom border
+                                                },
+                                                '& .MuiFilledInput-root:after': {
+                                                    borderBottom: 'none', // Remove the focused state bottom border
+                                                },
+                                                '& .MuiFilledInput-root:hover:before': {
+                                                    borderBottom: 'none', // Remove the hover state bottom border
+                                                },
+                                                '& .MuiFilledInput-root.Mui-focused:before': {
+                                                    borderBottom: 'none', // Ensure no border is shown when the field is focused
+                                                }
+                                            }}
+                                        />
+                                    </div>
 
                                     <div className='w-full sm:w-9/12'>
                                         {
