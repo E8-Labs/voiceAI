@@ -27,7 +27,7 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
     return (
         <div>
             {
-                data &&
+                data[currentIndex] &&
                 <motion.div
                     key={currentIndex}
                     initial="hidden"
@@ -91,13 +91,19 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
                                         </div>
                                     </div>
                                     <div className='flex flex-row items-center gap-1' style={{ fontWeight: "400", fontSize: 15, color: "" }}>
-                                        <div style={{ fontSize: 13, fontWeight: "400", color: "grey" }}>
+                                        <div>
                                             {
-                                                data[currentIndex] &&
-                                                data[currentIndex].caller.city
-                                            }, {
-                                                data[currentIndex] &&
-                                                data[currentIndex].caller.state
+                                                data[currentIndex] && (
+                                                    <div style={{ fontSize: 13, fontWeight: "400", color: "grey" }}>
+                                                        {
+                                                            data[currentIndex] &&
+                                                            data[currentIndex].caller.city
+                                                        }, {
+                                                            data[currentIndex] &&
+                                                            data[currentIndex].caller.state
+                                                        }
+                                                    </div>
+                                                )
                                             }
 
                                         </div>
@@ -135,13 +141,19 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
                                         </div>
                                     </div>
                                     <div className='flex flex-row items-center gap-1' style={{ fontWeight: "400", fontSize: 15, color: "" }}>
-                                        <div style={{ fontSize: 13, fontWeight: "400", color: "grey" }}>
+                                        <div>
                                             {
-                                                data[currentIndex] &&
-                                                data[currentIndex].caller.city
-                                            }, {
-                                                data[currentIndex] &&
-                                                data[currentIndex].caller.state
+                                                data[currentIndex] && (
+                                                    <div style={{ fontSize: 13, fontWeight: "400", color: "grey" }}>
+                                                        {
+                                                            data[currentIndex] &&
+                                                            data[currentIndex].caller.city
+                                                        }, {
+                                                            data[currentIndex] &&
+                                                            data[currentIndex].caller.state
+                                                        }
+                                                    </div>
+                                                )
                                             }
 
                                         </div>

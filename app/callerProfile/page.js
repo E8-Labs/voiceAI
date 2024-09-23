@@ -285,7 +285,7 @@ const Page = () => {
         <div className='h-screen w-full' style={{ backgroundColor: "#ffffff30", }}>
             <div className='w-full py-10 px-2 lg:px-5' style={{}}>
                 <div className='flex flex-col items-start w-8/12 ms-8'>
-                    <button onClick={() => { router.push(`/${assistantData && assistantData.assitant.name}`) }} className='text-purple' style={{ cursor: 'pointer' }}>
+                    <button onClick={() => { router.push(`/${assistantData && assistantData.assitant.name}.ai`) }} className='text-purple' style={{ cursor: 'pointer' }}>
                         Go Back
                     </button>
                     <div style={{ fontSize: 20, fontWeight: "bold", fontFamily: 'inter' }}>

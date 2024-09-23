@@ -1433,7 +1433,7 @@ const Creator = () => {
                                                 {/* <AddCard handleBack={handleBack} closeForm={closeForm} /> */}
                                                 <div style={{ backgroundColor: 'white', padding: 18, borderRadius: 10 }}>
                                                     <div className='mt-2 flex flex-row justify-between items-center'>
-                                                        <Image src="/assets/claimIcon.png" alt='claimimg' height={32} width={32} />
+                                                        <Image src="/assets/claimIcon.png" alt='claimimg' height={38} width={38} />
                                                         <button onClick={(() => setOpenClaimPopup(false))}>
                                                             <Image src="/assets/crossBtn.png" alt='cross' height={14} width={14} />
                                                         </button>
