@@ -627,10 +627,10 @@ const Creator = () => {
                     />
                 )
             } */}
-            <div className='h-screen overflow-none'>
+            <div className='h-screen overflow-hidden'>
                 {
                     assistantDataErr ?
-                        <div style={backgroundImage} className='h-screen overflow-none'>
+                        <div style={backgroundImage} className='h-screen overflow-hidden'>
                             <div style={{
                                 position: 'absolute',
                                 top: '50%',
@@ -767,7 +767,9 @@ const Creator = () => {
 
                         </div> :
                         <>
-                            <div style={backgroundImage} className='h-screen' onMouseMove={handleMouseMove}>
+                            <div
+                                style={backgroundImage}
+                                className='h-screen overflow-y-hidden' onMouseMove={handleMouseMove}>
 
                                 <div className='pt-8 ms-8'>
                                     <div className='sm:flex hidden w-full flex flex-row justify-between items-start' style={{}}>
