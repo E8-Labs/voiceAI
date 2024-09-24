@@ -112,6 +112,8 @@ const Creator = () => {
                 setMyProfileData(response.data.data);
 
                 console.log("State updated, myProfileData:", response.data.data);
+                Data.data.user.payment_added = response.data.data.payment_added;
+                localStorage.setItem('User', JSON.stringify(Data));
                 // localStorage.getItem('User', JSON.stringify(response.data));
             }
         }
@@ -123,6 +125,11 @@ const Creator = () => {
 
     useEffect(() => {
         console.log("Api dtaaksdfsdfo", myProfileData);
+        const localData = localStorage.getItem('User');
+        if (localData) {
+            const Data = JSON.parse(localData);
+            console.log("localdata  of user after payment source update is is", Data.data.user);
+        }
     }, [myProfileData])
 
 
@@ -470,8 +477,8 @@ const Creator = () => {
         // if(localProfile){
         const localProfileData = JSON.parse(localProfile);
         // }
-        console.log("data of payment status", localProfileData)
-        if (localProfileData && localProfileData.payment_added === true) {
+        console.log("data of payment status", D);
+        if (D && D.data.user.payment_added === true) {
             console.log("User has added the payment source");
             setSnackMessage(true);
         } else {
