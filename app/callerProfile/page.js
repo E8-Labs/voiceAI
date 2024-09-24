@@ -159,7 +159,7 @@ const Page = () => {
 
         // return
         localStorage.removeItem('User');
-        router.push(`/${LocalData}`);
+        router.push(`/${LocalData}.ai`);
         // window.open(`/${LocalData}`, '_blank')
     }
 
