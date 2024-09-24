@@ -182,12 +182,14 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                         }
                     }
                 } catch (error) {
+                    setVerifyLoader(false);
                     console.log("Error occurred in verification API:", error);
                 } finally {
                     setVerifyLoader(false);
                 }
 
             } catch (error) {
+                setVerifyLoader(false);
                 console.error("Error during OTP verification:", error);
             } finally {
                 setVerifyLoader(false);
@@ -266,12 +268,14 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                         console.log("error");
                     }
                 } catch (error) {
+                    setVerifyLoader(false);
                     console.error("Error occured in loginverification code", error);
                 } finally {
                     setVerifyLoader(false);
                     // setVerifyErr(false);
                 }
             } catch (error) {
+                setVerifyLoader(false);
                 console.error("Error during OTP verification:", error);
             } finally {
                 setVerifyLoader(false);

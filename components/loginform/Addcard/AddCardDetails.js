@@ -187,11 +187,21 @@ const AddCardDetails = ({
                 // return
                 console.log("Token generating for card number :", tok.token.id)
                 const tokenId = tok.token.id;
-                console.log("card number :")
+                console.log("card number :");
+                const localAssistanData = localStorage.getItem('assistantData');
+                let modelId = null;
+                if (localAssistanData) {
+                    const asistantLocalData = JSON.parse(localAssistanData);
+                    console.log("Assistant data retrived", asistantLocalData);
+                    modelId = (asistantLocalData.id);
+                } else {
+                    modelId = null;
+                }
 
                 const ApiPath = Apis.addCard;
                 const AddCardData = {
-                    source: tokenId
+                    source: tokenId,
+                    modelId: modelId
                 }
                 console.log("Data for card number :", AddCardData);
                 try {
@@ -201,8 +211,9 @@ const AddCardDetails = ({
                     const AuthToken = D.data.token;
                     // const AuthToken = "bgabgakjhaslidfhgkerhiuhkmxvnidfuhgiehlmklhn";
                     console.log("Token for add card ", D.data.token);
+                    
+                    console.log('Data sending in api is :', AddCardData);
                     // return
-                    //console.log('Data sending in api is :', AddCardData);
                     const response = await axios.post(ApiPath, AddCardData, {
                         headers: {
                             'Content-Type': 'application/json',
@@ -217,7 +228,8 @@ const AddCardDetails = ({
                         if (response.data.status === false) {
                             setAddCardFailure(true);
                             setAddCardErrtxt(response.data.message);
-                        } else {
+                            return
+                        } else if (response.data.status === true) {
                             //console.log("Here in subscribe plan else", fromBuildAiScreen)
                             setAddCardSuccess(true);
                             const callStatus = {
@@ -235,8 +247,8 @@ const AddCardDetails = ({
                             if (closeForm) { //
                                 console.log("Response of add card api is ::::", response.data.data);
                                 localStorage.setItem('callStatus', JSON.stringify(callStatus));
-                                D.data.user.payment_added = true;
-                                localStorage.setItem('User', JSON.stringify(D));
+                                // D.data.user.payment_added = true;
+                                // localStorage.setItem('User', JSON.stringify(D));
                                 // return
                                 closeForm();
                                 window.location.reload();
@@ -245,6 +257,9 @@ const AddCardDetails = ({
                                     closeAddCardPopup(false);
                                 }
                         }
+                    } else {
+                        setAddCardFailure(true);
+                        setAddCardErrtxt("Some error occured !!!");
                     }
                 } catch (error) {
                     console.error("Error occured in adding user card api is :", error);

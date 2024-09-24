@@ -287,6 +287,21 @@ const Creator = () => {
     }, [])
 
 
+    //code for autto show call success banner when we add card
+
+    useEffect(() => {
+        const callStatusData = localStorage.getItem('callStatus');
+        if (callStatusData) {
+            const callStatus = JSON.parse(callStatusData);
+            console.log("Status of call banner is", callStatus);
+
+            // return
+            if (callStatus.callStatus === true) {
+                setSnackMessage(true);
+                localStorage.removeItem('callStatus');
+            }
+        }
+    }, [])
 
 
     const hideBottom = () => {
@@ -522,8 +537,6 @@ const Creator = () => {
                 .then((response) => {
                     console.log("Response of caller api");
                     console.log(JSON.stringify(response.data));
-                    localStorage.removeItem('callStatus');
-                    console.log("Data of call removed");
                     if (response.data.status === false) {
                         setCallErr(true);
                         setCallErrMsg(response.data.message);
@@ -582,22 +595,6 @@ const Creator = () => {
         borderBottom: "4px solid transparent",
         borderLeft: "6px solid #000000"
     }
-
-
-    //code for autto call when we add card
-
-    useEffect(() => {
-        const callStatusData = localStorage.getItem('callStatus');
-        if (callStatusData) {
-            const callStatus = JSON.parse(callStatusData);
-            console.log("Status of call is", callStatus);
-
-            // return
-            if (callStatus.callStatus === true) {
-                handleTalktoBlandy();
-            }
-        }
-    }, [])
 
     const gifBackgroundImageSmallScreen = {
         backgroundImage: 'url("/assets/applogo2.png")', // Ensure the correct path

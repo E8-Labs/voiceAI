@@ -362,7 +362,6 @@ const LoginModal = ({ closeForm, creator, assistantData }) => {
                             style={styles}
                         >
                             <div className='w-full'>
-                                {/* <AddCard handleBack={handleBack} closeForm={closeForm} /> */}
                                 <div style={{ backgroundColor: 'white', padding: 18, borderRadius: 15 }}>
                                     <div
                                         style={{ fontWeight: '600', fontSize: isWideScreen500 < 500 ? 20 : 24, fontFamily: 'inter' }}>
