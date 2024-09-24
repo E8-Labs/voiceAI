@@ -1,6 +1,6 @@
 'use client'
 import { CircularProgress, Link, TextField } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import PhoneNumberInput from '../PhoneNumberInput'
 import axios from 'axios'
 import Apis from '../apis/Apis'
@@ -13,6 +13,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
 
     const router = useRouter();
 
+    const nameRef = useRef(null);
     const [userPhoneNumber, setUserPhoneNumber] = useState(null);
     const [userName, setUserName] = useState("");
     const [userLastName, setUserLastName] = useState("");
@@ -41,6 +42,10 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
     const handleNumberFormatErr = (status) => {
         setNumberFormatError(status);
     }
+
+    useEffect(() => {
+        nameRef.current.focus()
+    }, []);
 
     //code for phone verification throught firebase
     useEffect(() => {
@@ -478,7 +483,9 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
             <TextField className=' w-full'
                 autofill='off'
                 id="filled-basic"
+                autoFocus={true}
                 value={userName}
+                inputRef={nameRef}
                 onChange={(e) => setUserName(e.target.value)}
                 // label="First Name" 
                 variant="outlined"

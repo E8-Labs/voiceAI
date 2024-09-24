@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js'
 import { CardCvcElement, CardExpiryElement, CardNumberElement, useElements, useStripe } from '@stripe/react-stripe-js';
 // import { CardPostalCodeElement } from '@stripe/react-stripe-js';
@@ -44,6 +44,25 @@ const AddCardDetails = ({
     const [addCardDetails, setAddCardDetails] = useState(null);
     const [addCardErrtxt, setAddCardErrtxt] = useState(null);
     const [isWideScreen, setIsWideScreen] = useState(false);
+    const cardNumberRef = useRef(null);
+    const cardExpiryRef = useRef(null);
+    const cardCvcRef = useRef(null);
+
+    // Autofocus the first field when the component mounts
+    useEffect(() => {
+        console.log("Trying to focus check 2")
+        if (cardNumberRef.current) {
+            console.log("Trying to focus check 1")
+            cardNumberRef.current.focus();
+        }
+    }, []);
+
+    // Handle field change to focus on the next input
+    const handleFieldChange = (event, ref) => {
+        if (event.complete && ref.current) {
+            ref.current.focus();
+        }
+    };
     // const [selectedUserPlan, setSelectedUserPlan] = useState(null);
 
     //code for wide screen
@@ -119,6 +138,10 @@ const AddCardDetails = ({
 
     const handleAddCard = async (e) => {
 
+        if (!fromBuildAiScreen) {
+            setAddCardLoader(true);
+        }
+
         if (stop) {
             stop(false);
         }
@@ -157,9 +180,7 @@ const AddCardDetails = ({
                     theme: "dark"
                 });
             } else if (tok.token.id) {
-                if (!fromBuildAiScreen) {
-                    setAddCardLoader(true);
-                }
+
                 // if (handleSubLoader) {
                 //     handleSubLoader(true);
                 // }
@@ -212,7 +233,11 @@ const AddCardDetails = ({
                                 //console.log("No build screen data", fromBuildAiScreen)
                             }
                             if (closeForm) { //
+                                console.log("Response of add card api is ::::", response.data.data);
                                 localStorage.setItem('callStatus', JSON.stringify(callStatus));
+                                let PaymentAdded = D.data.user.payment_added === true;
+                                localStorage.setItem('User', JSON.stringify(PaymentAdded));
+                                // return
                                 closeForm();
                                 window.location.reload();
                             } else
@@ -311,7 +336,15 @@ const AddCardDetails = ({
                 </div>
                 <div className='mt-2 px-3 py-1' style={{ backgroundColor: "#EDEDEDC7", borderRadius: "8px" }}>
                     <CardNumberElement
-                        options={elementOptions} />
+                        options={elementOptions}
+                        autoFocus={true}
+                        onChange={(event) => handleFieldChange(event, cardExpiryRef)}
+                        ref={cardNumberRef}
+                        onReady={(element) => {
+                            cardNumberRef.current = element
+                            cardNumberRef.current.focus()
+                        }}
+                    />
                 </div>
             </div>
             <div className='flex flex-row gap-2 w-full mt-8'>
@@ -325,7 +358,13 @@ const AddCardDetails = ({
                             style={{
                                 width: '100%', padding: '8px',
                                 color: 'white', fontSize: '22px', border: '1px solid blue', borderRadius: '4px'
-                            }} />
+                            }}
+                            onChange={(event) => handleFieldChange(event, cardCvcRef)}
+                            ref={cardExpiryRef}
+                            onReady={(element) => {
+                                cardExpiryRef.current = element
+                            }}
+                        />
                     </div>
                 </div>
                 <div className='w-6/12'>
@@ -338,7 +377,12 @@ const AddCardDetails = ({
                             style={{
                                 width: '100%', padding: '8px',
                                 color: 'white', fontSize: '22px', border: '1px solid blue', borderRadius: '4px'
-                            }} />
+                            }}
+                            ref={cardCvcRef}
+                            onReady={(element) => {
+                                cardCvcRef.current = element
+                            }}
+                        />
                     </div>
                 </div>
             </div>

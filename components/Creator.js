@@ -24,7 +24,7 @@ const backgroundImage = {
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     width: '100%',
-    height: '100vh',
+    height: '100svh',
     overflow: 'hidden'
 }
 
@@ -597,8 +597,8 @@ const Creator = () => {
         backgroundSize: "cover",
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
-        width: isWideScreen2 ? '550px' : '330px',
-        height: isWideScreen2 ? '550px' : '330px',
+        width: isWideScreen2 ? '550px' : '380px',
+        height: isWideScreen2 ? '550px' : '380px',
         borderRadius: "50%",
         resize: "cover",
     }
@@ -627,10 +627,10 @@ const Creator = () => {
                     />
                 )
             } */}
-            <div className='h-screen overflow-hidden'>
+            <div className='  overflow-hidden'>
                 {
                     assistantDataErr ?
-                        <div style={backgroundImage} className='h-screen overflow-hidden'>
+                        <div style={backgroundImage} className='  overflow-hidden'>
                             <div style={{
                                 position: 'absolute',
                                 top: '50%',
@@ -769,7 +769,7 @@ const Creator = () => {
                         <>
                             <div
                                 style={backgroundImage}
-                                className='h-screen overflow-y-hidden' onMouseMove={handleMouseMove}>
+                                className='  overflow-y-hidden' onMouseMove={handleMouseMove}>
 
                                 <div className='pt-8 ms-8'>
                                     <div className='sm:flex hidden w-full flex flex-row justify-between items-start' style={{}}>
@@ -1236,8 +1236,8 @@ const Creator = () => {
                                                 style={{
                                                     backgroundColor: "",
                                                     borderRadius: "50%",
-                                                    height: isWideScreen2 ? '350px' : '180px',
-                                                    width: isWideScreen2 ? '350px' : '180px'
+                                                    height: isWideScreen2 ? '350px' : '270px',
+                                                    width: isWideScreen2 ? '350px' : '270px'
                                                 }}
                                                 height={300} width={300} />
                                         </div>
@@ -1354,7 +1354,7 @@ const Creator = () => {
 
                                 {/* for small screen creatorX button */}
                                 <div style={{ position: "absolute", bottom: 0 }} className='w-full flex items-end justify-center mb-8 rounded md:hidden'>
-                                    <div className='flex flex-col gap-8 justify-between w-full px-10 items-start'>
+                                    <div className='flex flex-col gap-8 justify-between w-full items-start'>
 
                                         <div className='w-full flex flex-row justify-center'>
                                             <CycleArray data={getRecentCallData} assistantData={getAssistantData} />
@@ -1362,7 +1362,7 @@ const Creator = () => {
 
 
                                         <div className='flex items-center justify-between w-full'>
-                                            <div style={{ backgroundColor: "transparent", width: "fit-content", borderRadius: "70px" }}>
+                                            <div className='ps-10' style={{ backgroundColor: "transparent", width: "fit-content", borderRadius: "70px" }}>
                                                 <button
                                                     onClick={
                                                         // handleCreatorXClick
@@ -1378,7 +1378,7 @@ const Creator = () => {
                                             </div>
                                             {
                                                 showProfileIcon &&
-                                                <div>
+                                                <div className='pe-2'>
                                                     <AnimatedButton snackMessage={snackMessage} wideScreen={isWideScreen} profileData={profileData} />
                                                 </div>
                                             }
@@ -1389,7 +1389,7 @@ const Creator = () => {
                                 </div>
 
                                 {/* Code to hide box on sides */}
-                                {/* <div className='h-screen' ref={buttonRef5} style={{ border: "2px solid red", width: "2px", position: "absolute", right: 0, top: 0 }} />
+                                {/* <div className=' ' ref={buttonRef5} style={{ border: "2px solid red", width: "2px", position: "absolute", right: 0, top: 0 }} />
                         <div className='w-screen' ref={buttonRef6} style={{ border: "2px solid red", height: "2px", position: "absolute", right: 0, bottom: 0 }} /> */}
 
                                 {/* Snack messages */}
@@ -1475,7 +1475,7 @@ const Creator = () => {
                                             height: "100%"
                                         },
                                     }}
-                                    className='h-screen'
+                                    className=' '
                                 >
                                     <Box className="lg:w-5/12 sm:w-7/12 w-11/12"
                                         sx={styleLoginModal}

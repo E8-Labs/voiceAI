@@ -28,6 +28,7 @@ import {
   signInWithCredential,
 } from "../firebase.js";
 import zIndex from "@mui/material/styles/zIndex";
+import VerifyPhoneNumber from "../loginform/VerifyPhoneNumber";
 
 const boxVariants = {
   enter: (direction) => ({
@@ -52,6 +53,7 @@ export default function Animation({ onChangeIndex }) {
   const aiEmailRef = useRef(null);
   const emailVerifyInput = useRef(null);
   const signUpref = useRef(null);
+  const inputRefs = useRef(null);
   // const
 
   useEffect(() => {
@@ -112,7 +114,7 @@ export default function Animation({ onChangeIndex }) {
     useState(null);
 
   const [verificationId, setVerificationId] = useState("");
-  const [otp, setOtp] = useState("");
+  const [otp, setOtp] = useState([]);
   const [emailVerificationCodeErr2, setEmailVerificationCodeErr2] =
     useState(null);
   const [isHighScreen, setIsHighScreen] = useState(false);
@@ -995,6 +997,39 @@ export default function Animation({ onChangeIndex }) {
     }
   };
 
+  const handleInputChange3 = (e, index) => {
+    const value = e.target.value;
+    if (value.length > 1) {
+      // Handle multi-character input (i.e., paste or autofill)
+      const otpArray = value.split("").slice(0, 6);
+      setOtp(otpArray);
+      otpArray.forEach((digit, idx) => {
+        inputRefs.current[idx].value = digit;
+      });
+      if (otpArray.length < 6) {
+        inputRefs.current[otpArray.length].focus();
+      }
+    } else {
+      const newOtp = [...otp];
+      newOtp[index] = value;
+      setOtp(newOtp);
+      if (value !== "" && index < 5) {
+        inputRefs.current[index + 1].focus();
+      }
+    }
+  };
+
+  const handleBackspace3 = (e, index) => {
+    if (e.key === 'Backspace') {
+      if (otp[index] === "" && index > 0) {
+        inputRefs.current[index - 1].focus();
+      }
+      const newOtp = [...otp];
+      newOtp[index] = "";
+      setOtp(newOtp);
+    }
+  };
+
   const handlePaste = (e) => {
     e.preventDefault();
     const paste = e.clipboardData.getData("text").split("");
@@ -1011,13 +1046,23 @@ export default function Animation({ onChangeIndex }) {
   };
 
   const loginBoxesstyle = {
-    height: isWideScreen2 ? "40px" : "30px", width: isWideScreen2 ? "40px" : "30px",
+    height: "40px", width: "40px", //isWideScreen2 ? "40px" : "30px", width: isWideScreen2 ? "40px" : "30px",
+    borderRadius: 6,
+    backgroundColor: "red",
+    textAlign: "center",
+    outline: "2px solid red",
+    border: "2px solid red",
+  }
+
+  const boxStyle = {
+    height: isWideScreen ? "40px" : "30px",
+    width: isWideScreen ? "40px" : "30px",
     borderRadius: 6,
     backgroundColor: "#EDEDEDC7",
     textAlign: "center",
     outline: "none",
-    border: "none",
-  }
+    border: "none"
+  };
 
   const handleVerifyLoginCode = async () => {
     setVerifyLoader(true);
@@ -1252,10 +1297,10 @@ export default function Animation({ onChangeIndex }) {
                     fontFamily: "inter",
                   }}
                 >
-                  Enter verification code sent to ****
-                  {Number(signinVerificationNumber.slice(-4))}
+                  Enter verification code sent to ****7647
+                  {/* {Number(signinVerificationNumber.slice(-4))} */}
                 </div>
-                <div className="flex flex-row gap-4 mt-4" onPaste={handlePaste}>
+                {/* <div className="flex flex-row gap-4 mt-4" onPaste={handlePaste}>
                   <input
                     id="P1"
                     ref={inputFocusRef}
@@ -1351,9 +1396,44 @@ export default function Animation({ onChangeIndex }) {
                       }
                     }}
                   />
+                </div> */}
+
+                {/* <div className='flex flex-row gap-2 sm:gap-4 mt-4' style={{ backgroundColor: 'red' }}>
+                  {otp.map((digit, index) => (
+                    <input
+                      key={index}
+                      id={`P${index + 1}`}
+                      ref={(el) => (inputRefs.current[index] = el)}
+                      autoFocus={index === 0} // Auto focus only on the first input
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      value={digit}
+                      onChange={(e) => {
+                        handleInputChange3(e, index);
+                        setVerifyErr(false);
+                      }}
+                      maxLength={1}
+                      style={boxStyle}
+                      onKeyDown={(e) => {
+                        handleBackspace3(e, index);
+                        if (otp.length === 6 && e.key === "Enter") {
+                          handleVerifyLoginCode();
+                        }
+                      }}
+                      autoComplete="one-time-code" // For iOS autofill
+                    />
+                  ))}
+                </div> */}
+
+                <div className="w-full md:w-8/12">
+                  <VerifyPhoneNumber currentIndex={currentIndex} signinVerificationNumber={signinVerificationNumber}
+                    fromSignInPage={true} //setVerifyErr={setVerifyErr} setVerifyLoader={setVerifyLoader}
+                    verificationId={verificationId} handleContinue={handleContinue}
+                  />
                 </div>
 
-                <div>
+                {/* <div>
                   {verifyErr && (
                     <div
                       className="mt-2"
@@ -1378,38 +1458,49 @@ export default function Animation({ onChangeIndex }) {
                       <CircularProgress size={30} />
                     </div>
                   ) : (
-                    <div>
-                      {/* {VP} */}
-                      {VP1 && VP2 && VP3 && VP4 && VP5 && VP6 ? (
-                        <button
-                          onClick={handleVerifyLoginCode}
-                          className="bg-purple hover:bg-purple text-white rounded w-full"
-                          style={{
-                            fontSize: 15,
-                            fontWeight: "400",
-                            height: "52px",
-                            borderRadius: "50px",
-                          }}
-                        >
-                          Continue
-                        </button>
-                      ) : (
-                        <button
-                          disabled
-                          // onClick={handleVerifyLoginCode}
-                          className="bg-purple2 hover:bg-purple2 text-white rounded w-full"
-                          style={{
-                            fontSize: 15,
-                            fontWeight: "400",
-                            height: "52px",
-                            borderRadius: "50px",
-                            color: "white",
-                          }}
-                        >
-                          Continue
-                        </button>
-                      )}
-                    </div>
+                    <button
+                      onClick={handleVerifyLoginCode}
+                      className="bg-purple hover:bg-purple text-white rounded w-full"
+                      style={{
+                        fontSize: 15,
+                        fontWeight: "400",
+                        height: "52px",
+                        borderRadius: "50px",
+                      }}
+                    >
+                      Continue
+                    </button>
+                    // <div>
+                    //   {VP1 && VP2 && VP3 && VP4 && VP5 && VP6 ? (
+                    //     <button
+                    //       onClick={handleVerifyLoginCode}
+                    //       className="bg-purple hover:bg-purple text-white rounded w-full"
+                    //       style={{
+                    //         fontSize: 15,
+                    //         fontWeight: "400",
+                    //         height: "52px",
+                    //         borderRadius: "50px",
+                    //       }}
+                    //     >
+                    //       Continue
+                    //     </button>
+                    //   ) : (
+                    //     <button
+                    //       disabled
+                    //       // onClick={handleVerifyLoginCode}
+                    //       className="bg-purple2 hover:bg-purple2 text-white rounded w-full"
+                    //       style={{
+                    //         fontSize: 15,
+                    //         fontWeight: "400",
+                    //         height: "52px",
+                    //         borderRadius: "50px",
+                    //         color: "white",
+                    //       }}
+                    //     >
+                    //       Continue
+                    //     </button>
+                    //   )}
+                    // </div>
                   )}
                 </div>
                 {resendCodeLoader ? (
@@ -1427,8 +1518,13 @@ export default function Animation({ onChangeIndex }) {
                   >
                     Resend Code
                   </button>
-                )}
-                <div className="mt-4 flex flex-row items-center gap-1">
+                )} */}
+
+                {/* <div className="mt-8 w-full md:w-6/12">
+                  <VerifyPhoneNumber currentIndex={currentIndex} userPhoneNumber={userPhoneNumber} />
+                </div> */}
+
+                {/* <div className="mt-4 flex flex-row items-center gap-1">
                   <div style={{ fontSize: 12, fontWeight: "400" }}>Or</div>
                   <button
                     onClick={handleSignUpContinue}
@@ -1440,7 +1536,7 @@ export default function Animation({ onChangeIndex }) {
                   >
                     Signup
                   </button>
-                </div>
+                </div> */}
                 {/* Err msg when not verified */}
               </div>
             </motion.div>

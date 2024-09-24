@@ -31,7 +31,7 @@ const LoginModal = ({ closeForm, creator, assistantData }) => {
     const [direction, setDirection] = useState(1);
     const [userLoginDetails, setUserLoginDetails] = useState(null);
     const [isWideScreen, setIsWideScreen] = useState(false);
-    const [isWideScreen2, setIsWideScreen2] = useState(false);
+    const [isWideScreen500, setIsWideScreen500] = useState(null);
     const [verificationId, setVerificationId] = useState('');
     //code for getting location
     const [location, setLocation] = useState({ lat: null, lng: null });
@@ -44,7 +44,7 @@ const LoginModal = ({ closeForm, creator, assistantData }) => {
     useEffect(() => {
         const handleResize = () => {
             setIsWideScreen(window.innerWidth >= 768);
-            setIsWideScreen2(window.innerWidth >= 500);
+            setIsWideScreen500(window.innerWidth);
         };
 
         handleResize(); // Set initial state
@@ -341,7 +341,7 @@ const LoginModal = ({ closeForm, creator, assistantData }) => {
                         >
                             <div className='w-full lg:w-full '>
                                 <VerifyPhoneNumber currentIndex={currentIndex} handleContinue={handleContinue}
-                                    verificationId={verificationId} userLoginDetails={userLoginDetails} handleBack={handleBack} 
+                                    verificationId={verificationId} userLoginDetails={userLoginDetails} handleBack={handleBack}
                                     handleSignin={handleSignin} resendVerification={resendVerification} />
                             </div>
                         </motion.div>
@@ -364,7 +364,8 @@ const LoginModal = ({ closeForm, creator, assistantData }) => {
                             <div className='w-full'>
                                 {/* <AddCard handleBack={handleBack} closeForm={closeForm} /> */}
                                 <div style={{ backgroundColor: 'white', padding: 18, borderRadius: 15 }}>
-                                    <div style={{ fontWeight: isWideScreen2 ? '600' : '700', fontSize: isWideScreen2 ? 18 : 24, fontFamily: 'inter' }}>
+                                    <div
+                                        style={{ fontWeight: '600', fontSize: isWideScreen500 < 500 ? 20 : 24, fontFamily: 'inter' }}>
                                         First 5 minutes are on us!
                                     </div>
                                     <div className='text-lightWhite'

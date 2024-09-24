@@ -113,7 +113,7 @@ export default function AnimatedButton({ snackMessage, error = false, profileDat
                         autoHideDuration={5000}
                         // onClose={() => setCallErr(false)}
                         anchorOrigin={{
-                            vertical: 'top',
+                            vertical: 'bottom',
                             horizontal: 'center',
                         }}
                         TransitionComponent={Fade}
@@ -125,7 +125,8 @@ export default function AnimatedButton({ snackMessage, error = false, profileDat
                         }}
                         sx={{
                             position: 'fixed',
-                            top: '23%',
+                            // top: '2%',
+                            bottom: 100,
                             left: '50%',
                             transform: 'translateX(-50%)',
                             // border: "2px solid red",
