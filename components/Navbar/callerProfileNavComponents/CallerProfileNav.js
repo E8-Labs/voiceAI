@@ -64,7 +64,7 @@ const CallerProfileNav = ({ handleCloseMenu }) => {
         {
             id: 7,
             name: 'Privay Policy',
-            href: '',///callerProfile/plans
+            href: '/callerProfile/privacypolicy',
             image: '/assets/selectedTermsIcon.png',
             unSelectedImg: '/assets/terms.png'
         }
