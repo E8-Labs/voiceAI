@@ -235,8 +235,8 @@ const AddCardDetails = ({
                             if (closeForm) { //
                                 console.log("Response of add card api is ::::", response.data.data);
                                 localStorage.setItem('callStatus', JSON.stringify(callStatus));
-                                let PaymentAdded = D.data.user.payment_added === true;
-                                localStorage.setItem('User', JSON.stringify(PaymentAdded));
+                                D.data.user.payment_added = true;
+                                localStorage.setItem('User', JSON.stringify(D));
                                 // return
                                 closeForm();
                                 window.location.reload();
