@@ -262,7 +262,8 @@ const Page = () => {
     };
 
     const getPhoneNumber = (number) => {
-        setPhoneNumber(number)
+        console.log("Phonenumber recieved is", number);
+        setPhoneNumber(number);
     }
 
     //code to validate email

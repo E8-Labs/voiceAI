@@ -250,10 +250,12 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                 }
             });
             if (response.data) {
+                console.log("Response of apis is", response);
                 setPhoneNumberErr(response.data)
             }
         } catch (error) {
-            console.error("Error occured in checknum api");
+            setPhoneNumberErr('Some error occured');
+            console.error("Error occured in checknum api", error);
         }
     }
 

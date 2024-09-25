@@ -25,11 +25,11 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
         if (localData) {
             if (editAccess) {
                 const Data = JSON.parse(localData);
-                setPhone(Data.phonenumber);
-                // const timeOut = setTimeout(() => {
-                //     setPhone(Data.phonenumber);
-                // }, 100);
-                // return () => clearTimeout(timeOut);
+                // setPhone(Data.phonenumber);
+                const timeOut = setTimeout(() => {
+                    setPhone(Data.phonenumber);
+                }, 300);
+                return () => clearTimeout(timeOut);
             } else {
                 const Data = JSON.parse(localData);
                 const timeOut = setTimeout(() => {
