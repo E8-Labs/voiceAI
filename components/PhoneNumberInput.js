@@ -17,29 +17,24 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
 
     useEffect(() => {
         const localData = localStorage.getItem('formData');
-        // if (!editAccess) {
-        //     // console.log("Edit  Access", editAccess);
-        //     setCountryCode('us');
-        //     setSelectedCountry('us');
-        // }
+        if (!editAccess) {
+            // console.log("Edit  Access", editAccess);
+            setCountryCode('us');
+            setSelectedCountry('us');
+        }
         if (localData) {
-            if (editAccess) {
-                const Data = JSON.parse(localData);
-                // setPhone(Data.phonenumber);
-                const timeOut = setTimeout(() => {
-                    setPhone(Data.phonenumber);
-                }, 300);
-                return () => clearTimeout(timeOut);
-            } else {
-                const Data = JSON.parse(localData);
-                const timeOut = setTimeout(() => {
-                    setPhone(Data.phonenumber);
-                }, 1500);
-                return () => clearTimeout(timeOut);
-            }
+            //issue can be here
+            const Data = JSON.parse(localData);
+            const timeOut = setTimeout(() => {
+                setPhone(Data.phonenumber);
+            }, 1500);
+            return () => clearTimeout(timeOut);
         }
 
-        const timeOut = setTimeout(() => {
+        if (editAccess) {
+            setCountryCode('');
+            setSelectedCountry('');
+            // const timeOut = setTimeout(() => {
             const localData = localStorage.getItem('User');
             if (localData) {
                 const Data = JSON.parse(localData);
@@ -48,8 +43,21 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
                     setPhone(Data.data.user.phone);
                 }
             }
-        }, 1500);
-        return () => clearTimeout(timeOut);
+            // }, 500);
+            // return () => clearTimeout(timeOut);
+        }
+
+        // const timeOut = setTimeout(() => {
+        //     const localData = localStorage.getItem('User');
+        //     if (localData) {
+        //         const Data = JSON.parse(localData);
+        //         if (Data.data.user.phone) {
+        //             console.log("Receiving number", Data.data.user.phone);
+        //             setPhone(Data.data.user.phone);
+        //         }
+        //     }
+        // }, 500);
+        // return () => clearTimeout(timeOut);
     }, []);
 
     useEffect(() => {
@@ -57,12 +65,12 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
     }, [countryCode])
 
     useEffect(() => {
-        if(fromSignIn){
+        if (fromSignIn) {
             if (inputElementRef.current) {
                 inputElementRef.current.focus()
             }
         }
-       
+
         const timeOut = setTimeout(() => {
             const localLocation = localStorage.getItem('userLocation');
             if (localLocation) {
@@ -182,33 +190,39 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
 
 
 
-    useEffect(() => {
-        if (editAccess) {
-            setCountryCode("");
-            setSelectedCountry("");
-            const localData = localStorage.getItem('User');
-            if (localData) {
-                const Data = JSON.parse(localData);
-                if (Data.data.user.phone) {
-                    console.log("Receiving number", Data.data.user.phone);
-                    setPhone(Data.data.user.phone);
-                }
-            }
-            console.log("Acess denied");
-        } else {
-            setCountryCode("us");
-            setSelectedCountry("us");
-            // getGeoLocation();
-        }
-    }, []);
+    // useEffect(() => {
+    //     if (editAccess) {
+    //         setCountryCode("");
+    //         setSelectedCountry("");
+    //         const localData = localStorage.getItem('User');
+    //         setTimeout(() => {
+    //             if (localData) {
+    //                 const Data = JSON.parse(localData);
+    //                 if (Data.data.user.phone) {
+    //                     console.log("Receiving number", Data.data.user.phone);
+    //                     setPhone(Data.data.user.phone);
+    //                 }
+    //             }
+    //         }, 500);
+
+    //         // return (() => clearTimeout(timer));
+    //         console.log("Acess denied");
+    //     } else {
+    //         setCountryCode("us");
+    //         setSelectedCountry("us");
+    //         // getGeoLocation();
+    //     }
+    // }, []);
 
     useEffect(() => {
-        if (phone) {
-            const timer = setTimeout(() => {
-                console.log("Log is working")
-                validatePhoneNumber(phone, selectedCountry);
-            }, 500);
-            return () => clearTimeout(timer);
+        if (!editAccess) {
+            if (phone) {
+                const timer = setTimeout(() => {
+                    console.log("Log is working")
+                    validatePhoneNumber(phone, selectedCountry);
+                }, 500);
+                return () => clearTimeout(timer);
+            }
         }
     }, [phone, selectedCountry]);
 
