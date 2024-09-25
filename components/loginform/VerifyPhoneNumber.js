@@ -159,28 +159,56 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                     return;
                 }
 
+                console.log("It is signup flow");
+
                 const OtpCode = otp.join("");
                 const credential = PhoneAuthProvider.credential(verificationIdConfirm, OtpCode);
                 await signInWithCredential(auth, credential);
                 console.log("Phone number verified successfully");
 
                 try {
-                    const response = await axios.post(Apis.verifyCode, mergedData, {
+                    const LocalData = localStorage.getItem('LoginData');
+                    const userDetails = JSON.parse(LocalData);
+                    const AuthToken = userDetails.data.token;
+                    const ApiData = {
+                        code: otp.join(""),
+                        phoneVerified: true,
+                        // phone: userLoginDetails?.phone,
+                    }
+                    const response = await axios.post(Apis.updateProfile, ApiData, {
                         headers: {
+                            'Authorization': 'Bearer ' + AuthToken,
                             'Content-Type': 'application/json'
                         }
                     });
                     if (response) {
-                        console.log("response of check code ", response.data);
+                        console.log("Response of update profile api is", response.data);
                         if (response.data.status === true) {
-                            console.log("Response of signup", response.data);
-                            localStorage.setItem("User", JSON.stringify(response.data));
+                            console.log("Response of update profile", response.data);
+                            localStorage.setItem("User", JSON.stringify(userDetails));
                             handleContinue();
                             localStorage.removeItem('formData');
+                            // localStorage.removeItem('LoginData');
                         } else {
                             setShowError(response.data.message);
                         }
                     }
+                    // const response = await axios.post(Apis.verifyCode, mergedData, {
+                    //     headers: {
+                    //         'Content-Type': 'application/json'
+                    //     }
+                    // });
+                    // if (response) {
+                    //     console.log("response of check code ", response.data);
+                    //     if (response.data.status === true) {
+                    //         console.log("Response of signup", response.data);
+                    //         localStorage.setItem("User", JSON.stringify(response.data));
+                    //         handleContinue();
+                    //         localStorage.removeItem('formData');
+                    //     } else {
+                    //         setShowError(response.data.message);
+                    //     }
+                    // }
                 } catch (error) {
                     setVerifyLoader(false);
                     console.log("Error occurred in verification API:", error);
@@ -262,7 +290,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                             localStorage.removeItem("route");
                         } else if (response.data.status === false) {
                             console.log("Error in verify code api");
-                            setVerifyErr(response.data.message);
+                            // setVerifyErr(response.data.message);
                         }
                     } else {
                         console.log("error");
@@ -308,8 +336,9 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
             <div style={{ fontSize: 24, fontWeight: "600" }}>
                 Verify Phone Number
             </div>
+
             <div className='text-lightWhite' style={{ fontSize: 13, fontWeight: "400" }}>
-                6 digit code was sent to number ending with ***{userLoginDetails?.phone.slice(-4)}
+                6 digit code was sent to number ending with **** {signinVerificationNumber?.slice(-4)} {userLoginDetails?.phone.slice(-4)}
             </div>
 
             <div className='flex flex-row gap-2 sm:gap-4 mt-4'>

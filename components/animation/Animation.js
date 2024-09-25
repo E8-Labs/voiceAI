@@ -1297,7 +1297,7 @@ export default function Animation({ onChangeIndex }) {
                     fontFamily: "inter",
                   }}
                 >
-                  Enter verification code sent to ****7647
+                  Enter verification code sent
                   {/* {Number(signinVerificationNumber.slice(-4))} */}
                 </div>
                 {/* <div className="flex flex-row gap-4 mt-4" onPaste={handlePaste}>

@@ -1,5 +1,5 @@
 'use client'
-import { CircularProgress, Link, TextField } from '@mui/material'
+import { Alert, Box, CircularProgress, Fade, Link, Modal, Snackbar, TextField } from '@mui/material'
 import React, { useEffect, useRef, useState } from 'react'
 import PhoneNumberInput from '../PhoneNumberInput'
 import axios from 'axios'
@@ -28,6 +28,8 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
     const [verificationId, setVerificationId] = useState('');
     const [isWideScreen, setIsWideScreen] = useState(false);
     const [userLocation, setUserLocation] = useState(null);
+    const [errSnack, setErrSnack] = useState(null);
+    const [openWrongNumberPopup, setOpenWrongNumberPopup] = useState(false);
 
     const handlePhoneNumber = (number) => {
         // console.log("Number is", number);
@@ -117,6 +119,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
             handleContinue(userData);
         }
         catch (error) {
+            setErrSnack(error);
             console.error("Error during OTP sending:", error);
         } finally {
             setLoginLoader(false);
@@ -265,7 +268,54 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
 
     const handleLogin = async () => {
         // return
-        sendOtp();
+        // sendOtp();
+
+        try {
+            setLoginLoader(true);
+            const userData = {
+                name: userName + " " + userLastName,
+                email: userEmail,
+                phone: userPhoneNumber,
+                password: userPassword,
+                ...(userLocation && {
+                    city: userLocation.city,
+                    state: userLocation.state
+                }),
+                // phoneVerifed: 'false'
+            }
+
+            console.log("Data sending in register api is", userData)
+            const loginResponse = await axios.post(Apis.verifyCode, userData, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (loginResponse) {
+                console.log("Response of api is", loginResponse.data);
+                // return
+                localStorage.setItem('LoginData', JSON.stringify(loginResponse.data));
+                sendOtp();
+                // if (loginResponse.data.status === true) {
+                //     let phoneNumber = userPhoneNumber;
+                //     if (phoneNumber.startsWith("1")) {
+                //         console.log("It is US number");
+                //         localStorage.setItem('LoginData', JSON.stringify(loginResponse.data));
+                //         sendOtp();
+                //     } else {
+                //         console.log("It is other country number");
+                //         setOpenWrongNumberPopup(true);
+                //     }
+                // } else {
+                //     setErrSnack(loginResponse.data.message);
+                // }
+            }
+        } catch (error) {
+            setErrSnack(error);
+            console.error("Error occured in registerApi api is", error);
+        } finally {
+            setLoginLoader(false);
+        }
 
 
         // const verificationNumber = {
@@ -290,33 +340,19 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
         // }
     }
 
-    // const MuiFieldStyle = {
-    //     '& label.Mui-focused': {
-    //         color: '#050A08',
-    //         // paddingBottom: "10px",
-    //     },
-    //     '& .MuiFilledInput-root': {
-    //         fontSize: 13,
-    //         fontWeight: '400',
-    //     },
-    //     '& .MuiOutlinedInput-root': {
-    //         borderRadius: 2,
-    //         height: "48px",
-    //         backgroundColor: "#EDEDEDC7",
-    //         color: "black",
-    //         '& fieldset': {
-    //             borderColor: 'transparent',  // Border none when not focused
-    //         },
-    //         '&:hover fieldset': {
-    //             borderColor: 'transparent',  // Border none on hover
-    //         },
-    //         '&.Mui-focused fieldset': {
-    //             borderColor: '#00000000',  // Your existing focus styles
-    //             backgroundColor: "#EDEDEDC7",
-    //             color: "#000000",
-    //         },
-    //     },
-    // }
+
+    const wrongNumberModalStyle = {
+        height: 'auto',
+        bgcolor: 'transparent',
+        // p: 2,
+        mx: 'auto',
+        my: '50vh',
+        transform: 'translateY(-55%)',
+        borderRadius: 2,
+        border: "none",
+        outline: "none",
+        // border: "2px solid green"
+    };
 
     //code for email validation
 
@@ -532,17 +568,17 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
             />
             {
                 emailValidationError ?
-                    <div className='mt-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100", height: 13 }}>
+                    <div className='mb-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100", height: 15 }}>
                         Enter valid email
                     </div> :
                     <div>
                         {
                             checkUserEmailData && checkUserEmailData.status === true ?
-                                <div className='mt-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "green", height: 13 }}>
+                                <div className='mb-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "green", height: 15, }}>
                                     Email available
                                 </div> :
-                                <div className='mt-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100", height: 13 }}>
-                                    {checkUserEmailData && checkUserEmailData.status === false && "Email already taken"}
+                                <div className='mb-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100", height: 15 }}>
+                                    {checkUserEmailData && checkUserEmailData.status === false && "Email already taken, try signing in below"}
                                 </div>
                         }
                     </div>
@@ -553,17 +589,17 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
             </div>
             {
                 numberFormatError ?
-                    <div className='mt-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100", height: 13 }}>
+                    <div className='' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100", height: 18 }}>
                         Enter valid number
                     </div> :
                     <div>
                         {
                             phoneNumberErr && phoneNumberErr.status === true ?
-                                <div className='mt-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "green", height: 13 }}>
+                                <div className='' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "green", height: 18 }}>
                                     {phoneNumberErr.message}
                                 </div> :
-                                <div className='mt-2' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100", height: 13 }}>
-                                    {phoneNumberErr && phoneNumberErr.message}
+                                <div className='' style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#FF0100", height: 18 }}>
+                                    {phoneNumberErr && phoneNumberErr.message}{phoneNumberErr && ", try signing in below"}
                                 </div>
                         }
                     </div>
@@ -624,37 +660,27 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
             <div className='w-full flex justify-center mt-8'>
                 {
                     userEmail && userName && userPhoneNumber && termsCheck && checkUserEmailData && checkUserEmailData.status === true && phoneNumberErr && phoneNumberErr.status === true ?
-                        <button onClick={handleLogin} className='bg-purple w-full px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15, borderRadius: "50px" }}>
+                        <div className='w-full'>
+                            {
+                                loginLoader ?
+                                    <div className='bg-purple w-full flex flex-row justify-center px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15, borderRadius: "50px" }}>
+                                        <CircularProgress size={20} />
+                                    </div> :
+                                    <button onClick={handleLogin} className='bg-purple w-full px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15, borderRadius: "50px" }}>
+
+                                        <div>
+                                            Call
+                                        </div>
+                                    </button>
+                            }
+                        </div> :
+                        <button className='bg-purple2 w-full px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15, borderRadius: "50px" }}>
                             {
                                 loginLoader ?
                                     <CircularProgress size={20} /> :
                                     <div>
                                         Call
                                         {/* {modalData &&
-                                            <div>
-                                                {modalData.name ?
-                                                    <div>
-                                                        Call {modalData.name}
-                                                    </div> :
-                                                    <div>
-                                                        Call {modalData.assitant.name}
-                                                    </div>}
-                                            </div>
-                                        } */}
-                                    </div>
-                            }
-                        </button> :
-                        <button className='bg-purple2 w-full px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15, borderRadius: "50px" }}>
-                            {
-                                loginLoader ?
-                                    <CircularProgress size={20} /> :
-                                    <div>
-                                        {
-                                            loginLoader ?
-                                                <CircularProgress size={20} /> :
-                                                <div>
-                                                    Call
-                                                    {/* {modalData &&
                                                         <div>
                                                             {modalData.name ?
                                                                 <div>
@@ -665,8 +691,6 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                                                                 </div>}
                                                         </div>
                                                     } */}
-                                                </div>
-                                        }
                                     </div>
                             }
                         </button>
@@ -682,6 +706,83 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                     Sign in
                 </button>
             </div>
+            <div>
+                <Snackbar
+                    open={errSnack}
+                    // autoHideDuration={3000}
+                    onClose={() => {
+                        setErrSnack(null)
+                    }}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center'
+                    }}
+                    TransitionComponent={Fade}
+                    TransitionProps={{
+                        direction: 'center'
+                    }}
+                >
+                    <Alert
+                        onClose={() => {
+                            setErrSnack(null)
+                        }} severity="error"
+                        sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}>
+                        {errSnack}
+                    </Alert>
+                </Snackbar>
+            </div>
+
+            <Modal
+                open={openWrongNumberPopup}
+                onClose={(() => setOpenWrongNumberPopup(false))}
+                closeAfterTransition
+                BackdropProps={{
+                    timeout: 1000,
+                    sx: {
+                        backgroundColor: 'transparent',
+                        backdropFilter: 'blur(40px)',
+                    },
+                }}
+            >
+                <Box className="lg:w-8/12 sm:w-9/12 w-full"
+                    sx={wrongNumberModalStyle}
+                >
+                    {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
+                    <div className='flex flex-row justify-center w-full'>
+                        <div className='sm:w-7/12 w-full' style={{ backgroundColor: "#ffffff23", padding: 20, borderRadius: 10 }}>
+                            {/* <AddCard handleBack={handleBack} closeForm={closeForm} /> */}
+                            <div style={{ backgroundColor: 'white', padding: 18, borderRadius: 10 }}>
+                                {/* <div className='mt-2 flex flex-row justify-between items-center'>
+                                    <Image src="/assets/claimIcon.png" alt='claimimg' height={38} width={38} />
+                                    <button onClick={(() => setOpenWrongNumberPopup(false))}>
+                                        <Image src="/assets/crossBtn.png" alt='cross' height={14} width={14} />
+                                    </button>
+                                </div> */}
+                                <div className='' style={{ fontWeight: '600', fontSize: 24, fontFamily: 'inter' }}>
+                                    Only in the US & Canada!
+                                </div>
+                                <div className='text-black' style={{ fontWeight: "400", fontSize: 15, fontFamily: "inter", marginTop: 10 }}>
+                                    We're not available in your country yet, but we're expanding soon! We'll keep you updated so you'll be the first to know when CreatorX launches in your region. You've been added to the waitlist!
+                                </div>
+                                <div className='flex flex-row justify-center mt-4 w-full' style={{ marginTop: 30 }}>
+                                    <div>
+                                        <button
+                                            onClick={() => {
+                                                // window.open("https://www.youtube.com", '_blank')
+                                                closeForm();
+                                                setOpenWrongNumberPopup(false);
+                                            }} className='bg-purple px-6 py-2 text-white'
+                                            style={{ fontWeight: "400", fontFamily: "inter", fontSize: 15, borderRadius: "50px" }}>
+                                            Close
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Box>
+            </Modal>
+
         </div>
     )
 }

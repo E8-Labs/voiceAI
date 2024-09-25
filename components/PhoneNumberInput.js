@@ -1,10 +1,13 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr, fromCreateAccount, fromSignIn, userLocation }) => {
+
+
+    const inputElementRef = useRef(null);
     const [phone, setPhone] = useState('');
     const [focus, setFocus] = useState(false);
     const [countryCode, setCountryCode] = useState(''); // Default to US
@@ -47,6 +50,18 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
             }
         }, 1500);
         return () => clearTimeout(timeOut);
+    }, []);
+
+    useEffect(() => {
+        const localLocation = localStorage.getItem('userLocation');
+        if (localLocation) {
+            if (inputElementRef.current) {
+                inputElementRef.current.focus();
+            }
+        } else {
+            return
+        }
+
     }, []);
 
     useEffect(() => {
@@ -197,6 +212,10 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
             <PhoneInput
                 country={countryCode} // Default country for phone input
                 value={phone}
+                // ref={phoneNumberInputRef}
+                // inputProps={{
+                //     ref: inputElementRef,
+                // }}
                 onChange={(phone, countryData) => {
                     setPhone(phone);
                     setSelectedCountry(countryData.countryCode); // Capture the selected country's code
@@ -245,6 +264,7 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
                 }}
                 inputProps={{
                     readOnly: editAccess ? true : false,
+                    ref: inputElementRef,
                 }}
             />
 

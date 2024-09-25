@@ -63,7 +63,7 @@ const ProfileNav = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('User');
-        router.push("/tate")
+        router.push("/tate.ai")
     }
 
     const handleSideBtnsClick = (e, link) => {

@@ -275,10 +275,15 @@ const Creator = () => {
         console.log("Login details from localstorage", D);
         if (LocalData) {
             setShowProfileIcon(true);
-            if (D.data.user.role === "creator") {
-                setShowCreatorBtn(false);
-            } else {
+            if (D.data.user.role === "caller") {
                 setShowCreatorBtn(true);
+                // router.push('/admin/admin');
+            } else {
+                setShowCreatorBtn(false);
+            }
+
+            if (D.data.user.role === "admincreatorx") {
+                router.push('/admin/admin');
             }
         } else {
             // setShowProfileIcon(false);

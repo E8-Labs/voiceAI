@@ -1,10 +1,10 @@
-const BasePath = 'https://www.blindcircle.com:444/voice/' // Link for live or git //'https://www.blindcircle.com:444/voice/'
+const BasePath = 'https://www.blindcircle.com:444/voicetest/' // Link for live or git //'https://www.blindcircle.com:444/voice/'
 
 const Apis = {
     //user flow apis
     SignUp: `${BasePath}api/user/login`,
     sendVerificationCode: `${BasePath}api/user/sendVerificationCode`,
-    verifyCode: `${BasePath}api/user/verifyCode`,
+    verifyCode: `${BasePath}api/user/registerOrLogin`,
     checkPhone: `${BasePath}api/user/checkPhoneNumber`,
     addCard: `${BasePath}api/user/add_card`,
     MakeCall: `${BasePath}api/calls/make_a_call`,
@@ -15,7 +15,7 @@ const Apis = {
 
     GetRecentCalls: `${BasePath}api/calls/get_recent_calls`,
     GetAssistantData: `${BasePath}api/user/getProfileFromUsername`,
-    Login_Google:`${BasePath}api/user/login_google`,
+    Login_Google: `${BasePath}api/user/login_google`,
 
 
     //apis for voice creator onboarding
@@ -40,7 +40,8 @@ const Apis = {
     updateProfile: `${BasePath}api/user/updateProfile`,
     DeleteCard: `${BasePath}api/user/delete_card`,
     verifyEmail: `${BasePath}api/user/verifyEmail`,
-    MyProfile: `${BasePath}api/user/myProfile`
+    MyProfile: `${BasePath}api/user/myProfile`,
+    GetCreators: `${BasePath}api/user/getCreatorsx`
 }
 
 export default Apis;
