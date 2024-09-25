@@ -707,8 +707,9 @@ export default function Animation({ onChangeIndex }) {
     if (phoneNumber.startsWith("1")) {
       console.log("It is US number");
       // localStorage.setItem('LoginData', JSON.stringify(loginResponse.data));
-      let sent = await sendOtp();
       setIndex1Loader(true);
+      // return
+      let sent = await sendOtp();
     } else {
       console.log("It is other country number");
       setOpenWrongNumberPopup(true);

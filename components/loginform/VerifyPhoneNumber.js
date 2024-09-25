@@ -66,10 +66,12 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
             // return () => clearTimeout(timer);
             inputRefs.current[0].focus();
         } else if (currentIndex === 1 && inputRefs.current[0]) {
-            // const timer = setTimeout(() => {
-            //     inputRefs.current[0].focus();
-            // }, 300);
-            inputRefs.current[0].focus();
+            console.log("Trying to focus Phone Veri")
+            const timer = setTimeout(() => {
+                console.log("Input ref Login ", inputRefs.current[0])
+                inputRefs.current[0].focus();
+            }, 300);
+            // inputRefs.current[0].focus();
 
             // return () => clearTimeout(timer);
         }
