@@ -295,20 +295,20 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                 console.log("Response of api is", loginResponse.data);
                 // return
                 localStorage.setItem('LoginData', JSON.stringify(loginResponse.data));
-                sendOtp();
-                // if (loginResponse.data.status === true) {
-                //     let phoneNumber = userPhoneNumber;
-                //     if (phoneNumber.startsWith("1")) {
-                //         console.log("It is US number");
-                //         localStorage.setItem('LoginData', JSON.stringify(loginResponse.data));
-                //         sendOtp();
-                //     } else {
-                //         console.log("It is other country number");
-                //         setOpenWrongNumberPopup(true);
-                //     }
-                // } else {
-                //     setErrSnack(loginResponse.data.message);
-                // }
+                // sendOtp();
+                if (loginResponse.data.status === true) {
+                    let phoneNumber = userPhoneNumber;
+                    if (phoneNumber.startsWith("1")) {
+                        console.log("It is US number");
+                        localStorage.setItem('LoginData', JSON.stringify(loginResponse.data));
+                        sendOtp();
+                    } else {
+                        console.log("It is other country number");
+                        setOpenWrongNumberPopup(true);
+                    }
+                } else {
+                    setErrSnack(loginResponse.data.message);
+                }
             }
         } catch (error) {
             setErrSnack(error);

@@ -8,27 +8,27 @@ import { CircularProgress } from '@mui/material';
 const Page = () => {
 
     const [creators, setCreators] = useState([
-        {
-            id: 1,
-            name: 'Salman',
-            email: 'Salman@gmail.com',
-            description: 'Hey James how are you?'
-        },
-        {
-            id: 2,
-            name: 'Hamza',
-            email: 'Hamza@gmail.com',
-            description: 'Hello users how can i assist you?'
-        },
-        {
-            id: 3,
-            name: 'Arslan',
-            email: 'Arslan@gmail.com',
-            description: 'Hello guys how you want me to assist you?'
-        },
+        // {
+        //     id: 1,
+        //     name: 'Salman',
+        //     email: 'Salman@gmail.com',
+        //     description: 'Hey James how are you?'
+        // },
+        // {
+        //     id: 2,
+        //     name: 'Hamza',
+        //     email: 'Hamza@gmail.com',
+        //     description: 'Hello users how can i assist you?'
+        // },
+        // {
+        //     id: 3,
+        //     name: 'Arslan',
+        //     email: 'Arslan@gmail.com',
+        //     description: 'Hello guys how you want me to assist you?'
+        // },
     ]);
-    const [creatorDetails, setCreatorDetails] = useState(creators[0]);
-    const [description, setDescription] = useState(creators[0].description);
+    const [creatorDetails, setCreatorDetails] = useState();
+    const [description, setDescription] = useState();
     const spanRef = useRef(null);
     const [inputWidth, setInputWidth] = useState(0);
     const [updateLoader, setUpdateLodaer] = useState(false);
@@ -62,7 +62,9 @@ const Page = () => {
                     console.log("Response fo get creaators api is", response.data);
                     if (response.data.status === true) {
                         // setCreatorDetails()
-                        // setCreators(response.data.data)
+                        setCreators(response.data.data);
+                        setDescription(response.data.data[0].ai.greeting);
+                        setCreatorDetails(response.data.data[0]);
                     }
                 }
             }
@@ -80,7 +82,7 @@ const Page = () => {
 
     const handleCreatorDetailsClick = (item) => {
         setCreatorDetails(item);
-        setDescription(item.description)
+        // setDescription();
     }
 
     const backgroundImage = {

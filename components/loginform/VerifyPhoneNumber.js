@@ -346,7 +346,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                     <input
                         key={index}
                         id={`P${index + 1}`}
-                        autoFocus={true}
+                        autoFocus={index == 0 ? true : false}
                         type='text'
                         inputMode="numeric"
                         pattern="[0-9]*"

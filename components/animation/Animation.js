@@ -4,6 +4,7 @@ import {
   CircularProgress,
   IconButton,
   InputAdornment,
+  Modal,
   TextField,
   Visibility,
   VisibilityOff,
@@ -93,6 +94,7 @@ export default function Animation({ onChangeIndex }) {
   const [EmailP5, setEmailP5] = useState("");
   const [signinVerificationNumber, setSigninVerificationNumber] =
     useState(null);
+  const [openWrongNumberPopup, setOpenWrongNumberPopup] = useState(false);
   const [emailValidationError, setEmailValidationError] = useState(false);
   const [sendEmailCodeLoader, setSendEmailCodeLoader] = useState(false);
 
@@ -692,7 +694,6 @@ export default function Animation({ onChangeIndex }) {
 
   //code for login back
   const handleLogin = async (e) => {
-    setIndex1Loader(true);
     setResendCodeLoader(true);
     if (e) {
       console.log("E value is", e);
@@ -700,7 +701,19 @@ export default function Animation({ onChangeIndex }) {
       console.log("No event");
     }
     // return
-    let sent = await sendOtp();
+    // let sent = await sendOtp();
+
+    let phoneNumber = signinVerificationNumber;
+    if (phoneNumber.startsWith("1")) {
+      console.log("It is US number");
+      localStorage.setItem('LoginData', JSON.stringify(loginResponse.data));
+      let sent = await sendOtp();
+      setIndex1Loader(true);
+    } else {
+      console.log("It is other country number");
+      setOpenWrongNumberPopup(true);
+      // setVerifiyNumberLoader(false);
+    }
 
     // try {
     //     setIndex1Loader(true);
@@ -1108,6 +1121,19 @@ export default function Animation({ onChangeIndex }) {
     // border: '2px solid red'
   };
 
+  const wrongNumberModalStyle = {
+    height: 'auto',
+    bgcolor: 'transparent',
+    // p: 2,
+    mx: 'auto',
+    my: '50vh',
+    transform: 'translateY(-55%)',
+    borderRadius: 2,
+    border: "none",
+    outline: "none",
+    // border: "2px solid green"
+  };
+
   return (
     <div style={containerStyles}>
       <div id="recaptcha-container" />
@@ -1259,6 +1285,56 @@ export default function Animation({ onChangeIndex }) {
                     Signup
                   </button>
                 </div>
+                <Modal
+                  open={openWrongNumberPopup}
+                  onClose={(() => setOpenWrongNumberPopup(false))}
+                  closeAfterTransition
+                  BackdropProps={{
+                    timeout: 1000,
+                    sx: {
+                      backgroundColor: 'transparent',
+                      backdropFilter: 'blur(40px)',
+                    },
+                  }}
+                >
+                  <Box className="lg:w-8/12 sm:w-9/12 w-full"
+                    sx={wrongNumberModalStyle}
+                  >
+                    {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
+                    <div className='flex flex-row justify-center w-full'>
+                      <div className='sm:w-7/12 w-full' style={{ backgroundColor: "#ffffff23", padding: 20, borderRadius: 10 }}>
+                        {/* <AddCard handleBack={handleBack} closeForm={closeForm} /> */}
+                        <div style={{ backgroundColor: 'white', padding: 18, borderRadius: 10 }}>
+                          {/* <div className='mt-2 flex flex-row justify-between items-center'>
+                                    <Image src="/assets/claimIcon.png" alt='claimimg' height={38} width={38} />
+                                    <button onClick={(() => setOpenWrongNumberPopup(false))}>
+                                        <Image src="/assets/crossBtn.png" alt='cross' height={14} width={14} />
+                                    </button>
+                                </div> */}
+                          <div className='' style={{ fontWeight: '600', fontSize: 24, fontFamily: 'inter' }}>
+                            Only in the US & Canada!
+                          </div>
+                          <div className='text-black' style={{ fontWeight: "400", fontSize: 15, fontFamily: "inter", marginTop: 10 }}>
+                            We're not available in your country yet, but we're expanding soon! We'll keep you updated so you'll be the first to know when CreatorX launches in your region. You've been added to the waitlist!
+                          </div>
+                          <div className='flex flex-row justify-center mt-4 w-full' style={{ marginTop: 30 }}>
+                            <div>
+                              <button
+                                onClick={() => {
+                                  // window.open("https://www.youtube.com", '_blank')
+                                  // closeForm();
+                                  setOpenWrongNumberPopup(false);
+                                }} className='bg-purple px-6 py-2 text-white'
+                                style={{ fontWeight: "400", fontFamily: "inter", fontSize: 15, borderRadius: "50px" }}>
+                                Close
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Box>
+                </Modal>
               </div>
             </motion.div>
           </div>
