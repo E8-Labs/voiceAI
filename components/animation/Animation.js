@@ -706,7 +706,7 @@ export default function Animation({ onChangeIndex }) {
     let phoneNumber = signinVerificationNumber;
     if (phoneNumber.startsWith("1")) {
       console.log("It is US number");
-      localStorage.setItem('LoginData', JSON.stringify(loginResponse.data));
+      // localStorage.setItem('LoginData', JSON.stringify(loginResponse.data));
       let sent = await sendOtp();
       setIndex1Loader(true);
     } else {
