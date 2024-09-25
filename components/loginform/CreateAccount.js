@@ -314,10 +314,11 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                 }
             }
         } catch (error) {
+            setLoginLoader(false);
             setErrSnack(error);
             console.error("Error occured in registerApi api is", error);
         } finally {
-            setLoginLoader(false);
+            // setLoginLoader(false);
         }
 
 

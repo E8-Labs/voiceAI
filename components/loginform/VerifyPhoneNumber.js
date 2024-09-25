@@ -39,23 +39,24 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
         };
     }, []);
 
-    // useEffect(() => {
-    //     if (!auth) {
-    //         return;
-    //     }
-    //     window.recaptchaVerifier = new RecaptchaVerifier(
-    //         auth,
-    //         "recaptcha-container",
-    //         {
-    //             size: "invisible",
-    //             callback: (response) => { },
-    //             "expired-callback": () => { },
-    //         }
-    //     );
-    //     return () => {
-    //         window.recaptchaVerifier.clear();
-    //     };
-    // }, [auth]);
+    useEffect(() => {
+        if (!auth) {
+            return;
+        }
+        console.log("Recaptcha init")
+        window.recaptchaVerifier = new RecaptchaVerifier(
+            auth,
+            "recaptcha-container",
+            {
+                size: "invisible",
+                callback: (response) => { },
+                "expired-callback": () => { },
+            }
+        );
+        return () => {
+            window.recaptchaVerifier.clear();
+        };
+    }, [auth]);
 
     useEffect(() => {
         if (currentIndex === 2 && inputRefs.current[0]) {
@@ -145,6 +146,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                 }
                 console.log('I am trying this');
                 const formattedPhoneNumber = `+${userLoginDetails.phone.replace(/\D/g, "")}`;
+                console.log('Phone Number', formattedPhoneNumber)
                 const confirmation = await signInWithPhoneNumber(auth, formattedPhoneNumber, window.recaptchaVerifier);
                 setVerificationIdConfirm(confirmation.verificationId);
             }
