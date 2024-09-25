@@ -53,14 +53,31 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
     }, []);
 
     useEffect(() => {
-        const localLocation = localStorage.getItem('userLocation');
-        if (localLocation) {
+        console.log('Country Code changed ', countryCode)
+    }, [countryCode])
+
+    useEffect(() => {
+        if(fromSignIn){
             if (inputElementRef.current) {
-                inputElementRef.current.focus();
+                inputElementRef.current.focus()
             }
-        } else {
-            return
         }
+       
+        const timeOut = setTimeout(() => {
+            const localLocation = localStorage.getItem('userLocation');
+            if (localLocation) {
+                let loc = JSON.parse(localLocation);
+                console.log("Location recieved form localstorage On Login", loc)
+                if (typeof loc.countryCode != 'undefined') {
+                    setCountryCode(loc.countryCode.toLowerCase());
+                    console.log("Code set is", loc.countryCode.toLowerCase());
+                }
+
+            } else {
+            }
+        }, 300);
+        return () => clearTimeout(timeOut);
+
 
     }, []);
 
@@ -106,7 +123,29 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
 
     //test code to get the user location and saving it on the localstorage
     const getGeoLocation = () => {
+        // localStorage.removeItem("userLocation")
+        const localLocation = localStorage.getItem('userLocation');
+        // let loc = null
+        if (localLocation) {
+            let loc = JSON.parse(localLocation)
+            console.log('Location From LocalStorage on Focus', loc);
+            if (typeof loc.countryCode != 'undefined') {
+                setCountryCode(loc.countryCode.toLowerCase());
+                console.log("Code set is", loc.countryCode.toLowerCase());
+            }
+            else {
+                askLocation()
+            }
+        } else {
+            askLocation()
+        }
+
+    }
+
+    const askLocation = () => {
+        console.log("Gettign lcoation 1")
         if (navigator.geolocation) {
+            console.log("Gettign lcoation 2")
             navigator.geolocation.getCurrentPosition(
                 async (position) => {
                     const { latitude, longitude } = position.coords;
@@ -123,11 +162,13 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
                         const locationData = {
                             state: data.principalSubdivision, // State/Province
                             city: data.city || data.locality, // City
-                            country: data.countryName // Country
+                            country: data.countryName, // Country
+                            countryCode: data.countryCode
                         };
                         localStorage.setItem('userLocation', JSON.stringify(locationData));
                         console.log('Location data saved to local storage:', locationData);
                         userLocation(locationData);
+                        console.log('Location obtained ask Location', locationData)
                     } catch (error) {
                         console.error('Error fetching location data:', error);
                     }

@@ -127,15 +127,28 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
     const sendOtp = async () => {
         try {
             setResendLoader(true);
-            if (!userLoginDetails.phone) {
-                console.log("Please enter a valid phone number");
-                return;
+
+
+            if (fromSignInPage) {
+                if (!signinVerificationNumber) {
+                    console.log("Please enter a valid phone number");
+                    return;
+                }
+                console.log("verification number is", signinVerificationNumber)
+                const formattedPhoneNumber = `+${signinVerificationNumber.replace(/\D/g, "")}`;
+                const confirmation = await signInWithPhoneNumber(auth, formattedPhoneNumber, window.recaptchaVerifier);
+                setVerificationIdConfirm(confirmation.verificationId);
+            } else {
+                if (!userLoginDetails.phone) {
+                    console.log("Please enter a valid phone number");
+                    return;
+                }
+                console.log('I am trying this');
+                const formattedPhoneNumber = `+${userLoginDetails.phone.replace(/\D/g, "")}`;
+                const confirmation = await signInWithPhoneNumber(auth, formattedPhoneNumber, window.recaptchaVerifier);
+                setVerificationIdConfirm(confirmation.verificationId);
             }
 
-            const formattedPhoneNumber = `+${userLoginDetails.phone.replace(/\D/g, "")}`;
-            const confirmation = await signInWithPhoneNumber(auth, formattedPhoneNumber, window.recaptchaVerifier);
-
-            setVerificationIdConfirm(confirmation.verificationId);
             console.log("OTP sent successfully");
         } catch (error) {
             console.error("Error during OTP sending:", error);

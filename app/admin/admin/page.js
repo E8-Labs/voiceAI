@@ -4,9 +4,11 @@ import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import Apis from '@/components/apis/Apis';
 import { CircularProgress } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
 const Page = () => {
 
+    const router = useRouter();
     const [creators, setCreators] = useState([
         // {
         //     id: 1,
@@ -78,7 +80,7 @@ const Page = () => {
 
     useEffect(() => {
         getCreators();
-    },[])
+    }, [])
 
     const handleCreatorDetailsClick = (item) => {
         setCreatorDetails(item);
@@ -150,6 +152,14 @@ const Page = () => {
                             </div>
                         ))
                     }
+                </div>
+                <div>
+                    <button onClick={() => {
+                        localStorage.removeItem('User');
+                        router.push('/tate.ai');
+                    }}>
+                        Logout
+                    </button>
                 </div>
             </div>
             <div className='w-9/12 flex flex-col gap-4 pt-8 ps-4' style={{ backgroundColor: '#ffffff60' }}>

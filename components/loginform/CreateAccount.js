@@ -32,7 +32,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
     const [openWrongNumberPopup, setOpenWrongNumberPopup] = useState(false);
 
     const handlePhoneNumber = (number) => {
-        // console.log("Number is", number);
+        console.log("Number is", number);
         setUserPhoneNumber(number);
     }
 
@@ -298,7 +298,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                 // sendOtp();
                 if (loginResponse.data.status === true) {
                     let phoneNumber = userPhoneNumber;
-                    if (phoneNumber.startsWith("1")) {
+                    if (phoneNumber.startsWith("92")) {
                         console.log("It is US number");
                         localStorage.setItem('LoginData', JSON.stringify(loginResponse.data));
                         sendOtp();
@@ -307,6 +307,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                         setOpenWrongNumberPopup(true);
                     }
                 } else {
+                    console.log("Error occured is", loginResponse.data)
                     setErrSnack(loginResponse.data.message);
                 }
             }
