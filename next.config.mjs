@@ -22,6 +22,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'randomuser.me',  // Another domain you're using
       },
+      {
+        protocol: 'https',
+        hostname: 'iggi-media.s3.amazonaws.com',  // Another domain you're using
+      },
     ],
   },
 };

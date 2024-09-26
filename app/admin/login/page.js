@@ -7,11 +7,8 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js';
 const SigninNumberInput = ({ fromSignIn, formatErr, phonenumber, autoFocus }) => {
     const inputElementRef = useRef(null);
     const [phone, setPhone] = useState('');
-    const [focus, setFocus] = useState(false);
     const [countryCode, setCountryCode] = useState(''); // Default to US
     const [selectedCountry, setSelectedCountry] = useState(''); // Track the selected country
-    const [error, setError] = useState('');
-    const [data, setData] = useState(null);
 
     useEffect(() => {
         const localData = localStorage.getItem('formData');
@@ -22,21 +19,16 @@ const SigninNumberInput = ({ fromSignIn, formatErr, phonenumber, autoFocus }) =>
     }, []);
 
     useEffect(() => {
-        const handleVisibilityChange = () => {
-            if (document.visibilityState === 'visible' && fromSignIn && inputElementRef.current) {
-                setTimeout(() => {
-                    inputElementRef.current.focus();
-                    console.log('Focus is set to true');
-                }, 1000);
-            }
-        };
-
-        document.addEventListener('visibilitychange', handleVisibilityChange);
-
-        return () => {
-            document.removeEventListener('visibilitychange', handleVisibilityChange);
-        };
-    }, [fromSignIn]);
+        if (fromSignIn && autoFocus && inputElementRef.current) {
+            const timer = setTimeout(() => {
+                // Scroll into view before focusing
+                inputElementRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                inputElementRef.current.focus({ preventScroll: true });
+                console.log('Focus set after scroll');
+            }, 500); // Slight delay to ensure component is rendered
+            return () => clearTimeout(timer);
+        }
+    }, [fromSignIn, autoFocus]);
 
     useEffect(() => {
         const localLocation = localStorage.getItem('userLocation');
@@ -56,14 +48,6 @@ const SigninNumberInput = ({ fromSignIn, formatErr, phonenumber, autoFocus }) =>
             return () => clearTimeout(timer);
         }
     }, [phone, selectedCountry]);
-
-    useEffect(() => {
-        const LocalData = localStorage.getItem('route');
-        if (LocalData) {
-            const Data = JSON.parse(LocalData);
-            setData(Data);
-        }
-    }, []);
 
     const getGeoLocation = () => {
         const localLocation = localStorage.getItem('userLocation');
@@ -146,10 +130,10 @@ const SigninNumberInput = ({ fromSignIn, formatErr, phonenumber, autoFocus }) =>
                 }}
                 onFocus={() => {
                     getGeoLocation();
-                    console.log("On focus start")
+                    console.log("On focus start");
                 }}
                 onBlur={() => {
-                    console.log("On blur start")
+                    console.log("On blur start");
                 }}
                 containerStyle={{}}
                 buttonStyle={{
@@ -176,7 +160,9 @@ const SigninNumberInput = ({ fromSignIn, formatErr, phonenumber, autoFocus }) =>
                 }}
                 inputProps={{
                     ref: inputElementRef,
-                    // autoFocus: true
+                    autoFocus: true,
+                    inputMode: 'numeric', // Ensures numeric keypad on mobile
+                    pattern: '[0-9]*', // Helps enforce numeric input on mobile
                 }}
             />
 
@@ -202,8 +188,7 @@ const SigninNumberInput = ({ fromSignIn, formatErr, phonenumber, autoFocus }) =>
             `}</style>
         </div>
     )
-};
-
+}
 const Page = () => {
     const [numberFormatErr, setNumberFormatErr] = useState(null);
     const [signinVerificationNumber, setSigninVerificationNumber] = useState(null);
