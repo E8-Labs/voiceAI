@@ -6,17 +6,42 @@ import Image from 'next/image';
 
 const CycleArray = ({ data, assistantData, onLargeScreen }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [shuffled, setShuffled] = useState([])
 
     useEffect(() => {
-        if (data.length === 0) return;
+        if (data.length === 0) { return };
+        let shuffled = shuffleArray(data);
+        setShuffled(shuffled)
+        console.log("Setting shuffled array")
 
-        const intervalDuration = 15000;
-        const interval = setInterval(() => {
-            setCurrentIndex(prevIndex => (prevIndex + 1) % data.length);
-        }, intervalDuration);
-
-        return () => clearInterval(interval);
     }, [data]);
+
+
+    useEffect(() => {
+        if (shuffled.length == 0) { return }
+        const intervalDuration = 10000;
+        const interval = setInterval(() => {
+            // let index = Math.floor(Math.random() * shuffled.length);
+            // console.log("Random Index is ", index)
+
+           
+            setCurrentIndex(prevIndex => (prevIndex + 1) % shuffled.length);
+            
+
+        }, intervalDuration);
+        console.log("Set Shuffled array", shuffled.length)
+        return () => clearInterval(interval);
+    }, [shuffled])
+
+    useEffect(() => {
+        // console.log('CurrentIndex', currentIndex)
+        if (currentIndex >= shuffled.length - 1) {
+            console.log("Reshuffling ", currentIndex)
+            let sh = shuffleArray(shuffled)
+            setShuffled(sh)
+            setCurrentIndex(0)
+        }
+    }, [currentIndex])
 
     const variants = {
         hidden: { opacity: 0, y: 50 },
@@ -24,10 +49,20 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
         exit: { opacity: 0, y: -50 },
     };
 
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            // Generate a random index between 0 and i
+            const j = Math.floor(Math.random() * (i + 1));
+            // Swap elements at index i and j
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
     return (
         <div>
             {
-                data[currentIndex] &&
+                shuffled[currentIndex] &&
                 <motion.div
                     key={currentIndex}
                     initial="hidden"
@@ -47,8 +82,8 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
                         }}>
                         <div>
                             {
-                                data[currentIndex] && data[currentIndex].caller && data[currentIndex].caller.profile_image ?
-                                    <Image src={data[currentIndex].caller.profile_image} alt='live' height={31} width={31} style={{ borderRadius: "50%" }} /> :
+                                shuffled[currentIndex] && shuffled[currentIndex].caller && shuffled[currentIndex].caller.profile_image ?
+                                    <Image src={shuffled[currentIndex].caller.profile_image} alt='live' height={31} width={31} style={{ borderRadius: "50%" }} /> :
                                     <Image src="/assets/placeholderImg.jpg" alt='12' height={40} width={40} style={{ borderRadius: "50%" }} />
                             }
                             {/* {
@@ -80,9 +115,9 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
                                                 )
                                             */}
                                             {
-                                                data[currentIndex] &&
+                                                shuffled[currentIndex] &&
                                                 (() => {
-                                                    const name = data[currentIndex].caller.name.split(' ')[0]; // Get the first part before the space
+                                                    const name = shuffled[currentIndex].caller.name.split(' ')[0]; // Get the first part before the space
                                                     return name.length > 10
                                                         ? name.charAt(0).toUpperCase() + name.slice(1, 10) + '...'
                                                         : name.charAt(0).toUpperCase() + name.slice(1);
@@ -93,14 +128,14 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
                                     <div className='flex flex-row items-center gap-1' style={{ fontWeight: "400", fontSize: 15, color: "" }}>
                                         <div>
                                             {
-                                                data[currentIndex] && (
+                                                shuffled[currentIndex] && (
                                                     <div style={{ fontSize: 13, fontWeight: "400", color: "grey" }}>
                                                         {
-                                                            data[currentIndex] &&
-                                                            data[currentIndex].caller.city
+                                                            shuffled[currentIndex] &&
+                                                            shuffled[currentIndex].caller.city
                                                         }, {
-                                                            data[currentIndex] &&
-                                                            data[currentIndex].caller.state
+                                                            shuffled[currentIndex] &&
+                                                            shuffled[currentIndex].caller.state
                                                         }
                                                     </div>
                                                 )
@@ -130,9 +165,9 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
                                                 )
                                             */}
                                             {
-                                                data[currentIndex] &&
+                                                shuffled[currentIndex] &&
                                                 (() => {
-                                                    const name = data[currentIndex].caller.name.split(' ')[0]; // Get the first part before the space
+                                                    const name = shuffled[currentIndex].caller.name.split(' ')[0]; // Get the first part before the space
                                                     return name.length > 10
                                                         ? name.charAt(0).toUpperCase() + name.slice(1, 10) + '...'
                                                         : name.charAt(0).toUpperCase() + name.slice(1);
@@ -143,14 +178,14 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
                                     <div className='flex flex-row items-center gap-1' style={{ fontWeight: "400", fontSize: 15, color: "" }}>
                                         <div>
                                             {
-                                                data[currentIndex] && (
+                                                shuffled[currentIndex] && (
                                                     <div style={{ fontSize: 13, fontWeight: "400", color: "grey" }}>
                                                         {
-                                                            data[currentIndex] &&
-                                                            data[currentIndex].caller.city
+                                                            shuffled[currentIndex] &&
+                                                            shuffled[currentIndex].caller.city
                                                         }, {
-                                                            data[currentIndex] &&
-                                                            data[currentIndex].caller.state
+                                                            shuffled[currentIndex] &&
+                                                            shuffled[currentIndex].caller.state
                                                         }
                                                     </div>
                                                 )

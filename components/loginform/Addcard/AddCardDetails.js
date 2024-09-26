@@ -211,7 +211,7 @@ const AddCardDetails = ({
                     const AuthToken = D.data.token;
                     // const AuthToken = "bgabgakjhaslidfhgkerhiuhkmxvnidfuhgiehlmklhn";
                     console.log("Token for add card ", D.data.token);
-                    
+
                     console.log('Data sending in api is :', AddCardData);
                     // return
                     const response = await axios.post(ApiPath, AddCardData, {
@@ -247,11 +247,22 @@ const AddCardDetails = ({
                             if (closeForm) { //
                                 console.log("Response of add card api is ::::", response.data.data);
                                 localStorage.setItem('callStatus', JSON.stringify(callStatus));
+                                //data for buy status
+                                const fromBuyStatus = localStorage.getItem("fromBuyScreen");
+                                console.log("Data of fromBuyscreen", JSON.parse(fromBuyStatus));
+                                if (fromBuyStatus) {
+                                    const Data = JSON.parse(fromBuyStatus);
+                                    window.open(`/buyproduct/${Data.id}`);
+                                    // localStorage.removeItem("fromBuyScreen");   http://localhost:3000/buyproduct/1
+                                    // localStorage.setItem("User", JSON.stringify(response.data));
+                                } else {
+                                    closeForm();
+                                    window.location.reload();
+                                }
                                 // D.data.user.payment_added = true;
                                 // localStorage.setItem('User', JSON.stringify(D));
                                 // return
-                                closeForm();
-                                window.location.reload();
+
                             } else
                                 if (closeAddCardPopup) {
                                     closeAddCardPopup(false);

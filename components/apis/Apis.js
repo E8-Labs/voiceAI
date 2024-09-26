@@ -41,7 +41,8 @@ const Apis = {
     DeleteCard: `${BasePath}api/user/delete_card`,
     verifyEmail: `${BasePath}api/user/verifyEmail`,
     MyProfile: `${BasePath}api/user/myProfile`,
-    GetCreators: `${BasePath}api/user/getCreatorsx`
+    GetCreators: `${BasePath}api/user/getCreatorsx`,
+    UpdateCreatorAdminSide: `${BasePath}api/user/updateCreatorAI`
 }
 
 export default Apis;

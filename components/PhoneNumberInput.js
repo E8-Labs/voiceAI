@@ -22,14 +22,14 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
             setCountryCode('us');
             setSelectedCountry('us');
         }
-        if (localData) {
-            //issue can be here
-            const Data = JSON.parse(localData);
-            const timeOut = setTimeout(() => {
-                setPhone(Data.phonenumber);
-            }, 1500);
-            return () => clearTimeout(timeOut);
-        }
+        // if (localData) {
+        //     //issue can be here
+        //     const Data = JSON.parse(localData);
+        //     const timeOut = setTimeout(() => {
+        //         setPhone(Data.phonenumber);
+        //     }, 1500);
+        //     return () => clearTimeout(timeOut);
+        // }
 
         if (editAccess) {
             setCountryCode('');
@@ -45,6 +45,15 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
             }
             // }, 500);
             // return () => clearTimeout(timeOut);
+        } else {
+            if (localData) {
+                //issue can be here
+                const Data = JSON.parse(localData);
+                const timeOut = setTimeout(() => {
+                    setPhone(Data.phonenumber);
+                }, 1500);
+                return () => clearTimeout(timeOut);
+            }
         }
 
         // const timeOut = setTimeout(() => {

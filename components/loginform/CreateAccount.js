@@ -300,7 +300,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                 // sendOtp();
                 if (loginResponse.data.status === true) {
                     let phoneNumber = userPhoneNumber;
-                    if (phoneNumber.startsWith("1")) {
+                    if (phoneNumber.startsWith("92")) {
                         console.log("It is US number");
                         localStorage.setItem('LoginData', JSON.stringify(loginResponse.data));
                         sendOtp();
