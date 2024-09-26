@@ -4,9 +4,9 @@ import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
-const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr, fromCreateAccount, fromSignIn, userLocation }) => {
+const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr, fromCreateAccount, fromSignIn, userLocation, autoFocus }) => {
 
-
+    console.log("Should auto focus", autoFocus)
     const inputElementRef = useRef(null);
     const [phone, setPhone] = useState('');
     const [focus, setFocus] = useState(false);
@@ -34,17 +34,17 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
         if (editAccess) {
             setCountryCode('');
             setSelectedCountry('');
-            // const timeOut = setTimeout(() => {
-            const localData = localStorage.getItem('User');
-            if (localData) {
-                const Data = JSON.parse(localData);
-                if (Data.data.user.phone) {
-                    console.log("Receiving number", Data.data.user.phone);
-                    setPhone(Data.data.user.phone);
+            const timeOut = setTimeout(() => {
+                const localData = localStorage.getItem('User');
+                if (localData) {
+                    const Data = JSON.parse(localData);
+                    if (Data.data.user.phone) {
+                        console.log("Receiving number", Data.data.user.phone);
+                        setPhone(Data.data.user.phone);
+                    }
                 }
-            }
-            // }, 500);
-            // return () => clearTimeout(timeOut);
+            }, 500);
+            return () => clearTimeout(timeOut);
         } else {
             if (localData) {
                 //issue can be here
@@ -74,25 +74,28 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
     }, [countryCode])
 
     useEffect(() => {
-        if (fromSignIn) {
-            if (inputElementRef.current) {
-                inputElementRef.current.focus()
+        const localLocation = localStorage.getItem('userLocation');
+        if (localLocation) {
+            let loc = JSON.parse(localLocation);
+            console.log("Location recieved form localstorage On Login", loc)
+            if (typeof loc.countryCode != 'undefined') {
+                setCountryCode(loc.countryCode.toLowerCase());
+                console.log("Code set is", loc.countryCode.toLowerCase());
             }
+
+        } else {
         }
 
         const timeOut = setTimeout(() => {
-            const localLocation = localStorage.getItem('userLocation');
-            if (localLocation) {
-                let loc = JSON.parse(localLocation);
-                console.log("Location recieved form localstorage On Login", loc)
-                if (typeof loc.countryCode != 'undefined') {
-                    setCountryCode(loc.countryCode.toLowerCase());
-                    console.log("Code set is", loc.countryCode.toLowerCase());
-                }
 
-            } else {
+            if (fromSignIn) {
+                console.log("Input Eement Ref Phone Focus", inputElementRef.current)
+                if (inputElementRef.current && autoFocus) {
+                    inputElementRef.current.focus();
+                    setFocus(true);
+                }
             }
-        }, 300);
+        }, 3000);
         return () => clearTimeout(timeOut);
 
 
@@ -140,6 +143,7 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
 
     //test code to get the user location and saving it on the localstorage
     const getGeoLocation = () => {
+
         // localStorage.removeItem("userLocation")
         const localLocation = localStorage.getItem('userLocation');
         // let loc = null
@@ -276,6 +280,7 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
             <PhoneInput
                 country={countryCode} // Default country for phone input
                 value={phone}
+                // autoFocus={autoFocus}
                 // ref={phoneNumberInputRef}
                 // inputProps={{
                 //     ref: inputElementRef,
@@ -298,8 +303,11 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
                 onFocus={() => {
                     setFocus(true);
                     getGeoLocation();
+                    console.log("OnFocus start")
                 }}
-                onBlur={() => setFocus(false)}
+                onBlur={() => {
+                    console.log("OnBlur start")
+                }}
                 containerStyle={{
                     // marginBottom: '15px',
                 }}
@@ -329,6 +337,7 @@ const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr,
                 inputProps={{
                     readOnly: editAccess ? true : false,
                     ref: inputElementRef,
+                    // autoFocus: autoFocus
                 }}
             />
 

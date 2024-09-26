@@ -16,6 +16,8 @@ export default function RootLayout({ children }) {
         {/* code for removing scrolling on phones */}
         {/* <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" /> */}
 
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
         {/* Code for popins */}
         <link rel="icon" href="/Xlogo.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />

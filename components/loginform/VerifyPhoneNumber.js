@@ -54,7 +54,13 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
             }
         );
         return () => {
-            window.recaptchaVerifier.clear();
+            if (window.recaptchaVerifier) {
+                try {
+                    window.recaptchaVerifier.clear();
+                } catch (error) {
+                    console.error("Error clearing recaptchaVerifier:", error);
+                }
+            }
         };
     }, [auth]);
 

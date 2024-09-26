@@ -30,6 +30,7 @@ import {
 } from "../firebase.js";
 import zIndex from "@mui/material/styles/zIndex";
 import VerifyPhoneNumber from "../loginform/VerifyPhoneNumber";
+import SigninNumberInput from "../signin/SigninNumberInput";
 
 const boxVariants = {
   enter: (direction) => ({
@@ -92,8 +93,7 @@ export default function Animation({ onChangeIndex }) {
   const [EmailP3, setEmailP3] = useState("");
   const [EmailP4, setEmailP4] = useState("");
   const [EmailP5, setEmailP5] = useState("");
-  const [signinVerificationNumber, setSigninVerificationNumber] =
-    useState(null);
+  const [signinVerificationNumber, setSigninVerificationNumber] = useState(null);
   const [openWrongNumberPopup, setOpenWrongNumberPopup] = useState(false);
   const [emailValidationError, setEmailValidationError] = useState(false);
   const [sendEmailCodeLoader, setSendEmailCodeLoader] = useState(false);
@@ -704,7 +704,7 @@ export default function Animation({ onChangeIndex }) {
     // let sent = await sendOtp();
 
     let phoneNumber = signinVerificationNumber;
-    if (phoneNumber.startsWith("92")) {
+    if (phoneNumber.startsWith("1")) {
       console.log("It is US number");
       // localStorage.setItem('LoginData', JSON.stringify(loginResponse.data));
       setIndex1Loader(true);
@@ -716,42 +716,6 @@ export default function Animation({ onChangeIndex }) {
       // setVerifiyNumberLoader(false);
     }
 
-    // try {
-    //     setIndex1Loader(true);
-    //     setResendCodeLoader(true);
-    //     const ApiPath = Apis.sendVerificationCode;
-    //     // const LocalData = localStorage.getItem('route');
-    //     // const D = JSON.parse(LocalData);
-    //     // const modalName = D.modalName;
-    //     // router.push(`/${modalName}`);
-    //     const data = {
-    //         phone: signinVerificationNumber,
-    //         // status: "true"
-    //         login: "true"
-    //     }
-    //     localStorage.setItem('signinNumber', JSON.stringify(signinVerificationNumber));
-    //     console.log("Data sending in api to send verification code:", data);
-    //     const response = await axios.post(ApiPath, data, {
-    //         headers: {
-    //             'Content-Type': "application/json"
-    //         }
-    //     });
-    //     if (response) {
-    //         console.log("Response of login api is", response);
-    //         if (response.data.status === true) {
-    //             if (e) {
-    //                 return
-    //             } else {
-    //                 handleContinue();
-    //             }
-    //         }
-    //     }
-    // } catch (error) {
-    //     console.error("Error occured in login api", error);
-    // } finally {
-    //     setIndex1Loader(false);
-    //     setResendCodeLoader(false);
-    // }
   };
 
   //signup click
@@ -1207,10 +1171,17 @@ export default function Animation({ onChangeIndex }) {
                                             },
                                         }} /> */}
 
-                  <PhoneNumberInput
+                  {/* <PhoneNumberInput
                     fromSignIn={true}
                     formatErr={handleErr}
                     phonenumber={SignInNumber}
+                  /> */}
+
+                  <SigninNumberInput
+                    fromSignIn={true}
+                    formatErr={handleErr}
+                    phonenumber={SignInNumber}
+                    autoFocus={true}
                   />
                 </div>
 
