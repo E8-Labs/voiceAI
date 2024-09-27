@@ -8,7 +8,7 @@ import { auth, RecaptchaVerifier, signInWithPhoneNumber, PhoneAuthProvider, sign
 import { useRouter } from 'next/navigation'
 
 const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handleSignin,
-    resendVerification, verificationId, currentIndex,
+    resendVerification, verificationId, currentIndex, closeForm,
     signinVerificationNumber, fromSignInPage, }) => {
 
     const inputRefs = useRef([]);
@@ -209,7 +209,21 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                         if (response.data.status === true) {
                             console.log("Response of update profile", response.data);
                             localStorage.setItem("User", JSON.stringify(userDetails));
-                            handleContinue();
+                            const localAssistantData = localStorage.getItem('assistantData');
+                            if (localAssistantData) {
+                                const AssistantData = JSON.parse(localAssistantData);
+                                const callStatus = {
+                                    callStatus: true
+                                }
+                                if (AssistantData.assitant.allowTrial === true) {
+                                    console.log("trial ststus is", AssistantData.assitant.allowTrial);
+                                    localStorage.setItem('callStatus', JSON.stringify(callStatus));
+                                    closeForm();
+                                    window.location.reload();
+                                } else {
+                                    handleContinue();
+                                }
+                            }
                             localStorage.removeItem('formData');
                             // localStorage.removeItem('LoginData');
                         } else {
@@ -301,7 +315,20 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                                     const D = JSON.parse(LocalData);
                                     const modalName = D.modalName;
                                     localStorage.setItem("User", JSON.stringify(response.data));
-                                    router.push(`/${modalName}`);
+                                    const localAssistantData = localStorage.getItem('assistantData');
+                                    if (localAssistantData) {
+                                        const AssistantData = JSON.parse(localAssistantData);
+                                        const callStatus = {
+                                            callStatus: true
+                                        }
+                                        if (AssistantData.assitant.allowTrial === true) {
+                                            console.log("trial ststus is", AssistantData.assitant.allowTrial);
+                                            localStorage.setItem('callStatus', JSON.stringify(callStatus));
+                                            router.push(`/${modalName}`);
+                                        } else {
+                                            router.push(`/${modalName}`);
+                                        }
+                                    }
                                 }
                             }
                             console.log(

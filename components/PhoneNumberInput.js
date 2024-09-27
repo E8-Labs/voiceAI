@@ -6,7 +6,7 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 const PhoneNumberInput = ({ phonenumber, myCallerAccount, editAccess, formatErr, fromCreateAccount, fromSignIn, userLocation, autoFocus }) => {
 
-    console.log("Should auto focus", autoFocus)
+    // console.log("Should auto focus", autoFocus)
     const inputElementRef = useRef(null);
     const [phone, setPhone] = useState('');
     const [focus, setFocus] = useState(false);

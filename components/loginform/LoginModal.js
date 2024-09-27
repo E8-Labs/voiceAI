@@ -342,7 +342,7 @@ const LoginModal = ({ closeForm, creator, assistantData }) => {
                             <div className='w-full lg:w-full '>
                                 <VerifyPhoneNumber currentIndex={currentIndex} handleContinue={handleContinue}
                                     verificationId={verificationId} userLoginDetails={userLoginDetails} handleBack={handleBack}
-                                    handleSignin={handleSignin} resendVerification={resendVerification} />
+                                    handleSignin={handleSignin} resendVerification={resendVerification} closeForm={closeForm} />
                             </div>
                         </motion.div>
                     </div>

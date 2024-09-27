@@ -704,16 +704,26 @@ export default function Animation({ onChangeIndex }) {
     // let sent = await sendOtp();
 
     let phoneNumber = signinVerificationNumber;
-    if (phoneNumber.startsWith("1")) {
-      console.log("It is US number");
-      // localStorage.setItem('LoginData', JSON.stringify(loginResponse.data));
+    const localAssistantData = localStorage.getItem('assistantData');
+    const AssistantData = JSON.parse(localAssistantData);
+    console.log('AssistantData Recieved from localstorage is', AssistantData);
+    //code if assistant trial mode is true
+    if (AssistantData.assitant.allowTrial === true) {
       setIndex1Loader(true);
       // return
       let sent = await sendOtp();
     } else {
-      console.log("It is other country number");
-      setOpenWrongNumberPopup(true);
-      // setVerifiyNumberLoader(false);
+      if (phoneNumber.startsWith("1")) {
+        console.log("It is US number");
+        // localStorage.setItem('LoginData', JSON.stringify(loginResponse.data));
+        setIndex1Loader(true);
+        // return
+        let sent = await sendOtp();
+      } else {
+        console.log("It is other country number");
+        setOpenWrongNumberPopup(true);
+        // setVerifiyNumberLoader(false);
+      }
     }
 
   };

@@ -80,6 +80,18 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
     const sendOtp = async () => {
         setLoginLoader(true);
         //code to save userFormdata
+        const localAssistantData = localStorage.getItem('assistantData');
+        const AssistantData = JSON.parse(localAssistantData);
+        // console.log('AssistantData Recieved from localstorage is', AssistantData);
+        //code if assistant trial mode is true
+        let modelId = null;
+        let modelData = null
+        if (AssistantData) {
+            console.log("Assistant trial satus is", AssistantData.assitant.allowTrial);
+            // localStorage.setItem('LoginData', JSON.stringify(loginResponse.data));
+            modelId = AssistantData.id;
+            modelData = AssistantData;
+        }
         const data = {
             firstName: userName,
             lastName: userLastName,
@@ -96,7 +108,8 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
             ...(userLocation && {
                 city: userLocation.city,
                 state: userLocation.state
-            })
+            }),
+            modelId: modelId
         }
         console.log("Data for create account", userData);
 
@@ -301,13 +314,25 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                 // sendOtp();
                 if (loginResponse.data.status === true) {
                     let phoneNumber = userPhoneNumber;
-                    if (phoneNumber.startsWith("1")) {
-                        console.log("It is US number");
+                    const localAssistantData = localStorage.getItem('assistantData');
+                    const AssistantData = JSON.parse(localAssistantData);
+                    console.log('AssistantData Recieved from localstorage is', AssistantData);
+                    //code if assistant trial mode is true
+                    if (AssistantData.assitant.allowTrial === true) {
+                        console.log("Assistant trial satus is", AssistantData.assitant.allowTrial);
                         localStorage.setItem('LoginData', JSON.stringify(loginResponse.data));
                         sendOtp();
                     } else {
-                        console.log("It is other country number");
-                        setOpenWrongNumberPopup(true);
+                        //code if assistant trial mode is false also validate if the PHONE NUMBER is from US or not
+                        console.log("Assistant trial status is", AssistantData.assitant.allowTrial);
+                        if (phoneNumber.startsWith("1")) {
+                            console.log("It is US number");
+                            localStorage.setItem('LoginData', JSON.stringify(loginResponse.data));
+                            sendOtp();
+                        } else {
+                            console.log("It is other country number");
+                            setOpenWrongNumberPopup(true);
+                        }
                     }
                 } else {
                     console.log("Error occured is", loginResponse.data)
@@ -435,6 +460,9 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
             setUserEmail(Data.email);
             // setUserPhoneNumber(Data.phonenumber);
         }
+        const localAssistantData = localStorage.getItem('assistantData');
+        const AssistantData = JSON.parse(localAssistantData);
+        console.log('AssistantData Recieved from localstorage is', AssistantData);
     }, []);
 
     useEffect(() => {

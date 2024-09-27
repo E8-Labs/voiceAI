@@ -1314,7 +1314,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                 </button>
                                                 <button className='w-3/12 mt-5'
                                                     onClick={() => {
-                                                        router.push("/tate")
+                                                        router.push("/tate.ai")
                                                     }}
                                                 >
                                                     {/* <div className='text-red'> */}
