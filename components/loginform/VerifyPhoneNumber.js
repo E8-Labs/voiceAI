@@ -323,7 +323,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                                         }
                                         if (AssistantData.assitant.allowTrial === true) {
                                             console.log("trial ststus is", AssistantData.assitant.allowTrial);
-                                            localStorage.setItem('callStatus', JSON.stringify(callStatus));
+                                            // localStorage.setItem('callStatus', JSON.stringify(callStatus));
                                             router.push(`/${modalName}`);
                                         } else {
                                             router.push(`/${modalName}`);

@@ -4,18 +4,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { Box, Drawer, Modal, Snackbar, Alert, Slide, Fade } from '@mui/material';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-// import ProfileAnimation from '@/components/animation/ProfileAnimation';
 import ProfileAnimation from './animation/ProfileAnimation';
-// import LoginModal from '@/components/loginform/LoginModal';
 import LoginModal from './loginform/LoginModal';
 import axios from 'axios';
-// import Apis from '@/components/apis/Apis';
 import Apis from './apis/Apis';
-// import CycleArray from '@/components/animation/CycleArray';
 import CycleArray from './animation/CycleArray';
-// import AnimatedButton from '@/components/testcomponents/Dropdown';
 import AnimatedButton from './testcomponents/Dropdown';
-// import MetaTags from '@/components/Metatags/MetaTags';
 import MetaTags from './Metatags/MetaTags';
 
 const backgroundImage = {
@@ -165,9 +159,9 @@ const Creator = () => {
         window.open(getAssistantData.ai.instaUrl, '_blank')
     }
 
-    const handleTwitterClick = () => {
-        console.log("insta link recieved is", getAssistantData.ai.twitterUrl);
-        window.open(getAssistantData.ai.twitterUrl, '_blank');
+    const handleYoutubeClick = () => {
+        console.log("youtube link recieved is", getAssistantData.ai.youtubeUrl);
+        window.open(getAssistantData.ai.youtubeUrl, '_blank');
     }
 
 
@@ -775,327 +769,326 @@ const Creator = () => {
                             </Snackbar>
 
                         </div> :
-                        <>
-                            <div
-                                style={backgroundImage}
-                                className='  overflow-y-hidden' onMouseMove={handleMouseMove}>
+                        <div
+                            style={backgroundImage}
+                            className='  overflow-y-hidden' onMouseMove={handleMouseMove}>
 
-                                <div className='pt-8 ms-8'>
-                                    <div className='sm:flex hidden w-full flex flex-row justify-between items-start' style={{}}>
-                                        <div className='flex flex-col items-start'>
-                                            <div className='px-2 py-2 flex gap-4 flex-row items-center' ref={buttonRef4}
-                                                style={{
-                                                    border: "2px solid #ffffff",
-                                                    // borderTopLeftRadius: 50, borderTopRightRadius: 50,
-                                                    // borderBottomRightRadius: 50,
-                                                    // borderRadiusTopright: 50,
-                                                    // borderRadiusTopright : 50,
-                                                    borderTopLeftRadius: 50,
-                                                    borderBottomRightRadius: 50,
-                                                    borderTopRightRadius: 50,
-                                                    backgroundColor: "#ffffff20",
-                                                    zIndex: 1
-                                                }}>
-                                                <div className='flex flex-col items-center'>
-                                                    <div className='relative'>
-                                                        <div className='flex flex-row items-center'>
-                                                            <button
-                                                                onClick={() => {
-                                                                    // console.log("Sary gama pada na ri sa");
-                                                                    setOpenClaimPopup(true);
-                                                                }}
-                                                                style={{ position: 'relative' }}>
-                                                                <div style={{ border: "2px solid black", borderRadius: "50%" }}>
-                                                                    {
-                                                                        getAssistantData && getAssistantData.profile_image ?
-                                                                            <Image src={getAssistantData.profile_image} alt='profilephoto' //height={50} width={50}
-                                                                                height={50}
-                                                                                width={50}
-                                                                                style={{
-                                                                                    width: '50px',
-                                                                                    height: '50px',
-                                                                                    backgroundColor: "",
-                                                                                    borderRadius: "50%",
-                                                                                    border: "3px solid white",
-                                                                                    objectFit: 'cover',
-                                                                                    objectPosition: 'center',
-                                                                                    // backgroundColor: 'red'
-                                                                                }}
-                                                                            //style={{ padding: 4, borderRadius: "50%" }} 
-                                                                            /> :
-                                                                            <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={50} width={50}
-                                                                                style={{ padding: 4, borderRadius: "50%" }} />
-                                                                    }
+                            <div className='pt-8 ms-8'>
+                                <div className='sm:flex hidden w-full flex flex-row justify-between items-start' style={{}}>
+                                    <div className='flex flex-col items-start'>
+                                        <div className='px-2 py-2 flex gap-4 flex-row items-center' ref={buttonRef4}
+                                            style={{
+                                                border: "2px solid #ffffff",
+                                                // borderTopLeftRadius: 50, borderTopRightRadius: 50,
+                                                // borderBottomRightRadius: 50,
+                                                // borderRadiusTopright: 50,
+                                                // borderRadiusTopright : 50,
+                                                borderTopLeftRadius: 50,
+                                                borderBottomRightRadius: 50,
+                                                borderTopRightRadius: 50,
+                                                backgroundColor: "#ffffff20",
+                                                zIndex: 1
+                                            }}>
+                                            <div className='flex flex-col items-center'>
+                                                <div className='relative'>
+                                                    <div className='flex flex-row items-center'>
+                                                        <button
+                                                            onClick={() => {
+                                                                // console.log("Sary gama pada na ri sa");
+                                                                setOpenClaimPopup(true);
+                                                            }}
+                                                            style={{ position: 'relative' }}>
+                                                            <div style={{ border: "2px solid black", borderRadius: "50%" }}>
+                                                                {
+                                                                    getAssistantData && getAssistantData.profile_image ?
+                                                                        <Image src={getAssistantData.profile_image} alt='profilephoto' //height={50} width={50}
+                                                                            height={50}
+                                                                            width={50}
+                                                                            style={{
+                                                                                width: '50px',
+                                                                                height: '50px',
+                                                                                backgroundColor: "",
+                                                                                borderRadius: "50%",
+                                                                                border: "3px solid white",
+                                                                                objectFit: 'cover',
+                                                                                objectPosition: 'center',
+                                                                                // backgroundColor: 'red'
+                                                                            }}
+                                                                        //style={{ padding: 4, borderRadius: "50%" }} 
+                                                                        /> :
+                                                                        <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={50} width={50}
+                                                                            style={{ padding: 4, borderRadius: "50%" }} />
+                                                                }
+                                                            </div>
+                                                            <div className='absolute top-0 -left-2' style={{ backgroundColor: "transparent" }}>
+                                                                <div style={{ height: "30px", width: "30px", backgroundColor: "transparent" }}>
+                                                                    <Image onClick={() => {
+                                                                        // console.log("Sary gama pada na ri sa");
+                                                                        setOpenClaimPopup(true);
+                                                                    }} src="/assets/claimLogo.png" alt='claimbtn' height={40} width={40}
+                                                                        style={{ cursor: "pointer", backgroundColor: "transparent" }} />
                                                                 </div>
-                                                                <div className='absolute top-0 -left-2' style={{ backgroundColor: "transparent" }}>
-                                                                    <div style={{ height: "30px", width: "30px", backgroundColor: "transparent" }}>
-                                                                        <Image onClick={() => {
+                                                            </div>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div>
+                                                {/* code for assistant name and calls */}
+                                                <div className='flex flex-row items-center gap-8'>
+                                                    <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                                        {
+                                                            getAssistantData &&
+                                                            <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                                                {
+                                                                    getAssistantData.name ?
+                                                                        <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                                                            {getAssistantData.name}
+                                                                        </div> :
+                                                                        <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                                                            {getAssistantData.assitant.name}
+                                                                        </div>
+                                                                }
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div className='flex flex-row pe-4'>
+                                                    <div style={{ fontSize: 12, color: "#000000", fontWeight: "400", fontFamily: "inter" }}>
+                                                        Calls:
+                                                    </div>
+                                                    <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 12 }}>
+                                                        {
+                                                            getAssistantData &&
+                                                            <div>
+                                                                {getAssistantData.calls ?
+                                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
+                                                                        {getAssistantData.calls}
+                                                                    </div> :
+                                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
+                                                                        0
+                                                                    </div>
+                                                                }
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                    <div className='ms-2' style={{ fontSize: 12, color: "#000000", fontWeight: "400", fontFamily: "inter" }}>
+                                                        Earned:
+                                                    </div>
+                                                    <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
+                                                        {
+                                                            getAssistantData &&
+                                                            <div>
+                                                                {getAssistantData.earned ?
+                                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
+                                                                        ${Number(getAssistantData.earned).toFixed(2)}
+                                                                    </div> :
+                                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
+                                                                        $ 0
+                                                                    </div>
+                                                                }
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {/* code for socials */}
+                                        <div className='flex flex-row items-center justify-center pb-6 px-6' ref={buttonRef3}
+                                            style={{
+                                                border: "2px solid #ffffff", borderTop: "8px solid #e7f3fe",
+                                                borderBottomLeftRadius: 50,
+                                                borderBottomRightRadius: 50, marginTop: "-4px",
+                                                zIndex: 2, backgroundColor: "#ffffff20",
+                                            }}>
+                                            <div className='flex flex-col gap-4' style={{ marginTop: 10 }}>
+                                                <button onClick={handleInstaClick}>
+                                                    <Image
+                                                        // layout='responsive'
+                                                        objectFit='contain' src={"/assets/instagram.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
+                                                </button>
+                                                <button onClick={handleYoutubeClick}>
+                                                    <Image
+                                                        // layout='responsive'
+                                                        objectFit='contain' src={"/assets/youtubeIcon.png"} alt='social' height={25} width={25} style={{ resize: "cover", borderRadius: 3 }} />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {
+                                        showProfileIcon &&
+                                        <div ref={buttonRef2} style={{}}>
+
+                                            <AnimatedButton snackMessage={snackMessage} profileData={profileData} />
+
+                                            <div className='flex flex-row gap-4 items-center'>
+                                            </div>
+                                        </div>
+                                    }
+
+                                </div>
+
+                                {/* Assistant Profile icon for small screens */}
+                                <div className='sm:hidden flex items-start justify-between'>
+                                    <div style={{ zIndex: 2 }}>
+                                        {
+                                            showBorderProfile ?
+                                                <div className='flex flex-col items-start'>
+                                                    <div className='px-2 py-2 flex gap-4 flex-row items-center' ref={buttonRef4}
+                                                        style={{
+                                                            border: "2px solid #ffffff",
+                                                            // borderTopLeftRadius: 50, borderTopRightRadius: 50,
+                                                            // borderBottomRightRadius: 50,
+                                                            // borderRadiusTopright: 50,
+                                                            // borderRadiusTopright : 50,
+                                                            borderTopLeftRadius: 50,
+                                                            borderBottomRightRadius: 50,
+                                                            borderTopRightRadius: 50,
+                                                            backgroundColor: "#ffffff20",
+                                                            zIndex: 1
+                                                        }}>
+                                                        <div className='flex flex-col items-center'>
+                                                            <div className='relative'>
+                                                                <div className='flex flex-row items-center'>
+                                                                    <button
+                                                                        onClick={() => {
                                                                             // console.log("Sary gama pada na ri sa");
                                                                             setOpenClaimPopup(true);
-                                                                        }} src="/assets/claimLogo.png" alt='claimbtn' height={40} width={40}
-                                                                            style={{ cursor: "pointer", backgroundColor: "transparent" }} />
-                                                                    </div>
+                                                                        }}
+                                                                        style={{ position: 'relative' }}>
+                                                                        <div style={{ border: "2px solid black", borderRadius: "50%" }}>
+                                                                            {
+                                                                                getAssistantData && getAssistantData.profile_image ?
+                                                                                    <Image src={getAssistantData.profile_image} alt='profilephoto' //height={50} width={50}
+                                                                                        height={50}
+                                                                                        width={50}
+                                                                                        style={{
+                                                                                            width: '50px',
+                                                                                            height: '50px',
+                                                                                            backgroundColor: "",
+                                                                                            borderRadius: "50%",
+                                                                                            border: "3px solid white",
+                                                                                            objectFit: 'cover',
+                                                                                            objectPosition: 'center',
+                                                                                            // backgroundColor: 'red'
+                                                                                        }}
+                                                                                    //style={{ padding: 4, borderRadius: "50%" }} 
+                                                                                    /> :
+                                                                                    <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={50} width={50}
+                                                                                        style={{ padding: 4, borderRadius: "50%" }} />
+                                                                            }
+                                                                        </div>
+                                                                        <div className='absolute top-0 -left-2' style={{ backgroundColor: "transparent" }}>
+                                                                            <div style={{ height: "30px", width: "30px", backgroundColor: "transparent" }}>
+                                                                                <Image onClick={() => {
+                                                                                    // console.log("Sary gama pada na ri sa");
+                                                                                    setOpenClaimPopup(true);
+                                                                                }} src="/assets/claimLogo.png" alt='claimbtn' height={40} width={40}
+                                                                                    style={{ cursor: "pointer", backgroundColor: "transparent" }} />
+                                                                            </div>
+                                                                        </div>
+                                                                    </button>
                                                                 </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div>
+                                                            {/* code for assistant name and calls */}
+                                                            <div className='flex flex-row items-center gap-8'>
+                                                                <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                                                    {
+                                                                        getAssistantData &&
+                                                                        <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                                                            {
+                                                                                getAssistantData.name ?
+                                                                                    <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                                                                        {getAssistantData.name}
+                                                                                    </div> :
+                                                                                    <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
+                                                                                        {getAssistantData.assitant.name}
+                                                                                    </div>
+                                                                            }
+                                                                        </div>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                            <div className='flex flex-row pe-4'>
+                                                                <div style={{ fontSize: 12, color: "#000000", fontWeight: "400", fontFamily: "inter" }}>
+                                                                    Calls:
+                                                                </div>
+                                                                <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 12 }}>
+                                                                    {
+                                                                        getAssistantData &&
+                                                                        <div>
+                                                                            {getAssistantData.calls ?
+                                                                                <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
+                                                                                    {getAssistantData.calls}
+                                                                                </div> :
+                                                                                <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
+                                                                                    0
+                                                                                </div>
+                                                                            }
+                                                                        </div>
+                                                                    }
+                                                                </div>
+                                                                <div className='ms-2' style={{ fontSize: 12, color: "#000000", fontWeight: "400", fontFamily: "inter" }}>
+                                                                    Earned:
+                                                                </div>
+                                                                <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
+                                                                    {
+                                                                        getAssistantData &&
+                                                                        <div>
+                                                                            {getAssistantData.earned ?
+                                                                                <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
+                                                                                    ${Number(getAssistantData.earned).toFixed(2)}
+                                                                                </div> :
+                                                                                <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
+                                                                                    $ 0
+                                                                                </div>
+                                                                            }
+                                                                        </div>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {/* code for socials */}
+                                                    <div className='flex flex-row items-center justify-center pb-6 px-6' ref={buttonRef3}
+                                                        style={{
+                                                            border: "2px solid #ffffff", borderTop: "8px solid #e7f3fe",
+                                                            borderBottomLeftRadius: 50,
+                                                            borderBottomRightRadius: 50, marginTop: "-4px",
+                                                            zIndex: 2, backgroundColor: "#ffffff20",
+                                                        }}>
+                                                        <div className='flex flex-col gap-4' style={{ marginTop: 10 }}>
+                                                            <button onClick={handleInstaClick}>
+                                                                <Image
+                                                                    // layout='responsive'
+                                                                    objectFit='contain' src={"/assets/instagram.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
+                                                            </button>
+                                                            <button onClick={handleYoutubeClick}>
+                                                                <Image
+                                                                    // layout='responsive'
+                                                                    objectFit='contain' src={"/assets/youtubeIcon.png"} alt='social' height={25} width={25} style={{ resize: "cover", borderRadius: 3 }} />
                                                             </button>
                                                         </div>
                                                     </div>
-                                                </div>
-
-
-                                                <div>
-                                                    {/* code for assistant name and calls */}
-                                                    <div className='flex flex-row items-center gap-8'>
-                                                        <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                            {
-                                                                getAssistantData &&
-                                                                <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                                    {
-                                                                        getAssistantData.name ?
-                                                                            <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                                                {getAssistantData.name}
-                                                                            </div> :
-                                                                            <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                                                {getAssistantData.assitant.name}
-                                                                            </div>
-                                                                    }
-                                                                </div>
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                    <div className='flex flex-row pe-4'>
-                                                        <div style={{ fontSize: 12, color: "#000000", fontWeight: "400", fontFamily: "inter" }}>
-                                                            Calls:
-                                                        </div>
-                                                        <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 12 }}>
-                                                            {
-                                                                getAssistantData &&
-                                                                <div>
-                                                                    {getAssistantData.calls ?
-                                                                        <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
-                                                                            {getAssistantData.calls}
-                                                                        </div> :
-                                                                        <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
-                                                                            0
-                                                                        </div>
-                                                                    }
-                                                                </div>
-                                                            }
-                                                        </div>
-                                                        <div className='ms-2' style={{ fontSize: 12, color: "#000000", fontWeight: "400", fontFamily: "inter" }}>
-                                                            Earned:
-                                                        </div>
-                                                        <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
-                                                            {
-                                                                getAssistantData &&
-                                                                <div>
-                                                                    {getAssistantData.earned ?
-                                                                        <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
-                                                                            ${Number(getAssistantData.earned).toFixed(2)}
-                                                                        </div> :
-                                                                        <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
-                                                                            $ 0
-                                                                        </div>
-                                                                    }
-                                                                </div>
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            {/* code for socials */}
-                                            <div className='flex flex-row items-center justify-center pb-6 px-6' ref={buttonRef3}
-                                                style={{
-                                                    border: "2px solid #ffffff", borderTop: "8px solid #e7f3fe",
-                                                    borderBottomLeftRadius: 50,
-                                                    borderBottomRightRadius: 50, marginTop: "-4px",
-                                                    zIndex: 2, backgroundColor: "#ffffff20",
-                                                }}>
-                                                <div className='flex flex-col gap-4' style={{ marginTop: 10 }}>
-                                                    <button onClick={handleInstaClick}>
-                                                        <Image
-                                                            // layout='responsive'
-                                                            objectFit='contain' src={"/assets/instagram.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
-                                                    </button>
-                                                    <button onClick={handleTwitterClick}>
-                                                        <Image
-                                                            // layout='responsive'
-                                                            objectFit='contain' src={"/assets/twitter.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {
-                                            showProfileIcon &&
-                                            <div ref={buttonRef2} style={{}}>
-
-                                                <AnimatedButton snackMessage={snackMessage} profileData={profileData} />
-
-                                                <div className='flex flex-row gap-4 items-center'>
-                                                </div>
-                                            </div>
+                                                </div> :
+                                                <ProfileAnimation creator={creator} openClaimPopup={handleopenClaimpopup} showBorderedProfile={handleShowBorderProfile} />
                                         }
 
+
+
                                     </div>
-
-                                    {/* Assistant Profile icon for small screens */}
-                                    <div className='sm:hidden flex items-start justify-between'>
-                                        <div style={{ zIndex: 2 }}>
-                                            {
-                                                showBorderProfile ?
-                                                    <div className='flex flex-col items-start'>
-                                                        <div className='px-2 py-2 flex gap-4 flex-row items-center' ref={buttonRef4}
-                                                            style={{
-                                                                border: "2px solid #ffffff",
-                                                                // borderTopLeftRadius: 50, borderTopRightRadius: 50,
-                                                                // borderBottomRightRadius: 50,
-                                                                // borderRadiusTopright: 50,
-                                                                // borderRadiusTopright : 50,
-                                                                borderTopLeftRadius: 50,
-                                                                borderBottomRightRadius: 50,
-                                                                borderTopRightRadius: 50,
-                                                                backgroundColor: "#ffffff20",
-                                                                zIndex: 1
-                                                            }}>
-                                                            <div className='flex flex-col items-center'>
-                                                                <div className='relative'>
-                                                                    <div className='flex flex-row items-center'>
-                                                                        <button
-                                                                            onClick={() => {
-                                                                                // console.log("Sary gama pada na ri sa");
-                                                                                setOpenClaimPopup(true);
-                                                                            }}
-                                                                            style={{ position: 'relative' }}>
-                                                                            <div style={{ border: "2px solid black", borderRadius: "50%" }}>
-                                                                                {
-                                                                                    getAssistantData && getAssistantData.profile_image ?
-                                                                                        <Image src={getAssistantData.profile_image} alt='profilephoto' //height={50} width={50}
-                                                                                            height={50}
-                                                                                            width={50}
-                                                                                            style={{
-                                                                                                width: '50px',
-                                                                                                height: '50px',
-                                                                                                backgroundColor: "",
-                                                                                                borderRadius: "50%",
-                                                                                                border: "3px solid white",
-                                                                                                objectFit: 'cover',
-                                                                                                objectPosition: 'center',
-                                                                                                // backgroundColor: 'red'
-                                                                                            }}
-                                                                                        //style={{ padding: 4, borderRadius: "50%" }} 
-                                                                                        /> :
-                                                                                        <Image src={"/assets/placeholderImg.jpg"} alt='profilephoto' height={50} width={50}
-                                                                                            style={{ padding: 4, borderRadius: "50%" }} />
-                                                                                }
-                                                                            </div>
-                                                                            <div className='absolute top-0 -left-2' style={{ backgroundColor: "transparent" }}>
-                                                                                <div style={{ height: "30px", width: "30px", backgroundColor: "transparent" }}>
-                                                                                    <Image onClick={() => {
-                                                                                        // console.log("Sary gama pada na ri sa");
-                                                                                        setOpenClaimPopup(true);
-                                                                                    }} src="/assets/claimLogo.png" alt='claimbtn' height={40} width={40}
-                                                                                        style={{ cursor: "pointer", backgroundColor: "transparent" }} />
-                                                                                </div>
-                                                                            </div>
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-
-                                                            <div>
-                                                                {/* code for assistant name and calls */}
-                                                                <div className='flex flex-row items-center gap-8'>
-                                                                    <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                                        {
-                                                                            getAssistantData &&
-                                                                            <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                                                {
-                                                                                    getAssistantData.name ?
-                                                                                        <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                                                            {getAssistantData.name}
-                                                                                        </div> :
-                                                                                        <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                                                            {getAssistantData.assitant.name}
-                                                                                        </div>
-                                                                                }
-                                                                            </div>
-                                                                        }
-                                                                    </div>
-                                                                </div>
-                                                                <div className='flex flex-row pe-4'>
-                                                                    <div style={{ fontSize: 12, color: "#000000", fontWeight: "400", fontFamily: "inter" }}>
-                                                                        Calls:
-                                                                    </div>
-                                                                    <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 12 }}>
-                                                                        {
-                                                                            getAssistantData &&
-                                                                            <div>
-                                                                                {getAssistantData.calls ?
-                                                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
-                                                                                        {getAssistantData.calls}
-                                                                                    </div> :
-                                                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
-                                                                                        0
-                                                                                    </div>
-                                                                                }
-                                                                            </div>
-                                                                        }
-                                                                    </div>
-                                                                    <div className='ms-2' style={{ fontSize: 12, color: "#000000", fontWeight: "400", fontFamily: "inter" }}>
-                                                                        Earned:
-                                                                    </div>
-                                                                    <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
-                                                                        {
-                                                                            getAssistantData &&
-                                                                            <div>
-                                                                                {getAssistantData.earned ?
-                                                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
-                                                                                        ${Number(getAssistantData.earned).toFixed(2)}
-                                                                                    </div> :
-                                                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
-                                                                                        $ 0
-                                                                                    </div>
-                                                                                }
-                                                                            </div>
-                                                                        }
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        {/* code for socials */}
-                                                        <div className='flex flex-row items-center justify-center pb-6 px-6' ref={buttonRef3}
-                                                            style={{
-                                                                border: "2px solid #ffffff", borderTop: "8px solid #e7f3fe",
-                                                                borderBottomLeftRadius: 50,
-                                                                borderBottomRightRadius: 50, marginTop: "-4px",
-                                                                zIndex: 2, backgroundColor: "#ffffff20",
-                                                            }}>
-                                                            <div className='flex flex-col gap-4' style={{ marginTop: 10 }}>
-                                                                <button onClick={handleInstaClick}>
-                                                                    <Image
-                                                                        // layout='responsive'
-                                                                        objectFit='contain' src={"/assets/instagram.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
-                                                                </button>
-                                                                <button onClick={handleTwitterClick}>
-                                                                    <Image
-                                                                        // layout='responsive'
-                                                                        objectFit='contain' src={"/assets/twitter.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div> :
-                                                    <ProfileAnimation creator={creator} openClaimPopup={handleopenClaimpopup} showBorderedProfile={handleShowBorderProfile} />
-                                            }
-
-
-
-                                        </div>
-                                        {
-                                            showProfileIcon &&
-                                            <div className='flex flex-row gap-4 items-center'>
-                                                <div className='me-8' style={{ zIndex: 2 }}>
-                                                    {/* {
+                                    {
+                                        showProfileIcon &&
+                                        <div className='flex flex-row gap-4 items-center'>
+                                            <div className='me-8' style={{ zIndex: 2 }}>
+                                                {/* {
                                                 profileData && profileData.profile_image ?
                                                     <div className='flex flex-row justify-center items-center p-2' style={{ borderRadius: "50%", backgroundColor: "" }}>
                                                         <img
@@ -1117,39 +1110,39 @@ const Creator = () => {
                                                     </div> :
                                                     <Image onClick={handleProfileClick} src="/assets/placeholderImg.jpg" alt='profile' height={50} width={50} style={{ borderRadius: "50%" }} />
                                             } */}
-                                                </div>
                                             </div>
-                                        }
-                                    </div>
+                                        </div>
+                                    }
                                 </div>
+                            </div>
 
-                                {/* Animating Image */}
-                                <div style={{
-                                    position: 'absolute',
-                                    top: '50%',
-                                    left: '50%',
-                                    transform: 'translate(-50%, -50%)',
-                                }} className='flex w-9/12 justify-center items-center md:flex hidden'>
-                                    <button className='flex items-center justify-center flex-1'
-                                        style={{
-                                            cursor: "pointer",
-                                            outline: "none",
-                                            border: "none",
-                                            backgroundColor: "transparent",
-                                        }}>
-                                        {/* <div className='flex flex-row items-center justify-center' style={gifBackgroundImage}>
+                            {/* Animating Image */}
+                            <div style={{
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                transform: 'translate(-50%, -50%)',
+                            }} className='flex w-9/12 justify-center items-center md:flex hidden'>
+                                <button className='flex items-center justify-center flex-1'
+                                    style={{
+                                        cursor: "pointer",
+                                        outline: "none",
+                                        border: "none",
+                                        backgroundColor: "transparent",
+                                    }}>
+                                    {/* <div className='flex flex-row items-center justify-center' style={gifBackgroundImage}>
                                     <Image onClick={handleContinue} src="/mainAppGif.gif" alt='gif' style={{ backgroundColor: "red", borderRadius: "50%" }} height={600} width={600} />
                                 </div> */}
 
-                                        <div style={gifBackgroundImage} className='flex flex-row justify-center items-center'>
-                                            <Image ref={buttonRef6} onClick={handleContinue} src="/maingif.gif" alt='gif' style={{
-                                                backgroundColor: "",
-                                                borderRadius: "50%", height: isHighScreen ? '680px' : '350px', width: isHighScreen ? '680px' : '350px'
-                                            }} height={600} width={600} />
-                                        </div>
+                                    <div style={gifBackgroundImage} className='flex flex-row justify-center items-center'>
+                                        <Image ref={buttonRef6} onClick={handleContinue} src="/maingif.gif" alt='gif' style={{
+                                            backgroundColor: "",
+                                            borderRadius: "50%", height: isHighScreen ? '680px' : '350px', width: isHighScreen ? '680px' : '350px'
+                                        }} height={600} width={600} />
+                                    </div>
 
 
-                                        {/* <motion.div
+                                    {/* <motion.div
                                     onClick={handleContinue}
                                     // src="/assets/applogo2.png"
                                     // alt="Animating Image"
@@ -1175,83 +1168,83 @@ const Creator = () => {
                                     }
                                 >
                                 </motion.div> */}
-                                    </button>
-                                </div>
+                                </button>
+                            </div>
 
-                                {/* visible on small screens only */}
-                                <div style={{
-                                    position: 'absolute',
-                                    top: '55%',
-                                    left: '50%',
-                                    transform: 'translate(-50%, -50%)',
-                                }} className='w-full flex justify-center items-center md:hidden'>
-                                    <button className='flex flex-col items-center justify-center flex-1'
-                                        style={{
-                                            cursor: "pointer",
-                                            outline: "none",
-                                            border: "none",
-                                        }}>
-                                        {/* <div className='px-4 py-2 rounded-lg -mb-8' style={{ fontSize: 14, fontWeight: '500', fontFamily: 'inter', backgroundColor: '#ffffff50' }}>
+                            {/* visible on small screens only */}
+                            <div style={{
+                                position: 'absolute',
+                                top: '55%',
+                                left: '50%',
+                                transform: 'translate(-50%, -50%)',
+                            }} className='w-full flex justify-center items-center md:hidden'>
+                                <button className='flex flex-col items-center justify-center flex-1'
+                                    style={{
+                                        cursor: "pointer",
+                                        outline: "none",
+                                        border: "none",
+                                    }}>
+                                    {/* <div className='px-4 py-2 rounded-lg -mb-8' style={{ fontSize: 14, fontWeight: '500', fontFamily: 'inter', backgroundColor: '#ffffff50' }}>
                                     Tap to call
                                 </div> */}
-                                        <motion.div
-                                            animate={{
-                                                y: [0, -30, 0],
-                                            }}
-                                            transition={{
-                                                duration: 3.5,
-                                                repeat: Infinity,
-                                                repeatType: "loop",
-                                                ease: "easeInOut",
-                                            }}
-                                            className="-mb-16 rounded-lg flex flex-col justify-center"
-                                            style={{
-                                                fontSize: 14,
-                                                fontWeight: '500',
-                                                fontFamily: 'inter',
-                                                backgroundColor: '#ffffff80',
-                                                padding: '10px 20px', // Add padding to the content inside the box
-                                                position: 'relative',  // Required for positioning the triangle
-                                            }}
-                                        >
-                                            Tap to call
+                                    <motion.div
+                                        animate={{
+                                            y: [0, -30, 0],
+                                        }}
+                                        transition={{
+                                            duration: 3.5,
+                                            repeat: Infinity,
+                                            repeatType: "loop",
+                                            ease: "easeInOut",
+                                        }}
+                                        className="-mb-16 rounded-lg flex flex-col justify-center"
+                                        style={{
+                                            fontSize: 14,
+                                            fontWeight: '500',
+                                            fontFamily: 'inter',
+                                            backgroundColor: '#ffffff80',
+                                            padding: '10px 20px', // Add padding to the content inside the box
+                                            position: 'relative',  // Required for positioning the triangle
+                                        }}
+                                    >
+                                        Tap to call
 
-                                            {/* Triangle at the bottom center */}
-                                            <div
-                                                style={{
-                                                    position: 'absolute',
-                                                    bottom: '-10px',
-                                                    left: '50%',
-                                                    transform: 'translateX(-50%)',
-                                                    width: 0,
-                                                    height: 0,
-                                                    borderLeft: '15px solid transparent',
-                                                    borderRight: '15px solid transparent',
-                                                    borderTop: '15px solid #ffffff80',
-                                                }}
-                                            />
-                                        </motion.div>
-
-
+                                        {/* Triangle at the bottom center */}
                                         <div
-                                            style={gifBackgroundImageSmallScreen}
-                                            // style={{
-                                            //     ...gifBackgroundImage,
-                                            //     // width: isWideScreen && 1000,
-                                            //     // height: isWideScreen && 1000
-                                            // }}
-                                            className='flex flex-row justify-center items-center'>
-                                            <Image onClick={handleContinue} src="/maingif.gif" alt='gif'
-                                                style={{
-                                                    backgroundColor: "",
-                                                    borderRadius: "50%",
-                                                    height: isWideScreen2 ? '350px' : '270px',
-                                                    width: isWideScreen2 ? '350px' : '270px'
-                                                }}
-                                                height={300} width={300} />
-                                        </div>
+                                            style={{
+                                                position: 'absolute',
+                                                bottom: '-10px',
+                                                left: '50%',
+                                                transform: 'translateX(-50%)',
+                                                width: 0,
+                                                height: 0,
+                                                borderLeft: '15px solid transparent',
+                                                borderRight: '15px solid transparent',
+                                                borderTop: '15px solid #ffffff80',
+                                            }}
+                                        />
+                                    </motion.div>
 
-                                        {/* <motion.div
+
+                                    <div
+                                        style={gifBackgroundImageSmallScreen}
+                                        // style={{
+                                        //     ...gifBackgroundImage,
+                                        //     // width: isWideScreen && 1000,
+                                        //     // height: isWideScreen && 1000
+                                        // }}
+                                        className='flex flex-row justify-center items-center'>
+                                        <Image onClick={handleContinue} src="/maingif.gif" alt='gif'
+                                            style={{
+                                                backgroundColor: "",
+                                                borderRadius: "50%",
+                                                height: isWideScreen2 ? '350px' : '270px',
+                                                width: isWideScreen2 ? '350px' : '270px'
+                                            }}
+                                            height={300} width={300} />
+                                    </div>
+
+                                    {/* <motion.div
                                     // src="/borderedAppLogo.png"
                                     // alt="Animating Image"
                                     animate={{
@@ -1276,229 +1269,229 @@ const Creator = () => {
                                 >
                                     <Image src="/mainAppGif.gif" onClick={handleContinue} alt='gif' style={{ backgroundColor: "", borderRadius: "50%", zIndex: 0 }} height={600} width={600} />
                                 </motion.div> */}
-                                    </button>
-                                </div>
+                                </button>
+                            </div>
 
-                                {/* Mouse Following Box Animation */}
-                                <div className='lg:flex hidden'>
-                                    <AnimatePresence>
-                                        {boxVisible && (
-                                            // <motion.div
-                                            //     style={{
-                                            //         position: 'absolute',
-                                            //         top: mousePosition.y - 25,
-                                            //         left: mousePosition.x - 25,
-                                            //         width: 100,
-                                            //         height: 100,
-                                            //         backgroundColor: '#ffffff60',
-                                            //         borderRadius: "50%",
-                                            //         cursor: 'pointer',
-                                            //         display: 'flex',
-                                            //         alignItems: 'center',
-                                            //         justifyContent: 'center',
-                                            //     }}
-                                            //     initial={{ opacity: 0, scale: 0.5 }}
-                                            //     animate={{ opacity: 1, scale: 1.2 }}
-                                            //     exit={{ opacity: 0, scale: 0.5 }}
-                                            //     transition={{ duration: 0.3 }}
-                                            // >
-                                            //     <div style={{ color: 'black' }}>
-                                            //         Tap to call
-                                            //     </div>
-                                            // </motion.div>
-                                            <motion.div
-                                                style={{
-                                                    position: 'absolute',
-                                                    top: Math.min(Math.max(mousePosition.y - 50, 0), window.innerHeight - 120), // Ensures the box stays within the viewport height
-                                                    left: Math.min(Math.max(mousePosition.x - 50, 0), window.innerWidth - 120), // Ensures the box stays within the viewport width
-                                                    width: 100,
-                                                    height: 100,
-                                                    backgroundColor: '#ffffff60',
-                                                    borderRadius: "50%",
-                                                    cursor: 'pointer',
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center',
-                                                }}
-                                                initial={{ opacity: 0, scale: 0.5 }}
-                                                animate={{ opacity: 1, scale: 1.2 }}
-                                                exit={{ opacity: 0, scale: 0.5 }}
-                                                transition={{ duration: 0.3 }}
-                                            >
-                                                <div style={{ color: 'black', fontWeight: "500", fontFamily: 'inter', fontSize: 14 }}>
-                                                    Tap to call
-                                                </div>
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
-                                </div>
-
-
-                                {/* CreatorX Button and Calls array */}
-                                <div style={{ position: "absolute", bottom: 10, border: '' }} className='w-full flex items-end justify-between mb-10 rounded md:flex hidden'>
-                                    <div>
-                                        {
-                                            showCreatorBtn ?
-                                                <div ref={buttonRef} className='flex items-end ms-8 px-4' style={{ backgroundColor: "#620FEB66", width: "fit-content", borderRadius: "70px" }}>
-                                                    <button className='flex flex-row p-4 items-center gap-4'>
-                                                        <Image src={"/assets/stars.png"} alt='phone' height={20} width={20} />
-                                                        <div onClick={
-                                                            // handleCreatorXClick
-                                                            () => {
-                                                                window.open('https://www.jotform.com/form/242259184814461', "_blank")
-                                                            }
-                                                        } className='text-white' style={{ fontSize: 17, fontWeight: "600" }}>
-                                                            Build Your CreatorX
-                                                        </div>
-                                                    </button>
-                                                </div> :
-                                                ""
-                                        }
-                                    </div>
-
-                                    <div ref={buttonRef5} className='me-12 md:flex hidden'>
-                                        <CycleArray onLargeScreen={true} data={getRecentCallData} assistantData={getAssistantData} />
-                                    </div>
-                                </div>
-
-                                {/* for small screen creatorX button */}
-                                <div style={{ position: "absolute", bottom: 0 }} className='w-full flex items-end justify-center mb-8 rounded md:hidden'>
-                                    <div className='flex flex-col gap-8 justify-between w-full items-start'>
-
-                                        <div className='w-full flex flex-row justify-center'>
-                                            <CycleArray data={getRecentCallData} assistantData={getAssistantData} />
-                                        </div>
+                            {/* Mouse Following Box Animation */}
+                            <div className='lg:flex hidden'>
+                                <AnimatePresence>
+                                    {boxVisible && (
+                                        // <motion.div
+                                        //     style={{
+                                        //         position: 'absolute',
+                                        //         top: mousePosition.y - 25,
+                                        //         left: mousePosition.x - 25,
+                                        //         width: 100,
+                                        //         height: 100,
+                                        //         backgroundColor: '#ffffff60',
+                                        //         borderRadius: "50%",
+                                        //         cursor: 'pointer',
+                                        //         display: 'flex',
+                                        //         alignItems: 'center',
+                                        //         justifyContent: 'center',
+                                        //     }}
+                                        //     initial={{ opacity: 0, scale: 0.5 }}
+                                        //     animate={{ opacity: 1, scale: 1.2 }}
+                                        //     exit={{ opacity: 0, scale: 0.5 }}
+                                        //     transition={{ duration: 0.3 }}
+                                        // >
+                                        //     <div style={{ color: 'black' }}>
+                                        //         Tap to call
+                                        //     </div>
+                                        // </motion.div>
+                                        <motion.div
+                                            style={{
+                                                position: 'absolute',
+                                                top: Math.min(Math.max(mousePosition.y - 50, 0), window.innerHeight - 120), // Ensures the box stays within the viewport height
+                                                left: Math.min(Math.max(mousePosition.x - 50, 0), window.innerWidth - 120), // Ensures the box stays within the viewport width
+                                                width: 100,
+                                                height: 100,
+                                                backgroundColor: '#ffffff60',
+                                                borderRadius: "50%",
+                                                cursor: 'pointer',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                            }}
+                                            initial={{ opacity: 0, scale: 0.5 }}
+                                            animate={{ opacity: 1, scale: 1.2 }}
+                                            exit={{ opacity: 0, scale: 0.5 }}
+                                            transition={{ duration: 0.3 }}
+                                        >
+                                            <div style={{ color: 'black', fontWeight: "500", fontFamily: 'inter', fontSize: 14 }}>
+                                                Tap to call
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
 
 
-                                        <div className='flex items-center justify-between w-full'>
-                                            <div className='ps-10' style={{ backgroundColor: "transparent", width: "fit-content", borderRadius: "70px" }}>
-                                                <button
-                                                    onClick={
+                            {/* CreatorX Button and Calls array */}
+                            <div style={{ position: "absolute", bottom: 10, border: '' }} className='w-full flex items-end justify-between mb-10 rounded md:flex hidden'>
+                                <div>
+                                    {
+                                        showCreatorBtn ?
+                                            <div ref={buttonRef} className='flex items-end ms-8 px-4' style={{ backgroundColor: "#620FEB66", width: "fit-content", borderRadius: "70px" }}>
+                                                <button className='flex flex-row p-4 items-center gap-4'>
+                                                    <Image src={"/assets/stars.png"} alt='phone' height={20} width={20} />
+                                                    <div onClick={
                                                         // handleCreatorXClick
                                                         () => {
                                                             window.open('https://www.jotform.com/form/242259184814461', "_blank")
                                                         }
-                                                    }
-                                                    className='flex flex-row items-center gap-1'>
-                                                    <Image src={"/assets/CreatorXIcon.png"} alt='phone' height={41} width={93} />
-                                                    {/* <Image src={"/assets/Union.png"} alt='phone' height={20} width={20} />
-                                        <Image src={"/assets/stars.png"} alt='phone' height={15} width={15} /> */}
+                                                    } className='text-white' style={{ fontSize: 17, fontWeight: "600" }}>
+                                                        Build Your CreatorX
+                                                    </div>
                                                 </button>
-                                            </div>
-                                            {
-                                                showProfileIcon &&
-                                                <div className='pe-2'>
-                                                    <AnimatedButton snackMessage={snackMessage} wideScreen={isWideScreen} profileData={profileData} />
-                                                </div>
-                                            }
-                                        </div>
-
-
-                                    </div>
+                                            </div> :
+                                            ""
+                                    }
                                 </div>
 
-                                {/* Code to hide box on sides */}
-                                {/* <div className=' ' ref={buttonRef5} style={{ border: "2px solid red", width: "2px", position: "absolute", right: 0, top: 0 }} />
+                                <div ref={buttonRef5} className='me-12 md:flex hidden'>
+                                    <CycleArray onLargeScreen={true} data={getRecentCallData} assistantData={getAssistantData} />
+                                </div>
+                            </div>
+
+                            {/* for small screen creatorX button */}
+                            <div style={{ position: "absolute", bottom: 0 }} className='w-full flex items-end justify-center mb-8 rounded md:hidden'>
+                                <div className='flex flex-col gap-8 justify-between w-full items-start'>
+
+                                    <div className='w-full flex flex-row justify-center'>
+                                        <CycleArray data={getRecentCallData} assistantData={getAssistantData} />
+                                    </div>
+
+
+                                    <div className='flex items-center justify-between w-full'>
+                                        <div className='ps-10' style={{ backgroundColor: "transparent", width: "fit-content", borderRadius: "70px" }}>
+                                            <button
+                                                onClick={
+                                                    // handleCreatorXClick
+                                                    () => {
+                                                        window.open('https://www.jotform.com/form/242259184814461', "_blank")
+                                                    }
+                                                }
+                                                className='flex flex-row items-center gap-1'>
+                                                <Image src={"/assets/CreatorXIcon.png"} alt='phone' height={41} width={93} />
+                                                {/* <Image src={"/assets/Union.png"} alt='phone' height={20} width={20} />
+                                        <Image src={"/assets/stars.png"} alt='phone' height={15} width={15} /> */}
+                                            </button>
+                                        </div>
+                                        {
+                                            showProfileIcon &&
+                                            <div className='pe-2'>
+                                                <AnimatedButton snackMessage={snackMessage} wideScreen={isWideScreen} profileData={profileData} />
+                                            </div>
+                                        }
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            {/* Code to hide box on sides */}
+                            {/* <div className=' ' ref={buttonRef5} style={{ border: "2px solid red", width: "2px", position: "absolute", right: 0, top: 0 }} />
                         <div className='w-screen' ref={buttonRef6} style={{ border: "2px solid red", height: "2px", position: "absolute", right: 0, bottom: 0 }} /> */}
 
-                                {/* Snack messages */}
+                            {/* Snack messages */}
 
 
-                                <Modal
-                                    open={openLoginModal}
-                                    // onClose={(() => setOpenLoginModal(false))}
-                                    closeAfterTransition
-                                    BackdropProps={{
-                                        timeout: 1000,
-                                        sx: {
-                                            backgroundColor: 'transparent',
-                                            backdropFilter: 'blur(40px)',
-                                        },
-                                    }}
+                            <Modal
+                                open={openLoginModal}
+                                // onClose={(() => setOpenLoginModal(false))}
+                                closeAfterTransition
+                                BackdropProps={{
+                                    timeout: 1000,
+                                    sx: {
+                                        backgroundColor: 'transparent',
+                                        backdropFilter: 'blur(40px)',
+                                    },
+                                }}
+                            >
+                                <Box className="lg:w-5/12 sm:w-7/12"
+                                    sx={styleLoginModal}
                                 >
-                                    <Box className="lg:w-5/12 sm:w-7/12"
-                                        sx={styleLoginModal}
-                                    >
-                                        <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} />
-                                    </Box>
-                                </Modal>
+                                    <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} />
+                                </Box>
+                            </Modal>
 
-                                <Modal
-                                    open={openClaimPopup}
-                                    onClose={(() => setOpenClaimPopup(false))}
-                                    closeAfterTransition
-                                    BackdropProps={{
-                                        timeout: 1000,
-                                        sx: {
-                                            backgroundColor: 'transparent',
-                                            backdropFilter: 'blur(40px)',
-                                        },
-                                    }}
+                            <Modal
+                                open={openClaimPopup}
+                                onClose={(() => setOpenClaimPopup(false))}
+                                closeAfterTransition
+                                BackdropProps={{
+                                    timeout: 1000,
+                                    sx: {
+                                        backgroundColor: 'transparent',
+                                        backdropFilter: 'blur(40px)',
+                                    },
+                                }}
+                            >
+                                <Box className="lg:w-5/12 sm:w-7/12 w-full"
+                                    sx={styleLoginModal}
                                 >
-                                    <Box className="lg:w-5/12 sm:w-7/12 w-full"
-                                        sx={styleLoginModal}
-                                    >
-                                        {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
-                                        <div className='flex flex-row justify-center w-full'>
-                                            <div className='sm:w-7/12 w-full' style={{ backgroundColor: "#ffffff23", padding: 20, borderRadius: 10 }}>
-                                                {/* <AddCard handleBack={handleBack} closeForm={closeForm} /> */}
-                                                <div style={{ backgroundColor: 'white', padding: 18, borderRadius: 10 }}>
-                                                    <div className='mt-2 flex flex-row justify-between items-center'>
-                                                        <Image src="/assets/claimIcon.png" alt='claimimg' height={38} width={38} />
-                                                        <button onClick={(() => setOpenClaimPopup(false))}>
-                                                            <Image src="/assets/crossBtn.png" alt='cross' height={14} width={14} />
+                                    {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
+                                    <div className='flex flex-row justify-center w-full'>
+                                        <div className='sm:w-7/12 w-full' style={{ backgroundColor: "#ffffff23", padding: 20, borderRadius: 10 }}>
+                                            {/* <AddCard handleBack={handleBack} closeForm={closeForm} /> */}
+                                            <div style={{ backgroundColor: 'white', padding: 18, borderRadius: 10 }}>
+                                                <div className='mt-2 flex flex-row justify-between items-center'>
+                                                    <Image src="/assets/claimIcon.png" alt='claimimg' height={38} width={38} />
+                                                    <button onClick={(() => setOpenClaimPopup(false))}>
+                                                        <Image src="/assets/crossBtn.png" alt='cross' height={14} width={14} />
+                                                    </button>
+                                                </div>
+                                                <div className='mt-8' style={{ fontWeight: '600', fontSize: 24, fontFamily: 'inter' }}>
+                                                    Claim Account
+                                                </div>
+                                                <div className='text-black' style={{ fontWeight: "400", fontSize: 15, fontFamily: "inter", marginTop: 10 }}>
+                                                    This account hasn't been claimed by its creator. In order to claim this creator, you must be the real creator and verify your identity.
+                                                </div>
+                                                <div className='flex flex-row justify-start mt-4 w-full' style={{ marginTop: 30 }}>
+                                                    <div>
+                                                        <button
+                                                            onClick={() => {
+                                                                window.open("https://www.youtube.com", '_blank')
+                                                            }} className='bg-purple px-6 py-2 text-white'
+                                                            style={{ fontWeight: "400", fontFamily: "inter", fontSize: 15, borderRadius: "50px" }}>
+                                                            Verify Identity
                                                         </button>
-                                                    </div>
-                                                    <div className='mt-8' style={{ fontWeight: '600', fontSize: 24, fontFamily: 'inter' }}>
-                                                        Claim Account
-                                                    </div>
-                                                    <div className='text-black' style={{ fontWeight: "400", fontSize: 15, fontFamily: "inter", marginTop: 10 }}>
-                                                        This account hasn't been claimed by its creator. In order to claim this creator, you must be the real creator and verify your identity.
-                                                    </div>
-                                                    <div className='flex flex-row justify-start mt-4 w-full' style={{ marginTop: 30 }}>
-                                                        <div>
-                                                            <button
-                                                                onClick={() => {
-                                                                    window.open("https://www.youtube.com", '_blank')
-                                                                }} className='bg-purple px-6 py-2 text-white'
-                                                                style={{ fontWeight: "400", fontFamily: "inter", fontSize: 15, borderRadius: "50px" }}>
-                                                                Verify Identity
-                                                            </button>
-                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </Box>
-                                </Modal>
+                                    </div>
+                                </Box>
+                            </Modal>
 
-                                <Modal
-                                    open={openBottomForm}
-                                    // onClose={(() => setOpenLoginModal(false))}
-                                    closeAfterTransition
-                                    BackdropProps={{
-                                        timeout: 1000,
-                                        sx: {
-                                            backgroundColor: 'transparent',
-                                            backdropFilter: 'blur(40px)',
-                                            height: "100%"
-                                        },
-                                    }}
-                                    className=' '
+                            <Modal
+                                open={openBottomForm}
+                                // onClose={(() => setOpenLoginModal(false))}
+                                closeAfterTransition
+                                BackdropProps={{
+                                    timeout: 1000,
+                                    sx: {
+                                        backgroundColor: 'transparent',
+                                        backdropFilter: 'blur(40px)',
+                                        height: "100%"
+                                    },
+                                }}
+                                className=' '
+                            >
+                                <Box className="lg:w-5/12 sm:w-7/12 w-11/12"
+                                    sx={styleLoginModal}
                                 >
-                                    <Box className="lg:w-5/12 sm:w-7/12 w-11/12"
-                                        sx={styleLoginModal}
-                                    >
-                                        {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
-                                        <div className='rounded' style={{ padding: 20, backgroundColor: '#ffffff60' }}>
-                                            <div className='w-full' style={{}}>
-                                                <LoginModal creator={creator} assistantData={getAssistantData} closeForm={hideBottom} />
-                                            </div>
+                                    {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
+                                    <div className='rounded' style={{ padding: 20, backgroundColor: '#ffffff60' }}>
+                                        <div className='w-full' style={{}}>
+                                            <LoginModal creator={creator} assistantData={getAssistantData} closeForm={hideBottom} />
                                         </div>
-                                    </Box>
-                                </Modal>
+                                    </div>
+                                </Box>
+                            </Modal>
 
-                                {/* <Drawer
+                            {/* <Drawer
                             open={openBottomForm}
                             // onClose={() => setOpenLoginModalDrawer(false)}
                             anchor='bottom'
@@ -1522,7 +1515,7 @@ const Creator = () => {
                             </div>
                         </Drawer> */}
 
-                                {/* <div className=''>
+                            {/* <div className=''>
                     <Snackbar
                         open={callErr}
                         autoHideDuration={5000}
@@ -1566,53 +1559,52 @@ const Creator = () => {
                     </Snackbar>
                 </div> */}
 
-                                <Snackbar
-                                    open={callErr}
-                                    autoHideDuration={5000}
-                                    onClose={() => setCallErr(false)}
-                                    anchorOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'center',
-                                    }}
-                                    TransitionComponent={Fade}
-                                    TransitionProps={{
-                                        timeout: {
-                                            enter: 1000,
-                                            exit: 1000,
-                                        }
-                                    }}
+                            <Snackbar
+                                open={callErr}
+                                autoHideDuration={5000}
+                                onClose={() => setCallErr(false)}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                }}
+                                TransitionComponent={Fade}
+                                TransitionProps={{
+                                    timeout: {
+                                        enter: 1000,
+                                        exit: 1000,
+                                    }
+                                }}
+                                sx={{
+                                    position: 'fixed', // Ensures it stays in place
+                                    top: 20, // Adjust as needed for spacing from the top
+                                    left: '50%', // Center horizontally
+                                    transform: 'translateX(-50%)', // Center horizontally
+                                    width: '400px', // Set width to 309px
+                                    // border: "2px solid red",
+                                }}
+                            >
+                                <Alert
+                                    severity="error"
                                     sx={{
-                                        position: 'fixed', // Ensures it stays in place
-                                        top: 20, // Adjust as needed for spacing from the top
-                                        left: '50%', // Center horizontally
-                                        transform: 'translateX(-50%)', // Center horizontally
-                                        width: '400px', // Set width to 309px
-                                        // border: "2px solid red",
+                                        width: '100%', // Ensures the Alert takes up the full width of the Snackbar
+                                        backgroundColor: 'white',
+                                        color: 'black',
+                                        borderRadius: "20px",
                                     }}
                                 >
-                                    <Alert
-                                        severity="error"
-                                        sx={{
-                                            width: '100%', // Ensures the Alert takes up the full width of the Snackbar
-                                            backgroundColor: 'white',
-                                            color: 'black',
-                                            borderRadius: "20px",
-                                        }}
-                                    >
-                                        <div>
-                                            <div style={{ color: "#FF543E", fontWeight: "bold", fontSize: 11 }}>
-                                                Error
-                                            </div>
-                                            <div>
-                                                {/* {callErrMsg} */}
-                                                We were unable to process your payment method, please update to start a call.
-                                            </div>
+                                    <div>
+                                        <div style={{ color: "#FF543E", fontWeight: "bold", fontSize: 11 }}>
+                                            Error
                                         </div>
-                                    </Alert>
-                                </Snackbar>
+                                        <div>
+                                            {/* {callErrMsg} */}
+                                            We were unable to process your payment method, please update to start a call.
+                                        </div>
+                                    </div>
+                                </Alert>
+                            </Snackbar>
 
-                            </div>
-                        </>
+                        </div>
                 }
             </div>
         </>

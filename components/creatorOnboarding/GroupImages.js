@@ -53,18 +53,28 @@ const GroupImages = () => {
                 <motion.img
                     src="/assets/user11.png"
                     className='flex flex-row items-center justify-center'
+                    // animate={{
+                    //     opacity: [1, 1, 0, 0], // opacity animation to hide and show
+                    //     width: ["50px", "80px", "80px", "50px"], // animating width
+                    //     height: ["50px", "80px", "80px", "50px"] // animating height
+                    // }}
+                    // transition={{
+                    //     duration: 4,
+                    //     repeat: Infinity,
+                    //     times: [0, 0.3, 0.5, 1], // control timing of each keyframe
+                    //     repeatDelay: 0.2, // delay before repeating the animation
+                    //     ease: "easeInOut",
+                    //     delay: 0 // initial delay for this image
+                    // }}
                     animate={{
-                        opacity: [1, 1, 0, 0], // opacity animation to hide and show
-                        width: ["50px", "80px", "80px", "50px"], // animating width
-                        height: ["50px", "80px", "80px", "50px"] // animating height
+                        width: ["50px", "80px"],
+                        height: ["50px", "80px"]
                     }}
                     transition={{
                         duration: 4,
-                        repeat: Infinity,
-                        times: [0, 0.3, 0.5, 1], // control timing of each keyframe
-                        repeatDelay: 0.2, // delay before repeating the animation
+                        // repeat: Infinity,
+                        // repeatType: "loop",
                         ease: "easeInOut",
-                        delay: 0 // initial delay for this image
                     }}
                 />
             </div>
@@ -74,18 +84,28 @@ const GroupImages = () => {
                 <motion.img
                     src="/assets/user10.png"
                     className='flex flex-row items-center justify-center'
+                    // animate={{
+                    //     opacity: [1, 1, 0, 0], // opacity animation to hide and show
+                    //     width: ["50px", "80px", "80px", "50px"], // animating width
+                    //     height: ["50px", "80px", "80px", "50px"] // animating height
+                    // }}
+                    // transition={{
+                    //     duration: 4,
+                    //     repeat: Infinity,
+                    //     times: [0, 0.3, 0.5, 1], // control timing of each keyframe
+                    //     repeatDelay: 0.2, // delay before repeating the animation
+                    //     ease: "easeInOut",
+                    //     delay: 1.2 // delay to start after the first image
+                    // }}
                     animate={{
-                        opacity: [1, 1, 0, 0], // opacity animation to hide and show
-                        width: ["50px", "80px", "80px", "50px"], // animating width
-                        height: ["50px", "80px", "80px", "50px"] // animating height
+                        width: ["50px", "80px"],
+                        height: ["50px", "80px"]
                     }}
                     transition={{
                         duration: 4,
-                        repeat: Infinity,
-                        times: [0, 0.3, 0.5, 1], // control timing of each keyframe
-                        repeatDelay: 0.2, // delay before repeating the animation
+                        // repeat: Infinity,
+                        // repeatType: "loop",
                         ease: "easeInOut",
-                        delay: 1.2 // delay to start after the first image
                     }}
                 />
             </div>
@@ -95,18 +115,28 @@ const GroupImages = () => {
                 <motion.img
                     src="/assets/user1.png"
                     className='flex flex-row items-center justify-center'
+                    // animate={{
+                    //     opacity: [1, 1, 0, 0], // opacity animation to hide and show
+                    //     width: ["50px", "80px", "80px", "50px"], // animating width
+                    //     height: ["50px", "80px", "80px", "50px"] // animating height
+                    // }}
+                    // transition={{
+                    //     duration: 4,
+                    //     repeat: Infinity,
+                    //     times: [0, 0.3, 0.5, 1], // control timing of each keyframe
+                    //     repeatDelay: 0.2, // delay before repeating the animation
+                    //     ease: "easeInOut",
+                    //     delay: 2.4 // delay to start after the second image
+                    // }}
                     animate={{
-                        opacity: [1, 1, 0, 0], // opacity animation to hide and show
-                        width: ["50px", "80px", "80px", "50px"], // animating width
-                        height: ["50px", "80px", "80px", "50px"] // animating height
+                        width: ["50px", "80px"],
+                        height: ["50px", "80px"]
                     }}
                     transition={{
                         duration: 4,
-                        repeat: Infinity,
-                        times: [0, 0.3, 0.5, 1], // control timing of each keyframe
-                        repeatDelay: 0.2, // delay before repeating the animation
+                        // repeat: Infinity,
+                        // repeatType: "loop",
                         ease: "easeInOut",
-                        delay: 2.4 // delay to start after the second image
                     }}
                 />
             </div>

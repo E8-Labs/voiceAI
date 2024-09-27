@@ -191,8 +191,8 @@ const Page = () => {
                                                         >
                                                             <div className='w-full flex flex-row justify-between mt-10 items-center' key={item.id}>
                                                                 <div className='w-3/12 flex flex-row gap-2 items-center' style={{}}>
-                                                                    {item.model.owner.profile_image ?
-                                                                        <img src={item.model.owner.profile_image} alt='profile' style={{ borderRadius: "50%" }}
+                                                                    {item.model.profile_image ?
+                                                                        <img src={item.model.profile_image} alt='profile' style={{ borderRadius: "50%" }}
                                                                             height={25} width={25}
                                                                         />
                                                                         :
@@ -281,8 +281,8 @@ const Page = () => {
                                                                 className='w-full flex flex-row justify-between mt-1'
                                                                 style={{ fontWeight: '400', fontFamily: 'inter', fontSize: '15' }}>
                                                                 <div className='flex flex-row gap-2 items-center' style={{}}>
-                                                                    {item.model.owner.profile_image ?
-                                                                        <img src={item.model.owner.profile_image} alt='profile' style={{ borderRadius: "50%" }}
+                                                                    {item.model.profile_image ?
+                                                                        <img src={item.model.profile_image} alt='profile' style={{ borderRadius: "50%" }}
                                                                             height={40} width={40}
                                                                         />
                                                                         :
