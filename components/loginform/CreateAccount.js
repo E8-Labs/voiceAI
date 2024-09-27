@@ -80,18 +80,18 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
     const sendOtp = async () => {
         setLoginLoader(true);
         //code to save userFormdata
-        const localAssistantData = localStorage.getItem('assistantData');
-        const AssistantData = JSON.parse(localAssistantData);
-        // console.log('AssistantData Recieved from localstorage is', AssistantData);
-        //code if assistant trial mode is true
-        let modelId = null;
-        let modelData = null
-        if (AssistantData) {
-            console.log("Assistant trial satus is", AssistantData.assitant.allowTrial);
-            // localStorage.setItem('LoginData', JSON.stringify(loginResponse.data));
-            modelId = AssistantData.id;
-            modelData = AssistantData;
-        }
+        // const localAssistantData = localStorage.getItem('assistantData');
+        // const AssistantData = JSON.parse(localAssistantData);
+        // // console.log('AssistantData Recieved from localstorage is', AssistantData);
+        // //code if assistant trial mode is true
+        // let modelId = null;
+        // let modelData = null
+        // if (AssistantData) {
+        //     console.log("Assistant trial satus is", AssistantData.assitant.allowTrial);
+        //     // localStorage.setItem('LoginData', JSON.stringify(loginResponse.data));
+        //     modelId = AssistantData.id;
+        //     modelData = AssistantData;
+        // }
         const data = {
             firstName: userName,
             lastName: userLastName,
@@ -109,7 +109,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                 city: userLocation.city,
                 state: userLocation.state
             }),
-            modelId: modelId
+            // modelId: modelId
         }
         console.log("Data for create account", userData);
 
@@ -288,6 +288,15 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
 
         try {
             setLoginLoader(true);
+            const localAssistantData = localStorage.getItem('assistantData');
+            const AssistantData = JSON.parse(localAssistantData);
+            // console.log('AssistantData Recieved from localstorage is', AssistantData);
+            //code if assistant trial mode is true
+            let modelId = null;
+            if (AssistantData) {
+                console.log("Assistant trial satus is", AssistantData.assitant.allowTrial);
+                modelId = AssistantData.id;
+            }
             const userData = {
                 name: userName + " " + userLastName,
                 email: userEmail,
@@ -297,6 +306,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                     city: userLocation.city,
                     state: userLocation.state
                 }),
+                modelId: modelId
                 // phoneVerifed: 'false'
             }
 
