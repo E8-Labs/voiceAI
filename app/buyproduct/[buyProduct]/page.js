@@ -65,7 +65,7 @@ const Page = () => {
             localStorage.setItem('needsReload', 'true');
 
             // Navigate to /tate
-            router.push("/tate.ai");
+            router.push("/tate.ai?from=signin");
         }
 
         const productLocalData = localStorage.getItem('buyProductdata');
