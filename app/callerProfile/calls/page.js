@@ -198,7 +198,7 @@ const Page = () => {
                                                                         :
                                                                         <div>
                                                                             {
-                                                                                item.model.owner.name == "Tristan" ?
+                                                                                item.model.name == "Tristan" ?
                                                                                     <img src="/tristan.png" alt='profile'
                                                                                         // height={30} width={30} 
                                                                                         style={{ borderRadius: "50%", objectFit: 'cover', height: "40px", width: '40px' }}
@@ -212,7 +212,7 @@ const Page = () => {
                                                                     }
 
                                                                     <div style={styles.text2}>
-                                                                        {item.model.owner.name}
+                                                                        {item.model.name}
                                                                     </div>
                                                                 </div>
                                                                 <div className='w-2/12 lg:w-2/12'>
@@ -288,7 +288,7 @@ const Page = () => {
                                                                         :
                                                                         <div>
                                                                             {
-                                                                                item.model.owner.name == "Tristan" ?
+                                                                                item.model.name == "Tristan" ?
                                                                                     <img src="/tristan.png" alt='profile'
                                                                                         // height={30} width={30} 
                                                                                         style={{ borderRadius: "50%", objectFit: 'cover', height: "55px", width: '55px' }}
@@ -303,7 +303,7 @@ const Page = () => {
 
                                                                     <div style={styles.text2} className='flex flex-col items-start justify-start'>
                                                                         <div>
-                                                                            {item.model.owner.name}
+                                                                            {item.model.name}
                                                                         </div>
                                                                         <div
                                                                             style={{

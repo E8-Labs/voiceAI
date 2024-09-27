@@ -369,7 +369,7 @@ const Page = () => {
 
                                                     </div> :
                                                     <div>
-                                                        <div className='w-full flex flex-col gap-5 px-4 pb-4'
+                                                        <div className='w-full flex flex-col gap-5 px-4 pb-4 pt-4'
                                                             style={{ maxHeight: "30vh", overflow: "auto", scrollbarWidth: "none", backgroundColor: "#ffffff69" }}>
                                                             {
                                                                 openProducts.products.map((product) => (

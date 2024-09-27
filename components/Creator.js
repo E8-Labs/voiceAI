@@ -164,6 +164,11 @@ const Creator = () => {
         window.open(getAssistantData.ai.youtubeUrl, '_blank');
     }
 
+    const handleWebClick = () => {
+        console.log("youtube link recieved is", getAssistantData.ai.webUrl);
+        window.open(getAssistantData.ai.webUrl, '_blank');
+    }
+
 
     useEffect(() => {
         const handleResize = () => {
@@ -904,16 +909,31 @@ const Creator = () => {
                                                 zIndex: 2, backgroundColor: "#ffffff20",
                                             }}>
                                             <div className='flex flex-col gap-4' style={{ marginTop: 10 }}>
-                                                <button onClick={handleInstaClick}>
-                                                    <Image
-                                                        // layout='responsive'
-                                                        objectFit='contain' src={"/assets/instagram.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
-                                                </button>
-                                                <button onClick={handleYoutubeClick}>
-                                                    <Image
-                                                        // layout='responsive'
-                                                        objectFit='contain' src={"/assets/youtubeIcon.png"} alt='social' height={25} width={25} style={{ resize: "cover", borderRadius: 3 }} />
-                                                </button>
+                                                {
+                                                    getAssistantData && getAssistantData.ai.instaUrl ?
+                                                        <button onClick={handleInstaClick}>
+                                                            <Image
+                                                                // layout='responsive'
+                                                                objectFit='contain' src={"/assets/instagram.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
+                                                        </button> : ''
+                                                }
+                                                {
+                                                    getAssistantData && getAssistantData.ai.youtubeUrl ?
+                                                        <button onClick={handleYoutubeClick}>
+                                                            <Image
+                                                                // layout='responsive'
+                                                                objectFit='contain' src={"/assets/youtubeIcon.png"} alt='social' height={25} width={25} style={{ resize: "cover", borderRadius: 3 }} />
+                                                        </button> : ''
+                                                }
+                                                {
+                                                    getAssistantData && getAssistantData.ai.webUrl ?
+                                                        <button onClick={handleWebClick}>
+                                                            <Image
+                                                                // layout='responsive'
+                                                                objectFit='contain' src={"/assets/webIcon.png"} alt='social' height={25} width={25}
+                                                                style={{ resize: "cover", borderRadius: 3 }} />
+                                                        </button> : ''
+                                                }
                                             </div>
                                         </div>
                                     </div>
@@ -1074,6 +1094,11 @@ const Creator = () => {
                                                                 <Image
                                                                     // layout='responsive'
                                                                     objectFit='contain' src={"/assets/youtubeIcon.png"} alt='social' height={25} width={25} style={{ resize: "cover", borderRadius: 3 }} />
+                                                            </button>
+                                                            <button onClick={handleWebClick}>
+                                                                <Image
+                                                                    // layout='responsive'
+                                                                    objectFit='contain' src={"/assets/webIcon.png"} alt='social' height={25} width={25} style={{ resize: "cover", borderRadius: 3 }} />
                                                             </button>
                                                         </div>
                                                     </div>

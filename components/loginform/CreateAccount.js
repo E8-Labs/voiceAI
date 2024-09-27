@@ -740,9 +740,9 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                 }
             </div>
             <div className='flex flex-row gap-1 mt-6'>
-                <button onClick={handleContinue} style={{ fontSize: 13, fontWeight: "400" }}>
+                <div style={{ fontSize: 13, fontWeight: "400" }}>
                     Have an account?
-                </button>
+                </div>
                 <button
                     onClick={handleSignInClick}
                     className='text-purple' style={{ fontSize: 13, fontWeight: "400" }}>

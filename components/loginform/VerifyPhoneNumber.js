@@ -388,7 +388,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
             </div>
 
             <div className='text-lightWhite' style={{ fontSize: 13, fontWeight: "400" }}>
-                6 digit code was sent to number ending with **** {signinVerificationNumber?.slice(-4)} {userLoginDetails?.phone.slice(-4)}
+                6 digit code was sent to number ending with in {signinVerificationNumber?.slice(-4)} {userLoginDetails?.phone.slice(-4)}
             </div>
 
             <div className='flex flex-row gap-2 sm:gap-4 mt-4'>
