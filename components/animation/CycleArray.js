@@ -24,9 +24,9 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
             // let index = Math.floor(Math.random() * shuffled.length);
             // console.log("Random Index is ", index)
 
-           
+
             setCurrentIndex(prevIndex => (prevIndex + 1) % shuffled.length);
-            
+
 
         }, intervalDuration);
         console.log("Set Shuffled array", shuffled.length)
@@ -128,7 +128,7 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
                                     <div className='flex flex-row items-center gap-1' style={{ fontWeight: "400", fontSize: 15, color: "" }}>
                                         <div>
                                             {
-                                                shuffled[currentIndex] && (
+                                                shuffled[currentIndex] && shuffled[currentIndex].caller.city && (
                                                     <div style={{ fontSize: 13, fontWeight: "400", color: "grey" }}>
                                                         {
                                                             shuffled[currentIndex] &&
@@ -153,17 +153,6 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
                                             </div>
                                         </div>
                                         <div style={{ fontWeight: "600", fontSize: 13, color: "#00000090" }}>
-                                            {/*
-                                                data[currentIndex] &&
-                                                data[currentIndex].message.charAt(0).toUpperCase() + data[currentIndex].message.slice(1)
-                                            */}
-                                            {/*
-                                                data[currentIndex] &&
-                                                (data[currentIndex].caller.name.length > 10
-                                                    ? data[currentIndex].caller.name.charAt(0).toUpperCase() + data[currentIndex].caller.name.slice(1, 10) + '...'
-                                                    : data[currentIndex].caller.name.charAt(0).toUpperCase() + data[currentIndex].caller.name.slice(1)
-                                                )
-                                            */}
                                             {
                                                 shuffled[currentIndex] &&
                                                 (() => {
@@ -178,7 +167,7 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
                                     <div className='flex flex-row items-center gap-1' style={{ fontWeight: "400", fontSize: 15, color: "" }}>
                                         <div>
                                             {
-                                                shuffled[currentIndex] && (
+                                                shuffled[currentIndex] && shuffled[currentIndex].caller.city && (
                                                     <div style={{ fontSize: 13, fontWeight: "400", color: "grey" }}>
                                                         {
                                                             shuffled[currentIndex] &&

@@ -33,7 +33,9 @@ export default function RootLayout({ children }) {
                 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
             </head> flex-col lg:flex-row*/}
             <head>
-                <link rel="icon" href="/Xlogo.png" />
+                {/*<link rel="icon" href="/Xlogo.png" />*/}
+                <link rel="shortcut icon" href="icon.ico" />
+                <link rel="icon" href="/creaatorXlogomain.jpg" />
             </head>
             <body className={inter.className}>
                 <div className="flex flex-row w-full" style={backgroundImage}>

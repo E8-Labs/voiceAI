@@ -87,9 +87,9 @@ const Creator = () => {
 
 
     const claimpopUpClick = () => {
-        if (getAssistantData.assitant.claimed === true){
+        if (getAssistantData.assitant.claimed === true) {
             return
-        }else{
+        } else {
             setOpenClaimPopup(true);
         }
     }
@@ -834,15 +834,19 @@ const Creator = () => {
                                                                             style={{ padding: 4, borderRadius: "50%" }} />
                                                                 }
                                                             </div>
-                                                            <div className='absolute top-0 -left-2' style={{ backgroundColor: "transparent" }}>
-                                                                <div style={{ height: "30px", width: "30px", backgroundColor: "transparent" }}>
-                                                                    <Image onClick={() => {
-                                                                        // console.log("Sary gama pada na ri sa");
-                                                                        claimpopUpClick();
-                                                                    }} src="/assets/claimLogo.png" alt='claimbtn' height={40} width={40}
-                                                                        style={{ cursor: "pointer", backgroundColor: "transparent" }} />
-                                                                </div>
-                                                            </div>
+                                                            {
+                                                                getAssistantData && getAssistantData.assitant.claimed ?
+                                                                    '' :
+                                                                    <div className='absolute top-0 -left-2' style={{ backgroundColor: "transparent" }}>
+                                                                        <div style={{ height: "30px", width: "30px", backgroundColor: "transparent" }}>
+                                                                            <Image onClick={() => {
+                                                                                // console.log("Sary gama pada na ri sa");
+                                                                                claimpopUpClick();
+                                                                            }} src="/assets/claimLogo.png" alt='claimbtn' height={40} width={40}
+                                                                                style={{ cursor: "pointer", backgroundColor: "transparent" }} />
+                                                                        </div>
+                                                                    </div>
+                                                            }
                                                         </button>
                                                     </div>
                                                 </div>
@@ -1010,15 +1014,19 @@ const Creator = () => {
                                                                                         style={{ padding: 4, borderRadius: "50%" }} />
                                                                             }
                                                                         </div>
-                                                                        <div className='absolute top-0 -left-2' style={{ backgroundColor: "transparent" }}>
-                                                                            <div style={{ height: "30px", width: "30px", backgroundColor: "transparent" }}>
-                                                                                <Image onClick={() => {
-                                                                                    // console.log("Sary gama pada na ri sa");
-                                                                                    claimpopUpClick();
-                                                                                }} src="/assets/claimLogo.png" alt='claimbtn' height={40} width={40}
-                                                                                    style={{ cursor: "pointer", backgroundColor: "transparent" }} />
-                                                                            </div>
-                                                                        </div>
+                                                                        {
+                                                                            getAssistantData && getAssistantData.assitant.claimed ?
+                                                                                '' :
+                                                                                <div className='absolute top-0 -left-2' style={{ backgroundColor: "transparent" }}>
+                                                                                    <div style={{ height: "30px", width: "30px", backgroundColor: "transparent" }}>
+                                                                                        <Image onClick={() => {
+                                                                                            // console.log("Sary gama pada na ri sa");
+                                                                                            claimpopUpClick();
+                                                                                        }} src="/assets/claimLogo.png" alt='claimbtn' height={40} width={40}
+                                                                                            style={{ cursor: "pointer", backgroundColor: "transparent" }} />
+                                                                                    </div>
+                                                                                </div>
+                                                                        }
                                                                     </button>
                                                                 </div>
                                                             </div>
