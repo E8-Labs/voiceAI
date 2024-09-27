@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Apis from '@/components/apis/Apis'
 import axios from 'axios'
@@ -13,46 +13,7 @@ const Page = () => {
     const router = useRouter();
 
     const [callerDashboardData, setCallerDashboardData] = useState([]);
-    const [buyedProducts, setBuyedProducts] = useState(
-        [
-            // {
-            //     "id": 1,
-            //     "name": "Iphone Case",
-            //     "productUrl": "",
-            //     "productPrice": 20,
-            //     "userId": 3,
-            //     "stripeProductId": "prod_QmP9r3r9jRUG8Y",
-            //     "stripePriceId": "price_1PuqLRJlIaVux60F9BKLaXjD",
-            //     "stripePaymentLink": "",
-            //     "createdAt": "2024-08-30T05:32:51.000Z",
-            //     "updatedAt": "2024-09-03T06:36:06.000Z"
-            // },
-            // {
-            //     "id": 2,
-            //     "name": "Iphone Cover",
-            //     "productUrl": "",
-            //     "productPrice": 20,
-            //     "userId": 2,
-            //     "stripeProductId": "prod_QmP6rj4vI6G9IE",
-            //     "stripePriceId": "price_1PuqIPJlIaVux60F6yZFAcsG",
-            //     "stripePaymentLink": "",
-            //     "createdAt": "2024-08-30T16:43:52.000Z",
-            //     "updatedAt": "2024-09-03T06:32:58.000Z"
-            // },
-            // {
-            //     "id": 24,
-            //     "name": "iPhone 15 pro",
-            //     "productUrl": "",
-            //     "productPrice": 1200,
-            //     "userId": 6,
-            //     "stripeProductId": "prod_QloqSvZotMzhby",
-            //     "stripePriceId": "price_1PuHCjJlIaVux60FJLb5Efyh",
-            //     "stripePaymentLink": "https://buy.stripe.com/test_fZe2bu69b2lM6iscMO",
-            //     "createdAt": "2024-09-01T17:04:46.000Z",
-            //     "updatedAt": "2024-09-01T17:04:46.000Z"
-            // }
-        ]
-    );
+    const [buyedProducts, setBuyedProducts] = useState([]);
     const [openProducts, setOpenProducts] = useState([]);
     const [showAll, setShowAll] = useState(false);
     const itemsToDisplay = showAll ? buyedProducts : buyedProducts.slice(0, 3);
@@ -250,15 +211,32 @@ const Page = () => {
         item.profile.name.toLowerCase().includes(searchValue.toLowerCase())
     );
 
+    // useEffect(() => {
+    //     if (filteredData && filteredData.length > 0) {
+    //         // Set the first user's products if filteredData exists and is not empty
+    //         setOpenProducts(filteredData[0]);
+    //     } else {
+    //         // Reset openProducts if there are no matching results
+    //         setOpenProducts(null);
+    //     }
+    // }, [filteredData]);
+
+    const updateRef = useRef(false);
+
     useEffect(() => {
         if (filteredData && filteredData.length > 0) {
-            // Set the first user's products if filteredData exists and is not empty
-            setOpenProducts(filteredData[0]);
+            const currentItemExists = filteredData.some(item => item.profile.id === openProducts?.profile?.id);
+
+            if (!currentItemExists && !updateRef.current) {
+                setOpenProducts(filteredData[0]);
+                updateRef.current = true; // Mark that we have just updated
+            } else {
+                updateRef.current = false; // Reset after update
+            }
         } else {
-            // Reset openProducts if there are no matching results
             setOpenProducts(null);
         }
-    }, [filteredData]);
+    }, [filteredData, openProducts]);
 
 
     return (
