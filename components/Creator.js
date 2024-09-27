@@ -85,6 +85,15 @@ const Creator = () => {
     //     }
     // }, []);
 
+
+    const claimpopUpClick = () => {
+        if (getAssistantData.assitant.claimed === true){
+            return
+        }else{
+            setOpenClaimPopup(true);
+        }
+    }
+
     //code for my profile dATA API
 
     const getMyProfile = async () => {
@@ -215,7 +224,7 @@ const Creator = () => {
     }
 
     const handleopenClaimpopup = (status) => {
-        setOpenClaimPopup(status);
+        // setOpenClaimPopup(status);
     }
 
     const handleShowBorderProfile = (status) => {
@@ -800,7 +809,7 @@ const Creator = () => {
                                                         <button
                                                             onClick={() => {
                                                                 // console.log("Sary gama pada na ri sa");
-                                                                setOpenClaimPopup(true);
+                                                                claimpopUpClick();
                                                             }}
                                                             style={{ position: 'relative' }}>
                                                             <div style={{ border: "2px solid black", borderRadius: "50%" }}>
@@ -829,7 +838,7 @@ const Creator = () => {
                                                                 <div style={{ height: "30px", width: "30px", backgroundColor: "transparent" }}>
                                                                     <Image onClick={() => {
                                                                         // console.log("Sary gama pada na ri sa");
-                                                                        setOpenClaimPopup(true);
+                                                                        claimpopUpClick();
                                                                     }} src="/assets/claimLogo.png" alt='claimbtn' height={40} width={40}
                                                                         style={{ cursor: "pointer", backgroundColor: "transparent" }} />
                                                                 </div>
@@ -976,7 +985,7 @@ const Creator = () => {
                                                                     <button
                                                                         onClick={() => {
                                                                             // console.log("Sary gama pada na ri sa");
-                                                                            setOpenClaimPopup(true);
+                                                                            claimpopUpClick();
                                                                         }}
                                                                         style={{ position: 'relative' }}>
                                                                         <div style={{ border: "2px solid black", borderRadius: "50%" }}>
@@ -1005,7 +1014,7 @@ const Creator = () => {
                                                                             <div style={{ height: "30px", width: "30px", backgroundColor: "transparent" }}>
                                                                                 <Image onClick={() => {
                                                                                     // console.log("Sary gama pada na ri sa");
-                                                                                    setOpenClaimPopup(true);
+                                                                                    claimpopUpClick();
                                                                                 }} src="/assets/claimLogo.png" alt='claimbtn' height={40} width={40}
                                                                                     style={{ cursor: "pointer", backgroundColor: "transparent" }} />
                                                                             </div>

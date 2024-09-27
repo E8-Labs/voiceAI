@@ -15,7 +15,7 @@ const ProfileAnimation = ({ creator, openClaimPopup, showBorderedProfile }) => {
 
     const handleClick = () => {
         if (isOpen === true) {
-            openClaimPopup(true);
+            // openClaimPopup(true);
         } else {
             setIsOpen(!isOpen);
         }
