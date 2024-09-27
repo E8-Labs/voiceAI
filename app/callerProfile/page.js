@@ -77,7 +77,7 @@ const Page = () => {
                 oldEmail = Data.data.user.email;
             }
         }
-        if(oldEmail === emailValue){
+        if (oldEmail === emailValue) {
             console.log("it is old email value");
             return;
         }
@@ -281,12 +281,20 @@ const Page = () => {
         return emailPattern.test(email);
     };
 
+    const handleGoback = () => {
+        // router.push(`/${assistantData && assistantData.assitant.name}.ai`);
+        if(window.opener){
+            window.opener.focus();
+            window.close();
+        }
+    }
+
 
     return (
         <div className='h-screen w-full' style={{ backgroundColor: "#ffffff30", }}>
             <div className='w-full py-10 px-2 lg:px-5' style={{}}>
                 <div className='flex flex-col items-start w-8/12 ms-8'>
-                    <button onClick={() => { router.push(`/${assistantData && assistantData.assitant.name}.ai`) }} className='text-purple' style={{ cursor: 'pointer' }}>
+                    <button onClick={handleGoback} className='text-purple' style={{ cursor: 'pointer' }}>
                         Go Back
                     </button>
                     <div style={{ fontSize: 20, fontWeight: "bold", fontFamily: 'inter' }}>

@@ -214,6 +214,12 @@ const AddCardDetails = ({
 
                     console.log('Data sending in api is :', AddCardData);
                     // return
+                    const fromBuyStatus = localStorage.getItem("fromBuyScreen");
+                    console.log("Data of fromBuyscreen", JSON.parse(fromBuyStatus));
+                    let newTab = null;
+                    if (fromBuyStatus) {
+                        newTab = window.open('about:blank'); // Open a new blank tab
+                    }
                     const response = await axios.post(ApiPath, AddCardData, {
                         headers: {
                             'Content-Type': 'application/json',
@@ -246,16 +252,15 @@ const AddCardDetails = ({
                             }
                             if (closeForm) { //
                                 console.log("Response of add card api is ::::", response.data.data);
-                                localStorage.setItem('callStatus', JSON.stringify(callStatus));
                                 //data for buy status
-                                const fromBuyStatus = localStorage.getItem("fromBuyScreen");
-                                console.log("Data of fromBuyscreen", JSON.parse(fromBuyStatus));
                                 if (fromBuyStatus) {
                                     const Data = JSON.parse(fromBuyStatus);
-                                    window.open(`/buyproduct/${Data.id}`);
-                                    // localStorage.removeItem("fromBuyScreen");   http://localhost:3000/buyproduct/1
-                                    // localStorage.setItem("User", JSON.stringify(response.data));
+                                    window.open(`/buyproduct/${Data.id}`, '_blank');
+                                    newTab.location.href = `/buyproduct/${Data.id}`;
+                                    closeForm();
+                                    window.location.reload();
                                 } else {
+                                    localStorage.setItem('callStatus', JSON.stringify(callStatus));
                                     closeForm();
                                     window.location.reload();
                                 }

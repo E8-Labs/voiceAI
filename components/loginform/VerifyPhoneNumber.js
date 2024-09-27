@@ -73,7 +73,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
             // return () => clearTimeout(timer);
             inputRefs.current[0].focus();
         } else if (currentIndex === 1 && inputRefs.current[0]) {
-            console.log("Trying to focus Phone Veri")
+            console.log("Trying to focus Phone Verification input on signin screen");
             const timer = setTimeout(() => {
                 console.log("Input ref Login ", inputRefs.current[0])
                 inputRefs.current[0].focus();

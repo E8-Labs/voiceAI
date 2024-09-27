@@ -12,132 +12,7 @@ const Page = () => {
 
     const router = useRouter();
 
-    const [callerDashboardData, setCallerDashboardData] = useState( //[]
-        [
-            // {
-            //     "profile": {
-            //         "id": 7,
-            //         "name": "Hamza",
-            //         "profile_image": "",
-            //         "full_profile_image": "",
-            //         "email": "tristancreatorx@gmail.com",
-            //         "phone": "+923263414533",
-            //         "role": "creator_platform",
-            //         "assitant": {
-            //             "id": 2,
-            //             "name": "tristan",
-            //             "userId": 7,
-            //             "modelId": "1722472206904x423273324192727040",
-            //             "apikey": "1722463149628x824591000853013500",
-            //             "createdAt": "2024-08-12T19:44:22.000Z",
-            //             "updatedAt": "2024-08-12T19:44:22.000Z"
-            //         },
-            //         "calls": 33,
-            //         "earned": 243.5,
-            //         "plan": null
-            //     },
-            //     "products": [
-            //         {
-            //             "id": 1,
-            //             "name": "Iphone Case",
-            //             "productUrl": "",
-            //             "productPrice": 20,
-            //             "userId": 3,
-            //             "stripeProductId": "prod_QmP9r3r9jRUG8Y",
-            //             "stripePriceId": "price_1PuqLRJlIaVux60F9BKLaXjD",
-            //             "stripePaymentLink": "",
-            //             "createdAt": "2024-08-30T05:32:51.000Z",
-            //             "updatedAt": "2024-09-03T06:36:06.000Z"
-            //         },
-            //         {
-            //             "id": 2,
-            //             "name": "Iphone Cover",
-            //             "productUrl": "",
-            //             "productPrice": 20,
-            //             "userId": 2,
-            //             "stripeProductId": "prod_QmP6rj4vI6G9IE",
-            //             "stripePriceId": "price_1PuqIPJlIaVux60F6yZFAcsG",
-            //             "stripePaymentLink": "",
-            //             "createdAt": "2024-08-30T16:43:52.000Z",
-            //             "updatedAt": "2024-09-03T06:32:58.000Z"
-            //         },
-            //         {
-            //             "id": 24,
-            //             "name": "iPhone 15 pro",
-            //             "productUrl": "",
-            //             "productPrice": 1200,
-            //             "userId": 6,
-            //             "stripeProductId": "prod_QloqSvZotMzhby",
-            //             "stripePriceId": "price_1PuHCjJlIaVux60FJLb5Efyh",
-            //             "stripePaymentLink": "https://buy.stripe.com/test_fZe2bu69b2lM6iscMO",
-            //             "createdAt": "2024-09-01T17:04:46.000Z",
-            //             "updatedAt": "2024-09-01T17:04:46.000Z"
-            //         }
-            //     ]
-            // },
-            // {
-            //     "profile": {
-            //         "id": 10,
-            //         "name": "Arslan",
-            //         "profile_image": "",
-            //         "full_profile_image": "",
-            //         "email": "tristancreatorx@gmail.com",
-            //         "phone": "+923263414533",
-            //         "role": "creator_platform",
-            //         "assitant": {
-            //             "id": 2,
-            //             "name": "tristan",
-            //             "userId": 7,
-            //             "modelId": "1722472206904x423273324192727040",
-            //             "apikey": "1722463149628x824591000853013500",
-            //             "createdAt": "2024-08-12T19:44:22.000Z",
-            //             "updatedAt": "2024-08-12T19:44:22.000Z"
-            //         },
-            //         "calls": 33,
-            //         "earned": 243.5,
-            //         "plan": null
-            //     },
-            //     "products": [
-            //         {
-            //             "id": 1,
-            //             "name": "Car Cover",
-            //             "productUrl": "",
-            //             "productPrice": 20,
-            //             "userId": 3,
-            //             "stripeProductId": "prod_QmP9r3r9jRUG8Y",
-            //             "stripePriceId": "price_1PuqLRJlIaVux60F9BKLaXjD",
-            //             "stripePaymentLink": "",
-            //             "createdAt": "2024-08-30T05:32:51.000Z",
-            //             "updatedAt": "2024-09-03T06:36:06.000Z"
-            //         },
-            //         {
-            //             "id": 2,
-            //             "name": "Game board Cover",
-            //             "productUrl": "",
-            //             "productPrice": 20,
-            //             "userId": 2,
-            //             "stripeProductId": "prod_QmP6rj4vI6G9IE",
-            //             "stripePriceId": "price_1PuqIPJlIaVux60F6yZFAcsG",
-            //             "stripePaymentLink": "",
-            //             "createdAt": "2024-08-30T16:43:52.000Z",
-            //             "updatedAt": "2024-09-03T06:32:58.000Z"
-            //         },
-            //         {
-            //             "id": 24,
-            //             "name": "iPhone 15 pro",
-            //             "productUrl": "",
-            //             "productPrice": 1200,
-            //             "userId": 6,
-            //             "stripeProductId": "prod_QloqSvZotMzhby",
-            //             "stripePriceId": "price_1PuHCjJlIaVux60FJLb5Efyh",
-            //             "stripePaymentLink": "https://buy.stripe.com/test_fZe2bu69b2lM6iscMO",
-            //             "createdAt": "2024-09-01T17:04:46.000Z",
-            //             "updatedAt": "2024-09-01T17:04:46.000Z"
-            //         }
-            //     ]
-            // }
-        ]
-    );
+    const [callerDashboardData, setCallerDashboardData] = useState([]);
     const [buyedProducts, setBuyedProducts] = useState(
         [
             // {
@@ -273,10 +148,12 @@ const Page = () => {
                 if (response) {
                     console.log("Response of callerdashboard api is", response.data);
                     if (response.data.status === true) {
-                        if (response.data === null) {
+                        if (response.data.data === null) {
                             setApiData(true);
+                            console.log("Api data set to true")
                         } else {
                             setCallerDashboardData(response.data.data.callersDashboardData);
+                            console.log("Caller dashboard data recieved is")
                             setOpenProducts(response.data.data.callersDashboardData[0]);
                             setBuyedProducts(response.data.data.products);
                         }
