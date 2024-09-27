@@ -2442,7 +2442,7 @@ export default function Animation({ onChangeIndex }) {
                     className="text-lightWhite mt-3"
                     style={{ fontSize: 13, fontWeight: "400" }}
                   >
-                    6 digit code was sent to number ending with in
+                    6 digit code was sent to number ending in
                     {Number(userPhoneNumber.slice(-4))}
                   </div>
                   {/* <div className='flex flex-row gap-6 mt-8'>
