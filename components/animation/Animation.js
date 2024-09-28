@@ -1018,19 +1018,41 @@ export default function Animation({ onChangeIndex }) {
     }
   };
 
+  // const handlePaste = (e) => {
+  //   e.preventDefault();
+  //   const paste = e.clipboardData.getData("text").split("");
+  //   paste.forEach((char, index) => {
+  //     if (index < 6) {
+  //       const inputId = `P${index + 1}`;
+  //       const input = document.getElementById(inputId);
+  //       if (input) {
+  //         input.value = char;
+  //         input.dispatchEvent(new Event("input", { bubbles: true })); // Trigger input change event
+  //       }
+  //     }
+  //   });
+  // };
+
   const handlePaste = (e) => {
+    // Prevent the default paste action
     e.preventDefault();
-    const paste = e.clipboardData.getData("text").split("");
-    paste.forEach((char, index) => {
-      if (index < 6) {
-        const inputId = `P${index + 1}`;
-        const input = document.getElementById(inputId);
-        if (input) {
-          input.value = char;
-          input.dispatchEvent(new Event("input", { bubbles: true })); // Trigger input change event
-        }
-      }
-    });
+
+    // Get the pasted data as text
+    const pastedData = e.clipboardData.getData("text");
+
+    // If pasted data is not empty
+    if (pastedData) {
+      // Iterate over the pasted data and set the values
+      pastedData.split("").forEach((char, index) => {
+        // Check the id of each input element and set the corresponding state
+        if (index === 0) setP1(char);
+        if (index === 1) setP2(char);
+        if (index === 2) setP3(char);
+        if (index === 3) setP4(char);
+        if (index === 4) setP5(char);
+        if (index === 5) setP6(char);
+      });
+    }
   };
 
   const loginBoxesstyle = {
@@ -1979,7 +2001,7 @@ export default function Animation({ onChangeIndex }) {
                                 <button
                                   onClick={handleVerifyEmail}
                                   sx={{ textDecoration: "none" }}
-                                  className="bg-purple hover:bg-purple2 w-full sm:w-full lg:w-8/12 mt-8"
+                                  className="bg-purple hover:bg-purple w-full sm:w-full lg:w-8/12 mt-8"
                                   style={{
                                     fontSize: 15,
                                     fontWeight: "400",
@@ -2445,48 +2467,6 @@ export default function Animation({ onChangeIndex }) {
                     6 digit code was sent to number ending in
                     {Number(userPhoneNumber.slice(-4))}
                   </div>
-                  {/* <div className='flex flex-row gap-6 mt-8'>
-                                            <input
-                                                maxLength={1}
-                                                type='password'
-                                                style={{
-                                                    height: 50, width: 50, borderRadius: 10, border: "none",
-                                                    outline: "none", textAlign: "center", backgroundColor: "#EDEDEDC7",
-                                                }}
-                                            />
-                                            <input
-                                                maxLength={1}
-                                                type='password'
-                                                style={{
-                                                    height: 50, width: 50, borderRadius: 10, border: "none",
-                                                    outline: "none", textAlign: "center", backgroundColor: "#EDEDEDC7",
-                                                }}
-                                            />
-                                            <input
-                                                maxLength={1}
-                                                type='password'
-                                                style={{
-                                                    height: 50, width: 50, borderRadius: 10, border: "none",
-                                                    outline: "none", textAlign: "center", backgroundColor: "#EDEDEDC7",
-                                                }}
-                                            />
-                                            <input
-                                                maxLength={1}
-                                                type='password'
-                                                style={{
-                                                    height: 50, width: 50, borderRadius: 10, border: "none",
-                                                    outline: "none", textAlign: "center", backgroundColor: "#EDEDEDC7",
-                                                }}
-                                            />
-                                            <input
-                                                maxLength={1}
-                                                type='password'
-                                                style={{
-                                                    height: 50, width: 50, borderRadius: 10, border: "none",
-                                                    outline: "none", textAlign: "center", backgroundColor: "#EDEDEDC7",
-                                                }}
-                                            />
-                                        </div> */}
 
                   <div className="flex flex-row gap-4 mt-8">
                     <input
@@ -2506,6 +2486,7 @@ export default function Animation({ onChangeIndex }) {
                         border: "none",
                       }}
                       onKeyDown={(e) => handleBackspace(e, setP1, null)}
+                      onPaste={(e) => handlePaste(e)}
                     />
                     <input
                       id="P2"
@@ -2523,6 +2504,7 @@ export default function Animation({ onChangeIndex }) {
                         border: "none",
                       }}
                       onKeyDown={(e) => handleBackspace(e, setP2, "P1")}
+                      onPaste={(e) => handlePaste(e)}
                     />
                     <input
                       id="P3"
@@ -2540,6 +2522,7 @@ export default function Animation({ onChangeIndex }) {
                         border: "none",
                       }}
                       onKeyDown={(e) => handleBackspace(e, setP3, "P2")}
+                      onPaste={(e) => handlePaste(e)}
                     />
                     <input
                       id="P4"
@@ -2557,6 +2540,7 @@ export default function Animation({ onChangeIndex }) {
                         border: "none",
                       }}
                       onKeyDown={(e) => handleBackspace(e, setP4, "P3")}
+                      onPaste={(e) => handlePaste(e)}
                     />
                     <input
                       id="P5"
@@ -2574,6 +2558,7 @@ export default function Animation({ onChangeIndex }) {
                         border: "none",
                       }}
                       onKeyDown={(e) => handleBackspace(e, setP5, "P4")}
+                      onPaste={(e) => handlePaste(e)}
                     />
                     <input
                       id="P6"
@@ -2591,6 +2576,7 @@ export default function Animation({ onChangeIndex }) {
                         border: "none",
                       }}
                       onKeyDown={(e) => handleBackspace(e, setP6, "P5")}
+                      onPaste={(e) => handlePaste(e)}
                     />
                   </div>
 

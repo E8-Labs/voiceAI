@@ -1243,9 +1243,9 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                     <div style={{ fontSize: 20, fontWeight: '400', fontFamily: 'inter', marginTop: 40 }}>
                                         Make Payment
                                     </div>
-                                    <button onClick={handleContinue} style={{ fontSize: 15, fontWeight: '400', fontFamily: 'inter', marginTop: 30 }}>
+                                    <div style={{ fontSize: 15, fontWeight: '400', fontFamily: 'inter', marginTop: 30 }}>
                                         You are only charged for minutes talked
-                                    </button>
+                                    </div>
                                     <div className='flex flex-row gap-6' style={{ marginTop: 25 }}>
                                         <Image src="/assets/card.png" alt='card' height={64} width={140} />
                                         <Image src="/assets/eps.png" alt='card' height={64} width={140} />
