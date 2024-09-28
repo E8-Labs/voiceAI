@@ -7,7 +7,7 @@ import axios from 'axios';
 import Apis from '../apis/Apis';
 import { CircularProgress } from '@mui/material';
 
-function SocialOAuth({ aiName, currentIndex }) {
+function SocialOAuth() {
 
     const { data: session } = useSession();
     const [loading, setLoading] = useState(false);
@@ -104,7 +104,6 @@ function SocialOAuth({ aiName, currentIndex }) {
     const handleYoutubeSignin = async () => {
         setLoading(true);
         // window.open('/youtubelogin');
-        localStorage.setItem('BuildaiIndex', JSON.stringify(currentIndex));
         await signIn('google'); // Signing in with Google (or YouTube via Google OAuth)
         // console.log("Data of session is", session);
 
