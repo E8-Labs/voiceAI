@@ -5,45 +5,67 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import YouTubeVideos from '../socialAuth/YoutubeVideos';
 import axios from 'axios';
 import Apis from '../apis/Apis';
+import { CircularProgress } from '@mui/material';
 
-function SocialOAuth({ handleContinue, aiName, currentIndex }) {
+function SocialOAuth({ aiName, currentIndex }) {
 
-    const [text, setText] = useState("");
-    //socials url values
-    const [fbUrl, setFburl] = useState("");
-    const [youtubeUrl, setYoutubeurl] = useState("");
-    const [appleProducts, setAppleProducts] = useState("");
-    const [twitterUrl, setTwitterurl] = useState("");
-    const [spotifyurl, setSpotifyurl] = useState("");
-    const [instaUrl, setInstaurl] = useState("");
     const { data: session } = useSession();
+    const [loading, setLoading] = useState(false);
+    const [instaLoading, setInstaLoading] = useState(false);
+    const [posts, setPosts] = useState([]);
+
+    const [authCode, setAuthCode] = useState(null);
+    const [accessToken, setAccessToken] = useState(null);
+    const [userInfo, setUserInfo] = useState(null);
+
+    const clientId = process.env.NEXT_PUBLIC_INSTAGRAM_CLIENT_ID;
+    const redirectUri = process.env.NEXT_PUBLIC_NEXTAUTH_URL;
+    const clientSecret = process.env.NEXT_PUBLIC_INSTAGRAM_CLIENT_SECRET;
+
+    const handleInstagramLogin = () => {
+        setInstaLoading(true);
+        const instagramAuthUrl = `https://api.instagram.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user_profile,user_media&response_type=code`;
+        window.location.href = instagramAuthUrl; // Redirect to Instagram login page
+        setInstaLoading(false);
+    };
 
     useEffect(() => {
-        const localData = localStorage.getItem('socialsUrl');
-        if (localData) {
-            const Data = JSON.parse(localData);
-            console.log("social inks data recieved", Data);
-            if (Data.discord_url) {
-                setAppleProducts(Data.discord_url)
-            }
-            if (Data.fb_url) {
-                setFburl(Data.fb_url)
-            }
-            if (Data.insta_url) {
-                setInstaurl(Data.insta_url)
-            }
-            if (Data.spotify_url) {
-                setSpotifyurl(Data.spotify_url)
-            }
-            if (Data.twitter_url) {
-                setTwitterurl(Data.twitter_url)
-            }
-            if (Data.youtube_url) {
-                setYoutubeurl(Data.youtube_url)
-            }
-        }
-    }, [])
+        const handleCallback = async () => {
+            const code = new URL(window.location.href).searchParams.get('code');
+            if (code && !accessToken) {
+                setAuthCode(code);
+                try {
+                    const response = await axios.post(
+                        `https://api.instagram.com/auth/access_token`,
+                        {
+                            client_id: clientId,
+                            client_secret: clientSecret,
+                            grant_type: 'authorization_code',
+                            redirect_uri: redirectUri,
+                            code: code,
+                        }
+                    );
+                    const { access_token } = response.data;
+                    setAccessToken(access_token);
 
+                    const userResponse = await axios.get(
+                        `https://graph.instagram.com/me?fields=id,username&access_token=${access_token}`
+                    );
+                    setUserInfo(userResponse.data);
+                    const postsResponse = await axios.get(
+                        `https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=${access_token}`
+                    );
+                    setPosts(postsResponse.data.data); // Set the fetched posts in state
+                    console.log('user insta posts are', postsResponse.data.data)
+
+                } catch (error) {
+                    console.error('Error exchanging code for access token:', error.response ? error.response.data : error.message);
+                }
+            }
+        };
+
+        handleCallback();
+    }, [accessToken, clientId, clientSecret, redirectUri]);
 
 
     const styles = {
@@ -78,7 +100,6 @@ function SocialOAuth({ handleContinue, aiName, currentIndex }) {
         fontFamily: 'inter'
     }
 
-    const [loading, setLoading] = useState(false);
 
     const handleYoutubeSignin = async () => {
         setLoading(true);
@@ -112,14 +133,14 @@ function SocialOAuth({ handleContinue, aiName, currentIndex }) {
                 }
                 console.log("Data sending in api", apiData);
                 const response = await axios.post(Apis.Login_Google, apiData, {
-                    headers:{
-                        "Content-Type" : "application/json",
-                        "Authorization" : 'Bearer ' + AuthToken
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": 'Bearer ' + AuthToken
                     }
                 });
-                if(response){
+                if (response) {
                     console.log("Response of api is", response.data);
-                    
+
                 }
             }
         } catch (error) {
@@ -138,41 +159,8 @@ function SocialOAuth({ handleContinue, aiName, currentIndex }) {
     }, [session]);
 
     return (
-        <div className='w-full flex flex-col justify-center items-center' style={{}} >
-            <div className='w-full'>
-
-                {/* <div className="mt-12 flex flex-row items-center gap-2">
-                    <div className='flex flex-row items-center'>
-                        <Image src="/myself.jpeg" alt='Profile' //height={50} width={50}
-                            height={70}
-                            width={70}
-                            style={{
-                                width: '70px',
-                                height: '70px',
-                                backgroundColor: "",
-                                borderRadius: "50%",
-                                border: "3px solid black",
-                                objectFit: 'cover',
-                                objectPosition: 'center',
-                                padding: 4
-                                // backgroundColor: 'red'
-                            }} />
-                        <div style={triangle} />
-                    </div>
-                    <div className='sm:flex sm:flex-row sm:gap-2'>
-                        <div>
-                            {aiName}
-                        </div>
-                        <div className='flex flex-row gap-2 items-center'>
-                            <Image style={styles.image}
-                                src={'/assets/twiterIcon.png'} alt='Youtube'
-                                height={30} width={30} />
-                            <Image style={styles.image}
-                                src={'/assets/youtubeIcon.png'} alt='Youtube'
-                                height={30} width={30} />
-                        </div>
-                    </div>
-                </div> */}
+        <div className='w-full flex flex-col justify-center items-center' >
+            <div className='w-full' >
 
                 <div
                     className="mt-2"
@@ -188,7 +176,7 @@ function SocialOAuth({ handleContinue, aiName, currentIndex }) {
                 <div className='text-gray-400 text-sm mt-3 mb-10 mb-5 w-11/12'>
                     This is used as your knowledge base to train your ai model.
                 </div>
-                <div className='flex flex-row w-full sm:w-10/12 justify-between mb-8 items-center'>
+                <div className='flex flex-row w-full   justify-between mb-8 items-center'>
                     <div className='flex flex-row items-center gap-6'>
                         <Image style={styles.image}
                             src={'/assets/instagram.png'} alt='web'
@@ -197,12 +185,17 @@ function SocialOAuth({ handleContinue, aiName, currentIndex }) {
                             Instagram
                         </div>
                     </div>
-                    <button className='bg-purple text-white px-2 py-1' style={connectButtonStyle}>
-                        Connect
-                    </button>
+                    {
+                        instaLoading ?
+                            <CircularProgress size={20} /> :
+                            <button className='bg-purple text-white px-2 py-1' style={connectButtonStyle}
+                                onClick={handleInstagramLogin}>
+                                Connect
+                            </button>
+                    }
                 </div>
 
-                <div className='flex flex-row w-full sm:w-10/12 mb-8 justify-between items-center'>
+                <div className='flex flex-row w-full   mb-8 justify-between items-center'>
                     <div className='flex flex-row items-center gap-6'>
                         <Image style={styles.image}
                             src={'/assets/youtubeIcon.png'} alt='Youtube'
@@ -233,7 +226,7 @@ function SocialOAuth({ handleContinue, aiName, currentIndex }) {
                     )}
                 </div>
 
-                <div className='flex flex-row items-center justify-between w-full sm:w-10/12 mb-8'>
+                <div className='flex flex-row items-center justify-between w-full   mb-8'>
                     <div className='flex flex-row gap-6 items-center'>
                         <Image style={styles.image}
                             src={'/assets/twiterIcon.png'} alt='twiter'
@@ -247,7 +240,7 @@ function SocialOAuth({ handleContinue, aiName, currentIndex }) {
                     </button>
                 </div>
 
-                <div className='flex flex-row w-full sm:w-10/12 mb-8 justify-between'>
+                <div className='flex flex-row w-full   mb-8 justify-between'>
                     <div className='flex flex-row gap-6 items-center'>
                         <Image style={styles.image}
                             src={'/assets/appleProducts.png'} alt='Icon'
@@ -261,7 +254,7 @@ function SocialOAuth({ handleContinue, aiName, currentIndex }) {
                     </button>
                 </div>
 
-                <div className='flex flex-row w-full sm:w-10/12 mb-8 justify-between'>
+                <div className='flex flex-row w-full   mb-8 justify-between'>
                     <div className='flex flex-row gap-6 items-center'>
                         <Image style={styles.image}
                             src={'/assets/spotify.png'} alt='tiktok'
@@ -275,7 +268,7 @@ function SocialOAuth({ handleContinue, aiName, currentIndex }) {
                     </button>
                 </div>
 
-                <div className='flex flex-row w-full sm:w-10/12 mb-8 justify-between'>
+                <div className='flex flex-row w-full   mb-8 justify-between'>
                     <div className='flex flex-row gap-6 items-center'>
                         <Image style={styles.image}
                             src={'/assets/fbIcon.png'} alt='facebook'
@@ -288,28 +281,13 @@ function SocialOAuth({ handleContinue, aiName, currentIndex }) {
                         Connect
                     </button>
                 </div>
-                <div>
+                {/* <div>
                     <button onClick={handleContinue}
-                        className='bg-purple hover:bg-purple text-white px-4 mt-2 w-full sm:w-10/12 py-2'
+                        className='bg-purple hover:bg-purple text-white px-4 mt-2 w-full   py-2'
                         style={{ fontSize: 15, fontWeight: "400", borderRadius: "50px" }}>
                         Continue
                     </button>
-                    {/* {
-                        fbUrl || youtubeUrl || appleProducts || twitterUrl || spotifyurl || instaUrl ?
-                            <button onClick={handleContinue}
-                                className='bg-purple hover:bg-purple text-white px-4 mt-2 w-full sm:w-10/12 py-2'
-                                style={{ fontSize: 15, fontWeight: "400", borderRadius: "50px" }}>
-                                Continue
-                            </button> :
-                            <button
-                                disabled
-                                // onClick={handleContinueSocial}
-                                className='bg-purple2 hover:bg-purple text-white px-4 mt-2 w-full sm:w-10/12 py-2'
-                                style={{ fontSize: 15, fontWeight: "400", borderRadius: "50px", color: "white" }}>
-                                Continue
-                            </button>
-                    } */}
-                </div>
+                </div> */}
             </div>
         </div>
     )

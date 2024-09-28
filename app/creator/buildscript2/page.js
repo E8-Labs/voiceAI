@@ -53,14 +53,14 @@ export default function Home() {
     }
 
     return (
-        <div className='w-full' style={{ height: "100vh", display: 'flex', alignItems: "center", width: "", overflow: "hidden" }}>
+        <div className='w-full' style={{ height: "100svh", display: 'flex', alignItems: "center", width: "", overflow: "hidden" }}>
             <div className='flex flex-row items-center justify-center w-full'>
                 <div
                     // className='flex flex-row justify-center md:w-5/12 w-full items-center'
                     className={`flex flex-row justify-center items-center ${currentIndex === 6 ? 'w-full' : 'lg:w-5/12 w-full'}`} //style={{ backgroundColor: 'green' }}
                 >
                     <div className='sm:w-11/12 w-full h-screen flex flex-col justify-between'>
-                        <div className='mt-4 sm:mt-24 ps-4'>
+                        <div className='mt-12 sm:mt-24 ps-4'>
                             <Image src={'/creatorXlogo.png'}
                                 alt='logo'
                                 height={410}

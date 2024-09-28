@@ -5,6 +5,7 @@ import Dashboard from '@/components/Navbar/profilenavbarcomponents/MyCreatorX/Da
 import { AiDetails } from '@/components/Navbar/profilenavbarcomponents/MyCreatorX/AiDetails';
 import { SocialKB } from '@/components/Navbar/profilenavbarcomponents/MyCreatorX/Social&KB';
 import Calls from '@/components/Navbar/profilenavbarcomponents/MyCreatorX/Calls';
+import SocialOAuth from '@/components/creatorOnboarding/SocialOAuth';
 
 const Page = () => {
 
@@ -98,6 +99,7 @@ const Page = () => {
                   <AiDetails />
                 ) : selectedMenu === 3 ? (
                   <SocialKB />
+                  // <SocialOAuth />
                 ) : selectedMenu === 4 ? (
                   <Calls />
                 ) : ""

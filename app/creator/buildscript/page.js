@@ -73,7 +73,7 @@ export default function Home() {
     <div
       className="w-full"
       style={{
-        height: "100vh",
+        height: "100svh",
         display: "flex",
         alignItems: "center",
         width: "",
@@ -90,9 +90,11 @@ export default function Home() {
             }`}
           style={{ backgroundColor: "" }}
         >
-          <div className="sm:w-10/12 w-full h-screen flex flex-col justify-between px-8 sm:px-0">
+          <div className="sm:w-10/12 w-full h-screen flex flex-col justify-between px-8 sm:px-0"
+            style={{ backgroundColor: "" }}
+          >
             <div
-              className="mt-4 sm:mt-24"
+              className="mt-12 sm:mt-24"
               style={{ backgroundColor: "" }}
             >
               <Image

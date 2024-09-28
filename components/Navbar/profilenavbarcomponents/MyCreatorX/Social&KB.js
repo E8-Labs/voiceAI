@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Apis from '@/components/apis/Apis'
 import axios from 'axios'
+import SocialOAuth from '@/components/creatorOnboarding/SocialOAuth'
 
 export const SocialKB = () => {
 
@@ -224,6 +225,10 @@ export const SocialKB = () => {
         </div>
 
         <div className='w-5/12 px-8 py-4 rounded-2xl' style={{ backgroundColor: "#ffffff40" }}>
+          <SocialOAuth />
+        </div>
+
+        {/* <div className='w-5/12 px-8 py-4 rounded-2xl' style={{ backgroundColor: "#ffffff40" }}>
           <div className='mt-4' style={{ fontSize: 24, fontWeight: 300 }}>
             O Auth
           </div>
@@ -331,7 +336,7 @@ export const SocialKB = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
       </div>
       <div className='w-4/12 mt-4 px-6 rounded-2xl flex flex-col' style={{ backgroundColor: "#ffffff40" }}>

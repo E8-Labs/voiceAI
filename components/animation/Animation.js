@@ -1884,6 +1884,8 @@ export default function Animation({ onChangeIndex }) {
                       className=" w-full mt-6 sm:w-full lg:w-8/12"
                       autofill="off"
                       id="filled-basic"
+                      type="email"
+                      autoFocus={true}
                       value={userEmail}
                       inputRef={aiEmailRef}
                       onChange={(e) => {
@@ -2110,8 +2112,11 @@ export default function Animation({ onChangeIndex }) {
                     <input
                       id="P1"
                       ref={emailVerifyInput}
-                      type="text"
+                      type="number"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                       value={EmailP1}
+                      autoFocus={true}
                       onChange={(e) => {
                         handleInputChange2(e, setEmailP1, "P2");
                         setVerifyErr(false);
@@ -2130,7 +2135,9 @@ export default function Animation({ onChangeIndex }) {
                     />
                     <input
                       id="P2"
-                      type="text"
+                      type="number"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                       value={EmailP2}
                       onChange={(e) => {
                         handleInputChange2(e, setEmailP2, "P3");
@@ -2150,7 +2157,9 @@ export default function Animation({ onChangeIndex }) {
                     />
                     <input
                       id="P3"
-                      type="text"
+                      type="number"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                       value={EmailP3}
                       onChange={(e) => {
                         handleInputChange2(e, setEmailP3, "P4");
@@ -2170,7 +2179,9 @@ export default function Animation({ onChangeIndex }) {
                     />
                     <input
                       id="P4"
-                      type="text"
+                      type="number"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                       value={EmailP4}
                       onChange={(e) => {
                         handleInputChange2(e, setEmailP4, "P5");
@@ -2190,7 +2201,9 @@ export default function Animation({ onChangeIndex }) {
                     />
                     <input
                       id="P5"
-                      type="text"
+                      type="number"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                       value={EmailP5}
                       onChange={(e) => {
                         handleInputChange2(e, setEmailP5, null);
@@ -2464,14 +2477,16 @@ export default function Animation({ onChangeIndex }) {
                     className="text-lightWhite mt-3"
                     style={{ fontSize: 13, fontWeight: "400" }}
                   >
-                    6 digit code was sent to number ending in
-                    {Number(userPhoneNumber.slice(-4))}
+                    6 digit code was sent to number ending in {Number(userPhoneNumber.slice(-4))}
                   </div>
 
                   <div className="flex flex-row gap-4 mt-8">
                     <input
                       id="P1"
-                      type="text"
+                      type="number"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      autoFocus={true}
                       value={P1}
                       ref={signUpref}
                       onChange={(e) => handleInputChange(e, setP1, "P2")}
@@ -2490,7 +2505,9 @@ export default function Animation({ onChangeIndex }) {
                     />
                     <input
                       id="P2"
-                      type="text"
+                      type="number"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                       value={P2}
                       onChange={(e) => handleInputChange(e, setP2, "P3")}
                       maxLength={1}
@@ -2508,7 +2525,9 @@ export default function Animation({ onChangeIndex }) {
                     />
                     <input
                       id="P3"
-                      type="text"
+                      type="number"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                       value={P3}
                       onChange={(e) => handleInputChange(e, setP3, "P4")}
                       maxLength={1}
@@ -2526,7 +2545,9 @@ export default function Animation({ onChangeIndex }) {
                     />
                     <input
                       id="P4"
-                      type="text"
+                      type="number"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                       value={P4}
                       onChange={(e) => handleInputChange(e, setP4, "P5")}
                       maxLength={1}
@@ -2544,7 +2565,9 @@ export default function Animation({ onChangeIndex }) {
                     />
                     <input
                       id="P5"
-                      type="text"
+                      type="number"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                       value={P5}
                       onChange={(e) => handleInputChange(e, setP5, "P6")}
                       maxLength={1}
@@ -2562,7 +2585,9 @@ export default function Animation({ onChangeIndex }) {
                     />
                     <input
                       id="P6"
-                      type="text"
+                      type="number"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                       value={P6}
                       onChange={(e) => handleInputChange(e, setP6, null)}
                       maxLength={1}

@@ -445,6 +445,93 @@ export default function ScriptAnimation2({ onChangeIndex }) {
     }
 
 
+    // const [permission, setPermission] = useState(Notification.permission);
+
+    // const handlePermission = () => {
+    //     // Check if the browser supports notifications
+    //     if (!('Notification' in window)) {
+    //         alert('This browser does not support desktop notification');
+    //     } else if (Notification.permission !== 'granted') {
+    //         // Request permission
+    //         Notification.requestPermission().then((permission) => {
+    //             setPermission(permission);
+    //         });
+    //     }
+    // };
+
+    // const sendNotification = () => {
+    //     // Check if permission is granted
+    //     if (permission === 'granted') {
+    //         new Notification('Hello from Next.js!', {
+    //             body: 'This is a sample notification',
+    //             icon: '/notification-icon.png', // Optional: Add an icon if needed
+    //         });
+    //     } else {
+    //         handlePermission();
+    //     }
+    // };
+
+    //test code for push notifications
+
+    // const [subscription, setSubscription] = useState(null);
+
+    // Function to subscribe for push notifications
+    // const sendNotification = async () => {
+    //     if ('serviceWorker' in navigator) {
+    //         try {
+    //             const registration = await navigator.serviceWorker.register('/sw.js');
+    //             const subscription = await registration.pushManager.subscribe({
+    //                 userVisibleOnly: true,
+    //                 applicationServerKey: VAPID_PUBLIC_KEY, // VAPID public key
+    //             });
+
+    //             // Send the subscription to your server to store it
+    //             await fetch('/api/save-subscription', {
+    //                 method: 'POST',
+    //                 headers: {
+    //                     'Content-Type': 'application/json',
+    //                 },
+    //                 body: JSON.stringify(subscription),
+    //             });
+
+    //             setSubscription(subscription);
+    //             alert('Subscribed successfully!');
+    //         } catch (error) {
+    //             console.error('Error subscribing to push notifications:', error);
+    //         }
+    //     }
+    // };
+
+    //test code for FCM token
+    // useEffect(() => {
+    //     // Request permission and get token
+    //     const getToken = async () => {
+    //         try {
+    //             // Request permission to display notifications
+    //             await messaging.requestPermission();
+    //             // Get the token
+    //             const token = await messaging.getToken({ vapidKey: 'YOUR_VAPID_KEY' });
+    //             console.log('FCM Token:', token);
+
+    //             // Send the token to the server
+    //             await fetch('/api/save-fcm-token', {
+    //                 method: 'POST',
+    //                 headers: {
+    //                     'Content-Type': 'application/json',
+    //                 },
+    //                 body: JSON.stringify({ token }),
+    //             });
+
+    //             alert('Notification permission granted.');
+    //         } catch (error) {
+    //             console.error('Error getting FCM token:', error);
+    //             alert('Unable to get permission to notify.');
+    //         }
+    //     };
+
+    //     getToken();
+    // }, []);
+
 
     return (
         <div style={containerStyles}>
@@ -484,6 +571,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                             variant="filled" // You can choose between outlined, filled, or standard
                                             // fullWidth
                                             value={greetText}
+                                            autoFocus={true}
                                             onChange={e => setGreetText(e.target.value)}
                                             placeholder="Hey this is James. Feel free to ask me anything about...."
                                             sx={{
@@ -572,6 +660,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                             variant="filled"
                                             multiline
                                             rows={6}
+                                            autoFocus={true}
                                             value={serviceDetails}
                                             onChange={(e) => setServiceDetails(e.target.value)}
                                             placeholder='How to scale my business, how to overcome a breakup, etc '
@@ -663,6 +752,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                 <input className='w-full bg-transparent border-none outline-none'
                                                     type="text"
                                                     value={input.value}
+                                                    autoFocus={index ? true : ''}
                                                     onChange={(e) => handleInputChange(index, e)}
                                                     placeholder={input.placeholder}
                                                     style={{ marginRight: '8px', fontSize: 13, fontWeight: "400", fontFamily: "inter" }}
@@ -731,6 +821,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                         className='w-full border-none bg-transparent outline-none'
                                                         type="number"
                                                         value={row.name}
+                                                        autoFocus={true}
                                                         onChange={(e) => handleInputChange2(index, 'productAmount', e)}
                                                         placeholder="$"
                                                     // style={{ marginRight: '8px' }}
@@ -1304,9 +1395,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                 <button className='w-5/12 mt-5' style={{
                                                     height: 40, backgroundColor: '#552AFF', borderRadius: 5, color: 'white', borderRadius: "50px"
                                                 }}
-                                                // onClick={() => {
-                                                //     router.push("/profile")
-                                                // }}
+                                                // onClick={sendNotification}
                                                 >
                                                     {/* <div className='text-red'> */}
                                                     Countinue

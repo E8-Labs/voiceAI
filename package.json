@@ -26,11 +26,12 @@
     "lottie-react": "^2.4.0",
     "moment": "^2.30.1",
     "next": "14.2.5",
-    "next-auth": "^4.24.7",
+    "next-auth": "^4.24.8",
     "react": "^18",
     "react-dom": "^18",
     "react-phone-input-2": "^2.15.1",
-    "react-toastify": "^10.0.5"
+    "react-toastify": "^10.0.5",
+    "web-push": "^3.6.7"
   },
   "devDependencies": {
     "postcss": "^8",

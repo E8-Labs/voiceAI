@@ -212,6 +212,7 @@ function AiSocialLinks({ handleContinue, aiName }) {
                     <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
                         <input style={styles.urlsInput}
                             value={instaUrl}
+                            autoFocus={true}
                             onChange={(e) => {
                                 setInstaurl(e.target.value);
                                 const url = e.target.value;

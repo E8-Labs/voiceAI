@@ -140,6 +140,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
       setSelectedAudio(file);
       const url = URL.createObjectURL(file);
       setAudioUrl(url);
+      console.log("Selected audio file url is", url);
     }
   };
 
@@ -166,12 +167,12 @@ export default function ScriptAnimation({ onChangeIndex }) {
 
   //calling api of ld your ai
 
-  useEffect(() => {
-    if (selectedAudio) {
-      console.log("Trying to call api")
-      handleBuildAI();
-    }
-  }, [selectedAudio])
+  // useEffect(() => {
+  //   if (selectedAudio) {
+  //     console.log("Trying to call api")
+  //     handleBuildAI();
+  //   }
+  // }, [selectedAudio])
 
   const handleBuildAI = async (event) => {
 
@@ -180,7 +181,8 @@ export default function ScriptAnimation({ onChangeIndex }) {
       if (event) {
         setSkipLoader(true);
       } else {
-        setUploadLoader(true);
+        // setUploadLoader(true);
+        setBuildAiLoader(true)
       }
 
       const ApiPath = Apis.BuildAI;
@@ -241,7 +243,8 @@ export default function ScriptAnimation({ onChangeIndex }) {
     } catch (error) {
       console.error("ERror occured in build ai api", error);
     } finally {
-      setUploadLoader(false);
+      // setUploadLoader(false);
+      setBuildAiLoader(false);
       setSkipLoader(false);
     }
   };
@@ -523,6 +526,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     className="w-full sm:w-9/12 mt-8"
                     autofill="off"
                     id="filled-basic"
+                    autoFocus={true}
                     // label="Description"
                     variant="filled"
                     multiline
@@ -643,6 +647,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                       // label="Ai help tagline"
                       variant="filled"
                       multiline
+                      autoFocus={true}
                       rows={3}
                       value={helpTagline}
                       onChange={(e) => setHelpTagline(e.target.value)}
@@ -1016,15 +1021,28 @@ export default function ScriptAnimation({ onChangeIndex }) {
                         className="hidden"
                       />
                       {audioUrl && (
-                        <audio controls className="mb-">
-                          <source src={audioUrl} type="audio/mpeg" />
-                          Your browser does not support the audio element.
-                        </audio>
+                        <div className="flex flex-row items-center gap-4">
+                          <audio controls className="mb-">
+                            <source src={audioUrl} type="audio/mpeg" />
+                            Your browser does not support the audio element.
+                          </audio>
+                          <div>
+                            <button onClick={() => {
+                              setAudioUrl(null);
+                              setSelectedAudio(null);
+                              if (fileInputRef.current) {
+                                fileInputRef.current.value = '';
+                              }
+                            }}>
+                              <Image src="/assets/croseBtn.png" alt="cross" height={30} width={30} />
+                            </button>
+                          </div>
+                        </div>
                       )}
                     </div>
 
-                    <div className="mt-6">
-                      <div className="w-7/12">
+                    <div className="mt-6 flex flex-row items-center">
+                      <div className="w-6/12">
                         {
                           uploadLoader ?
                             <div className="w-full flex flex-row justify-center">
@@ -1044,37 +1062,38 @@ export default function ScriptAnimation({ onChangeIndex }) {
                         }
                       </div>
 
+                      <div className="w-6/12 flex flex-row justify-center">
+                        {
+                          skipLoader ?
+                            <CircularProgress size={25} /> :
+                            <button onClick={(event) => handleBuildAI(event)}>
+                              Skip
+                            </button>
+                        }
+                      </div>
+
                     </div>
 
-                    <div className="w-7/12 flex flex-row mt-4 justify-center">
-                      {
-                        skipLoader ?
-                          <CircularProgress size={25} /> :
-                          <button onClick={(event) => handleBuildAI(event)}>
-                            Skip
-                          </button>
-                      }
-                    </div>
-
-                    <div className="w-full flex flex-row justify-end">
-                      <div className="w-6/12">
-                        {/*<button
-                          onClick={handleBuildAI}
-                          className="bg-purple hover:bg-purple text-white w-full mt-12 py-2"
-                          style={{
-                            fontSize: 15,
-                            fontWeight: "400",
-                            borderRadius: "50px",
-                          }}
-                        >
-                          {buildAiLoader ? (
-                            <div className="w-full flex justify-center">
+                    <div className="w-full flex flex-row justify-center">
+                      <div className="w-full">
+                        {
+                          buildAiLoader ? (
+                            <div className="w-full flex justify-center mt-12">
                               <CircularProgress size={30} />
                             </div>
                           ) : (
-                            "Continue"
+                            <button
+                              onClick={handleBuildAI}
+                              className="bg-purple hover:bg-purple text-white w-full mt-12 py-2"
+                              style={{
+                                fontSize: 15,
+                                fontWeight: "400",
+                                borderRadius: "50px",
+                              }}
+                            >
+                              Continue
+                            </button>
                           )}
-                        </button>*/}
                       </div>
                     </div>
                   </div>
