@@ -1,6 +1,5 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import { NextResponse } from 'next/server';
 
 export const authOptions = {
     providers: [
@@ -48,5 +47,9 @@ export const authOptions = {
         },
     },
     // debug: true, // Enable debug mode
-
 };
+
+
+const handler = NextAuth(authOptions);
+
+export { handler as GET, handler as POST };
