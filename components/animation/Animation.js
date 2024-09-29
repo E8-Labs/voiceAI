@@ -2108,20 +2108,22 @@ export default function Animation({ onChangeIndex }) {
                     code was sent to {userEmail.slice(0, 4)}*********@gmail.com
                   </div>
 
-                  <div className="flex flex-row gap-4 mt-8">
+                  {/* <div className="flex flex-row gap-4 mt-8">
                     <input
                       id="P1"
                       ref={emailVerifyInput}
-                      type="number"
-                      inputMode="numeric"
+                      type="text" // Change to text to avoid spinner issues
+                      inputMode="numeric" // Still allow numeric input on mobile devices
                       pattern="[0-9]*"
                       value={EmailP1}
                       autoFocus={true}
                       onChange={(e) => {
-                        handleInputChange2(e, setEmailP1, "P2");
-                        setVerifyErr(false);
+                        const value = e.target.value;
+                        if (/^[0-9]{0,1}$/.test(value)) {
+                          handleInputChange2(e, setEmailP1, "P2");
+                          setVerifyErr(false);
+                        }
                       }}
-                      maxLength={1}
                       style={{
                         height: "40px",
                         width: "40px",
@@ -2130,20 +2132,25 @@ export default function Animation({ onChangeIndex }) {
                         textAlign: "center",
                         outline: "none",
                         border: "none",
+                        WebkitAppearance: "none", // Remove spinner arrows
+                        MozAppearance: "textfield", // Remove spinner arrows in Firefox
                       }}
                       onKeyDown={(e) => handleBackspace2(e, setEmailP1, null)}
                     />
+
                     <input
                       id="P2"
-                      type="number"
-                      inputMode="numeric"
+                      type="text" // Changed to text to avoid spinner arrows
+                      inputMode="numeric" // Still allow numeric input on mobile devices
                       pattern="[0-9]*"
                       value={EmailP2}
                       onChange={(e) => {
-                        handleInputChange2(e, setEmailP2, "P3");
-                        setVerifyErr(false);
+                        const value = e.target.value;
+                        if (/^[0-9]{0,1}$/.test(value)) { // Allow only one digit
+                          handleInputChange2(e, setEmailP2, "P3");
+                          setVerifyErr(false);
+                        }
                       }}
-                      maxLength={1}
                       style={{
                         height: "40px",
                         width: "40px",
@@ -2152,20 +2159,25 @@ export default function Animation({ onChangeIndex }) {
                         textAlign: "center",
                         outline: "none",
                         border: "none",
+                        WebkitAppearance: "none", // Remove spinner arrows in Chrome
+                        MozAppearance: "textfield", // Remove spinner arrows in Firefox
                       }}
                       onKeyDown={(e) => handleBackspace2(e, setEmailP2, "P1")}
                     />
+
                     <input
                       id="P3"
-                      type="number"
-                      inputMode="numeric"
+                      type="text" // Changed to text to avoid spinner arrows
+                      inputMode="numeric" // Still allow numeric input on mobile devices
                       pattern="[0-9]*"
                       value={EmailP3}
                       onChange={(e) => {
-                        handleInputChange2(e, setEmailP3, "P4");
-                        setVerifyErr(false);
+                        const value = e.target.value;
+                        if (/^[0-9]{0,1}$/.test(value)) { // Allow only one digit
+                          handleInputChange2(e, setEmailP3, "P4");
+                          setVerifyErr(false);
+                        }
                       }}
-                      maxLength={1}
                       style={{
                         height: "40px",
                         width: "40px",
@@ -2174,20 +2186,25 @@ export default function Animation({ onChangeIndex }) {
                         textAlign: "center",
                         outline: "none",
                         border: "none",
+                        WebkitAppearance: "none", // Remove spinner arrows in Chrome
+                        MozAppearance: "textfield", // Remove spinner arrows in Firefox
                       }}
                       onKeyDown={(e) => handleBackspace2(e, setEmailP3, "P2")}
                     />
+
                     <input
                       id="P4"
-                      type="number"
-                      inputMode="numeric"
+                      type="text" // Changed to text to avoid spinner arrows
+                      inputMode="numeric" // Still allow numeric input on mobile devices
                       pattern="[0-9]*"
                       value={EmailP4}
                       onChange={(e) => {
-                        handleInputChange2(e, setEmailP4, "P5");
-                        setVerifyErr(false);
+                        const value = e.target.value;
+                        if (/^[0-9]{0,1}$/.test(value)) { // Allow only one digit
+                          handleInputChange2(e, setEmailP4, "P5");
+                          setVerifyErr(false);
+                        }
                       }}
-                      maxLength={1}
                       style={{
                         height: "40px",
                         width: "40px",
@@ -2196,20 +2213,25 @@ export default function Animation({ onChangeIndex }) {
                         textAlign: "center",
                         outline: "none",
                         border: "none",
+                        WebkitAppearance: "none", // Remove spinner arrows in Chrome
+                        MozAppearance: "textfield", // Remove spinner arrows in Firefox
                       }}
                       onKeyDown={(e) => handleBackspace2(e, setEmailP4, "P3")}
                     />
+
                     <input
                       id="P5"
-                      type="number"
-                      inputMode="numeric"
+                      type="text" // Changed to text to avoid spinner arrows
+                      inputMode="numeric" // Still allow numeric input on mobile devices
                       pattern="[0-9]*"
                       value={EmailP5}
                       onChange={(e) => {
-                        handleInputChange2(e, setEmailP5, null);
-                        setVerifyErr(false);
+                        const value = e.target.value;
+                        if (/^[0-9]{0,1}$/.test(value)) { // Allow only one digit
+                          handleInputChange2(e, setEmailP5, null);
+                          setVerifyErr(false);
+                        }
                       }}
-                      maxLength={1}
                       style={{
                         height: "40px",
                         width: "40px",
@@ -2218,6 +2240,8 @@ export default function Animation({ onChangeIndex }) {
                         textAlign: "center",
                         outline: "none",
                         border: "none",
+                        WebkitAppearance: "none", // Remove spinner arrows in Chrome
+                        MozAppearance: "textfield", // Remove spinner arrows in Firefox
                       }}
                       onKeyDown={(e) => {
                         handleBackspace2(e, setEmailP5, "P4");
@@ -2226,7 +2250,57 @@ export default function Animation({ onChangeIndex }) {
                         }
                       }}
                     />
+
+                  </div> */}
+
+                  <div className="flex flex-row gap-4 mt-8">
+                    {["P1", "P2", "P3", "P4", "P5"].map((id, index) => (
+                      <input
+                        key={id}
+                        id={id}
+                        type="text" // Keep it as text to avoid spinners
+                        inputMode="numeric" // Still allow numeric input on mobile devices
+                        pattern="[0-9]*"
+                        value={eval(`Email${id}`)} // Dynamically access EmailP1, EmailP2, etc.
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          // Handle pasting
+                          if (value.length > 1) {
+                            const values = value.split("");
+                            values.forEach((digit, idx) => {
+                              if (idx + index < 5) {
+                                handleInputChange2({ target: { value: digit } }, eval(`setEmailP${index + idx + 1}`), idx + index < 4 ? `P${index + idx + 2}` : null);
+                              }
+                            });
+                            setVerifyErr(false);
+                          } else if (/^[0-9]{0,1}$/.test(value)) {
+                            handleInputChange2(e, eval(`setEmailP${index + 1}`), index < 4 ? `P${index + 2}` : null);
+                            setVerifyErr(false);
+                          }
+                        }}
+                        style={{
+                          height: "40px",
+                          width: "40px",
+                          borderRadius: 6,
+                          backgroundColor: "#EDEDEDC7",
+                          textAlign: "center",
+                          outline: "none",
+                          border: "none",
+                          WebkitAppearance: "none", // Remove spinner arrows
+                          MozAppearance: "textfield", // Remove spinner arrows in Firefox
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === "Backspace") {
+                            handleBackspace2(e, eval(`setEmailP${index + 1}`), index > 0 ? `P${index}` : null);
+                          }
+                          if (e.key === "Enter" && index === 4) {
+                            handleVerifyEmailCode();
+                          }
+                        }}
+                      />
+                    ))}
                   </div>
+
 
                   <div style={{ height: 15 }}>
                     {emailVerificationCodeErr2 && (

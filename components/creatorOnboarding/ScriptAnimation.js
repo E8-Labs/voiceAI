@@ -445,13 +445,19 @@ export default function ScriptAnimation({ onChangeIndex }) {
                       onChange={(e) => setAiName(e.target.value)}
                       placeholder="For ex: Hormozi, Tate.ai"
                       sx={MuiFieldStyle}
+                      inputProps={{
+                        maxLength: 6
+                      }}
                     />
                   </div>
 
                   <div className="w-full sm:w-9/12">
                     {aiName ? (
                       <button
-                        onClick={handleContinue}
+                        // onClick={handleContinue}
+                        onClick={() => {
+                          console.log("Ai name is", aiName)
+                        }}
                         className="bg-purple hover:bg-purple text-white w-full mt-8"
                         style={{
                           fontSize: 15,

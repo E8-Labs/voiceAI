@@ -57,10 +57,15 @@ export default function Home() {
             <div className='flex flex-row items-center justify-center w-full'>
                 <div
                     // className='flex flex-row justify-center md:w-5/12 w-full items-center'
-                    className={`flex flex-row justify-center items-center ${currentIndex === 6 ? 'w-full' : 'lg:w-5/12 w-full'}`} //style={{ backgroundColor: 'green' }}
+                    className={`flex flex-row justify-center items-center ${currentIndex === 6 ? 'w-full' : 'lg:w-6/12 w-full'}`} //style={{ backgroundColor: 'green' }}
                 >
-                    <div className='sm:w-11/12 w-full h-screen flex flex-col justify-between'>
-                        <div className='mt-12 sm:mt-24 ps-4'>
+                    <div
+                        className='sm:w-9/12 w-full h-screen flex flex-col justify-between'
+                    >
+                        <div
+                            className='justify-between pt-10 sm:pt-10 md:pt-14 md:w-full w-10/12'
+                        // className='mt-12 sm:mt-24'
+                        >
                             <Image src={'/creatorXlogo.png'}
                                 alt='logo'
                                 height={410}
@@ -82,7 +87,7 @@ export default function Home() {
                 {
                     currentIndex === 6 ?
                         "" :
-                        <div className='w-7/12 flex lg:flex hidden justify-center' style={{ height: "100%" }}>
+                        <div className='w-6/12 flex lg:flex hidden justify-center' style={{ height: "100%" }}>
                             {/* <img src="/assets/mainLogo.png" alt='app' style={{ height: "850px", width: "100%", resize: "cover", objectFit: "contain" }} /> */}
                             <div style={gifBackgroundImage} className='flex flex-row justify-center items-center'>
                                 <Image

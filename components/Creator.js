@@ -799,9 +799,10 @@ const Creator = () => {
                                                 // borderBottomRightRadius: 50,
                                                 // borderRadiusTopright: 50,
                                                 // borderRadiusTopright : 50,
-                                                borderTopLeftRadius: 50,
-                                                borderBottomRightRadius: 50,
-                                                borderTopRightRadius: 50,
+                                                // borderTopLeftRadius: 50,
+                                                // borderBottomRightRadius: 50,
+                                                // borderTopRightRadius: 50,
+                                                borderRadius: 50,
                                                 backgroundColor: "#ffffff20",
                                                 zIndex: 1
                                             }}>
@@ -874,8 +875,37 @@ const Creator = () => {
                                                             </div>
                                                         }
                                                     </div>
+                                                    <div className='flex flex-row gap-4 pe-4'
+                                                        // style={{ marginTop: 10 }}
+                                                    >
+                                                        {
+                                                            getAssistantData && getAssistantData.ai.instaUrl ?
+                                                                <button onClick={handleInstaClick}>
+                                                                    <Image
+                                                                        // layout='responsive'
+                                                                        objectFit='contain' src={"/assets/instagram.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
+                                                                </button> : ''
+                                                        }
+                                                        {
+                                                            getAssistantData && getAssistantData.ai.youtubeUrl ?
+                                                                <button onClick={handleYoutubeClick}>
+                                                                    <Image
+                                                                        // layout='responsive'
+                                                                        objectFit='contain' src={"/assets/youtubeIcon.png"} alt='social' height={25} width={25} style={{ resize: "cover", borderRadius: 3 }} />
+                                                                </button> : ''
+                                                        }
+                                                        {
+                                                            getAssistantData && getAssistantData.ai.webUrl ?
+                                                                <button onClick={handleWebClick}>
+                                                                    <Image
+                                                                        // layout='responsive'
+                                                                        objectFit='contain' src={"/assets/webIcon.png"} alt='social' height={25} width={25}
+                                                                        style={{ resize: "cover", borderRadius: 3 }} />
+                                                                </button> : ''
+                                                        }
+                                                    </div>
                                                 </div>
-                                                <div className='flex flex-row pe-4'>
+                                                {/* <div className='flex flex-row pe-4'>
                                                     <div style={{ fontSize: 12, color: "#000000", fontWeight: "400", fontFamily: "inter" }}>
                                                         Calls:
                                                     </div>
@@ -912,11 +942,11 @@ const Creator = () => {
                                                             </div>
                                                         }
                                                     </div>
-                                                </div>
+                                                </div> */}
                                             </div>
                                         </div>
                                         {/* code for socials */}
-                                        <div className='flex flex-row items-center justify-center pb-6 px-6' ref={buttonRef3}
+                                        {/* <div className='flex flex-row items-center justify-center pb-6 px-6' ref={buttonRef3}
                                             style={{
                                                 border: "2px solid #ffffff", borderTop: "8px solid #e7f3fe",
                                                 borderBottomLeftRadius: 50,
@@ -950,7 +980,7 @@ const Creator = () => {
                                                         </button> : ''
                                                 }
                                             </div>
-                                        </div>
+                                        </div> */}
                                     </div>
 
                                     {
@@ -1490,6 +1520,44 @@ const Creator = () => {
                                                 </div>
                                                 <div className='text-black' style={{ fontWeight: "400", fontSize: 15, fontFamily: "inter", marginTop: 10 }}>
                                                     This account hasn't been claimed by its creator. In order to claim this creator, you must be the real creator and verify your identity.
+                                                </div>
+                                                <div className='flex flex-row mt-4'>
+                                                    <div style={{ fontSize: 12, color: "#000000", fontWeight: "400", fontFamily: "inter" }}>
+                                                        Calls:
+                                                    </div>
+                                                    <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 12 }}>
+                                                        {
+                                                            getAssistantData &&
+                                                            <div>
+                                                                {getAssistantData.calls ?
+                                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
+                                                                        {getAssistantData.calls}
+                                                                    </div> :
+                                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
+                                                                        0
+                                                                    </div>
+                                                                }
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                    <div className='ms-2' style={{ fontSize: 12, color: "#000000", fontWeight: "400", fontFamily: "inter" }}>
+                                                        Earned:
+                                                    </div>
+                                                    <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
+                                                        {
+                                                            getAssistantData &&
+                                                            <div>
+                                                                {getAssistantData.earned ?
+                                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
+                                                                        ${Number(getAssistantData.earned).toFixed(2)}
+                                                                    </div> :
+                                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
+                                                                        $ 0
+                                                                    </div>
+                                                                }
+                                                            </div>
+                                                        }
+                                                    </div>
                                                 </div>
                                                 <div className='flex flex-row justify-start mt-4 w-full' style={{ marginTop: 30 }}>
                                                     <div>

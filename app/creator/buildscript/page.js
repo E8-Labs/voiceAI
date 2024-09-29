@@ -86,15 +86,16 @@ export default function Home() {
       >
         <div
           // className='flex flex-row justify-center md:w-5/12 w-full items-center'
-          className={`flex flex-row justify-center h-screen ${currentIndex === 4 ? "2xl:w-3/12" : "lg:w-5/12 w-full"//, currentIndex === 4 ? "w-full" : "lg:w-4/12 w-full", 
+          className={`flex flex-row justify-center h-screen ${currentIndex === 4 ? "2xl:w-3/12" : "lg:w-6/12 w-full"//, currentIndex === 4 ? "w-full" : "lg:w-4/12 w-full", 
             }`}
-          style={{ backgroundColor: "" }}
+          style={{ backgroundColor: "" }}  
         >
-          <div className="sm:w-10/12 w-full h-screen flex flex-col justify-between px-8 sm:px-0"
+          <div className="sm:w-9/12 w-full h-screen flex flex-col justify-between px-8 sm:px-0"
             style={{ backgroundColor: "" }}
           >
             <div
-              className="mt-12 sm:mt-24"
+              // className="mt-12 sm:mt-24"
+              className='justify-between pt-10 sm:pt-10 md:pt-14 md:w-full w-10/12'
               style={{ backgroundColor: "" }}
             >
               <Image
@@ -126,7 +127,7 @@ export default function Home() {
           </div>
         </div>
         <div
-          className="w-7/12 flex lg:flex hidden justify-center items-center"
+          className="w-6/12 flex lg:flex hidden justify-center items-center"
           style={{ height: "100%", border: "none" }}
         >
           {/* <img src="/assets/mainLogo.png" alt='app' style={{ height: "850px", width: "100%", resize: "cover", objectFit: "contain" }} /> */}
