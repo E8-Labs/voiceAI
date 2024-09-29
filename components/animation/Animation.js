@@ -136,6 +136,19 @@ export default function Animation({ onChangeIndex }) {
     // border: '2px solid green'
   };
 
+  const emailInputRefs = useRef([]);
+
+  // Auto-focus the first input field on component mount
+  useEffect(() => {
+    if (currentIndex === 4) {
+      console.log("It is index", currentIndex)
+      if (emailInputRefs.current[0]) {
+        console.log("Trying to focus")
+        emailInputRefs.current[0].focus();
+      }
+    }
+  }, [currentIndex]);
+
   useEffect(() => {
     if (!auth) {
       return;
@@ -2262,6 +2275,7 @@ export default function Animation({ onChangeIndex }) {
                         inputMode="numeric" // Still allow numeric input on mobile devices
                         pattern="[0-9]*"
                         value={eval(`Email${id}`)} // Dynamically access EmailP1, EmailP2, etc.
+                        ref={(el) => (emailInputRefs.current[index] = el)}
                         onChange={(e) => {
                           const value = e.target.value;
                           // Handle pasting
@@ -2801,26 +2815,6 @@ export default function Animation({ onChangeIndex }) {
                       <div style={{ height: 14 }}>
                         {/* Back Button or Other Elements */}
                       </div>
-                      <div>
-                        <div
-                          style={{
-                            fontSize: 24,
-                            fontWeight: "600",
-                            textAlign: "center",
-                          }}
-                        >
-                          Congratulations!
-                        </div>
-                        <div
-                          style={{
-                            fontSize: 16,
-                            fontWeight: "500",
-                            textAlign: "center",
-                          }}
-                        >
-                          Your account is created
-                        </div>
-                      </div>
 
                       {/* Additional Content */}
                       <div
@@ -2846,29 +2840,25 @@ export default function Animation({ onChangeIndex }) {
                         </div>
                       </div>
 
-                      <div
-                        className="w-full flex flex-col text-center justify-center items-center align-self-center mt-4"
-                        style={{
-                          color: "#050A0885",
-                          fontWeight: "400",
-                          fontSize: 13,
-                          backgroundColor: ''
-                        }}
-                      >
-                        Welcome to Voice.ai {userName}, where creators like you build a
-                        more engaging and personalized{" "}
-                        <span
+                      <div className="-mt-16">
+                        <div
                           style={{
-                            color: "#050A0830",
-                            fontWeight: "400",
-                            fontSize: 13,
+                            fontSize: 24,
+                            fontWeight: "600",
+                            textAlign: "center",
                           }}
                         >
-                          experience for their community. With Voice, you're able to build
-                          an AI version of yourself <br></br> so people can come talk directly with
-                          your AI twin. In the next steps,<br></br>  we'll be creating your AI based
-                          on what makes you- you.
-                        </span>
+                          Congratulations!
+                        </div>
+                        <div
+                          style={{
+                            fontSize: 16,
+                            fontWeight: "500",
+                            textAlign: "center",
+                          }}
+                        >
+                          Your account is created
+                        </div>
                       </div>
 
                       <div className="w-full flex justify-center mt-4">
