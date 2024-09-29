@@ -65,7 +65,7 @@ export default function Home() {
 
     return (
         <div className='w-full' style={{ height: "100svh", display: 'flex', alignItems: "start", width: "", overflow: "hidden", backgroundColor: '' }}>
-            <div className='flex flex-row items-start justify-center w-full' style={{ backgroundColor: '' }}>
+            <div className='flex flex-row items-center justify-center w-full' style={{ backgroundColor: 'blue' }}>
                 <div
                     style={{ backgroundColor: '' }}
                     className='flex flex-row justify-center items-start md:w-6/12 w-full'
@@ -108,7 +108,7 @@ export default function Home() {
                 }
                 {
                     currentIndex <= 6 && currentIndex > 1 &&
-                    <div className='w-6/12 flex lg:flex hidden  justify-center'>
+                    <div className='w-6/12 flex lg:flex hidden  justify-center items-center' style={{ backgroundColor: 'red' }}>
                         <div style={gifBackgroundImage} className='flex flex-row justify-center items-center'>
                             <Image
                                 src="/mainAppGif3.gif" alt='gif' style={{

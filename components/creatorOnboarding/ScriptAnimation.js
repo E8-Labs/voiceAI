@@ -21,7 +21,7 @@ import Apis from "../apis/Apis";
 import axios from "axios";
 import AiSocialLinks from "./AiSocialLinks";
 import { useRouter } from "next/navigation";
-import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
+// import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
 import Knowledgebase from "../buildai/Knowledgebase";
 import SocialOAuth from "./SocialOAuth";
 
@@ -150,20 +150,20 @@ export default function ScriptAnimation({ onChangeIndex }) {
     }
   };
 
-  const compressAudio = async (file) => {
-    if (!ffmpeg.isLoaded()) {
-      await ffmpeg.load();
-    }
-    ffmpeg.FS("writeFile", "input.mp3", await fetchFile(file));
+  // const compressAudio = async (file) => {
+  //   if (!ffmpeg.isLoaded()) {
+  //     await ffmpeg.load();
+  //   }
+  //   ffmpeg.FS("writeFile", "input.mp3", await fetchFile(file));
 
-    // Convert to a lower bitrate mp3 file
-    await ffmpeg.run("-i", "input.mp3", "-b:a", "96k", "output.mp3");
+  //   // Convert to a lower bitrate mp3 file
+  //   await ffmpeg.run("-i", "input.mp3", "-b:a", "96k", "output.mp3");
 
-    const data = ffmpeg.FS("readFile", "output.mp3");
-    const compressedBlob = new Blob([data.buffer], { type: "audio/mp3" });
-    const compressedUrl = URL.createObjectURL(compressedBlob);
-    setCompressedAudioUrl(compressedUrl);
-  };
+  //   const data = ffmpeg.FS("readFile", "output.mp3");
+  //   const compressedBlob = new Blob([data.buffer], { type: "audio/mp3" });
+  //   const compressedUrl = URL.createObjectURL(compressedBlob);
+  //   setCompressedAudioUrl(compressedUrl);
+  // };
 
   //calling api of ld your ai
 
