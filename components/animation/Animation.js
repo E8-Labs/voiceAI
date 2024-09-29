@@ -1679,7 +1679,7 @@ export default function Animation({ onChangeIndex }) {
                       marginBottom: 50,
                     }}
                   >
-                    The good ones are still available
+                    Yes the good ones are still available
                   </div>
 
                   <TextField
@@ -1704,7 +1704,7 @@ export default function Animation({ onChangeIndex }) {
                     // }}
                     // label="Name"
                     variant="outlined"
-                    placeholder="name"
+                    placeholder="Name your AI"
                     sx={MuiFieldStyle}
                     InputProps={{
                       startAdornment: (
@@ -1840,8 +1840,8 @@ export default function Animation({ onChangeIndex }) {
                   >
                     <div style={{ fontSize: 12, fontWeight: "400" }}>Or</div>
                     <button
-                      onClick={handleMoveLogin}
-                      style={{ fontSize: 12, fontWeight: "400" }}
+                      onClick={handleMoveLogin} className="text-purple"
+                      style={{ fontSize: 12, fontWeight: "500" }}
                     >
                       Login
                     </button>

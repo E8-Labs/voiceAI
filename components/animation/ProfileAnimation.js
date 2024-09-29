@@ -59,7 +59,8 @@ const ProfileAnimation = ({ creator, openClaimPopup, showBorderedProfile }) => {
     return (
         <div className='ps-2 pt-3'>
             <Box position="relative" display="inline-block">
-                <button onClick={handleClick}>
+                <button onClick={handleClick}
+                >
                     <div style={{ border: "2px solid black", borderRadius: "50%", padding: 4 }}>
                         {
                             getAssistantData && getAssistantData.profile_image ?
@@ -74,7 +75,6 @@ const ProfileAnimation = ({ creator, openClaimPopup, showBorderedProfile }) => {
                 <AnimatePresence>
                     {isOpen && (
                         <div>
-                            {/* Username animation */}
                             <motion.div
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 10 }}
@@ -99,16 +99,16 @@ const ProfileAnimation = ({ creator, openClaimPopup, showBorderedProfile }) => {
                                                 {
                                                     getAssistantData.name ?
                                                         <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                            {getAssistantData.name}
+                                                            {/* {getAssistantData.name} */}
                                                         </div> :
                                                         <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                            {getAssistantData.assitant.name}
+                                                            {/* {getAssistantData.assitant.name} */}
                                                         </div>
                                                 }
                                             </div>
                                         }
                                     </div>
-                                    <div className='flex flex-row'>
+                                    {/* <div className='flex flex-row'>
                                         <div style={{ fontSize: 12, color: "grey", fontWeight: "400", fontFamily: "inter" }}>
                                             Calls:
                                         </div>
@@ -145,12 +145,11 @@ const ProfileAnimation = ({ creator, openClaimPopup, showBorderedProfile }) => {
                                                 </div>
                                             }
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </motion.div>
 
-                            {/* Social buttons animation */}
-                            <motion.div
+                            {/* <motion.div
                                 initial={{ opacity: 0, y: -20 }}
                                 animate={{ opacity: 1, y: 10 }}
                                 exit={{ opacity: 0, y: -20 }}
@@ -171,7 +170,7 @@ const ProfileAnimation = ({ creator, openClaimPopup, showBorderedProfile }) => {
                                         <Image src={"/assets/instagram.png"} alt='social' height={20} width={20} style={{ resize: "cover" }} />
                                     </button>
                                 </Box>
-                            </motion.div>
+                            </motion.div> */}
                         </div>
                     )}
                 </AnimatePresence>

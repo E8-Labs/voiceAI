@@ -3,7 +3,7 @@ import { useState, useCallback, useEffect, useRef } from 'react'; // useRef adde
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { Box, Drawer, Modal, Snackbar, Alert, Slide, Fade } from '@mui/material';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { notFound, useParams, useRouter, useSearchParams } from 'next/navigation';
 import ProfileAnimation from './animation/ProfileAnimation';
 import LoginModal from './loginform/LoginModal';
 import axios from 'axios';
@@ -11,6 +11,7 @@ import Apis from './apis/Apis';
 import CycleArray from './animation/CycleArray';
 import AnimatedButton from './testcomponents/Dropdown';
 import MetaTags from './Metatags/MetaTags';
+import { Globe, InstagramLogo, YoutubeLogo } from '@phosphor-icons/react';
 
 const backgroundImage = {
     backgroundImage: 'url("/backgroundImage.png")', // Ensure the correct path
@@ -253,7 +254,10 @@ const Creator = () => {
                     localStorage.setItem('assistantData', JSON.stringify(AssistantData));
                     setGetAssistantData(getResponse.data.data);
                 } else {
-                    setAssistantDataErr(true);
+                    console.log("Not found ")
+                    // setAssistantDataErr(true);
+                    router.push("/404")
+                    // notFound()
                 }
             } else {
                 console.log("Error occured");
@@ -876,7 +880,7 @@ const Creator = () => {
                                                         }
                                                     </div>
                                                     <div className='flex flex-row gap-4 pe-4'
-                                                        // style={{ marginTop: 10 }}
+                                                    // style={{ marginTop: 10 }}
                                                     >
                                                         {
                                                             getAssistantData && getAssistantData.ai.instaUrl ?
@@ -1009,9 +1013,10 @@ const Creator = () => {
                                                             // borderBottomRightRadius: 50,
                                                             // borderRadiusTopright: 50,
                                                             // borderRadiusTopright : 50,
-                                                            borderTopLeftRadius: 50,
-                                                            borderBottomRightRadius: 50,
-                                                            borderTopRightRadius: 50,
+                                                            // borderTopLeftRadius: 50,
+                                                            // borderBottomRightRadius: 50,
+                                                            // borderTopRightRadius: 50,
+                                                            borderRadius: 50,
                                                             backgroundColor: "#ffffff20",
                                                             zIndex: 1
                                                         }}>
@@ -1065,7 +1070,7 @@ const Creator = () => {
                                                         </div>
 
 
-                                                        <div>
+                                                        <div className='flex flex-row gap-2'>
                                                             {/* code for assistant name and calls */}
                                                             <div className='flex flex-row items-center gap-8'>
                                                                 <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
@@ -1085,7 +1090,37 @@ const Creator = () => {
                                                                     }
                                                                 </div>
                                                             </div>
-                                                            <div className='flex flex-row pe-4'>
+                                                            <div className='flex flex-row gap-4' //style={{ marginTop: 10 }}
+                                                            >
+                                                                {
+                                                                    getAssistantData && getAssistantData.ai.instaUrl ?
+                                                                        <button onClick={handleInstaClick}>
+                                                                            <InstagramLogo size={25} />
+                                                                            {/* <Image
+                                                                    // layout='responsive'
+                                                                    objectFit='contain' src={"/assets/instagram.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} /> */}
+                                                                        </button> : ""}
+                                                                {
+                                                                    getAssistantData && getAssistantData.ai.youtubeUrl ?
+                                                                        <button onClick={handleYoutubeClick}>
+                                                                            <YoutubeLogo size={25} />
+                                                                            {/* <Image
+                                                                                // layout='responsive'
+                                                                                objectFit='contain' src={"/assets/youtubeIcon.png"} alt='social' height={25} width={25} style={{ resize: "cover", borderRadius: 3 }} /> */}
+                                                                        </button> : ''
+                                                                }
+                                                                {
+                                                                    getAssistantData && getAssistantData.ai.webUrl ?
+                                                                        <button onClick={handleWebClick}>
+                                                                            <Globe size={25} />
+                                                                            {/* <Image
+                                                                                // layout='responsive'
+                                                                                objectFit='contain' src={"/assets/webIcon.png"} alt='social' height={25} width={25}
+                                                                                style={{ resize: "cover", borderRadius: 3 }} /> */}
+                                                                        </button> : ''
+                                                                }
+                                                            </div>
+                                                            {/* <div className='flex flex-row pe-4'>
                                                                 <div style={{ fontSize: 12, color: "#000000", fontWeight: "400", fontFamily: "inter" }}>
                                                                     Calls:
                                                                 </div>
@@ -1122,11 +1157,11 @@ const Creator = () => {
                                                                         </div>
                                                                     }
                                                                 </div>
-                                                            </div>
+                                                            </div> */}
                                                         </div>
                                                     </div>
                                                     {/* code for socials */}
-                                                    <div className='flex flex-row items-center justify-center pb-6 px-6' ref={buttonRef3}
+                                                    {/* <div className='flex flex-row items-center justify-center pb-6 px-6' ref={buttonRef3}
                                                         style={{
                                                             border: "2px solid #ffffff", borderTop: "8px solid #e7f3fe",
                                                             borderBottomLeftRadius: 50,
@@ -1135,22 +1170,25 @@ const Creator = () => {
                                                         }}>
                                                         <div className='flex flex-col gap-4' style={{ marginTop: 10 }}>
                                                             <button onClick={handleInstaClick}>
+                                                                <InstagramLogo size={25} />
                                                                 <Image
                                                                     // layout='responsive'
                                                                     objectFit='contain' src={"/assets/instagram.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
                                                             </button>
                                                             <button onClick={handleYoutubeClick}>
+                                                                <YoutubeLogo size={25} />
                                                                 <Image
                                                                     // layout='responsive'
                                                                     objectFit='contain' src={"/assets/youtubeIcon.png"} alt='social' height={25} width={25} style={{ resize: "cover", borderRadius: 3 }} />
                                                             </button>
                                                             <button onClick={handleWebClick}>
+                                                                <Globe size={25} />
                                                                 <Image
                                                                     // layout='responsive'
                                                                     objectFit='contain' src={"/assets/webIcon.png"} alt='social' height={25} width={25} style={{ resize: "cover", borderRadius: 3 }} />
                                                             </button>
                                                         </div>
-                                                    </div>
+                                                    </div> */}
                                                 </div> :
                                                 <ProfileAnimation creator={creator} openClaimPopup={handleopenClaimpopup} showBorderedProfile={handleShowBorderProfile} />
                                         }
@@ -1312,9 +1350,9 @@ const Creator = () => {
                                             style={{
                                                 backgroundColor: "",
                                                 borderRadius: "50%",
-                                                height: windowHeight / 2.48, width: windowHeight / 2.48
+                                                height: windowHeight / 3, width: windowHeight / 3
                                             }}
-                                            height={300} width={300} />
+                                            height={200} width={200} />
                                     </div>
 
                                     {/* <motion.div

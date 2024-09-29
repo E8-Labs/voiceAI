@@ -16,12 +16,12 @@ const Page = () => {
             <div className='w-full h-screen flex flex-row justify-center'>
                 <div className='h-screen w-9/12 px-4 pb-4 border-2 text-justify' style={{ backgroundColor: "transparent", overflow: 'auto', scrollbarWidth: 'none', }}>
                     <div className='mt-10' style={{ fontSize: 28, fontWeight: '500', fontFamily: 'inter' }}>
-                        CreatorX! Terms and Conditions
+                        CreatorX Terms and Conditions
                     </div>
                     <div className='w-full p-3 rounded-xl mt-6'
                         style={{ backgroundColor: "transparent" }}>
                         <div style={{ fontWeight: "bold", fontSize: 18 }}> 1. Introduction: </div><br />
-                        Welcome to CreatorX! These Terms and Conditions ("Terms") govern your use of the CreatorX platform, including any AI-powered twins, features, and services provided by CreatorX ("Service"). By accessing or using CreatorX, you agree to comply with and be bound by these Terms. If you do not agree with these Terms, you may not use the Service.
+                        Welcome to CreatorX These Terms and Conditions ("Terms") govern your use of the CreatorX platform, including any AI-powered twins, features, and services provided by CreatorX ("Service"). By accessing or using CreatorX, you agree to comply with and be bound by these Terms. If you do not agree with these Terms, you may not use the Service.
                         <br /> <br /> <div style={{ fontWeight: "bold", fontSize: 18 }}> 2. Eligibility: </div><br />
                         To use CreatorX, you must be at least 18 years old and have the legal capacity to enter into a binding agreement. By using the Service, you represent and warrant that you meet these eligibility requirements.
                         <br /> <br /> <div style={{ fontWeight: "bold", fontSize: 18 }}> 3. Account Registration: </div><br />

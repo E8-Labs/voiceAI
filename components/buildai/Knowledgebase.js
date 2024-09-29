@@ -66,12 +66,12 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
 
     }
 
-    useEffect(() => {
-        setQuestionType("Document")
-        setShowDocument(true);
-        setText(false);
-        setWebUrl(false);
-    }, [])
+    // useEffect(() => {
+    //     setQuestionType("Document")
+    //     setShowDocument(true);
+    //     setText(false);
+    //     setWebUrl(false);
+    // }, [])
 
     //code for adding data in list
     const listdata = () => {
@@ -349,7 +349,7 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
                                 },
                             }}
                         >
-                            <MenuItem value="none">
+                            <MenuItem value="Select">
                                 <em>Select Type</em>
                             </MenuItem>
                             <MenuItem value="Document">Document</MenuItem>
@@ -361,8 +361,8 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
                     {
                         showDocument &&
 
-                        <div>
-                            <div className='flex flex-col gap-8 mt-8'>
+                        <div className='flex flex-col gap-4' style={{ marginTop: 18 }}>
+                            <div className='flex flex-col gap-4'>
                                 <TextField className=' w-full'
                                     autofill='off'
                                     id="filled-basic"
@@ -381,7 +381,7 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
                                     style={{ color: "black" }}
                                 />
 
-                                <TextField className=' w-full mt-4'
+                                <TextField className=' w-full'
                                     autofill='off'
                                     id="filled-basic"
                                     value={documentDescription}
@@ -403,27 +403,11 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
 
                             </div>
 
-                            <div className='mt-4' style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter" }}>
+                            <div className='' style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter" }}>
                                 Upload Document
                             </div>
 
-                            <div className="flex flex-row items-center gap-6 mt-4">
-                                <div className='flex flex-row justify-center rounded items-center' style={{
-                                    height: "100px", border: "2px dashed #0000001006",
-                                    backgroundColor: "#EDEDED80"
-                                }}
-                                    onDragOver={handleDragOver}
-                                    onDragLeave={handleDragLeave}
-                                    onDrop={handleDrop}
-                                >
-                                    <button
-                                        onClick={handleButtonClick}
-                                        className="px-4 py-2 h-full" style={{ fontWeight: "500", fontSize: 11, fontFamily: "inter" }}
-                                    >
-                                        Drop file or
-                                        <br /> <span className='text-purple'> Browse</span>
-                                    </button>
-                                </div>
+                            <div className="flex flex-row items-center gap-6">
                                 <input
                                     type="file"
                                     id="fileInput"
@@ -431,7 +415,7 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
                                     className="hidden"
                                     onChange={handleFileChange}
                                 />
-                                {fileName && (
+                                {fileName ? (
                                     <div className="flex items-center text-gray-700 p-4 rounded gap-2" style={{ backgroundColor: "#EDEDED80", fontSize: 13, fontFamily: "inter" }}>
                                         <span>{fileName}</span>
                                         <button
@@ -440,7 +424,24 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
                                             <Image src="/assets/croseBtn.png" alt='cross' height={20} width={20} />
                                         </button>
                                     </div>
-                                )}
+                                ) :
+                                    <div className='flex flex-row w-full justify-center rounded items-center' style={{
+                                        height: "100px", border: "2px dashed #0000001006",
+                                        backgroundColor: "#EDEDED80"
+                                    }}
+                                        onDragOver={handleDragOver}
+                                        onDragLeave={handleDragLeave}
+                                        onDrop={handleDrop}
+                                    >
+                                        <button
+                                            onClick={handleButtonClick}
+                                            className="px-4 py-2 h-full" style={{ fontWeight: "500", fontSize: 16, fontFamily: "inter" }}
+                                        >
+                                            Drop file or
+                                            <br /> <span className='text-purple'> Browse</span>
+                                        </button>
+                                    </div>
+                                }
                             </div>
                         </div>
 
@@ -448,8 +449,8 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
 
                     {
                         text &&
-                        <div>
-                            <TextField className=' w-full mt-8'
+                        <div style={{ marginTop: 18 }}>
+                            <TextField className=' w-full'
                                 autofill='off'
                                 id="filled-basic"
                                 value={textData}
@@ -473,8 +474,8 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
 
                     {
                         webUrl &&
-                        <div>
-                            <TextField className=' w-full mt-8'
+                        <div style={{ marginTop: 18 }}>
+                            <TextField className=' w-full'
                                 autofill='off'
                                 id="filled-basic"
                                 value={urlData}

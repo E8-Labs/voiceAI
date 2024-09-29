@@ -817,15 +817,34 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         {inputRows.map((row, index) => (
                                             <div className='w-full flex flex-row gap-2 mt-2' key={index} style={{}}>
                                                 <div className='w-3/12 px-3 py-3 rounded-lg flex flex-row gap-4 items-center' style={{ backgroundColor: "#EDEDED80", }}>
-                                                    <input
+                                                    {/* <input
                                                         className='w-full border-none bg-transparent outline-none'
                                                         type="number"
                                                         value={row.name}
                                                         autoFocus={true}
                                                         onChange={(e) => handleInputChange2(index, 'productAmount', e)}
                                                         placeholder="$"
-                                                    // style={{ marginRight: '8px' }}
-                                                    />
+                                                        style={{
+                                                            WebkitAppearance: "none", // Remove spinner arrows
+                                                            MozAppearance: "textfield",
+                                                        }}
+                                                    /> */}
+                                                    <div className="flex items-center border-none border-gray-300">
+                                                        <span className="mr-1">$</span>
+                                                        <input
+                                                            className="w-full border-none bg-transparent outline-none"
+                                                            type="number"
+                                                            value={row.name}
+                                                            autoFocus={true}
+                                                            onChange={(e) => handleInputChange2(index, 'productAmount', e)}
+                                                            // placeholder="Amount"
+                                                            style={{
+                                                                WebkitAppearance: "none", // Remove spinner arrows
+                                                                MozAppearance: "textfield",
+                                                            }}
+                                                        />
+                                                    </div>
+
                                                 </div>
                                                 <div className='w-9/12 px-3 py-3 rounded-lg flex flex-row gap-4 items-center' style={{ backgroundColor: "#EDEDED80", }}>
                                                     <input
@@ -841,15 +860,15 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                 </div>
                                             </div>
                                         ))}
-                                        <div className='mt-6'>
-                                            <button onClick={addInputRow} className='text-purple' style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter" }}>
-                                                <u>
-                                                    Add New
-                                                </u>
-                                            </button>
-                                        </div>
                                     </div>
 
+                                    <div className='mt-6'>
+                                        <button onClick={addInputRow} className='text-purple' style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter" }}>
+                                            <u>
+                                                Add New
+                                            </u>
+                                        </button>
+                                    </div>
                                     {inputRows.every(row => row.productAmount && row.productName) ?
                                         <div className='w-full w-full sm:w-9/12'>
                                             <button onClick={handleContinue}

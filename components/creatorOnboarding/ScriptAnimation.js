@@ -55,7 +55,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
     // }
   })
   const router = useRouter();
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(3);
   const [direction, setDirection] = useState(0);
 
   //code for getting value of input fields
@@ -65,8 +65,10 @@ export default function ScriptAnimation({ onChangeIndex }) {
   const [buildAiLoader, setBuildAiLoader] = useState(false);
   const [kbData, setkbData] = useState(false);
   const [skipLoader, setSkipLoader] = useState(false);
-  const [selectedAudio, setSelectedAudio] = useState(null);
-  const [audioUrl, setAudioUrl] = useState(null);
+  // const [selectedAudio, setSelectedAudio] = useState(null);
+  // const [audioUrl, setAudioUrl] = useState(null);
+  const [selectedAudios, setSelectedAudios] = useState([]);
+  const [audioUrls, setAudioUrls] = useState([]);
   const [compressedAudioUrl, setCompressedAudioUrl] = useState(null);
   const [showBuildAiErr, setShowBuildAiErr] = useState(false);
   //state to get sociallinks data
@@ -134,14 +136,13 @@ export default function ScriptAnimation({ onChangeIndex }) {
     }
   }, [])
 
+  //code for multiple audios
   const handleAudioChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setSelectedAudio(file);
-      const url = URL.createObjectURL(file);
-      setAudioUrl(url);
-      console.log("Selected audio file url is", url);
-    }
+    const files = Array.from(event.target.files);
+    const urls = files.map((file) => URL.createObjectURL(file));
+
+    setSelectedAudios((prevSelectedAudios) => [...prevSelectedAudios, ...files]);
+    setAudioUrls((prevAudioUrls) => [...prevAudioUrls, ...urls]);
   };
 
   const handleUploadClick = () => {
@@ -149,6 +150,27 @@ export default function ScriptAnimation({ onChangeIndex }) {
       fileInputRef.current.click();
     }
   };
+
+  const handleRemoveAudio = (index) => {
+    setAudioUrls((prevAudioUrls) => prevAudioUrls.filter((_, i) => i !== index));
+    setSelectedAudios((prevSelectedAudios) => prevSelectedAudios.filter((_, i) => i !== index));
+  };
+
+  // const handleAudioChange = (event) => {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     setSelectedAudio(file);
+  //     const url = URL.createObjectURL(file);
+  //     setAudioUrl(url);
+  //     console.log("Selected audio file url is", url);
+  //   }
+  // };
+
+  // const handleUploadClick = () => {
+  //   if (fileInputRef.current) {
+  //     fileInputRef.current.click();
+  //   }
+  // };
 
   // const compressAudio = async (file) => {
   //   if (!ffmpeg.isLoaded()) {
@@ -219,9 +241,9 @@ export default function ScriptAnimation({ onChangeIndex }) {
         }
       }
 
-      if (selectedAudio) {
-        formData.append("media", selectedAudio);
-        console.log("Audi sending in api", selectedAudio);
+      if (selectedAudios) {
+        formData.append("media", selectedAudios);
+        console.log("Audi sending in api", selectedAudios);
       }
       console.log("Data sending in api is", formData);
       const response = await axios.post(ApiPath, formData, {
@@ -454,10 +476,10 @@ export default function ScriptAnimation({ onChangeIndex }) {
                   <div className="w-full sm:w-9/12">
                     {aiName ? (
                       <button
-                        // onClick={handleContinue}
-                        onClick={() => {
-                          console.log("Ai name is", aiName)
-                        }}
+                        onClick={handleContinue}
+                        // onClick={() => {
+                        //   console.log("Ai name is", aiName)
+                        // }}
                         className="bg-purple hover:bg-purple text-white w-full mt-8"
                         style={{
                           fontSize: 15,
@@ -841,7 +863,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
             >
               <div className="w-full flex sm:justify-center justify-start">
                 <div className="w-full">
-                  <div>
+                  <div className="w-full flex flex-row justify-between items-center">
                     <button onClick={handleBack}>
                       <Image
                         src={"/assets/backarrow.png"}
@@ -850,6 +872,18 @@ export default function ScriptAnimation({ onChangeIndex }) {
                         width={16}
                       />
                     </button>
+                    {
+                      kbData ?
+                        <button
+                          onClick={handleContinue}
+                          style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 15, }}>
+                          Skip
+                        </button> :
+                        <button onClick={() => { setKnowledgeModal(true) }} className="bg-purple px-1 lg:px-2 px-1 py-1 sm:py-2 text-xs"// text-sm"
+                          style={{ fontWeight: '400', fontFamily: 'inter', color: 'white', borderRadius: "50px" }}>
+                          Add knowledge
+                        </button>
+                    }
                   </div>
                   <div
                     className="mt-6 flex flex-row w-full justify-between items-center"
@@ -869,18 +903,6 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     >
                       Knowledge base
                     </div>
-                    {
-                      kbData ?
-                        <button
-                          onClick={handleContinue}
-                          style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 15, }}>
-                          Skip
-                        </button> :
-                        <button onClick={() => { setKnowledgeModal(true) }} className="bg-purple px-1 lg:px-2 px-1 py-1 sm:py-2 text-xs"// text-sm"
-                          style={{ fontWeight: '400', fontFamily: 'inter', color: 'white', borderRadius: "50px" }}>
-                          Add Knowledge
-                        </button>
-                    }
                   </div>
                   <Modal
                     open={knowledgeModal}
@@ -894,7 +916,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                       },
                     }} //style={{ backgroundColor: "red" }}
                   >
-                    <Box className="lg:w-3/12 md:w-5/12 sm:w-7/12"
+                    <Box className="lg:w-4/12 md:w-5/12 sm:w-7/12"
                       sx={styleLoginModal}
                     >
                       {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
@@ -919,9 +941,9 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     <div style={{ maxHeight: "50vh", overflow: "auto", scrollbarWidth: "none" }}>
                       {
                         knowledgeData.map((item) => (
-                          <div key={item.id} className='border-2 mt-8 p-4 rounded-lg'>
+                          <div key={item.id} className='border-2 mt-8 p-4 rounded-lg' style={{borderColor: '#E6E6E6'}}>
                             <div className='flex flex-row w-full justify-between items-center'>
-                              <div>
+                              <div style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 13, color: '#303240' }}>
                                 {item.type}
                               </div>
                               <div>
@@ -936,7 +958,15 @@ export default function ScriptAnimation({ onChangeIndex }) {
                                 }
                               </div>
                             </div>
-                            <div className='w-full'>
+                            <div className='w-full' style={{
+                              fontWeight: '400', fontFamily: 'inter',
+                              fontSize: 15, color: '#000000',
+                              display: '-webkit-box',
+                              WebkitLineClamp: 2,
+                              WebkitBoxOrient: 'vertical',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                            }}>
                               {item.content}
                             </div>
                           </div>
@@ -951,7 +981,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                         <button onClick={() => { setKnowledgeModal(true) }}
                           className='bg-purple hover:bg-purple text-white w-full mt-12'
                           style={{ fontSize: 15, fontWeight: "400", height: "44px", borderRadius: "50px" }}>
-                          Add Knowledge
+                          Add knowledge
                         </button> :
                         <button onClick={handleContinue}
                           className='bg-purple hover:bg-purple text-white w-full mt-12'
@@ -985,7 +1015,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                   {/* <div style={{ height: "100%", width: "2px", backgroundColor: 'black' }} /> */}
 
                   <div>
-                    <div>
+                    <div className="flex flex-row w-full justify-between items-center">
                       <button onClick={handleBack}>
                         <Image
                           src={"/assets/backarrow.png"}
@@ -994,6 +1024,18 @@ export default function ScriptAnimation({ onChangeIndex }) {
                           width={16}
                         />
                       </button>
+                      {
+                        selectedAudios.length === 0 ?
+                          <div>
+                            {
+                              skipLoader ?
+                                <CircularProgress size={25} /> :
+                                <button onClick={(event) => handleBuildAI(event)}>
+                                  Skip
+                                </button>
+                            }
+                          </div> : ''
+                      }
                     </div>
                     <div
                       className="mt-6"
@@ -1009,8 +1051,8 @@ export default function ScriptAnimation({ onChangeIndex }) {
                       className="text-lightWhite mt-2"
                       style={{ fontSize: 13, fontWeight: "400" }}
                     >
-                      Upload a high quality audio of your voice. <br />
-                      For best results, upload at least 10 minutes of audio.
+                      Upload a high quality audio of your voice.<br />
+                      For best results, upload at least 10 minutes of audio. Max 20MB (mp3, wave, mov)
                     </div>
 
                     <div className="mt-6">
@@ -1026,7 +1068,31 @@ export default function ScriptAnimation({ onChangeIndex }) {
                         onChange={handleAudioChange}
                         className="hidden"
                       />
-                      {audioUrl && (
+
+                      {audioUrls.length > 0 && (
+                        <div className="flex flex-col gap-4">
+                          {audioUrls.map((audioUrl, index) => (
+                            <div key={index} className="flex items-center gap-4">
+                              <audio controls className="mb-">
+                                <source src={audioUrl} type="audio/mpeg" />
+                                Your browser does not support the audio element.
+                              </audio>
+                              <button onClick={() => handleRemoveAudio(index)}>
+                                <Image src="/assets/croseBtn.png" alt="cross" height={30} width={30} />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* {selectedAudios.length > 0 && (
+                        <button onClick={handleSendApi} className="btn-send-api">
+                          Send to API
+                        </button>
+                      )} */}
+
+
+                      {/* {audioUrl && (
                         <div className="flex flex-row items-center gap-4">
                           <audio controls className="mb-">
                             <source src={audioUrl} type="audio/mpeg" />
@@ -1044,7 +1110,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                             </button>
                           </div>
                         </div>
-                      )}
+                      )} */}
                     </div>
 
                     <div className="mt-6 flex flex-row items-center">
@@ -1063,17 +1129,9 @@ export default function ScriptAnimation({ onChangeIndex }) {
                                 borderRadius: "50px",
                               }}
                             >
-                              Upload
-                            </button>
-                        }
-                      </div>
-
-                      <div className="w-6/12 flex flex-row justify-center">
-                        {
-                          skipLoader ?
-                            <CircularProgress size={25} /> :
-                            <button onClick={(event) => handleBuildAI(event)}>
-                              Skip
+                              {
+                                selectedAudios.length === 0 ? "Upload" : 'Upload more'
+                              }
                             </button>
                         }
                       </div>
@@ -1081,26 +1139,30 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     </div>
 
                     <div className="w-full flex flex-row justify-center">
-                      <div className="w-full">
-                        {
-                          buildAiLoader ? (
-                            <div className="w-full flex justify-center mt-12">
-                              <CircularProgress size={30} />
-                            </div>
-                          ) : (
-                            <button
-                              onClick={handleBuildAI}
-                              className="bg-purple hover:bg-purple text-white w-full mt-12 py-2"
-                              style={{
-                                fontSize: 15,
-                                fontWeight: "400",
-                                borderRadius: "50px",
-                              }}
-                            >
-                              Continue
-                            </button>
-                          )}
-                      </div>
+                      {
+                        selectedAudios.length === 0 ?
+                          "" :
+                          <div className="w-full">
+                            {
+                              buildAiLoader ? (
+                                <div className="w-full flex justify-center mt-12">
+                                  <CircularProgress size={30} />
+                                </div>
+                              ) : (
+                                <button
+                                  onClick={handleBuildAI}
+                                  className="bg-purple hover:bg-purple text-white w-full mt-12 py-2"
+                                  style={{
+                                    fontSize: 15,
+                                    fontWeight: "400",
+                                    borderRadius: "50px",
+                                  }}
+                                >
+                                  Continue
+                                </button>
+                              )}
+                          </div>
+                      }
                     </div>
                   </div>
                 </div>

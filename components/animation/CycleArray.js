@@ -71,12 +71,12 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
                     variants={variants}
                     transition={{ duration: 0.5, }}
                 >
-                    <div className='flex flex-row gap-2'
+                    <div className='flex flex-row gap-2 items-center'
                         style={{
                             backgroundColor: "#ffffff40",
                             padding: 4,
                             borderRadius: 10,
-                            paddingTop: 10,
+                            // paddingTop: 10,
                             width: "auto",
                             border: "2px solid #ffffff40"
                         }}>
@@ -95,7 +95,8 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
                         {
                             onLargeScreen ?
                                 <div className='w-full'>
-                                    <div className='flex flex-row w-full gap-1'>
+                                    <div className='flex flex-row w-full gap-1' //style={{marginTop: 5}}
+                                    >
                                         <div className='flex flex-row'>
                                             {/* <Image src="/assets/callLogo.png" alt='logo' height={10} width={13} /> */}
                                             <div style={{ fontSize: 13, fontWeight: "600", color: "#00000090" }}>

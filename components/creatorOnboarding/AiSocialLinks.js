@@ -1,8 +1,9 @@
 "use client"
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
-import { Button } from '@mui/material'
+import { Box, Button, Modal } from '@mui/material'
 import { color } from 'framer-motion';
+import { AppleLogo, FacebookLogo, Globe, InstagramLogo, LinkedinLogo, SpotifyLogo, TwitterLogo, XLogo, YoutubeLogo } from '@phosphor-icons/react';
 
 function AiSocialLinks({ handleContinue, aiName }) {
 
@@ -14,6 +15,8 @@ function AiSocialLinks({ handleContinue, aiName }) {
     const [twitterUrl, setTwitterurl] = useState("");
     const [spotifyurl, setSpotifyurl] = useState("");
     const [instaUrl, setInstaurl] = useState("");
+    const [webUrl, setWeburl] = useState("");
+    const [linkedInUrl, setLinkedInurl] = useState("");
     const [userData, setUserData] = useState(null);
     const [validLinkErr, setValidLinkErr] = useState(false);
     const [validYoutubeLinkErr, setValidYoutubeLinkErr] = useState(false);
@@ -21,6 +24,15 @@ function AiSocialLinks({ handleContinue, aiName }) {
     const [validApplePodcastLinkErr, setValidApplePodcastLinkErr] = useState(false);
     const [validSpotifyLinkErr, setValidSpotifyLinkErr] = useState(false);
     const [validFacebookLinkErr, setValidFacebookLinkErr] = useState(false);
+    const [validWebLinkErr, setValidWebLinkErr] = useState(false);
+    const [validLinkedInLinkErr, setValidLinkedInLinkErr] = useState(false);
+    const [addScoialsPopup, setAddSocialsPopup] = useState(false);
+    //show the more socials icons
+    const [showLinked, setShowLinkedIn] = useState(false);
+    const [showWeb, setShowWeb] = useState(false);
+    const [showApplePodCast, setShowApplePodcast] = useState(false);
+    const [showFb, setShowFb] = useState(false);
+    const [showSpotify, setShowSpotify] = useState(false);
 
     useEffect(() => {
         const localData = localStorage.getItem('User');
@@ -121,6 +133,19 @@ function AiSocialLinks({ handleContinue, aiName }) {
         borderLeft: "6px solid #000000"
     }
 
+    const styleLoginModal = {
+        height: 'auto',
+        bgcolor: 'transparent',
+        // p: 2,
+        mx: 'auto',
+        my: '50vh',
+        transform: 'translateY(-55%)',
+        borderRadius: 2,
+        border: "none",
+        outline: "none",
+        // border: "2px solid green"
+    };
+
     return (
         <div className='w-full flex flex-col justify-center items-center' //style={{ height: '100%', overflow: 'auto' }} 
         >
@@ -146,12 +171,18 @@ function AiSocialLinks({ handleContinue, aiName }) {
                     </div>
                     <div className='sm:flex sm:flex-row sm:gap-2 items-center'>
                         <div style={{ fontWeight: '400', fontSize: 15, fontFamily: 'inter' }}>
-                            {userData && userData.name ?
+                            {/* {userData && userData.name ?
                                 <div>
                                     {userData.name}
                                 </div> :
                                 <div>
                                     {userData && userData.email}
+                                </div>
+                            } */}
+
+                            {aiName &&
+                                <div>
+                                    {aiName}
                                 </div>
                             }
                         </div>
@@ -205,10 +236,11 @@ function AiSocialLinks({ handleContinue, aiName }) {
                     {/* This is used as your knowledge base to train your ai model. */}
                     Add your social media pages
                 </div>
-                <div className='flex flex-row gap-5'>
-                    <Image style={styles.image}
+                <div className='flex flex-row gap-3 items-center'>
+                    {/* <Image style={styles.image}
                         src={'/assets/instagram.png'} alt='web'
-                        height={30} width={30} />
+                        height={30} width={30} /> */}
+                    <InstagramLogo size={30} />
                     <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
                         <input style={styles.urlsInput}
                             value={instaUrl}
@@ -231,16 +263,17 @@ function AiSocialLinks({ handleContinue, aiName }) {
                         />
                     </div>
                 </div>
-                <div className='mt-1 mb-2' style={linkErrStyle}>
+                <div className='mt-1 mb-1' style={linkErrStyle}>
                     {
                         instaUrl && validLinkErr && "Invalid link" //: 'valid'
                     }
                 </div>
 
-                <div className='flex flex-row gap-5'>
-                    <Image style={styles.image}
+                <div className='flex flex-row gap-3 items-center'>
+                    {/* <Image style={styles.image}
                         src={'/assets/youtubeIcon.png'} alt='Youtube'
-                        height={30} width={30} />
+                        height={30} width={30} /> */}
+                    <YoutubeLogo size={30} />
                     <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
                         <input style={styles.urlsInput}
                             value={youtubeUrl}
@@ -268,10 +301,12 @@ function AiSocialLinks({ handleContinue, aiName }) {
                     }
                 </div>
 
-                <div className='flex flex-row gap-5'>
-                    <Image style={styles.image}
+                <div className='flex flex-row gap-3 items-center'>
+                    {/* <Image style={styles.image}
                         src={'/assets/twiterIcon.png'} alt='twiter'
-                        height={30} width={30} />
+                        height={30} width={30} /> */}
+                    {/* <TwitterLogo size={30} /> */}
+                    <XLogo size={30} />
                     <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
                         <input style={styles.urlsInput}
                             value={twitterUrl}
@@ -299,122 +334,292 @@ function AiSocialLinks({ handleContinue, aiName }) {
                         twitterUrl && validTwitterLinkErr && "Invalid link"
                     }
                 </div>
+                {
+                    showLinked ?
+                        <div>
+                            <div className='flex flex-row gap-3 items-center'>
+                                <LinkedinLogo size={30} />
+                                {/* <Image style={styles.image}
+                        src={'/assets/webIcon.png'} alt='web'
+                        height={30} width={30} /> */}
+                                <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
+                                    <input style={styles.urlsInput}
+                                        value={linkedInUrl}
+                                        autoFocus={true}
+                                        onChange={(e) => {
+                                            setLinkedInurl(e.target.value);
+                                            const url = e.target.value;
 
-                <div className='flex flex-row gap-5'>
-                    <Image style={styles.image}
-                        src={'/assets/appleProducts.png'} alt='Icon'
-                        height={30} width={30} />
-                    <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
-                        <input style={styles.urlsInput}
-                            value={appleProducts}
-                            onChange={(e) => {
-                                setAppleProducts(e.target.value);
-                                const url = e.target.value;
-
-                                if (appleProducts) {
-                                    if (validateUrl(url)) {
-                                        console.log("Valid URL");
-                                        setValidApplePodcastLinkErr(false);
-                                    } else {
-                                        console.log("Invalid URL");
-                                        setValidApplePodcastLinkErr(true);
-                                    }
+                                            if (linkedInUrl) {
+                                                if (validateUrl(url)) {
+                                                    console.log("Valid URL");
+                                                    // setValidLinkErr(false);
+                                                    setValidLinkedInLinkErr(false);
+                                                } else {
+                                                    console.log("Invalid URL");
+                                                    setValidLinkedInLinkErr(true);
+                                                }
+                                            }
+                                        }}
+                                        className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
+                                    />
+                                </div>
+                            </div>
+                            <div className='mt-1 mb-2' style={linkErrStyle}>
+                                {
+                                    linkedInUrl && validLinkedInLinkErr && "Invalid link"
                                 }
-                            }}
-                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
-                        />
+                            </div>
+                        </div> : ""
+                }
+                {
+                    showWeb ?
+                        <div>
+                            <div className='flex flex-row gap-3 items-center'>
+                                <Globe size={30} />
+                                {/* <Image style={styles.image}
+                        src={'/assets/webIcon.png'} alt='web'
+                        height={30} width={30} /> */}
+                                <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
+                                    <input style={styles.urlsInput}
+                                        value={webUrl}
+                                        autoFocus={true}
+                                        onChange={(e) => {
+                                            setWeburl(e.target.value);
+                                            const url = e.target.value;
 
-                    </div>
-                </div>
-                <div className='mt-1 mb-2' style={linkErrStyle}>
-                    {
-                        appleProducts && validApplePodcastLinkErr && "Invalid link"
-                    }
-                </div>
-
-                <div className='flex flex-row gap-5'>
-                    <Image style={styles.image}
-                        src={'/assets/spotify.png'} alt='tiktok'
-                        height={30} width={30} />
-                    <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
-                        <input style={styles.urlsInput}
-                            value={spotifyurl}
-                            onChange={(e) => {
-                                setSpotifyurl(e.target.value);
-                                const url = e.target.value;
-
-                                if (spotifyurl) {
-                                    if (validateUrl(url)) {
-                                        console.log("Valid URL");
-                                        setValidSpotifyLinkErr(false);
-                                    } else {
-                                        console.log("Invalid URL");
-                                        setValidSpotifyLinkErr(true);
-                                    }
+                                            if (webUrl) {
+                                                if (validateUrl(url)) {
+                                                    console.log("Valid URL");
+                                                    // setValidLinkErr(false);
+                                                    setValidWebLinkErr(false);
+                                                } else {
+                                                    console.log("Invalid URL");
+                                                    setValidWebLinkErr(true);
+                                                }
+                                            }
+                                        }}
+                                        className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
+                                    />
+                                </div>
+                            </div>
+                            <div className='mt-1 mb-2' style={linkErrStyle}>
+                                {
+                                    webUrl && validWebLinkErr && "Invalid link"
                                 }
-                            }}
-                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
-                        />
-
-                    </div>
-                </div>
-                <div className='mt-1 mb-2' style={linkErrStyle}>
-                    {
-                        spotifyurl && validSpotifyLinkErr && "Invalid link"
-                    }
-                </div>
-
-                <div className='flex flex-row gap-5'>
-                    <Image style={styles.image}
-                        src={'/assets/fbIcon.png'} alt='facebook'
-                        height={30} width={30} />
-                    <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
-                        {/* <input style={styles.urlsInput}
+                            </div>
+                        </div> : ""
+                }
+                {
+                    showFb ?
+                        <div>
+                            <div className='flex flex-row gap-3 items-center'>
+                                {/* <Image style={styles.image}
+                                    src={'/assets/fbIcon.png'} alt='facebook'
+                                    height={30} width={30} /> */}
+                                <FacebookLogo size={30} />
+                                <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
+                                    {/* <input style={styles.urlsInput}
                             className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
                         /> */}
-                        <input style={styles.urlsInput}
-                            value={fbUrl}
-                            onChange={(e) => {
-                                setFburl(e.target.value);
-                                const url = e.target.value;
+                                    <input style={styles.urlsInput}
+                                        value={fbUrl}
+                                        onChange={(e) => {
+                                            setFburl(e.target.value);
+                                            const url = e.target.value;
 
-                                if (spotifyurl) {
-                                    if (validateUrl(url)) {
-                                        console.log("Valid URL");
-                                        setValidFacebookLinkErr(false);
-                                    } else {
-                                        console.log("Invalid URL");
-                                        setValidFacebookLinkErr(true);
-                                    }
+                                            if (fbUrl) {
+                                                if (validateUrl(url)) {
+                                                    console.log("Valid URL");
+                                                    setValidFacebookLinkErr(false);
+                                                } else {
+                                                    console.log("Invalid URL");
+                                                    setValidFacebookLinkErr(true);
+                                                }
+                                            }
+                                        }}
+                                        className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
+                                    />
+                                </div>
+                            </div>
+                            <div className='mt-1 mb-2' style={linkErrStyle}>
+                                {
+                                    fbUrl && validFacebookLinkErr && "Invalid link"
                                 }
-                            }}
-                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
-                        />
-                    </div>
-                </div>
-                <div className='mt-1 mb-2' style={linkErrStyle}>
-                    {
-                        fbUrl && validFacebookLinkErr && "Invalid link"
-                    }
-                </div>
-                <div>
-                    {
-                        fbUrl || youtubeUrl || appleProducts || twitterUrl || spotifyurl || instaUrl ?
-                            <button onClick={handleContinueSocial}
-                                className='bg-purple hover:bg-purple text-white px-4 mt-2 w-full sm:w-9/12 py-2'
-                                style={{ fontSize: 15, fontWeight: "400", borderRadius: "50px" }}>
-                                Continue
-                            </button> :
-                            <button
-                                disabled
-                                // onClick={handleContinueSocial}
-                                className='bg-purple2 hover:bg-purple text-white px-4 mt-2 w-full sm:w-9/12 py-2'
-                                style={{ fontSize: 15, fontWeight: "400", borderRadius: "50px", color: "white" }}>
-                                Continue
-                            </button>
-                    }
-                </div>
+                            </div>
+                        </div> : ""
+                }
+
+                {
+                    showApplePodCast ?
+                        <div>
+                            <div className='flex flex-row gap-3 items-center'>
+                                {/* <Image style={styles.image}
+                                    src={'/assets/appleProducts.png'} alt='Icon'
+                                    height={30} width={30} /> */}
+                                <AppleLogo size={30} />
+                                <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
+                                    <input style={styles.urlsInput}
+                                        value={appleProducts}
+                                        onChange={(e) => {
+                                            setAppleProducts(e.target.value);
+                                            const url = e.target.value;
+
+                                            if (appleProducts) {
+                                                if (validateUrl(url)) {
+                                                    console.log("Valid URL");
+                                                    setValidApplePodcastLinkErr(false);
+                                                } else {
+                                                    console.log("Invalid URL");
+                                                    setValidApplePodcastLinkErr(true);
+                                                }
+                                            }
+                                        }}
+                                        className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
+                                    />
+
+                                </div>
+                            </div>
+                            <div className='mt-1 mb-2' style={linkErrStyle}>
+                                {
+                                    appleProducts && validApplePodcastLinkErr && "Invalid link"
+                                }
+                            </div>
+                        </div> : ""
+                }
+
+                {showSpotify ?
+                    <div>
+                        <div className='flex flex-row gap-3 items-center'>
+                            {/* <Image style={styles.image}
+                                src={'/assets/spotify.png'} alt='tiktok'
+                                height={30} width={30} /> */}
+                            <SpotifyLogo size={30} />
+                            <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
+                                <input style={styles.urlsInput}
+                                    value={spotifyurl}
+                                    onChange={(e) => {
+                                        setSpotifyurl(e.target.value);
+                                        const url = e.target.value;
+
+                                        if (spotifyurl) {
+                                            if (validateUrl(url)) {
+                                                console.log("Valid URL");
+                                                setValidSpotifyLinkErr(false);
+                                            } else {
+                                                console.log("Invalid URL");
+                                                setValidSpotifyLinkErr(true);
+                                            }
+                                        }
+                                    }}
+                                    className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
+                                />
+
+                            </div>
+                        </div>
+                        <div className='mt-1 mb-2' style={linkErrStyle}>
+                            {
+                                spotifyurl && validSpotifyLinkErr && "Invalid link"
+                            }
+                        </div>
+                    </div> :
+                    ""
+                }
             </div>
+            <div className='w-full justify-start'>
+                <button onClick={() => { setAddSocialsPopup(true) }}
+                    className='text-purple px-4 mt-2 py-2'
+                    style={{ fontSize: 15, fontWeight: "400", borderRadius: "50px" }}>
+                    Add social
+                </button>
+            </div>
+            <div className='w-full'>
+                {
+                    fbUrl || youtubeUrl || appleProducts || twitterUrl || spotifyurl || instaUrl ?
+                        <button onClick={handleContinueSocial}
+                            className='bg-purple hover:bg-purple text-white px-4 mt-2 w-full sm:w-9/12 py-2'
+                            style={{ fontSize: 15, fontWeight: "400", borderRadius: "50px" }}>
+                            Continue
+                        </button> :
+                        <button
+                            disabled
+                            // onClick={handleContinueSocial}
+                            className='bg-purple2 hover:bg-purple text-white px-4 mt-2 w-full sm:w-9/12 py-2'
+                            style={{ fontSize: 15, fontWeight: "400", borderRadius: "50px", color: "white" }}>
+                            Continue
+                        </button>
+                }
+            </div>
+            <Modal
+                open={addScoialsPopup}
+                onClose={(() => setAddSocialsPopup(false))}
+                closeAfterTransition
+                BackdropProps={{
+                    timeout: 1000,
+                    sx: {
+                        backgroundColor: 'transparent',
+                        backdropFilter: 'blur(10px)',
+                    },
+                }}
+            >
+                <Box className="lg:w-5/12 sm:w-7/12 w-full"
+                    sx={styleLoginModal}
+                >
+                    {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
+                    <div className='flex flex-row justify-center w-full'>
+                        <div className='sm:w-7/12 w-full' style={{ backgroundColor: "#ffffff23", padding: 20, borderRadius: 10 }}>
+                            {/* <AddCard handleBack={handleBack} closeForm={closeForm} /> */}
+                            <div style={{ backgroundColor: '#D3D3D360', padding: 18, borderRadius: 10 }}>
+                                {/* <AddCard handleBack={handleBack} closeForm={closeForm} /> */}
+                                <div style={{ fontWeight: '700', fontFamily: 'inter', fontSize: 16 }}>
+                                    Add More Socials
+                                </div>
+                                <div className='flex flex-row items-center gap-4 mt-4'>
+                                    {
+                                        showLinked ? "" :
+                                            <button onClick={() => {
+                                                setShowLinkedIn(true);
+                                                setAddSocialsPopup(false);
+                                            }}>
+                                                <LinkedinLogo size={30} />
+                                            </button>
+                                    }
+                                    {showWeb ? "" : <button onClick={() => {
+                                        setShowWeb(true);
+                                        setAddSocialsPopup(false);
+                                    }}>
+                                        <Globe size={30} />
+                                    </button>}
+                                    {showFb ? "" : <button onClick={() => {
+                                        setShowFb(true);
+                                        setAddSocialsPopup(false);
+                                    }}>
+                                        <FacebookLogo size={30} />
+                                    </button>}
+                                    {showApplePodCast ? "" : <button onClick={() => {
+                                        setShowApplePodcast(true);
+                                        setAddSocialsPopup(false);
+                                    }}>
+                                        <AppleLogo size={30} />
+                                    </button>}
+                                    {showSpotify ? "" : <button onClick={() => {
+                                        setShowSpotify(true);
+                                        setAddSocialsPopup(false);
+                                    }}>
+                                        <SpotifyLogo size={30} />
+                                    </button>}
+                                    {/* <div>
+                                        <YoutubeLogo size={30} />
+                                    </div>
+                                    <div>
+                                        <InstagramLogo size={30} />
+                                    </div> */}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Box>
+            </Modal>
         </div>
     )
 }
