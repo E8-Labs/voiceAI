@@ -77,6 +77,7 @@ const Creator = () => {
     const [myProfileData, setMyProfileData] = useState(null);
     const [assistantDataErr, setAssistantDataErr] = useState(null);
     const [creatorErr, setCreatorErr] = useState(true);
+    const [windowHeight, setWindowHeight] = useState(1200)
     // useEffect(() => {
     //     const localData = localStorage.getItem('User');
     //     if (localData) {
@@ -182,6 +183,7 @@ const Creator = () => {
     useEffect(() => {
         const handleResize = () => {
             // Check if width is greater than or equal to 1024px
+            setWindowHeight(window.innerHeight)
             setIsWideScreen(window.innerWidth >= 950);
 
             setIsWideScreen2(window.innerWidth >= 500);
@@ -626,8 +628,8 @@ const Creator = () => {
         backgroundSize: "cover",
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
-        width: isHighScreen ? '950px' : '630px',
-        height: isHighScreen ? '950px' : '630px',
+        width: isHighScreen ? '790px' : '530px',
+        height: isHighScreen ? '790px' : '530px',
         borderRadius: "50%",
         resize: "cover",
     }
@@ -1179,7 +1181,7 @@ const Creator = () => {
                                     <div style={gifBackgroundImage} className='flex flex-row justify-center items-center'>
                                         <Image ref={buttonRef6} onClick={handleContinue} src="/maingif.gif" alt='gif' style={{
                                             backgroundColor: "",
-                                            borderRadius: "50%", height: isHighScreen ? '680px' : '350px', width: isHighScreen ? '680px' : '350px'
+                                            borderRadius: "50%", height: windowHeight / 2.14, width: windowHeight / 2.14
                                         }} height={600} width={600} />
                                     </div>
 
@@ -1280,8 +1282,7 @@ const Creator = () => {
                                             style={{
                                                 backgroundColor: "",
                                                 borderRadius: "50%",
-                                                height: isWideScreen2 ? '350px' : '270px',
-                                                width: isWideScreen2 ? '350px' : '270px'
+                                                height: windowHeight / 2.48, width: windowHeight / 2.48
                                             }}
                                             height={300} width={300} />
                                     </div>
