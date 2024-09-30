@@ -596,6 +596,7 @@ export default function Animation({ onChangeIndex }) {
 
   //code for navigating to 3rd flow from congrats
   const handleCongratsClick = () => {
+    console.log("Trying to move");
     router.push("/creator/buildscript");
   };
 
