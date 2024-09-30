@@ -180,12 +180,12 @@ const Dashboard = () => {
 
                     <div className='w-full flex flex-row gap-7 mt-7 ml-2'>
                         <div className=' flex flex-col'>
-                            <div style={{ fontSize: 13, fontWeight: "400", fontFamily: "inter" }}>Num of Callers</div>
+                            <div style={{ fontSize: 13, fontWeight: "400", fontFamily: "inter" }}>Callers</div>
                             <div style={{ fontWeight: "300", fontFamily: "inter", fontSize: 32 }}>{numOfCallers(selectedDuration)}</div>
                         </div>
 
                         <div className=' flex flex-col'>
-                            <div style={{ fontSize: 13, fontWeight: "400", fontFamily: "inter" }}>Total Minutes</div>
+                            <div style={{ fontSize: 13, fontWeight: "400", fontFamily: "inter" }}>Minutes</div>
                             <div className='w-full flex flex-row items-center'>
                                 <div style={{ fontWeight: "300", fontFamily: "inter", fontSize: 32 }}>{totalMin(selectedDuration)}</div>
                                 {/* <div style={{ fontWeight: "300", fontFamily: "inter", fontSize: 15, color: "#00000080" }}>
@@ -193,19 +193,12 @@ const Dashboard = () => {
                                 </div> */}
                             </div>
                         </div>
-
-                        {/* <div className='w-2/12 flex flex-col'>
-                        <div style={{ fontSize: 14, fontWeight: 300 }}>Rev in Minutes</div>
-                        <div className='w-full flex flex-row items-center'>
-                            <div className='text-xl md:text-2xl font-light'>${totalRev(selectedDuration)}</div>
-                        </div>
-                    </div> */}
                     </div>
                 </div>
 
                 <div className='w-4/12 py-5 px-6' style={{ backgroundColor: "#552AFF", borderRadius: "15px", color: "white" }}>
                     <div className='w-11/12 flex flex-row justify-between'>
-                        <div style={{ fontSize: 24, fontWeight: 300 }}>Revenue</div>
+                        <div style={{ fontSize: 20, fontWeight: 700, fontFamily: "inter" }}>Revenue</div>
                     </div>
 
                     <div className='w-full flex flex-row gap-7 mt-7 ml-2'>

@@ -164,12 +164,12 @@ function SocialOAuth() {
                 <div
                     className="mt-2"
                     style={{
-                        fontSize: 24,
-                        fontWeight: "600",
+                        fontSize: 15,
+                        fontWeight: "700",
                         fontFamily: "inter",
                     }}
                 >
-                    Social OAuth
+                    Social Accounts
                 </div>
 
                 <div className='text-gray-400 text-sm mt-3 mb-10 mb-5 w-11/12'>

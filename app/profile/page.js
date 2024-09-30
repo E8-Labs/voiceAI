@@ -18,12 +18,12 @@ const Page = () => {
     buttonText: (item) => ({
       fontSize: 15,
       fontWeight: 400,
-      color: selectedMenu === item.id ? "black" : "#00000060",
+      color: "black", //selectedMenu === item.id ? "black" : "#00000060",
       // display: 'inline-block', // Ensure the text and purple bar are treated as inline-block elements
       position: 'relative', // Allow absolute positioning of the underline
     }),
     underline: {
-      height: '2px',
+      height: '3px',
       backgroundColor: "#552AFF",
       width: '100%', // Set width to 100% of the button text
       position: 'absolute', // Position it absolutely relative to the text
@@ -59,7 +59,12 @@ const Page = () => {
   {
     id: 4,
     manu: 'Calls',
-  }]
+  },
+  {
+    id: 5,
+    manu: 'Conversations',
+  }
+]
 
   const navbarComponent = {
     height: "100vh", // Full screen height
@@ -91,10 +96,10 @@ const Page = () => {
         <div className='w-full'>
           <div className='w-full flex flex-col'>
             <div className='flex flex-row justify-between items-center w-10/12'>
-              <div className='flex flex-row gap-4 '>
+              <div className='flex flex-row gap-10'>
                 {
                   manu.map((item) => (
-                    <div key={item.id} className='flex flex-col items-center gap-2' style={{ backgroundColor: "" }}>
+                    <div key={item.id} className='flex flex-col items-center gap-8' style={{ backgroundColor: "" }}>
                       <button
                         style={styles.buttonText(item)}
                         onClick={() => {
@@ -160,7 +165,7 @@ const Page = () => {
                   </button>
                 </div>
                 <div className='mt-8 text-center' style={{ fontWeight: '600', fontSize: 24, fontFamily: 'inter' }}>
-                  Test AI
+                  Test Your AI
                 </div>
                 <input
                   className='w-full'

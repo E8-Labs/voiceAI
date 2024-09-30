@@ -112,8 +112,8 @@ export const SocialKB = () => {
       <div className='flex flex-row gap-6 w-full'>
 
         <div className='w-4/12 px-8 py-4 rounded-2xl' style={{ backgroundColor: "#ffffff40" }}>
-          <div className='mt-4' style={{ fontSize: 24, fontWeight: 300 }}>
-            Social
+          <div className='mt-1' style={{ fontSize: 15, fontWeight: 700, fontFamily: "inter" }}>
+            URL Links
           </div>
 
           <div className='flex flex-col gap-4'>
@@ -205,7 +205,7 @@ export const SocialKB = () => {
             <div className='flex flex-row gap-5 mb-5'>
               <Image style={styles.image}
                 src={'/assets/instagram.png'} alt='insta'
-                height={30} width={30} />
+                height={32} width={32} />
               <div className='bg-transparent w-full flex flex-row justify-between gap-2'
                 style={styles.button}
               >
@@ -340,7 +340,7 @@ export const SocialKB = () => {
 
 
         <div className='flex flex-row justify-between items-center' style={{ marginTop: 20 }}>
-          <div style={{ fontSize: 24, fontWeight: 300 }}>
+          <div style={{ fontSize: 15, fontWeight: 700, fontFamily: "inter" }}>
             Knowledge Base
           </div>
           <button className='text-purple underline self-start'>

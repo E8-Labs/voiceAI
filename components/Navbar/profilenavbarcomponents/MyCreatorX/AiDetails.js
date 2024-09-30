@@ -104,7 +104,7 @@ export const AiDetails = () => {
             {/* Code for the Voice user added */}
 
             <div className='mt-8'
-              style={{ fontSize: 15, fontWeight: '500', fontFamily: 'inter' }}>
+              style={{ fontSize: 15, fontWeight: '700', fontFamily: 'inter' }}>
               My Voice
             </div>
 

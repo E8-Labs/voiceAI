@@ -9,198 +9,54 @@ import { useState } from 'react';
 
 const Page = () => {
 
-    let stripePublickKey = process.env.NEXT_PUBLIC_REACT_APP_ENVIRONMENT === "Production" ? process.env.NEXT_PUBLIC_REACT_APP_STRIPE_PUBLISHABLE_KEY_LIVE : process.env.NEXT_PUBLIC_REACT_APP_STRIPE_PUBLISHABLE_KEY;
-    //console.log("Public key is ", stripePublickKey)
-    const stripePromise = loadStripe(stripePublickKey);
-
-    const [selectedPlan, setSelectedPlan] = useState(null);
-    const handlePlanSelect = (index) => {
-        console.log("Handle plan select", index)
-        if (selectedPlan === index) {
-            // setSelectedPlan(null); // Deselect the card if it is already select
-        } else {
-            setSelectedPlan(index); // Select the card if it is not selected
-            selectedPlanRef.current = index;
-        }
-    }
 
     return (
-        <div className='w-full h-screen' style={{ backgroundColor: '#ffffff23' }}>
-            <div className='px-4 pt-10'>
-                <div style={{ fontWeight: '500', fontSize: 20, fontFamily: 'inter' }}>
-                    Plans
+        <div className='w-full h-screen px-8' style={{ backgroundColor: '#ffffff23' }}>
+            <div className='flex flex-row w-full'>
+                <div className='w-6/12 flex flex-col items-center' style={{ marginTop: 50 }}>
+                    <div className='w-10/12' style={{ fontWeight: "400", fontSize: 20, fontFamily: "inter" }}>
+                        Plans
+                    </div>
                 </div>
-                <div className='mt-6 w-full flex flex-row gap-4' style={{ backgroundColor: '#ffffff50' }}>
-                    <div className='w-6/12 flex flex-col items-center'>
-                        <div className='w-10/12' style={{ border: '2px solid red' }}>
-                            <div className='flex flex-row items-center w-full px-6 rounded-xl justify-between' style={{ height: "70px", border: "1px solid #EFEFEF" }}>
-                                <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
-                                    $97/ mo
-                                </div>
-                                <button onClick={() => handlePlanSelect(0)}>
-                                    {
-                                        selectedPlan === 0 ?
-                                            <Image alt='selected' style={{ borderRadius: "50%" }} src='/assets/selected.png' height={27} width={27} /> :
-                                            <Image alt='selected' style={{ borderRadius: "50%" }} src='/assets/unselected.png' height={27} width={27} />
-                                    }
-                                </button>
-                            </div>
-                            <div className='items-center w-full px-6 rounded-xl justify-between' style={{ height: "70px", border: "1px solid #EFEFEF", marginTop: 50 }}>
-                                <div className='w-full flex flex-row justify-end'>
-                                    <div className='bg-purple text-white px-2 py-1' style={{ borderRadius: "50px", width: "fit-content", marginTop: "-18px" }}>
-                                        Recomended
-                                    </div>
-                                </div>
-                                <div className='flex flex-row items-center w-full rounded-xl justify-between'>
-                                    <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
-                                        <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
-                                            $1200/ yr
-                                        </div>
-                                        <div style={{ fontWeight: "400", fontSize: 18, fontFamily: "inter" }}>
-                                            Save $200 (12 %)
-                                        </div>
-                                    </div>
-                                    <div className='flex flex-row gap-2 items-center'>
-                                        <button onClick={() => handlePlanSelect(1)}>
-                                            {
-                                                selectedPlan === 1 ?
-                                                    <Image alt='selected' style={{ borderRadius: "50%" }} src='/assets/selected.png' height={27} width={27} /> :
-                                                    <Image alt='selected' style={{ borderRadius: "50%" }} src='/assets/unselected.png' height={27} width={27} />
-                                            }
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className='w-full flex flex-col items-center' style={{ marginTop: 30 }}>
-                                <button
-                                    // onClick={handleSubscribePlan}
-                                    className='w-full py-3 text-white bg-purple' style={{ borderRadius: "5px" }}>
-                                    {/*
-                                        subscribeLoader ?
-                                            <CircularProgress size={25} /> : "Continue"
-                                        */}
-                                    Upgrade
-                                </button>
-                                <button className='mt-6 underline'
-                                    style={{ color: '#FF3B3B', fontWeight: '400', fontFamily: 'inter', fontSize: 13 }}
-                                >
-                                    Cancel my Plan
-                                </button>
-                            </div>
-
-                            <div className='mt-6' style={{ fontWeight: '500', fontSize: 15, fontFamily: 'inter' }}>
-                                Payment History
-                            </div>
-
+            </div>
+            <div className='flex flex-row w-full' style={{ backgroundColor: "#ffffff40" }}>
+                <div className='w-6/12 flex flex-col items-center' style={{ marginTop: 50 }}>
+                    <div className='w-10/12 flex flex-row items-center justify-between px-8 bg-white py-4 rounded' style={{ border: "2px solid green", height: "54px" }}>
+                        <div>
+                            $97 / mo
+                        </div>
+                        <div className='flex flex-row items-center gap-6'>
                             <div>
-                                        
+                                Current plan
                             </div>
-
-
-                            {/* err msg when card not added */}
-                            <Snackbar
-                                // open={selectPlanErr}
-                                autoHideDuration={2000}
-                                // onClose={() => setSelectPlanErr(false)}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'center',
-                                }}
-                                TransitionComponent={Fade}
-                                TransitionProps={{
-                                    timeout: {
-                                        enter: 1000,
-                                        exit: 1000,
-                                    }
-                                }}
-                                sx={{
-                                    position: 'fixed', // Ensures it stays in place
-                                    top: 20, // Adjust as needed for spacing from the top
-                                    left: '50%', // Center horizontally
-                                    transform: 'translateX(-50%)', // Center horizontally
-                                }}
-                            >
-                                <Alert
-                                    // onClose={() => setSelectPlanErr(false)}
-                                    severity="error"
-                                    sx={{
-                                        width: '100%',
-                                        backgroundColor: 'white', // Set background color to white
-                                        color: 'black',
-                                        border: "2px solid #EDEDED80"
-                                    }}
-                                >
-                                    Select plan to continue.
-                                </Alert>
-                            </Snackbar>
-
-                            {/* Err msg when card not added */}
-
-                            <Snackbar
-                                // open={subscribeFailureErr}
-                                autoHideDuration={2000}
-                                // onClose={() => setSubscribeFailureErr(null)}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'center',
-                                }}
-                                TransitionComponent={Fade}
-                                TransitionProps={{
-                                    timeout: {
-                                        enter: 1000,
-                                        exit: 1000,
-                                    }
-                                }}
-                                sx={{
-                                    position: 'fixed', // Ensures it stays in place
-                                    top: 20, // Adjust as needed for spacing from the top
-                                    left: '50%', // Center horizontally
-                                    transform: 'translateX(-50%)', // Center horizontally
-                                }}
-                            >
-                                <Alert
-                                    // onClose={() => setSubscribeFailureErr(null)}
-                                    severity="error"
-                                    sx={{
-                                        width: '100%',
-                                        backgroundColor: 'white', // Set background color to white
-                                        color: 'black',
-                                        border: "2px solid #EDEDED80"
-                                    }}
-                                >
-                                    { }
-                                </Alert>
-                            </Snackbar>
-
+                            <button className='bg-purple flex flex-row justify-center items-center' style={{ height: "26px", width: "26px", borderRadius: "50%", }}>
+                                {/* <Image src='/assets/Tick.png' alt='selected' height={10} width={6} /> */}
+                                <img src='/assets/Tick.png' alt='tick' style={{ height: "10px", width: "14px" }} />
+                            </button>
                         </div>
                     </div>
-                    <div className='w-6/12 bg-red'>
-                        <div className='w-full'>
-                            <div style={{ fontSize: 20, fontWeight: '400', fontFamily: 'inter', marginTop: 40 }}>
-                                Make Payment
+
+                    <div className='flex flex-row justify-end w-10/12 me-28'>
+                        <div className='bg-purple text-white text-center py-2'>
+                            Recomended
+                        </div>
+                    </div>
+                    <div className='w-10/12 flex flex-row items-center justify-between px-8 bg-white py-4 rounded' style={{ border: "2px solid green", height: "54px" }}>
+                        <div>
+                            $97 / mo
+                        </div>
+                        <div className='flex flex-row items-center gap-6'>
+                            <div>
+                                Current plan
                             </div>
-                            <button style={{ fontSize: 15, fontWeight: '400', fontFamily: 'inter', marginTop: 30 }}>
-                                You are only charged for minutes talked
+                            <button className='bg-purple flex flex-row justify-center items-center' style={{ height: "26px", width: "26px", borderRadius: "50%", }}>
+                                {/* <Image src='/assets/Tick.png' alt='selected' height={10} width={6} /> */}
+                                <img src='/assets/Tick.png' alt='tick' style={{ height: "10px", width: "14px" }} />
                             </button>
-                            <div className='flex flex-row gap-6' style={{ marginTop: 25 }}>
-                                <Image src="/assets/card.png" alt='card' height={64} width={140} />
-                                <Image src="/assets/eps.png" alt='card' height={64} width={140} />
-                                <Image src="/assets/giro.png" alt='card' height={64} width={140} />
-                            </div>
-                            <div className='w-8/12'>
-                                <Elements stripe={stripePromise}>
-                                    <AddCardDetails
-                                        // subscribePlan={subscribePlan}
-                                        fromBuildAiScreen={true}
-                                    // subscribeLoader={subscribeLoaderStatus}
-                                    // selectedPlan={selectedPlan}
-                                    // stop={stop}
-                                    />
-                                </Elements>
-                            </div>
                         </div>
                     </div>
                 </div>
+                <div className='w-6/12'>Add card here</div>
             </div>
         </div>
     )
