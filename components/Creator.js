@@ -885,26 +885,29 @@ const Creator = () => {
                                                         {
                                                             getAssistantData && getAssistantData.ai.instaUrl ?
                                                                 <button onClick={handleInstaClick}>
-                                                                    <Image
+                                                                    <InstagramLogo size={25} />
+                                                                    {/*<Image
                                                                         // layout='responsive'
-                                                                        objectFit='contain' src={"/assets/instagram.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
+                                                        objectFit='contain' src={"/assets/instagram.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />*/}
                                                                 </button> : ''
                                                         }
                                                         {
                                                             getAssistantData && getAssistantData.ai.youtubeUrl ?
                                                                 <button onClick={handleYoutubeClick}>
-                                                                    <Image
+                                                                    <YoutubeLogo size={25} />
+                                                                    {/* <Image
                                                                         // layout='responsive'
-                                                                        objectFit='contain' src={"/assets/youtubeIcon.png"} alt='social' height={25} width={25} style={{ resize: "cover", borderRadius: 3 }} />
+                                                        objectFit='contain' src={"/assets/youtubeIcon.png"} alt='social' height={25} width={25} style={{ resize: "cover", borderRadius: 3 }} />*/}
                                                                 </button> : ''
                                                         }
                                                         {
                                                             getAssistantData && getAssistantData.ai.webUrl ?
                                                                 <button onClick={handleWebClick}>
-                                                                    <Image
+                                                                    <Globe size={25} />
+                                                                    {/*<Image
                                                                         // layout='responsive'
                                                                         objectFit='contain' src={"/assets/webIcon.png"} alt='social' height={25} width={25}
-                                                                        style={{ resize: "cover", borderRadius: 3 }} />
+                                                        style={{ resize: "cover", borderRadius: 3 }} />*/}
                                                                 </button> : ''
                                                         }
                                                     </div>

@@ -188,34 +188,26 @@ function AiSocialLinks({ handleContinue, aiName }) {
                         </div>
                         <div className='flex flex-row gap-2 items-center'>
                             {
-                                instaUrl && <Image style={styles.image}
-                                    src={'/assets/instagram.png'} alt='Youtube'
-                                    height={30} width={30} />
+                                instaUrl &&
+                                <InstagramLogo size={25} />
                             }
                             {
-                                youtubeUrl && <Image style={styles.image}
-                                    src={'/assets/youtubeIcon.png'} alt='Youtube'
-                                    height={30} width={30} />
+                                youtubeUrl && <YoutubeLogo size={25} />
                             }
                             {
-                                twitterUrl && <Image style={styles.image}
-                                    src={'/assets/twiterIcon.png'} alt='Youtube'
-                                    height={30} width={30} />
+                                twitterUrl && <XLogo size={25} />
                             }
                             {
-                                appleProducts && <Image style={styles.image}
-                                    src={'/assets/appleProducts.png'} alt='Youtube'
-                                    height={30} width={30} />
+                                appleProducts && <AppleLogo size={25} />
                             }
                             {
-                                spotifyurl && <Image style={styles.image}
-                                    src={'/assets/spotify.png'} alt='Youtube'
-                                    height={30} width={30} />
+                                spotifyurl && <SpotifyLogo size={25} />
                             }
                             {
-                                fbUrl && <Image style={styles.image}
-                                    src={'/assets/fbIcon.png'} alt='Youtube'
-                                    height={30} width={30} />
+                                fbUrl && <FacebookLogo size={25} />
+                            }
+                            {
+                                webUrl && <Globe size={25} />
                             }
                         </div>
                     </div>

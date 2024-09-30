@@ -1047,25 +1047,54 @@ export default function Animation({ onChangeIndex }) {
   //   });
   // };
 
+  // const handlePaste = (e) => {
+  //   // Prevent the default paste action
+  //   e.preventDefault();
+
+  //   // Get the pasted data as text
+  //   const pastedData = e.clipboardData.getData("text");
+
+  //   // If pasted data is not empty
+  //   if (pastedData) {
+  //     // Iterate over the pasted data and set the values
+  //     pastedData.split("").forEach((char, index) => {
+  //       // Check the id of each input element and set the corresponding state
+  //       if (index === 0) setP1(char);
+  //       if (index === 1) setP2(char);
+  //       if (index === 2) setP3(char);
+  //       if (index === 3) setP4(char);
+  //       if (index === 4) setP5(char);
+  //       if (index === 5) setP6(char);
+  //     });
+  //   }
+  // };
+
   const handlePaste = (e) => {
-    // Prevent the default paste action
     e.preventDefault();
+    const pasteData = e.clipboardData.getData("text").slice(0, 6); // Ensure we only take 6 digits
+    const values = pasteData.split("");
 
-    // Get the pasted data as text
-    const pastedData = e.clipboardData.getData("text");
+    // Distribute values across input fields
+    values.forEach((value, index) => {
+      const inputId = `P${index + 1}`;
+      const input = document.getElementById(inputId);
+      if (input) {
+        input.value = value;
+        handleInputChange({ target: { value } }, eval(`setP${index + 1}`), `P${index + 2}`);
+      }
+    });
+  };
 
-    // If pasted data is not empty
-    if (pastedData) {
-      // Iterate over the pasted data and set the values
-      pastedData.split("").forEach((char, index) => {
-        // Check the id of each input element and set the corresponding state
-        if (index === 0) setP1(char);
-        if (index === 1) setP2(char);
-        if (index === 2) setP3(char);
-        if (index === 3) setP4(char);
-        if (index === 4) setP5(char);
-        if (index === 5) setP6(char);
-      });
+  const handlePhoneOtpInputChange = (e, setValue, nextId) => {
+    const value = e.target.value;
+    if (value.length <= 1 && /^[0-9]*$/.test(value)) {
+      setValue(value);
+      if (nextId && value) {
+        const nextInput = document.getElementById(nextId);
+        if (nextInput) {
+          nextInput.focus();
+        }
+      }
     }
   };
 
@@ -2569,7 +2598,7 @@ export default function Animation({ onChangeIndex }) {
                     6 digit code was sent to number ending in {Number(userPhoneNumber.slice(-4))}
                   </div>
 
-                  <div className="flex flex-row gap-4 mt-8">
+                  {/*<div className="flex flex-row gap-4 mt-8">
                     <input
                       id="P1"
                       type="number"
@@ -2692,6 +2721,34 @@ export default function Animation({ onChangeIndex }) {
                       onKeyDown={(e) => handleBackspace(e, setP6, "P5")}
                       onPaste={(e) => handlePaste(e)}
                     />
+                    </div>*/}
+
+                  <div className="flex flex-row gap-4 mt-8">
+                    {["P1", "P2", "P3", "P4", "P5", "P6"].map((id, index) => (
+                      <input
+                        key={id}
+                        id={id}
+                        type="number"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        value={eval(id)}
+                        ref={index === 0 ? signUpref : null}
+                        autoFocus={index === 0}
+                        onChange={(e) => handlePhoneOtpInputChange(e, eval(`set${id}`), `P${index + 2}`)}
+                        maxLength={1}
+                        style={{
+                          height: "40px",
+                          width: "40px",
+                          borderRadius: 6,
+                          backgroundColor: "#EDEDEDC7",
+                          textAlign: "center",
+                          outline: "none",
+                          border: "none",
+                        }}
+                        onKeyDown={(e) => handleBackspace(e, eval(`set${id}`), index > 0 ? `P${index}` : null)}
+                        onPaste={(e) => handlePaste(e)}
+                      />
+                    ))}
                   </div>
 
                   <div className="flex flex-row gap-1 mt-6">
@@ -2770,7 +2827,7 @@ export default function Animation({ onChangeIndex }) {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  top: -15
+                  top: -10
                 }}
               >
                 <Lottie
@@ -2811,6 +2868,7 @@ export default function Animation({ onChangeIndex }) {
                     exit="exit"
                     transition={{ duration: 0 }}
                   //   style={styles}
+                  // style={{ marginTop: -50, zIndex: 3 }}
                   >
                     <div style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '' }}>
                       <div style={{ height: 14 }}>
@@ -2820,7 +2878,7 @@ export default function Animation({ onChangeIndex }) {
                       {/* Additional Content */}
                       <div
                         className="w-full flex flex-row justify-center"
-                        // style={{ marginTop: 20 }}
+                        style={{ marginTop: 20 }}
                       >
                         <div
                           style={gifBackgroundImage}
@@ -2864,10 +2922,12 @@ export default function Animation({ onChangeIndex }) {
 
                       <div className="w-full flex justify-center mt-4">
                         <button
-                          onClick={handleCongratsClick}
+                          onClick={() => {
+                            console.log("Trying to move");
+                            router.push("/creator/buildscript");
+                          }}
                           className="bg-purple text-white px-6 py-2"
-                          style={{ borderRadius: "50px" }}
-                        >
+                          style={{ borderRadius: "50px", }}>
                           Continue
                         </button>
                       </div>
