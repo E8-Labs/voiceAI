@@ -76,9 +76,6 @@ export const SocialKB = () => {
       marginTop: 10,
       display: "flex",
       backgroundColor: "transparent", /* Light grey background */
-      bordeRadius: 5, /* Rounded orners */
-      padding: "8px 8px" /* Padding around input */
-
     },
     input: {
       border: 'none',
@@ -339,11 +336,16 @@ export const SocialKB = () => {
         </div> */}
 
       </div>
-      <div className='w-4/12 mt-4 px-6 rounded-2xl flex flex-col' style={{ backgroundColor: "#ffffff40" }}>
+      <div className='w-4/12 mt-4 px-6 rounded-2xl flex flex-col mb-12' style={{ backgroundColor: "#ffffff40" }}>
 
 
-        <div style={{ fontSize: 24, fontWeight: 300, marginTop: 20 }}>
-          Knowledge Base
+        <div className='flex flex-row justify-between items-center' style={{ marginTop: 20 }}>
+          <div style={{ fontSize: 24, fontWeight: 300 }}>
+            Knowledge Base
+          </div>
+          <button className='text-purple underline self-start'>
+            Add New
+          </button>
         </div>
 
         <div className='w-full flex flex-col '>
@@ -352,7 +354,8 @@ export const SocialKB = () => {
           </div>
 
           <div className='w-full bg-transparent flex  flex-row items-start mt-2 rounded'
-            style={styles.inputContainer2}>
+            style={styles.inputContainer2}
+          >
             <textarea
               className="w-full"
               style={{
@@ -361,7 +364,7 @@ export const SocialKB = () => {
                 backgroundColor: 'transparent',
                 flexGrow: 1, resize: 'none',
                 fontSize: '14px',
-                paddingLeft: '10px',
+                paddingLeft: '5px',
                 color: '#000',
               }}
               placeholder="Lorem ipsum dolor sit amet consectetur. Volutpat sit condimentum purus lorem. Praesent odio morbi sit sem risus habitant vitae. Neque aliquam risus gravida vivamus non. Suscipit ut sed elementum ullamcorper varius integer. Sit penatibus posuere."
@@ -383,35 +386,31 @@ export const SocialKB = () => {
                 </div>
               </button>
               <div className='flex flex-row gap-4'>
-                <button className='text-purple'>
+                <button className='text-purple' style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter" }}>
                   Edit
                 </button>
-                <button className='text-red-500'>
+                <button className='text-red' style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter" }}>
                   Delete
                 </button>
               </div>
             </div>
 
-            <div className='w-full flex flex-row justify-between'>
+            <div className='w-full flex flex-row justify-between mb-5'>
               <button>
                 <div style={{ fontSize: 14, fontWeight: 400, textDecoration: 'underline' }}>
                   URL
                 </div>
               </button>
               <div className='flex flex-row gap-4'>
-                <button className='text-purple'>
+                <button className='text-purple' style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter" }}>
                   Edit
                 </button>
-                <button className='text-red-500'>
+                <button className='text-red' style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter" }}>
                   Delete
                 </button>
               </div>
             </div>
 
-
-            <button className='text-purple underline self-start mb-5'>
-              Add New
-            </button>
           </div>
         </div>
 

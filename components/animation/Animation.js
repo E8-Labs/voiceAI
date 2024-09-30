@@ -2819,7 +2819,7 @@ export default function Animation({ onChangeIndex }) {
                       {/* Additional Content */}
                       <div
                         className="w-full flex flex-row justify-center"
-                        style={{ marginTop: 20 }}
+                        // style={{ marginTop: 20 }}
                       >
                         <div
                           style={gifBackgroundImage}

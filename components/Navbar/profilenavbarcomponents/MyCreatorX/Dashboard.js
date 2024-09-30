@@ -170,9 +170,9 @@ const Dashboard = () => {
                                         },
                                     }}
                                 >
-                                    <MenuItem value={"24hrs"}>Ten</MenuItem>
-                                    <MenuItem value={"7days"}>Twenty</MenuItem>
-                                    <MenuItem value={"30days"}>Thirty</MenuItem>
+                                    <MenuItem value={"24hrs"}>Last 24hrs</MenuItem>
+                                    <MenuItem value={"7days"}>Last 7days</MenuItem>
+                                    <MenuItem value={"30days"}>Last 30days</MenuItem>
                                 </Select>
                             </FormControl>
                         </div>
@@ -188,9 +188,9 @@ const Dashboard = () => {
                             <div style={{ fontSize: 13, fontWeight: "400", fontFamily: "inter" }}>Total Minutes</div>
                             <div className='w-full flex flex-row items-center'>
                                 <div style={{ fontWeight: "300", fontFamily: "inter", fontSize: 32 }}>{totalMin(selectedDuration)}</div>
-                                <div style={{ fontWeight: "300", fontFamily: "inter", fontSize: 15, color: "#00000080" }}>
+                                {/* <div style={{ fontWeight: "300", fontFamily: "inter", fontSize: 15, color: "#00000080" }}>
                                     Mins
-                                </div>
+                                </div> */}
                             </div>
                         </div>
 
@@ -234,7 +234,18 @@ const Dashboard = () => {
 
             <div className='w-full mt-6 flex flex-row gap-2'>
                 <div className='w-6/12 flex flex-col rounded-2xl px-6 pb-4' style={{ backgroundColor: "#ffffff50" }}>
-                    <div className='mt-8 font-light'>Top Callers</div>
+                    <div className='mt-12 flex flex-row justify-between items-center'>
+                        <div className='font-light'
+                            style={{
+                                fontSize: 20, fontWeight: "700", fontFamily: 'inter'
+                            }}>Top Callers</div>
+                        <button className='bg-purple text-white px-2 py-1'
+                            style={{
+                                borderRadius: "50px", fontSize: 13, fontWeight: "400", fontFamily: 'inter'
+                            }}>
+                            View all
+                        </button>
+                    </div>
                     <div className='w-full flex flex-row justify-between mt-5'>
                         <div className='w-4/12'>
                             <div style={styles.text}>Name</div>
@@ -281,7 +292,18 @@ const Dashboard = () => {
                     }
                 </div>
                 <div className='w-4/12 flex flex-col rounded-2xl px-6 pb-4' style={{ backgroundColor: "#ffffff50" }}>
-                    <div className='mt-8 font-light'>Products Sold</div>
+                    <div className='flex flex-row justify-between items-center mt-12'>
+                        <div
+                            style={{
+                                fontSize: 20, fontWeight: "700", fontFamily: 'inter'
+                            }}>Products</div>
+                        <button className='bg-purple text-white px-2 py-1'
+                            style={{
+                                borderRadius: "50px", fontSize: 13, fontWeight: "400", fontFamily: 'inter'
+                            }}>
+                            View all
+                        </button>
+                    </div>
                     <div className='w-full flex flex-row gap-1 mt-5 justify-between'>
                         <div className='w-3/12'>
                             <div style={styles.text}>Product Name</div>

@@ -1,26 +1,29 @@
 
 import SliderSizes from '@/components/RangeSlider';
 import { Box, Slider } from '@mui/material';
+import { CaretDown, CaretRight } from '@phosphor-icons/react';
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 export const AiDetails = () => {
+
+  const valuesInputRef = useRef(null);
 
   //code for showing and hiding the questions
   const [interactionQuestions, setInterractionQuestions] = useState([
     {
       id: 1,
-      title: "Question 1",
+      title: "Question here",
       details: "Hello it is queston 1 how are you?"
     },
     {
       id: 2,
-      title: "Question 2",
+      title: "Another Question",
       details: "Hello it is queston 2 what is your name?"
     },
     {
       id: 3,
-      title: "Question 3",
+      title: "Another Question",
       details: "Hello it is queston 3 where are you from?"
     },
   ])
@@ -29,6 +32,9 @@ export const AiDetails = () => {
   const [politeValue, setPoliteValue] = useState("");
   const [humorValue, setHumorValue] = useState("");
   const [positiveValue, setPositiveValue] = useState("");
+  const [showMoreObjectiveText, setShowMoreObjectiveText] = useState(false);
+  const [callInstructions, setShowCallInstructions] = useState(false);
+  const [showMoreInstruction, setshowMoreInstruction] = useState(false);
 
   const handleInterRactionQuestionDetails = (id) => {
     setInteractionQuestionsDetails(interactionQuestionsDetails === id ? null : id);
@@ -73,18 +79,27 @@ export const AiDetails = () => {
       style={{ height: '90vh', overflow: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none', marginTop: 20 }}
     >
       <div className='w-full'>
-        <div className='w-full flex flex-row items-start gap-4'>
-          <div className=' w-5/12 rounded-xl px-6 pb-4' style={{ backgroundColor: '#ffffff50', }}>
+        <div className='w-full flex flex-row items-start gap-6'>
+          <div className=' w-5/12 rounded-xl px-6 pb-4'
+            style={{
+              backgroundColor: '#ffffff50',
+              height: "40vh",
+              overflow: "auto", scrollbarWidth: "none"
+            }}>
             <div className='mt-8'
-              style={{ fontSize: 15, fontWeight: '500', fontFamily: 'inter' }}>
-              Values & Beliefs
+              style={{ fontSize: 15, fontWeight: '700', fontFamily: 'inter' }}>
+              Objective
             </div>
-            <div className='mt-4'>
+            <div className={`mt-4 ${showMoreObjectiveText ? 'line-clamp-none' : 'line-clamp-5'}`}>
+              Lorem ipsum dolor sit amet consectetur. Amet quis interdum ipsum non eu aliquam aliquet consequat et. Tincidunt pharetra quam ac viverra. Sit pellentesque faucibus non sit. Feugiat consequat ultrices erat est. Nulla.
+              Lorem ipsum dolor sit amet consectetur. Amet quis interdum ipsum non eu aliquam aliquet consequat et. Tincidunt pharetra quam ac viverra. Sit pellentesque faucibus non sit. Feugiat consequat ultrices erat est. Nulla.
               Lorem ipsum dolor sit amet consectetur. Amet quis interdum ipsum non eu aliquam aliquet consequat et. Tincidunt pharetra quam ac viverra. Sit pellentesque faucibus non sit. Feugiat consequat ultrices erat est. Nulla.
             </div>
             <button className='mt-4 text-purple'
-              style={{ fontSize: 15, fontWeight: '400', fontFamily: 'inter' }}>
-              Read More
+              onClick={() => { setShowMoreObjectiveText(!showMoreObjectiveText) }}
+              style={{ fontSize: 15, fontWeight: '400', fontFamily: 'inter' }}
+            >
+              {showMoreObjectiveText ? "Read Less" : "Read More"}
             </button>
             {/* Code for the Voice user added */}
 
@@ -113,9 +128,27 @@ export const AiDetails = () => {
           {/*<div className='w-5/12 rounded-xl' style={{ backgroundColor: '#ffffff', }}>
             Box 2
                 </div>*/}
-          <div className='w-4/12 flex flex-col items-end'>
-            <div className='w-11/12 bg-white p-5 flex flex-col gap-10 items-center shadow  rounded-xl'>
-              <div style={{ fontSize: 20, fontWeight: "700", fontFamily: 'inter' }}>
+          <div className='w-5/12 flex flex-col rounded-xl' style={{ backgroundColor: "#ffffff50" }}>
+            <div className='p-5 flex flex-col shadow items-start  rounded-xl' style={{ backgroundColor: "", height: "40vh", overflow: "auto", scrollbarWidth: "none" }}>
+
+              <div className='mt-3' style={{ fontSize: 15, fontWeight: '700', fontFamily: 'inter' }}>
+                Call Instruction
+              </div>
+              <div className={`mt-4 ${showMoreInstruction ? 'line-clamp-none' : 'line-clamp-5'}`}>
+                Lorem ipsum dolor sit amet consectetur. Amet quis interdum ipsum non eu aliquam aliquet consequat et. Tincidunt pharetra quam ac viverra. Sit pellentesque faucibus non sit. Feugiat consequat ultrices erat est. Nulla.
+                Lorem ipsum dolor sit amet consectetur. Amet quis interdum ipsum non eu aliquam aliquet consequat et. Tincidunt pharetra quam ac viverra. Sit pellentesque faucibus non sit. Feugiat consequat ultrices erat est. Nulla.
+                Lorem ipsum dolor sit amet consectetur. Amet quis interdum ipsum non eu aliquam aliquet consequat et. Tincidunt pharetra quam ac viverra. Sit pellentesque faucibus non sit. Feugiat consequat ultrices erat est. Nulla.
+              </div>
+              <button
+                onClick={() => { setshowMoreInstruction(!showMoreInstruction) }}
+                className='mt-4 text-purple'
+                style={{ fontSize: 15, fontWeight: '400', fontFamily: 'inter' }}>
+                {
+                  showMoreInstruction ? "Read Less" : "Read More"
+                }
+              </button>
+
+              {/* <div style={{ fontSize: 20, fontWeight: "700", fontFamily: 'inter' }}>
                 Test Your AI
               </div>
 
@@ -137,7 +170,7 @@ export const AiDetails = () => {
               // onClick={handleContinue}
               >
                 Test AI
-              </button>
+              </button> */}
 
             </div>
           </div>
@@ -145,7 +178,28 @@ export const AiDetails = () => {
 
         <div className='w-full flex flex-row mt-4 mb-6 gap-6'>
           <div className='px-6 rounded-xl w-5/12 pb-4' style={{ backgroundColor: '#ffffff50', }}>
-            <div className='mt-6' style={{ fontFamily: 'inter', fontSize: 15, fontWeight: '500' }}>
+            <div className='mt-6' style={{ fontFamily: 'inter', fontSize: 15, fontWeight: '700' }}>
+              Value & Beliefs
+            </div>
+
+            <div className='flex flex-row justify-between items-center' style={{ marginTop: 20 }}>
+              <input
+                ref={valuesInputRef}
+                className='outline-none border-none'
+                placeholder='Content goes here ...'
+                style={{ backgroundColor: "transparent" }} />
+              <button className='text-purple'
+                onClick={() => {
+                  if (valuesInputRef) {
+                    valuesInputRef.current.focus()
+                  }
+                }}
+                style={{ fontWeight: '400', fontSize: 13, fontFamily: "inter" }}>
+                Edit
+              </button>
+            </div>
+
+            <div className='mt-6' style={{ fontFamily: 'inter', fontSize: 15, fontWeight: '700' }}>
               Personality Trait
             </div>
 
@@ -269,21 +323,23 @@ export const AiDetails = () => {
               </Box>
             </div>
 
-            <div className='mt-6' style={{ fontFamily: 'inter', fontSize: 15, fontWeight: '500' }}>
-              Call Instruction
+            <div className='mt-6' style={{ fontFamily: 'inter', fontSize: 15, fontWeight: '400' }}>
+              Interaction Examples
             </div>
 
-            <div className='mt-2' style={{ fontWeight: '500', fontSize: 13, fontFamily: 'inter' }}>
+            {/* <div className={`mt-2 ${callInstructions ? 'line-clamp-none' : 'line-clamp-5'}`} style={{ fontWeight: '500', fontSize: 13, fontFamily: 'inter' }}>
               Lorem ipsum dolor sit amet consectetur. Amet quis interdum ipsum non eu aliquam aliquet consequat et. Tincidunt pharetra quam ac viverra. Sit pellentesque faucibus non sit. Feugiat consequat ultrices erat est. Nulla.
-            </div>
+              Lorem ipsum dolor sit amet consectetur. Amet quis interdum ipsum non eu aliquam aliquet consequat et. Tincidunt pharetra quam ac viverra. Sit pellentesque faucibus non sit. Feugiat consequat ultrices erat est. Nulla.
+              Lorem ipsum dolor sit amet consectetur. Amet quis interdum ipsum non eu aliquam aliquet consequat et. Tincidunt pharetra quam ac viverra. Sit pellentesque faucibus non sit. Feugiat consequat ultrices erat est. Nulla.
+            </div> */}
 
-            <button className='mt-4 text-purple' style={{ fontWeight: '500', fontFamily: 'inter' }}>
+            {/* <button
+              onClick={() => { setShowCallInstructions(!callInstructions) }}
+              className='mt-4 text-purple'
+              style={{ fontWeight: '500', fontFamily: 'inter' }}>
               Read More
-            </button>
+            </button> */}
 
-            <div className='mt-6' style={{ fontFamily: 'inter', fontSize: 15, fontWeight: '500' }}>
-              Interaction examples
-            </div>
 
             {
               interactionQuestions.map((item) => (
@@ -295,8 +351,8 @@ export const AiDetails = () => {
                     <button onClick={() => handleInterRactionQuestionDetails(item.id)}>
                       {
                         interactionQuestionsDetails === item.id ?
-                          'less' :
-                          'more'
+                          <CaretDown size={20} /> :
+                          <CaretRight size={20} />
                       }
                       {/*<Image alt='up' height={} width={} />*/}
                     </button>
@@ -316,7 +372,7 @@ export const AiDetails = () => {
 
           </div>
           <div className='px-6 rounded-xl w-5/12 pb-4' style={{ backgroundColor: '#ffffff50', }}>
-            <div className='mt-6' style={{ fontFamily: 'inter', fontSize: 15, fontWeight: '500' }}>
+            <div className='mt-6' style={{ fontFamily: 'inter', fontSize: 15, fontWeight: '700' }}>
               Framework & Techniques
             </div>
 
@@ -331,8 +387,8 @@ export const AiDetails = () => {
                     <button onClick={() => handleInterRactionQuestionDetails(item.id)}>
                       {
                         interactionQuestionsDetails === item.id ?
-                          'less' :
-                          'more'
+                          <CaretDown size={20} /> :
+                          <CaretRight size={20} />
                       }
                       {/*<Image alt='up' height={} width={} />*/}
                     </button>
@@ -350,7 +406,7 @@ export const AiDetails = () => {
               Add More
             </button>
 
-            <div className='mt-6' style={{ fontFamily: 'inter', fontSize: 15, fontWeight: '500' }}>
+            <div className='mt-6' style={{ fontFamily: 'inter', fontSize: 15, fontWeight: '400' }}>
               Expression examples
             </div>
 
@@ -368,13 +424,14 @@ export const AiDetails = () => {
               </button>
             </div>
 
-            <div className='mt-6' style={{ fontFamily: 'inter', fontSize: 15, fontWeight: '500' }}>
+            <div className='mt-6' style={{ fontFamily: 'inter', fontSize: 15, fontWeight: '400' }}>
               Key Quotes
             </div>
 
             <div className='mt-4' style={{ fontFamily: 'inter', fontSize: 13, fontWeight: '400' }}>
               Lorem ipsum dolor sit amet consectetur. Amet quis interdum ipsum non eu aliquam aliquet consequat et. Tincidunt pharetra quam ac viverra. Sit pellentesque faucibus non sit. Feugiat consequat ultrices erat est. Nulla.
             </div>
+            <div className='w-full' style={{ height: "2px", backgroundColor: '#00000011', marginTop: 15 }} />
 
             <button className='mt-4 text-purple' style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 15 }}>
               Add More

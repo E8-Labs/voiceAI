@@ -4,6 +4,10 @@ import Image from 'next/image';
 import Drawer from '@mui/material/Drawer';
 import moment from 'moment';
 import Apis from '@/components/apis/Apis';
+import { FormControl, MenuItem, Select } from '@mui/material';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import { CalendarDots } from '@phosphor-icons/react';
 // import { FormControl, MenuItem, Select } from '@mui/material';
 // import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 // import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -13,6 +17,55 @@ import Apis from '@/components/apis/Apis';
 const Calls = () => {
   const [open, setOpen] = useState('');
   const [callsData, setCallsData] = useState({ calls: [] });
+  const [openFilterDrawer, setOpenFilterDrawer] = useState(false);
+  const [productType, setProductType] = useState('none');
+  const callDetails = [
+    { id: 1, name: "Rayna Passaquindici Arcand", talkTime: '2mins 19sec', date: '21.12.2024 01:25', amount: '$1.0' },
+    { id: 2, name: "Gretchen Workman", talkTime: '2mins 19sec', date: '21.12.2024 01:25', amount: '$1.0' },
+    { id: 3, name: "Zain Baptista", talkTime: '2mins 19sec', date: '21.12.2024 01:25', amount: '$1.0' },
+    { id: 4, name: "Jordyn Korsgaard", talkTime: '2mins 19sec', date: '21.12.2024 01:25', amount: '$1.0' },
+    { id: 5, name: "Lincoln Stanton", talkTime: '2mins 19sec', date: '21.12.2024 01:25', amount: '$1.0' },
+  ];
+
+  const callLogs = [
+    {
+      id: 1,
+      date: '21.12.2024 01:25pm',
+      talkTime: '12mins 30sec'
+    }, {
+      id: 2,
+      date: '21.12.2024 01:25pm',
+      talkTime: '12mins 30sec'
+    }, {
+      id: 3,
+      date: '21.12.2024 01:25pm',
+      talkTime: '12mins 30sec'
+    },
+  ]
+
+  //code for calender
+  const [date, setDate] = useState(null);
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [endDate, setEndDate] = useState(null);
+  const [showEndDateCalendar, setEndDateCalendar] = useState(false);
+
+  // Function to format date as MM/DD/YYYY
+  const formatDate = (date) => {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`;
+  };
+
+  const handleDateChange = (selectedDate) => {
+    setDate(selectedDate);
+    setShowCalendar(false); // Hide calendar after date selection
+  };
+
+  const handleEndDateChange = (selectedDate) => {
+    setEndDate(selectedDate);
+    setEndDateCalendar(false); // Hide calendar after date selection
+  };
 
   const styles = {
     inputContainer: {
@@ -46,30 +99,6 @@ const Calls = () => {
       textOverflow: 'ellipsis'  // Add ellipsis for overflow text
     }
   };
-
-  const callDetails = [
-    { id: 1, name: "Rayna Passaquindici Arcand", talkTime: '2mins 19sec', date: '21.12.2024 01:25', amount: '$1.0' },
-    { id: 2, name: "Gretchen Workman", talkTime: '2mins 19sec', date: '21.12.2024 01:25', amount: '$1.0' },
-    { id: 3, name: "Zain Baptista", talkTime: '2mins 19sec', date: '21.12.2024 01:25', amount: '$1.0' },
-    { id: 4, name: "Jordyn Korsgaard", talkTime: '2mins 19sec', date: '21.12.2024 01:25', amount: '$1.0' },
-    { id: 5, name: "Lincoln Stanton", talkTime: '2mins 19sec', date: '21.12.2024 01:25', amount: '$1.0' },
-  ];
-
-  const callLogs = [
-    {
-      id: 1,
-      date: '21.12.2024 01:25pm',
-      talkTime: '12mins 30sec'
-    }, {
-      id: 2,
-      date: '21.12.2024 01:25pm',
-      talkTime: '12mins 30sec'
-    }, {
-      id: 3,
-      date: '21.12.2024 01:25pm',
-      talkTime: '12mins 30sec'
-    },
-  ]
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -122,8 +151,6 @@ const Calls = () => {
   }
 
   //open drawer
-  const [openFilterDrawer, setOpenFilterDrawer] = useState(false);
-  const [productType, setProductType] = useState('none');
 
   const handleFilterDrawer = (status) => {
     setOpenFilterDrawer(status);
@@ -139,19 +166,33 @@ const Calls = () => {
 
       <div className='w-7/12 px-6 py-4 rounded-2xl' style={{ backgroundColor: "#ffffff40" }}>
         <div style={{ fontSize: 24, color: '#00000' }}>
-          Cal Stat
+          Stats
         </div>
 
         <div className='w-full flex flex-row justify-between items-center mt-10'>
           <div className='w-4/12 pl-4'>
             <div style={styles.text}>Total calls</div>
-            <div style={{ fontSize: 30, color: '#000000' }}>{callsData.totalCalls}</div>
+            <div style={{ fontSize: 30, color: '#000000' }}>
+              {callsData.totalCalls ?
+                <div>
+                  {callsData.totalCalls}
+                </div> : "0"}
+            </div>
           </div>
           <div className='w-4/12 '>
-            <div style={{ fontSize: 12, color: '#00000090' }}>Total Talk Time</div>
-            <div className='flex flex-row  items-center'>
-              <div style={{ fontSize: 30, color: '#000000' }}>{callsData.totalMinutes}</div>
-              <div style={{ fontSize: 15, color: '#00000095', fontWeight: 200 }}>Mins</div>
+            <div style={{ fontSize: 12, color: '#00000090' }}>
+              Total Talk Time
+            </div>
+            <div className='flex flex-row  items-end'>
+              <div style={{ fontSize: 30, color: '#000000', }}>
+                {callsData.totalMinutes ?
+                  <div>
+                    {callsData.totalMinutes}
+                  </div> : "0"}
+              </div>
+              <div style={{ fontSize: 15, color: '#00000095', paddingBottom: 8, fontWeight: 200 }}>
+                Mins
+              </div>
             </div>
           </div>
           <div className='w-4/12'>
@@ -190,22 +231,61 @@ const Calls = () => {
                   </button>
                 </div>
               </div>
-              <div className='mt-6' style={{ fontWeight: '600', fontSize: 11, fontFamily: 'inter' }}>
+              <div className='mt-6' style={{ fontWeight: '400', fontSize: 11, fontFamily: 'inter' }}>
                 Range
               </div>
 
-              <div className='mt-4 w-full'>
-                <input className='w-full bg-gray-200' type='text' placeholder='Start Date' />
+              {/* Code for calender input fields */}
+
+              <div className='mt-1 w-full'>
+                {/* <input className='w-full bg-gray-200' type='text' placeholder='Start Date' /> */}
+                {/* <Calendar onChange={setDate} value={date} /> */}
+                <div className='w-full bg-gray-200 rounded' style={{ position: 'relative', display: 'inline-block' }}>
+                  <div className='flex flex-row justify-between items-center w-full' style={{ padding: '10px', backgroundColor: "" }}>
+                    <input
+                      className='w-full'
+                      type="text"
+                      placeholder='Start date'
+                      value={date ? formatDate(date) : ''}
+                      onClick={() => setShowCalendar(!showCalendar)}
+                      readOnly
+                      style={{ cursor: 'pointer', width: '150px', backgroundColor: "transparent" }}
+                    />
+                    <button onClick={() => setShowCalendar(!showCalendar)}>
+                      <CalendarDots size={20} />
+                    </button>
+                  </div>
+                  {showCalendar && (
+                    <div style={{ position: 'absolute', zIndex: 100 }}>
+                      <Calendar onChange={handleDateChange} value={date} />
+                    </div>
+                  )}
+                </div>
               </div>
 
-              {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DemoContainer components={['DatePicker']}>
-                  <DatePicker label="Basic date picker" />
-                </DemoContainer>
-              </LocalizationProvider> */}
-
               <div className='mt-4 w-full'>
-                <input className='w-full bg-gray-200' type='text' placeholder='End Date' />
+                {/* <input className='w-full bg-gray-200' type='text' placeholder='End Date' /> */}
+                <div className='w-full bg-gray-200 rounded' style={{ position: 'relative', display: 'inline-block' }}>
+                  <div className='flex flex-row justify-between items-center w-full' style={{ padding: '10px', backgroundColor: "" }}>
+                    <input
+                      className='w-full'
+                      type="text"
+                      placeholder='End date'
+                      value={endDate ? formatDate(endDate) : ''}
+                      onClick={() => setEndDateCalendar(!showEndDateCalendar)}
+                      readOnly
+                      style={{ cursor: 'pointer', width: '150px', backgroundColor: "transparent" }}
+                    />
+                    <button onClick={() => setEndDateCalendar(!showEndDateCalendar)}>
+                      <CalendarDots size={20} />
+                    </button>
+                  </div>
+                  {showEndDateCalendar && (
+                    <div style={{ position: 'absolute', zIndex: 100 }}>
+                      <Calendar onChange={handleEndDateChange} value={endDate} />
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className='mt-6' style={{ fontWeight: '600', fontSize: 11, fontFamily: 'inter' }}>
@@ -249,7 +329,16 @@ const Calls = () => {
               </div>
 
               <div className='w-full flex flex-row justify-center mt-12'>
-                <button className='w-full py-3 w-10/12 bg-purple'
+                <button
+                  onClick={() => {
+                    let Data = {
+                      startDate: date,
+                      endDate: endDate,
+                      product: productType
+                    }
+                    console.log("Data for filters is :", Data);
+                  }}
+                  className='w-full py-3 w-10/12 bg-purple'
                   style={{ fontWeight: '400', fontSize: 15, fontFamily: 'inter', color: 'white', borderRadius: '50px' }}>
                   Apply Filter
                 </button>
