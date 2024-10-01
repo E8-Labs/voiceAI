@@ -149,7 +149,7 @@ function AiSocialLinks({ handleContinue, aiName }) {
     return (
         <div className='w-full flex flex-col justify-center items-center' //style={{ height: '100%', overflow: 'auto' }} 
         >
-            <div className='w-full'>
+            <div className='w-full' style={{ height: '65vh', overflow: 'auto', scrollbarWidth: 'none' }}>
 
                 <div className="mt-12 flex flex-row items-center gap-2">
                     <div className='flex flex-row items-center'>

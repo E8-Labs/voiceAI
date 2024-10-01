@@ -1,9 +1,11 @@
 "use client";
 import Animation from "@/components/animation/Animation";
+import AnimationBox2 from "@/components/creatorOnboarding/AnimationBox2";
 import BoxAnimationIndex1 from "@/components/creatorOnboarding/BoxAnimationIndex1";
 import BoxAnimationIndex2 from "@/components/creatorOnboarding/BoxAnimationIndex2";
 import ScriptAnimation from "@/components/creatorOnboarding/ScriptAnimation";
 import ScriptAiAnimation from "@/components/creatorOnboarding/ScriptAnimation";
+import AnimationBox1 from "@/components/creatorOnboarding/TestAnimationBox2";
 import { Box } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
@@ -114,7 +116,7 @@ export default function Home() {
               style={{
                 backgroundColor: "",
                 height: currentIndex === 3 ? "85%" : "68%",
-                overflow: 'auto',
+                // overflow: 'auto',
                 scrollbarWidth: 'none',
                 marginTop: 25
               }}
@@ -134,12 +136,12 @@ export default function Home() {
           style={{ height: "100%", border: "none" }}
         >
           {/* <img src="/assets/mainLogo.png" alt='app' style={{ height: "850px", width: "100%", resize: "cover", objectFit: "contain" }} /> */}
-          <div
-            style={gifBackgroundImage}
-            className="flex flex-row justify-center items-center"
-          >
-            {
-              (currentIndex === 0 || currentIndex > 2) && (
+          {
+            (currentIndex === 0 || currentIndex > 2) && (
+              <div
+                style={gifBackgroundImage}
+                className="flex flex-row justify-center items-center"
+              >
                 <Image
                   // onClick={handleContinue}
                   src="/mainAppGif3.gif"
@@ -148,21 +150,23 @@ export default function Home() {
                   height={600}
                   width={600}
                 />
-              )
-            }
-            {
-              currentIndex === 1 &&
-              <div className="w-full">
-                <BoxAnimationIndex1 currentIndex={currentIndex} />
               </div>
-            }
-            {
-              currentIndex === 2 &&
-              <div className="w-full">
-                <BoxAnimationIndex2 currentIndex={currentIndex} />
-              </div>
-            }
-          </div>
+            )
+          }
+          {
+            currentIndex === 2 &&
+            <div className="w-full">
+              {/*<BoxAnimationIndex1 currentIndex={currentIndex} />*/}
+              <AnimationBox2 />
+            </div>
+          }
+          {
+            currentIndex === 1 &&
+            <div className="w-full">
+              {/*<BoxAnimationIndex2 currentIndex={currentIndex} />*/}
+              <AnimationBox1 />
+            </div>
+          }
         </div>
       </div>
       {/* <div>hello</div> */}

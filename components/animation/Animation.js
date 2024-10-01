@@ -31,7 +31,6 @@ import {
 import zIndex from "@mui/material/styles/zIndex";
 import VerifyPhoneNumber from "../loginform/VerifyPhoneNumber";
 import SigninNumberInput from "../signin/SigninNumberInput";
-import Congrats from "./Congrats";
 
 const boxVariants = {
   enter: (direction) => ({
@@ -209,7 +208,6 @@ export default function Animation({ onChangeIndex }) {
   const sendOtp = async (e) => {
     // console.log('Event value is:', e);
     if (e === "signup") {
-      console.log("I am signing up")
       console.log("Log is", e);
       try {
         setVerifiyNumberLoader(true);
@@ -245,13 +243,10 @@ export default function Animation({ onChangeIndex }) {
     } else {
       // return
       try {
-        console.log("trying to send code")
         if (!signinVerificationNumber) {
           console.log("Please enter a valid phone number");
           return;
         }
-
-        console.log("trying to send code on", signinVerificationNumber)
 
         const appVerifier = window.recaptchaVerifier;
 
@@ -2733,18 +2728,14 @@ export default function Animation({ onChangeIndex }) {
                       <input
                         key={id}
                         id={id}
-                        type="text"
+                        type="number"
                         inputMode="numeric"
                         pattern="[0-9]*"
                         value={eval(id)}
                         ref={index === 0 ? signUpref : null}
                         autoFocus={index === 0}
                         onChange={(e) => handlePhoneOtpInputChange(e, eval(`set${id}`), `P${index + 2}`)}
-                        // maxLength={1}
-                        onInput={(e) => {
-                          // Allow only numbers
-                          e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                        }}
+                        maxLength={1}
                         style={{
                           height: "40px",
                           width: "40px",
@@ -2753,9 +2744,6 @@ export default function Animation({ onChangeIndex }) {
                           textAlign: "center",
                           outline: "none",
                           border: "none",
-                          WebkitAppearance: "none",
-                          MozAppearance: "textfield",
-                          appearance: "none",
                         }}
                         onKeyDown={(e) => handleBackspace(e, eval(`set${id}`), index > 0 ? `P${index}` : null)}
                         onPaste={(e) => handlePaste(e)}
@@ -2806,7 +2794,6 @@ export default function Animation({ onChangeIndex }) {
           </div>
         )}
         {currentIndex === 7 && (
-          
           <Box
             sx={{
               position: "absolute",
@@ -2820,9 +2807,137 @@ export default function Animation({ onChangeIndex }) {
               // backgroundColor: "yellow",
             }}
           >
-            <div className="w-full h-[100vh] bg-purple">
-            <Congrats />
-          </div>
+            <Box
+              sx={{
+                position: "relative",
+                //   width: "100%",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                //   backgroundColor: "yellow",
+
+              }}
+            >
+              {/* Lottie Animation Box */}
+              <Box
+                sx={{
+                  position: "absolute",
+                  zIndex: 2,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  top: -10
+                }}
+              >
+                <Lottie
+                  animationData={require("/public/congratsanimation.json")}
+                  lottieRef={lottieRef}
+
+                  loop={true}
+                  style={{ height: "700px", width: "700px" }}
+                  onComplete={() => {
+                    lottieRef.current.goToAndStop(3, true)
+                  }}
+                />
+              </Box>
+
+              {/* Motion Div Content */}
+              <Box
+                sx={{
+                  zIndex: 1,
+                  position: "relative",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  height: "100%",
+                  backgroundColor: "",
+                }}
+              >
+                <div
+                  className="flex flex-col justify-center h-screen"
+                  style={{ backgroundColor: "" }}
+                >
+                  <motion.div
+                    key="box8"
+                    custom={direction}
+                    variants={boxVariants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{ duration: 0 }}
+                  //   style={styles}
+                  // style={{ marginTop: -50, zIndex: 3 }}
+                  >
+                    <div style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '' }}>
+                      <div style={{ height: 14 }}>
+                        {/* Back Button or Other Elements */}
+                      </div>
+
+                      {/* Additional Content */}
+                      <div
+                        className="w-full flex flex-row justify-center"
+                        style={{ marginTop: 20 }}
+                      >
+                        <div
+                          style={gifBackgroundImage}
+                          className="flex flex-row justify-center items-center"
+                        >
+                          <Image
+                            src="/mainAppGif3.gif"
+                            alt="gif"
+                            style={{
+                              backgroundColor: "",
+                              borderRadius: "50%",
+                              height: isHighScreen ? "580px" : "350px",
+                              width: isHighScreen ? "580px" : "350px",
+                            }}
+                            height={600}
+                            width={600}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="-mt-16">
+                        <div
+                          style={{
+                            fontSize: 24,
+                            fontWeight: "600",
+                            textAlign: "center",
+                          }}
+                        >
+                          Congratulations!
+                        </div>
+                        <div
+                          style={{
+                            fontSize: 16,
+                            fontWeight: "500",
+                            textAlign: "center",
+                          }}
+                        >
+                          Your account is created
+                        </div>
+                      </div>
+
+                      <div className="w-full flex justify-center mt-4">
+                        <button
+                          onClick={() => {
+                            console.log("Trying to move");
+                            router.push("/creator/buildscript");
+                          }}
+                          className="bg-purple text-white px-6 py-2"
+                          style={{ borderRadius: "50px", }}>
+                          Continue
+                        </button>
+                      </div>
+
+                      {/* Additional Footer Content */}
+                    </div>
+                  </motion.div>
+                </div>
+              </Box>
+            </Box>
           </Box>
 
         )}

@@ -922,7 +922,8 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             transition={{ duration: 0 }}
                             style={styles}>
                             <div className='w-full flex justify-center'>
-                                <div className='w-11/12 sm:w-full' style={{ overflow: "auto", height: "80vh", paddingBottom: 30 }}>
+                                <div className='w-11/12 sm:w-full' //style={{ paddingBottom: 30 }}
+                                >
                                     <div>
                                         <button onClick={handleBack}>
                                             <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
@@ -931,7 +932,13 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                     <div className='mt-6' style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
                                         Conversion goals?
                                     </div>
-                                    <div className='w-full flex flex-col justify-center items-center '>
+                                    <div className='w-full flex flex-col justify-center items-center'
+                                        style={{
+                                            overflow: 'auto',
+                                            height: '40vh',
+                                            scrollbarWidth: 'none'
+                                        }}
+                                    >
                                         <div className='w-full'>
                                             <div className='text-sm text-gray-400 mt-2'>
                                                 What do you want your AI to do?
@@ -1221,140 +1228,147 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                             <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
                                         </button>
                                     </div>
-                                    <div className='mt-12' style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
-                                        Subscribe
-                                    </div>
-                                    <div className='flex flex-row items-center w-8/12 px-6 rounded-xl justify-between' style={{ height: "70px", border: "1px solid #EFEFEF", marginTop: 30 }}>
-                                        <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
-                                            $97/ mo
+                                    <div
+                                        className='flex flex-col w-full'
+                                        style={{
+                                            overflow: 'auto',
+                                            height: '80vh', paddingBottom: 30, scrollbarWidth: 'none'
+                                        }}>
+                                        <div className='mt-12' style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
+                                            Subscribe
                                         </div>
-                                        <button onClick={() => handlePlanSelect(0)}>
-                                            {
-                                                selectedPlan === 0 ?
-                                                    <Image alt='selected' style={{ borderRadius: "50%" }} src='/assets/selected.png' height={27} width={27} /> :
-                                                    <Image alt='selected' style={{ borderRadius: "50%" }} src='/assets/unselected.png' height={27} width={27} />
-                                            }
-                                        </button>
-                                    </div>
-                                    <div className='items-center w-8/12 px-6 rounded-xl justify-between' style={{ height: "70px", border: "1px solid #EFEFEF", marginTop: 50 }}>
-                                        <div className='w-full flex flex-row justify-end'>
-                                            <div className='bg-purple text-white px-2 py-1' style={{ borderRadius: "50px", width: "fit-content", marginTop: "-18px" }}>
-                                                Recomended
-                                            </div>
-                                        </div>
-                                        <div className='flex flex-row items-center w-full rounded-xl justify-between'>
+                                        <div className='flex flex-row items-center w-8/12 px-6 rounded-xl justify-between' style={{ height: "70px", border: "1px solid #EFEFEF", marginTop: 30 }}>
                                             <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
-                                                <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
-                                                    $1200/ yr
-                                                </div>
-                                                <div style={{ fontWeight: "400", fontSize: 18, fontFamily: "inter" }}>
-                                                    Save $200 (12 %)
+                                                $97/ mo
+                                            </div>
+                                            <button onClick={() => handlePlanSelect(0)}>
+                                                {
+                                                    selectedPlan === 0 ?
+                                                        <Image alt='selected' style={{ borderRadius: "50%" }} src='/assets/selected.png' height={27} width={27} /> :
+                                                        <Image alt='selected' style={{ borderRadius: "50%" }} src='/assets/unselected.png' height={27} width={27} />
+                                                }
+                                            </button>
+                                        </div>
+                                        <div className='items-center w-8/12 px-6 rounded-xl justify-between' style={{ height: "70px", border: "1px solid #EFEFEF", marginTop: 50 }}>
+                                            <div className='w-full flex flex-row justify-end'>
+                                                <div className='bg-purple text-white px-2 py-1' style={{ borderRadius: "50px", width: "fit-content", marginTop: "-18px" }}>
+                                                    Recomended
                                                 </div>
                                             </div>
-                                            <div className='flex flex-row gap-2 items-center'>
-                                                <button onClick={() => handlePlanSelect(1)}>
-                                                    {
-                                                        selectedPlan === 1 ?
-                                                            <Image alt='selected' style={{ borderRadius: "50%" }} src='/assets/selected.png' height={27} width={27} /> :
-                                                            <Image alt='selected' style={{ borderRadius: "50%" }} src='/assets/unselected.png' height={27} width={27} />
-                                                    }
-                                                </button>
+                                            <div className='flex flex-row items-center w-full rounded-xl justify-between'>
+                                                <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
+                                                    <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
+                                                        $1200/ yr
+                                                    </div>
+                                                    <div style={{ fontWeight: "400", fontSize: 18, fontFamily: "inter" }}>
+                                                        Save $200 (12%)
+                                                    </div>
+                                                </div>
+                                                <div className='flex flex-row gap-2 items-center'>
+                                                    <button onClick={() => handlePlanSelect(1)}>
+                                                        {
+                                                            selectedPlan === 1 ?
+                                                                <Image alt='selected' style={{ borderRadius: "50%" }} src='/assets/selected.png' height={27} width={27} /> :
+                                                                <Image alt='selected' style={{ borderRadius: "50%" }} src='/assets/unselected.png' height={27} width={27} />
+                                                        }
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className='w-8/12 flex justify-center' style={{ marginTop: 30 }}>
-                                        <button
-                                            onClick={handleSubscribePlan}
-                                            className='w-full py-3 text-white bg-purple' style={{ borderRadius: "50px" }}>
-                                            {
-                                                subscribeLoader ?
-                                                    <CircularProgress size={25} /> : "Continue"
-                                            }
-                                        </button>
-                                    </div>
+                                        <div className='w-8/12 flex justify-center' style={{ marginTop: 30 }}>
+                                            <button
+                                                onClick={handleSubscribePlan}
+                                                className='w-full py-3 text-white bg-purple' style={{ borderRadius: "50px" }}>
+                                                {
+                                                    subscribeLoader ?
+                                                        <CircularProgress size={25} /> : "Continue"
+                                                }
+                                            </button>
+                                        </div>
 
 
-                                    {/* err msg when card not added */}
-                                    <Snackbar
-                                        open={selectPlanErr}
-                                        autoHideDuration={2000}
-                                        onClose={() => setSelectPlanErr(false)}
-                                        anchorOrigin={{
-                                            vertical: 'top',
-                                            horizontal: 'center',
-                                        }}
-                                        TransitionComponent={Fade}
-                                        TransitionProps={{
-                                            timeout: {
-                                                enter: 1000,
-                                                exit: 1000,
-                                            }
-                                        }}
-                                        sx={{
-                                            position: 'fixed', // Ensures it stays in place
-                                            top: 20, // Adjust as needed for spacing from the top
-                                            left: '50%', // Center horizontally
-                                            transform: 'translateX(-50%)', // Center horizontally
-                                        }}
-                                    >
-                                        <Alert
+                                        {/* err msg when card not added */}
+                                        <Snackbar
+                                            open={selectPlanErr}
+                                            autoHideDuration={2000}
                                             onClose={() => setSelectPlanErr(false)}
-                                            severity="error"
+                                            anchorOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'center',
+                                            }}
+                                            TransitionComponent={Fade}
+                                            TransitionProps={{
+                                                timeout: {
+                                                    enter: 1000,
+                                                    exit: 1000,
+                                                }
+                                            }}
                                             sx={{
-                                                width: '100%',
-                                                backgroundColor: 'white', // Set background color to white
-                                                color: 'black',
-                                                border: "2px solid #EDEDED80"
+                                                position: 'fixed', // Ensures it stays in place
+                                                top: 20, // Adjust as needed for spacing from the top
+                                                left: '50%', // Center horizontally
+                                                transform: 'translateX(-50%)', // Center horizontally
                                             }}
                                         >
-                                            Select plan to continue.
-                                        </Alert>
-                                    </Snackbar>
+                                            <Alert
+                                                onClose={() => setSelectPlanErr(false)}
+                                                severity="error"
+                                                sx={{
+                                                    width: '100%',
+                                                    backgroundColor: 'white', // Set background color to white
+                                                    color: 'black',
+                                                    border: "2px solid #EDEDED80"
+                                                }}
+                                            >
+                                                Select plan to continue.
+                                            </Alert>
+                                        </Snackbar>
 
-                                    {/* Err msg when card not added */}
+                                        {/* Err msg when card not added */}
 
-                                    <Snackbar
-                                        open={subscribeFailureErr}
-                                        autoHideDuration={2000}
-                                        onClose={() => setSubscribeFailureErr(null)}
-                                        anchorOrigin={{
-                                            vertical: 'top',
-                                            horizontal: 'center',
-                                        }}
-                                        TransitionComponent={Fade}
-                                        TransitionProps={{
-                                            timeout: {
-                                                enter: 1000,
-                                                exit: 1000,
-                                            }
-                                        }}
-                                        sx={{
-                                            position: 'fixed', // Ensures it stays in place
-                                            top: 20, // Adjust as needed for spacing from the top
-                                            left: '50%', // Center horizontally
-                                            transform: 'translateX(-50%)', // Center horizontally
-                                        }}
-                                    >
-                                        <Alert
+                                        <Snackbar
+                                            open={subscribeFailureErr}
+                                            autoHideDuration={2000}
                                             onClose={() => setSubscribeFailureErr(null)}
-                                            severity="error"
+                                            anchorOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'center',
+                                            }}
+                                            TransitionComponent={Fade}
+                                            TransitionProps={{
+                                                timeout: {
+                                                    enter: 1000,
+                                                    exit: 1000,
+                                                }
+                                            }}
                                             sx={{
-                                                width: '100%',
-                                                backgroundColor: 'white', // Set background color to white
-                                                color: 'black',
-                                                border: "2px solid #EDEDED80"
+                                                position: 'fixed', // Ensures it stays in place
+                                                top: 20, // Adjust as needed for spacing from the top
+                                                left: '50%', // Center horizontally
+                                                transform: 'translateX(-50%)', // Center horizontally
                                             }}
                                         >
-                                            { }
-                                        </Alert>
-                                    </Snackbar>
+                                            <Alert
+                                                onClose={() => setSubscribeFailureErr(null)}
+                                                severity="error"
+                                                sx={{
+                                                    width: '100%',
+                                                    backgroundColor: 'white', // Set background color to white
+                                                    color: 'black',
+                                                    border: "2px solid #EDEDED80"
+                                                }}
+                                            >
+                                                { }
+                                            </Alert>
+                                        </Snackbar>
 
 
-                                    <div style={{ fontWeight: "700", fontSize: 16, fontFamily: "inter", marginTop: 30 }}>
-                                        You will not be charged right now!
-                                    </div>
-                                    <div className='text-lightWhite w-8/12' style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13, marginTop: 20 }}>
-                                        Your account will be under review. We do this to ensure we CreatorX is a safe and authentic platform for creators. You'll need to complete this step for our team to review your creator account. We'll be in touch in 24hrs.
+                                        <div style={{ fontWeight: "700", fontSize: 16, fontFamily: "inter", marginTop: 30 }}>
+                                            You will not be charged right now!
+                                        </div>
+                                        <div className='text-lightWhite w-8/12' style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13, marginTop: 20 }}>
+                                            Your account will be under review. We do this to ensure we CreatorX is a safe and authentic platform for creators. You'll need to complete this step for our team to review your creator account. We'll be in touch in 24hrs.
+                                        </div>
                                     </div>
                                 </div>
                                 <div className='w-6/12'>

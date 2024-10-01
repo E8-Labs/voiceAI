@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { MenuItem, Select, InputLabel, FormControl, Switch, Button, CircularProgress } from '@mui/material'
+import { color } from 'framer-motion';
 
 function SetPrice({ handleBack, handleContinue, buildScriptLoader }) {
 
@@ -14,7 +15,7 @@ function SetPrice({ handleBack, handleContinue, buildScriptLoader }) {
             marginTop: 10,
             display: "flex",
             alignItems: "center",
-            backgroundColor: "#EDEDED29", /* Light grey background */
+            backgroundColor: "#EDEDED80", /* Light grey background */
             bordeRadius: 20, /* Rounded corners */
             padding: "5px 0px",
             paddingLeft: "15px"
@@ -32,11 +33,13 @@ function SetPrice({ handleBack, handleContinue, buildScriptLoader }) {
         },
         text: {
             fontSize: 11,
-            fontWeight: 'normal'
+            fontWeight: 'normal',
+            // color: '#050A08'
         },
         text2: {
             fontSize: 13,
-            fontWeight: 'normal'
+            fontWeight: 'normal',
+            color: 'black'
         }
     }
 
@@ -54,12 +57,27 @@ function SetPrice({ handleBack, handleContinue, buildScriptLoader }) {
             <div className='w-full'>
                 <div className='w-10/12 rounded' style={styles.inputContainer}>
                     {/* <div>$</div> */}
-                    <input style={styles.input}
-                        value={callPrice}
-                        onChange={(e) => setCallPrice(e.target.value)}
-                        placeholder='$'
-                        type='number'
-                    />
+                    <div className="flex items-center border-none border-gray-300 w-full">
+                        <span className="mr-1">$</span>
+                        <input style={{
+                            ...styles.input,
+                            WebkitAppearance: "none",
+                            MozAppearance: "textfield",
+                            appearance: "none",
+                            // backgroundColor: 'red'
+                        }}
+                            className='w-full border-none outline-none'
+                            value={callPrice}
+                            onChange={(e) => {
+                                e.target.value = e.target.value.replace(/[^0-9 .]/g, '');
+                                setCallPrice(e.target.value);
+                            }}
+                            // placeholder='$'
+                            type='text'
+                            inputMode='number'
+                            pattern='[0-9]*'
+                        />
+                    </div>
                 </div>
                 <div className='text-gray-400 mt-3' style={styles.text}>
                     Nothing less than $1 per minute
@@ -95,7 +113,7 @@ function SetPrice({ handleBack, handleContinue, buildScriptLoader }) {
                                             //onClick={handleUploadClick}
                                             className='bg-purple2 hover:bg-purple text-white w-full'
                                             style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px", color: "white" }}>
-                                            Upload
+                                            Continue
                                         </button>
                                 }
                             </div>
@@ -103,24 +121,24 @@ function SetPrice({ handleBack, handleContinue, buildScriptLoader }) {
                 </div>
 
                 <div className='mt-8 w-10/12 flex flex-row justify-between'>
-                    <div className='' style={styles.text2}>
+                    <div className='' style={{ ...styles.text2, color: 'black' }}>
                         Your price per minute
                     </div>
 
                     <div className='' style={styles.text2}>
-                        $ {callPrice}
+                        ${callPrice}
                     </div>
 
                 </div>
 
 
                 <div className='mt-8 w-10/12 flex flex-row  justify-between'>
-                    <div className='w-9/12 flex flex-row'>
+                    <div className='w-9/12 flex flex-row pe-12'>
                         <div style={styles.text2}>
                             Our fee - 20% to run our engine.
                         </div>
                         <img src={'/assets/questionImage.png'}
-                            style={{ alignSelf: 'center', height: 15, width: 15, }} />
+                            style={{ alignSelf: 'center', height: 15, width: 15 }} />
                     </div>
                     <div className='' style={styles.text2}>
                         $2
@@ -144,7 +162,7 @@ function SetPrice({ handleBack, handleContinue, buildScriptLoader }) {
                     </div>
                 </div> */}
             </div>
-        </div>
+        </div >
 
     )
 

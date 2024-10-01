@@ -59,8 +59,8 @@ export default function Home() {
                     // className='flex flex-row justify-center md:w-5/12 w-full items-center'
                     className={`flex flex-row justify-center items-center ${currentIndex === 6 ? 'w-full' : 'lg:w-6/12 w-full'}`} //style={{ backgroundColor: 'green' }}
                 >
-                    <div
-                        className='sm:w-9/12 w-full h-screen flex flex-col justify-between'
+                    <div //style={{ backgroundColor: 'red' }}
+                        className='sm:w-11/12 w-full h-screen flex flex-col justify-between'
                     >
                         <div
                             className='justify-between pt-8 sm:pt-8 md:pt-10 md:w-full w-10/12'

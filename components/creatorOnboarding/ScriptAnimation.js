@@ -55,7 +55,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
     // }
   })
   const router = useRouter();
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(2);
   const [direction, setDirection] = useState(0);
 
   //code for getting value of input fields
@@ -468,9 +468,9 @@ export default function ScriptAnimation({ onChangeIndex }) {
                       onChange={(e) => setAiName(e.target.value)}
                       placeholder="For ex: Hormozi, Tate.ai"
                       sx={MuiFieldStyle}
-                      // inputProps={{
-                      //   maxLength: 6
-                      // }}
+                    // inputProps={{
+                    //   maxLength: 6
+                    // }}
                     />
                   </div>
 
@@ -556,24 +556,27 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     autofill="off"
                     id="filled-basic"
                     autoFocus={true}
-                    // label="Description"
                     variant="filled"
                     multiline
                     rows={3}
                     value={talkAbout}
                     onChange={(e) => setTalkAbout(e.target.value)}
                     placeholder=" talk about dating, business, fitness ..."
+                    InputProps={{
+                      disableUnderline: true, // Disable underline to clean up the style
+                    }}
                     sx={{
                       marginTop: 4,
-                      "& label.Mui-focused": {
-                        color: "#050A0890",
-                      },
                       "& .MuiFilledInput-root": {
                         backgroundColor: "#EDEDED78", // Background color of the input
                         fontSize: 13,
                         fontWeight: "400",
                         fontFamily: "inter",
-                        borderRadius: 2
+                        borderRadius: 2,
+                        paddingTop: 0, // Remove padding at the top reserved for label
+                      },
+                      "& .MuiFilledInput-input": {
+                        paddingTop: "8px", // Adjust input padding to balance the input box
                       },
                       "& .MuiFilledInput-root:before": {
                         borderBottom: "none", // Remove the default inactive state bottom border
@@ -581,8 +584,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                       "& .MuiFilledInput-root:after": {
                         borderBottom: "none", // Remove the focused state bottom border
                       },
-                      "& .MuiFilledInput-root:hover:not(.Mui-disabled):before":
-                      {
+                      "& .MuiFilledInput-root:hover:not(.Mui-disabled):before": {
                         borderBottom: "none", // Remove the hover state bottom border
                       },
                       "& .MuiFilledInput-root.Mui-focused:before": {
@@ -594,6 +596,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                       },
                     }}
                   />
+
 
                   <div className="w-full sm:w-9/12 pb-4">
                     {talkAbout ? (
@@ -673,7 +676,6 @@ export default function ScriptAnimation({ onChangeIndex }) {
                       className="w-full sm:w-9/12"
                       autofill="off"
                       id="filled-basic"
-                      // label="Ai help tagline"
                       variant="filled"
                       multiline
                       autoFocus={true}
@@ -681,32 +683,36 @@ export default function ScriptAnimation({ onChangeIndex }) {
                       value={helpTagline}
                       onChange={(e) => setHelpTagline(e.target.value)}
                       placeholder="I help my community of followers with understanding their feelings for others, overcoming obstacles with their relationships, etc"
+                      InputProps={{
+                        disableUnderline: true, // Disable underline to clean up the style
+                      }}
                       sx={{
-                        "& label.Mui-focused": {
-                          color: "#050A0890",
-                        },
                         "& .MuiFilledInput-root": {
-                          backgroundColor: "#EDEDED78", // Optional: Removes the background color
-                          // padding: '6px 8px', // Decrease the padding inside the input container
+                          backgroundColor: "#EDEDED78",
                           fontSize: 13,
                           fontWeight: "400",
                           fontFamily: "inter",
-                          borderRadius: 2
+                          borderRadius: 2,
+                          paddingTop: 0, // Remove padding reserved for label at the top
+                        },
+                        "& .MuiFilledInput-input": {
+                          paddingTop: "8px", // Adjust input padding
                         },
                         "& .MuiFilledInput-root:before": {
-                          borderBottom: "none", // Remove the default inactive state bottom border
+                          borderBottom: "none",
                         },
                         "& .MuiFilledInput-root:after": {
-                          borderBottom: "none", // Remove the focused state bottom border
+                          borderBottom: "none",
                         },
                         "& .MuiFilledInput-root:hover:before": {
-                          borderBottom: "none", // Remove the hover state bottom border
+                          borderBottom: "none",
                         },
                         "& .MuiFilledInput-root.Mui-focused:before": {
-                          borderBottom: "none", // Ensure no border is shown when the field is focused
+                          borderBottom: "none",
                         },
                       }}
                     />
+
                   </div>
 
                   <div className="w-full sm:w-9/12 pb-4">
