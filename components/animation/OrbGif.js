@@ -12,7 +12,7 @@ function OrbGif({ alignOrbCenter = true }) {
             <div className="overflow-hidden rounded-full">
                 <Image
                     className="overflow-hidden rounded-full  object-contain cursor-pointer mt-12"
-                    src="/mainGif.gif"
+                    src="/mainGif2.gif"
                     alt="gif"
                     // className="object-contain"
                     layout="intrinsic"
