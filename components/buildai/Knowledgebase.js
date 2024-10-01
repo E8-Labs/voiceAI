@@ -349,7 +349,7 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
                                 },
                             }}
                         >
-                            <MenuItem value="Select">
+                            <MenuItem value="Select Type">
                                 <em>Select Type</em>
                             </MenuItem>
                             <MenuItem value="Document">Document</MenuItem>

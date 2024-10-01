@@ -65,7 +65,7 @@ export default function Home() {
     backgroundPosition: "center",
     width: isHighScreen ? "870px" : "500px",
     height: isHighScreen ? "870px" : "500px",
-    borderRadius: "50%",
+    // borderRadius: "50%",
     resize: "cover",
   };
 
@@ -86,16 +86,18 @@ export default function Home() {
       >
         <div
           // className='flex flex-row justify-center md:w-5/12 w-full items-center'
-          className={`flex flex-row justify-center h-screen ${currentIndex === 4 ? "2xl:w-3/12" : "lg:w-6/12 w-full"//, currentIndex === 4 ? "w-full" : "lg:w-4/12 w-full", 
-            }`}
-          style={{ backgroundColor: "" }}  
+          // className={`flex flex-row justify-center h-screen lg:w-6/12 w-full ${currentIndex === 4 ? "2xl:w-6/12" : "lg:w-6/12 w-full"//, currentIndex === 4 ? "w-full" : "lg:w-4/12 w-full", 
+          //   }`
+          // }
+          className="flex flex-row justify-center h-screen lg:w-6/12 w-full"
+          style={{ backgroundColor: "" }}
         >
           <div className="sm:w-9/12 w-full h-screen flex flex-col justify-between px-8 sm:px-0"
             style={{ backgroundColor: "" }}
           >
             <div
               // className="mt-12 sm:mt-24"
-              className='justify-between pt-10 sm:pt-10 md:pt-14 md:w-full w-10/12'
+              className='justify-between pt-8 sm:pt-8 md:pt-10 md:w-full w-10/12'
               style={{ backgroundColor: "" }}
             >
               <Image
@@ -113,7 +115,8 @@ export default function Home() {
                 backgroundColor: "",
                 height: currentIndex === 3 ? "85%" : "68%",
                 overflow: 'auto',
-                scrollbarWidth: 'none'
+                scrollbarWidth: 'none',
+                marginTop: 25
               }}
             >
               <div
@@ -149,11 +152,15 @@ export default function Home() {
             }
             {
               currentIndex === 1 &&
-              <BoxAnimationIndex1 currentIndex={currentIndex} />
+              <div className="w-full">
+                <BoxAnimationIndex1 currentIndex={currentIndex} />
+              </div>
             }
             {
               currentIndex === 2 &&
-              <BoxAnimationIndex2 currentIndex={currentIndex} />
+              <div className="w-full">
+                <BoxAnimationIndex2 currentIndex={currentIndex} />
+              </div>
             }
           </div>
         </div>

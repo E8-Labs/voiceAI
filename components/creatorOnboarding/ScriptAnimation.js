@@ -464,23 +464,24 @@ export default function ScriptAnimation({ onChangeIndex }) {
                       // label="Name"
                       variant="outlined"
                       value={aiName}
+                      autoFocus={true}
                       onChange={(e) => setAiName(e.target.value)}
                       placeholder="For ex: Hormozi, Tate.ai"
                       sx={MuiFieldStyle}
-                      inputProps={{
-                        maxLength: 6
-                      }}
+                      // inputProps={{
+                      //   maxLength: 6
+                      // }}
                     />
                   </div>
 
-                  <div className="w-full sm:w-9/12">
+                  <div className="w-full sm:w-9/12 pb-4">
                     {aiName ? (
                       <button
                         onClick={handleContinue}
                         // onClick={() => {
                         //   console.log("Ai name is", aiName)
                         // }}
-                        className="bg-purple hover:bg-purple text-white w-full mt-8"
+                        className="bg-purple outline-none border-none hover:bg-purple text-white w-full mt-8"
                         style={{
                           fontSize: 15,
                           fontWeight: "400",
@@ -594,11 +595,11 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     }}
                   />
 
-                  <div className="w-full sm:w-9/12">
+                  <div className="w-full sm:w-9/12 pb-4">
                     {talkAbout ? (
                       <button
                         onClick={handleContinue}
-                        className="bg-purple hover:bg-purple text-white w-full mt-12"
+                        className="bg-purple outline-none border-none hover:bg-purple text-white w-full mt-12"
                         style={{
                           fontSize: 15,
                           fontWeight: "400",
@@ -708,11 +709,11 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     />
                   </div>
 
-                  <div className="w-full sm:w-9/12">
+                  <div className="w-full sm:w-9/12 pb-4">
                     {helpTagline ? (
                       <button
                         onClick={handleContinue}
-                        className="bg-purple hover:bg-purple text-white w-full mt-12"
+                        className="bg-purple hover:bg-purple outline-none border-none text-white w-full mt-12"
                         style={{
                           fontSize: 15,
                           fontWeight: "400",
@@ -760,7 +761,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
               style={styles}
             >
               <div className="w-full flex sm:justify-center justify-start">
-                <div className="w-full" //style={{ border: '2px solid red',  }}>
+                <div className="w-full" //style={{ border: '2px solid red',  }}
                 >
                   <div className="flex flex-row w-full sm:w-9/12 justify-between items-center">
                     <button onClick={handleBack}>
@@ -848,7 +849,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
         )} */}
         {currentIndex === 4 && (
           <div
-            className="flex flex-col sm:justify-center justify-start"
+            className="flex flex-col sm:justify-center justify-start lg:w-10/12"
             style={{ height: "" }}
           >
             <motion.div
@@ -941,7 +942,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     <div style={{ maxHeight: "50vh", overflow: "auto", scrollbarWidth: "none" }}>
                       {
                         knowledgeData.map((item) => (
-                          <div key={item.id} className='border-2 mt-8 p-4 rounded-lg' style={{borderColor: '#E6E6E6'}}>
+                          <div key={item.id} className='border-2 mt-8 p-4 rounded-lg' style={{ borderColor: '#E6E6E6' }}>
                             <div className='flex flex-row w-full justify-between items-center'>
                               <div style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 13, color: '#303240' }}>
                                 {item.type}

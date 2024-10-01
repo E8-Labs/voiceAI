@@ -1,7 +1,9 @@
 
+import Apis from '@/components/apis/Apis';
 import SliderSizes from '@/components/RangeSlider';
 import { Box, Slider } from '@mui/material';
 import { CaretDown, CaretRight } from '@phosphor-icons/react';
+import axios from 'axios';
 import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
 
@@ -42,7 +44,31 @@ export const AiDetails = () => {
 
   useEffect(() => {
     console.log("Value slider", aggressiveValue);
-  }, [aggressiveValue])
+  }, [aggressiveValue]);
+
+  const getAiDetails = async () => {
+    const localData = localStorage.getItem('User');
+    if (localData) {
+      const Data = JSON.parse(localData);
+      const AuthToken = Data.data.token;
+      console.log("Auth token is", AuthToken);
+      const response = await axios.get(Apis.MyAiapi, {
+        headers: {
+          'Authorization': "bearer " + AuthToken,
+          "Content-Type": "application/json"
+        }
+      });
+      if (response) {
+        console.log("Response of myAi api is", response)
+      }
+    } else {
+      console.log("No user login")
+    }
+  }
+
+  useEffect(() => {
+    getAiDetails()
+  }, [])
 
   const styles = {
     inputContainer: {

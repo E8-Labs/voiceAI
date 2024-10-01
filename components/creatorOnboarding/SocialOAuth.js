@@ -6,6 +6,7 @@ import YouTubeVideos from '../socialAuth/YoutubeVideos';
 import axios from 'axios';
 import Apis from '../apis/Apis';
 import { CircularProgress } from '@mui/material';
+import { AppleLogo, FacebookLogo, InstagramLogo, SpotifyLogo, XLogo, YoutubeLogo } from '@phosphor-icons/react';
 
 function SocialOAuth() {
 
@@ -175,11 +176,12 @@ function SocialOAuth() {
                 <div className='text-gray-400 text-sm mt-3 mb-10 mb-5 w-11/12'>
                     This is used as your knowledge base to train your ai model.
                 </div>
-                <div className='flex flex-row w-full   justify-between mb-8 items-center'>
+                <div className='flex flex-row w-full   justify-between mb-4 items-center'>
                     <div className='flex flex-row items-center gap-6'>
-                        <Image style={styles.image}
+                        {/* <Image style={styles.image}
                             src={'/assets/instagram.png'} alt='web'
-                            height={30} width={30} />
+                            height={30} width={30} /> */}
+                            <InstagramLogo size={25} />
                         <div style={SocialIconsName}>
                             Instagram
                         </div>
@@ -194,11 +196,12 @@ function SocialOAuth() {
                     }
                 </div>
 
-                <div className='flex flex-row w-full   mb-8 justify-between items-center'>
+                <div className='flex flex-row w-full   mb-4 justify-between items-center'>
                     <div className='flex flex-row items-center gap-6'>
-                        <Image style={styles.image}
+                        {/* <Image style={styles.image}
                             src={'/assets/youtubeIcon.png'} alt='Youtube'
-                            height={30} width={30} />
+                            height={30} width={30} /> */}
+                        <YoutubeLogo size={25} />
                         <div style={SocialIconsName}>
                             Youtube
                         </div>
@@ -225,11 +228,12 @@ function SocialOAuth() {
                     )}
                 </div>
 
-                <div className='flex flex-row items-center justify-between w-full   mb-8'>
+                <div className='flex flex-row items-center justify-between w-full   mb-4'>
                     <div className='flex flex-row gap-6 items-center'>
-                        <Image style={styles.image}
+                        {/* <Image style={styles.image}
                             src={'/assets/twiterIcon.png'} alt='twiter'
-                            height={30} width={30} />
+                            height={30} width={30} /> */}
+                        <XLogo size={25} />
                         <div style={SocialIconsName}>
                             X(Formerly Twitter)
                         </div>
@@ -239,11 +243,12 @@ function SocialOAuth() {
                     </button>
                 </div>
 
-                <div className='flex flex-row w-full   mb-8 justify-between'>
+                <div className='flex flex-row w-full   mb-4 justify-between'>
                     <div className='flex flex-row gap-6 items-center'>
-                        <Image style={styles.image}
+                        {/* <Image style={styles.image}
                             src={'/assets/appleProducts.png'} alt='Icon'
-                            height={30} width={30} />
+                            height={30} width={30} /> */}
+                        <AppleLogo size={25} />
                         <div>
                             Apple Podcast
                         </div>
@@ -253,11 +258,12 @@ function SocialOAuth() {
                     </button>
                 </div>
 
-                <div className='flex flex-row w-full   mb-8 justify-between'>
+                <div className='flex flex-row w-full   mb-4 justify-between'>
                     <div className='flex flex-row gap-6 items-center'>
-                        <Image style={styles.image}
+                        {/* <Image style={styles.image}
                             src={'/assets/spotify.png'} alt='tiktok'
-                            height={30} width={30} />
+                            height={30} width={30} /> */}
+                        <SpotifyLogo size={25} />
                         <div style={SocialIconsName}>
                             Spotify Podcast
                         </div>
@@ -267,11 +273,12 @@ function SocialOAuth() {
                     </button>
                 </div>
 
-                <div className='flex flex-row w-full   mb-8 justify-between'>
+                <div className='flex flex-row w-full   mb-4 justify-between'>
                     <div className='flex flex-row gap-6 items-center'>
-                        <Image style={styles.image}
+                        {/* <Image style={styles.image}
                             src={'/assets/fbIcon.png'} alt='facebook'
-                            height={30} width={30} />
+                            height={30} width={30} /> */}
+                        <FacebookLogo size={25} />
                         <div style={SocialIconsName}>
                             Facebook
                         </div>

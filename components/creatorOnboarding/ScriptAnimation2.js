@@ -833,14 +833,22 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                         <span className="mr-1">$</span>
                                                         <input
                                                             className="w-full border-none bg-transparent outline-none"
-                                                            type="number"
+                                                            type="text"
+                                                            inputMode="numeric"  // Add this line
+                                                            pattern="[0-9]*"
                                                             value={row.name}
                                                             autoFocus={true}
-                                                            onChange={(e) => handleInputChange2(index, 'productAmount', e)}
+                                                            // onChange={(e) => handleInputChange2(index, 'productAmount', e)}
+                                                            onInput={(e) => {
+                                                                // Remove any non-numeric characters
+                                                                e.target.value = e.target.value.replace(/[^0-9 .]/g, '');
+                                                                handleInputChange2(index, 'productAmount', e); // Update your handler
+                                                            }}
                                                             // placeholder="Amount"
                                                             style={{
-                                                                WebkitAppearance: "none", // Remove spinner arrows
+                                                                WebkitAppearance: "none",
                                                                 MozAppearance: "textfield",
+                                                                appearance: "none",
                                                             }}
                                                         />
                                                     </div>
@@ -914,7 +922,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             transition={{ duration: 0 }}
                             style={styles}>
                             <div className='w-full flex justify-center'>
-                                <div className='w-11/12 sm:w-full'>
+                                <div className='w-11/12 sm:w-full' style={{ overflow: "auto", height: "80vh", paddingBottom: 30 }}>
                                     <div>
                                         <button onClick={handleBack}>
                                             <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />

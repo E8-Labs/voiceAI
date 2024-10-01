@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Apis from '@/components/apis/Apis'
 import axios from 'axios'
 import SocialOAuth from '@/components/creatorOnboarding/SocialOAuth'
+import { AppleLogo, FacebookLogo, InstagramLogo, SpotifyLogo, XLogo, YoutubeLogo } from '@phosphor-icons/react'
 
 export const SocialKB = () => {
 
@@ -98,7 +99,7 @@ export const SocialKB = () => {
       resize: "cover", objectFit: "contain"
     },
     button: {
-      paddingTop: 8, paddingBottom: 8, paddingLeft: 8, paddingRight: 8, borderRadius: 5
+      paddingTop: 6, paddingBottom: 8, paddingLeft: 8, paddingRight: 8, borderRadius: 5
     }
   }
 
@@ -117,10 +118,11 @@ export const SocialKB = () => {
           </div>
 
           <div className='flex flex-col gap-4'>
-            <div className='flex flex-row gap-5 mt-7 mb-5'>
-              <Image style={styles.image}
+            <div className='flex flex-row gap-5 mt-7 items-center'>
+              {/* <Image style={styles.image}
                 src={'/assets/fbIcon.png'} alt='facebook'
-                height={30} width={30} />
+                height={30} width={30} /> */}
+                <FacebookLogo size={25} />
               <div className='bg-transparent w-full flex flex-row justify-between gap-2'
                 style={styles.button}
               >
@@ -134,10 +136,11 @@ export const SocialKB = () => {
               </div>
             </div>
 
-            <div className='flex flex-row gap-5 mb-5'>
-              <Image style={styles.image}
+            <div className='flex flex-row gap-5 items-center'>
+              {/* <Image style={styles.image}
                 src={'/assets/youtubeIcon.png'} alt='Youtube'
-                height={30} width={30} />
+                height={30} width={30} /> */}
+                <YoutubeLogo size={25} />
               <div className='bg-transparent w-full flex flex-row justify-between gap-2'
                 style={styles.button}
               >
@@ -151,10 +154,11 @@ export const SocialKB = () => {
               </div>
             </div>
 
-            <div className='flex flex-row gap-5 mb-5'>
-              <Image style={styles.image}
+            <div className='flex flex-row gap-5 items-center'>
+              {/* <Image style={styles.image}
                 src={'/assets/twiterIcon.png'} alt='Icon'
-                height={30} width={30} />
+                height={30} width={30} /> */}
+                <XLogo size={25} />
               <div className='bg-transparent w-full flex flex-row justify-between gap-2'
                 style={styles.button}
               >
@@ -168,10 +172,11 @@ export const SocialKB = () => {
               </div>
             </div>
 
-            <div className='flex flex-row gap-5 mb-5'>
-              <Image style={styles.image}
+            <div className='flex flex-row gap-5 items-center'>
+              {/* <Image style={styles.image}
                 src={'/assets/appleProducts.png'} alt='appleProducts'
-                height={30} width={30} />
+                height={30} width={30} /> */}
+                <AppleLogo size={25} />
               <div className='bg-transparent w-full flex flex-row justify-between gap-2'
                 style={styles.button}
               >
@@ -185,10 +190,11 @@ export const SocialKB = () => {
               </div>
             </div>
 
-            <div className='flex flex-row gap-5 mb-5'>
-              <Image style={styles.image}
+            <div className='flex flex-row items-center gap-5'>
+              {/* <Image style={styles.image}
                 src={'/assets/spotify.png'} alt='spotifyIcon'
-                height={30} width={30} />
+                height={30} width={30} /> */}
+                <SpotifyLogo size={25} />
               <div className='bg-transparent w-full flex flex-row justify-between gap-2'
                 style={styles.button}
               >
@@ -202,10 +208,11 @@ export const SocialKB = () => {
               </div>
             </div>
 
-            <div className='flex flex-row gap-5 mb-5'>
-              <Image style={styles.image}
+            <div className='flex flex-row gap-5 mb-5 items-center'>
+              {/* <Image style={styles.image}
                 src={'/assets/instagram.png'} alt='insta'
-                height={32} width={32} />
+                height={32} width={32} /> */}
+                <InstagramLogo size={25} />
               <div className='bg-transparent w-full flex flex-row justify-between gap-2'
                 style={styles.button}
               >

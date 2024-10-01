@@ -72,7 +72,7 @@ export default function Home() {
                 >
                     <div className='w-full flex flex-col justify-between sm:w-9/12 justify-start items-center' style={{ backgroundColor: '', height: '100vh' }}
                     >
-                        <div className='justify-between pt-10 sm:pt-10 md:pt-14 md:w-full w-10/12' style={{ backgroundColor: '' }}
+                        <div className='justify-between pt-8 sm:pt-8 md:pt-10 md:w-full w-10/12' style={{ backgroundColor: '' }}
                         >
                             {
                                 currentIndex < 7 &&

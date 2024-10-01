@@ -63,7 +63,7 @@ export default function Home() {
                         className='sm:w-9/12 w-full h-screen flex flex-col justify-between'
                     >
                         <div
-                            className='justify-between pt-10 sm:pt-10 md:pt-14 md:w-full w-10/12'
+                            className='justify-between pt-8 sm:pt-8 md:pt-10 md:w-full w-10/12'
                         // className='mt-12 sm:mt-24'
                         >
                             <Image src={'/creatorXlogo.png'}

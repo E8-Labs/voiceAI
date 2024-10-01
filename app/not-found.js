@@ -119,9 +119,9 @@ export default function NotFound() {
         }}
         sx={{
           position: 'fixed', // Ensures it stays in place
-          top: 100, // Adjust as needed for spacing from the top
+          top: 80, // Adjust as needed for spacing from the top
           // left: '50%',
-          marginTop: "100px",
+          marginTop: "80px",
           marginLeft: '30px',
           marginRight: '30px',
         }}
