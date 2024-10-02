@@ -46,7 +46,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
     const stripePromise = loadStripe(stripePublickKey);
 
     const router = useRouter();
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState(7);
     const [direction, setDirection] = useState(0);
     const [value, setValue] = useState("");
 
@@ -622,7 +622,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                 <button
                                                     disabled
                                                     // onClick={handleContinue}
-                                                    className='bg-purple2 hover:bg-purple text-white w-full mt-12'
+                                                    className='bg-purple2 hover:bg-purple2 text-white w-full mt-12'
                                                     style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px", color: "white" }}>
                                                     Continue
                                                 </button>
@@ -709,7 +709,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                 <button
                                                     disabled
                                                     // onClick={handleContinue}
-                                                    className='bg-purple2 hover:bg-purple text-white w-full mt-12'
+                                                    className='bg-purple2 hover:bg-purple2 text-white w-full mt-12'
                                                     style={{ fontSize: 15, color: "white", fontWeight: "400", height: "52px", borderRadius: "50px" }}>
                                                     Continue
                                                 </button>
@@ -746,11 +746,14 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         KYC - What would you like to know about your callers?
                                     </div>
                                     <div className='text-sm text-gray-400 mt-2 w-full sm:w-9/12'>
-                                        These are questions your AI will ask during the call to give you a better understanding about the person
+                                        Your AI will qualify prospects and give you a better understanding about the person.
                                     </div>
                                     <div
-                                        className='w-full sm:w-9/12'
-                                        style={{ maxHeight: "40vh", overflowY: "auto" }}>
+                                        className="w-full sm:w-9/12 max-h-[40vh] overflow-y-auto scrollbar scrollbar-thumb-purple scrollbar-track-transparent scrollbar-thin"
+                                    // className="w-full sm:w-9/12 max-h-[40vh] overflow-y-auto scrollbar-thin scrollbar-thumb-red"
+                                    // className='w-full sm:w-9/12'
+                                    // style={{ maxHeight: "40vh", overflowY: "auto", scrollbarWidth: '3px' }}
+                                    >
                                         {inputs.map((input, index) => (
                                             <div key={index}
                                                 // style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}
@@ -791,7 +794,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                 <button
                                                     disabled
                                                     // onClick={handleContinue}
-                                                    className='bg-purple2 hover:bg-purple text-white w-full mt-12'
+                                                    className='bg-purple2 hover:bg-purple2 text-white w-full mt-12'
                                                     style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px", color: "white" }}>
                                                     Continue
                                                 </button>
@@ -1149,13 +1152,24 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         </div>
                                     </div>
 
-                                    <div className='w-full sm:w-10/12'>
-                                        <button onClick={handleContinue}
-                                            className='bg-purple hover:bg-purple text-white w-full mt-12'
-                                            style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
-                                            Continue
-                                        </button>
-                                    </div>
+                                    {
+                                        sellProduct || inviteWebinar || somethingElse ?
+                                            <div className='w-full sm:w-10/12'>
+                                                <button onClick={handleContinue}
+                                                    className='bg-purple hover:bg-purple text-white w-full mt-12'
+                                                    style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
+                                                    Continue
+                                                </button>
+                                            </div> :
+                                            <div className='w-full sm:w-10/12'>
+                                                <button disabled //onClick={handleContinue}
+                                                    className='bg-purple2 hover:bg-purple2 text-white w-full mt-12'
+                                                    style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
+                                                    Continue
+                                                </button>
+                                            </div>
+
+                                    }
 
                                 </div>
                             </div>
@@ -1456,26 +1470,30 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
                                             <Image className='mt-5' src={"/assets/redNotificationIcon.png"} width={30} height={30} />
 
-                                            <div className='text-2xl mt-10'>
+                                            <div className='text-2xl mt-10' style={{ fontSize: 24, fontWeight: '700', fontFamily: 'inter' }}>
                                                 Notification Permission.
                                             </div>
-                                            <div className='text-sm text-gray-400 mt-5'>
-                                                Get notified when Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                            <div className='text-sm text-gray-400 mt-5' style={{ fontSize: 13, fontWeight: '400', fontFamily: 'inter' }}>
+                                                Get notified when Lorem ipsum dolor sit amet,<br /> consectetur adipiscing elit.
                                             </div>
                                             <div className='w-11/12 flex flex-row'>
 
 
 
-                                                <button className='w-5/12 mt-5' style={{
-                                                    height: 40, backgroundColor: '#552AFF', borderRadius: 5, color: 'white', borderRadius: "50px"
+                                                <button className='w-6/12 mt-5' style={{
+                                                    height: 40, backgroundColor: '#552AFF', borderRadius: 5, color: 'white', borderRadius: "50px",
+                                                    fontSize: 15, fontWeight: '400', fontFamily: 'inter'
                                                 }}
                                                 // onClick={sendNotification}
                                                 >
                                                     {/* <div className='text-red'> */}
-                                                    Countinue
+                                                    Allow notifications.
                                                     {/* </div> */}
                                                 </button>
                                                 <button className='w-3/12 mt-5'
+                                                    style={{
+                                                        fontSize: 15, fontWeight: '500', fontFamily: 'inter'
+                                                    }}
                                                     onClick={() => {
                                                         router.push("/tate.ai")
                                                     }}

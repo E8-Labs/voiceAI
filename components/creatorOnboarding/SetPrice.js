@@ -25,7 +25,7 @@ function SetPrice({ handleContinue, buildScriptLoader }) {
             bordeRadius: 20, /* Rounded corners */
             padding: "5px 0px",
             paddingLeft: "15px",
-            border: showInputErr ? "2px solid red" : "none",
+            border: showInputErr ? "1px solid red" : "none",
             borderRadius: 5
 
         },
@@ -52,6 +52,7 @@ function SetPrice({ handleContinue, buildScriptLoader }) {
     }
 
     const handleChange = () => {
+        setShowInputErr(false);
         setToogleActive(!toogleActive);
         setCallPrice("");
     }
@@ -175,7 +176,7 @@ function SetPrice({ handleContinue, buildScriptLoader }) {
                                 style={{ alignSelf: 'center', height: 15, width: 15 }} />
                         </button> */}
 
-                        <div>
+                        <div className='ms-1'>
 
                             <Typography
                                 aria-owns={open ? 'mouse-over-popover' : undefined}
