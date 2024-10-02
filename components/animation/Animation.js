@@ -65,7 +65,7 @@ export default function Animation({ onChangeIndex }) {
       setCurrentIndex(0);
       setDirection(0);
     } else {
-      setCurrentIndex(4);
+      setCurrentIndex(2);
       setDirection(2);
     }
   }, []);
@@ -2275,7 +2275,7 @@ export default function Animation({ onChangeIndex }) {
         )} */}
         {currentIndex === 4 && (
           <div
-            className="flex flex-col h-auto sm:justify-center justify-start pb-12"
+            className="flex flex-col h-auto sm:justify-center justify-start pb-24"
             style={margin}
           >
             <motion.div
