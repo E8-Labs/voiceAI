@@ -149,7 +149,7 @@ function AiSocialLinks({ handleContinue, aiName }) {
     return (
         <div className='w-full flex flex-col justify-center items-center' //style={{ height: '100%', overflow: 'auto' }} 
         >
-            <div className='w-full' style={{ height: '65vh', overflow: 'auto', scrollbarWidth: 'none' }}>
+            <div className='w-full' style={{ maxHeight: '65vh', overflow: 'auto', scrollbarWidth: 'none' }}>
 
                 <div className="mt-12 flex flex-row items-center gap-2">
                     <div className='flex flex-row items-center'>
@@ -536,7 +536,7 @@ function AiSocialLinks({ handleContinue, aiName }) {
                         <button
                             disabled
                             // onClick={handleContinueSocial}
-                            className='bg-purple2 hover:bg-purple text-white px-4 mt-2 w-full sm:w-9/12 py-2'
+                            className='bg-purple2 hover:bg-purple2 text-white px-4 mt-2 w-full sm:w-9/12 py-2'
                             style={{ fontSize: 15, fontWeight: "400", borderRadius: "50px", color: "white" }}>
                             Continue
                         </button>

@@ -75,6 +75,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
     const [isVisible, setIsVisible] = useState(true);
     const [buildScriptLoader, setBuildScriptLoader] = useState(false);
     const [allQuestionsFilled, setAllQuestionsFilled] = useState(null);
+    // const [validLinkErr, setValidOtherLinkErr] = useState
 
     //code to add subscription
 
@@ -324,6 +325,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
     // Function to handle input value change
     const handleInputChange2 = (index, field, event) => {
+        // console.log("Some thing changed")
         const newInputRows = [...inputRows];
         newInputRows[index][field] = event.target.value;
         setInputRows(newInputRows);
@@ -548,10 +550,14 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             transition={{ duration: 0 }}
                             style={styles}
                         >
-
                             <div className='w-full flex justify-center'>
                                 <div className='w-11/12 sm:w-full'>
-                                    <div className='' style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
+                                    <div style={{ backgroundColor: "", height: 24 }}>
+                                        {/* <button onClick={handleBack}>
+                                            <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
+                                        </button> */}
+                                    </div>
+                                    <div className='mt-6' style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
                                         Greet callers
                                     </div>
                                     <div className='text-lightWhite mt-2' style={{ fontSize: 13, fontWeight: "400" }}>
@@ -582,7 +588,8 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                     backgroundColor: '#EDEDED', // Background color of the input
                                                     fontSize: 13,
                                                     fontWeight: '400',
-                                                    fontFamily: "inter"
+                                                    fontFamily: "inter",
+                                                    paddingTop: "8px",
                                                 },
                                                 '& .MuiFilledInput-root:before': {
                                                     borderBottom: 'none', // Remove the default inactive state bottom border
@@ -672,6 +679,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                     backgroundColor: '#EDEDED', // Optional: Removes the background color
                                                     // padding: '6px 8px', // Decrease the padding inside the input container
                                                     fontSize: 13,
+                                                    paddingTop: "8px",
                                                     fontWeight: '400'
                                                 },
                                                 '& .MuiFilledInput-root:before': {
@@ -762,10 +770,15 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                 </button>
                                             </div>
                                         ))}
-                                        <button onClick={addInputField} className='text-purple mt-8 outline-none border-none' style={{ textDecoration: 'underline' }}>
-                                            New Question
-                                        </button>
                                     </div>
+
+                                    {
+                                        inputs.length < 10 && (
+                                            <button onClick={addInputField} className='text-purple mt-8 outline-none border-none' style={{ textDecoration: 'underline' }}>
+                                                New Question
+                                            </button>
+                                        )
+                                    }
 
                                     <div className='w-full sm:w-9/12'>
                                         {
@@ -836,7 +849,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                             type="text"
                                                             inputMode="numeric"  // Add this line
                                                             pattern="[0-9]*"
-                                                            value={row.name}
+                                                            value={row.productAmount}
                                                             autoFocus={true}
                                                             // onChange={(e) => handleInputChange2(index, 'productAmount', e)}
                                                             onInput={(e) => {
@@ -858,7 +871,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                     <input
                                                         className='w-full border-none bg-transparent outline-none'
                                                         type="text"
-                                                        value={row.email}
+                                                        value={row.productName}
                                                         onChange={(e) => handleInputChange2(index, 'productName', e)}
                                                         placeholder="Product Name"
                                                     />
@@ -890,7 +903,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                             <button
                                                 disabled
                                                 // onClick={handleContinue}
-                                                className='bg-purple2 hover:bg-purple text-white w-full mt-12'
+                                                className='bg-purple2 hover:bg-purple2 text-white w-full mt-12'
                                                 style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px", color: "white" }}>
                                                 Continue
                                             </button>
@@ -936,10 +949,12 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         style={{
                                             overflow: 'auto',
                                             height: '40vh',
-                                            scrollbarWidth: 'none'
+                                            scrollbarWidth: 'none',
+                                            // paddingTop: 300,
+                                            // border: "2px solid red"
                                         }}
                                     >
-                                        <div className='w-full'>
+                                        <div className='w-full h-[100%]'>
                                             <div className='text-sm text-gray-400 mt-2'>
                                                 What do you want your AI to do?
                                             </div>
@@ -957,8 +972,8 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                             style={{ cursor: "pointer" }}
                                                             onClick={() => {
                                                                 setSellProduct(!sellProduct);
-                                                                setInviteWebinar(false);
-                                                                setSetSomethingElse(false);
+                                                                // setInviteWebinar(false);
+                                                                // setSetSomethingElse(false);
                                                             }}
                                                             src={sellProduct ? '/assets/selected.png' : '/assets/unselected.png'}
                                                             alt='cicle' height={30} width={30} />
@@ -1024,8 +1039,8 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                             style={{ cursor: "pointer" }}
                                                             onClick={() => {
                                                                 setInviteWebinar(!inviteWebinar);
-                                                                setSellProduct(false);
-                                                                setSetSomethingElse(false);
+                                                                // setSellProduct(false);
+                                                                // setSetSomethingElse(false);
                                                             }}
                                                             src={inviteWebinar ? '/assets/selected.png' : '/assets/unselected.png'}
                                                             alt='cicle' height={30} width={30} />
@@ -1078,8 +1093,8 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                             style={{ cursor: "pointer" }}
                                                             onClick={() => {
                                                                 setSetSomethingElse(!somethingElse);
-                                                                setSellProduct(false);
-                                                                setInviteWebinar(false);
+                                                                // setSellProduct(false);
+                                                                // setInviteWebinar(false);
                                                             }}
                                                             src={somethingElse ? '/assets/selected.png' : '/assets/unselected.png'}
                                                             alt='cicle' height={30} width={30} />
@@ -1100,12 +1115,30 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                             <div className='w-11/12 mt-8' style={{}}>
                                                                 <input
                                                                     value={otherUrl}
-                                                                    onChange={(e) => setOtherUrl(e.target.value)}
+                                                                    onChange={(e) => {
+                                                                        setOtherUrl(e.target.value);
+                                                                        const url = e.target.value;
+
+                                                                        if (otherUrl) {
+                                                                            if (validateUrl(url)) {
+                                                                                console.log("Valid URL");
+                                                                                setValidOtherLinkErr(false);
+                                                                            } else {
+                                                                                console.log("Invalid URL");
+                                                                                setValidOtherLinkErr(true);
+                                                                            }
+                                                                        }
+                                                                    }}
                                                                     type='text'
                                                                     className='w-full p-4 rounded-lg outline-none'
                                                                     placeholder='URL'
                                                                     style={{ backgroundColor: "#EDEDED80", border: "1px solid #EDEDED" }}
                                                                 />
+                                                                <div style={linkErrStyle}>
+                                                                    {
+                                                                        otherUrl && validOtherLinkErr && "Invalid link"
+                                                                    }
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     }

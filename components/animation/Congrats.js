@@ -18,7 +18,7 @@ export default function Congrats() {
             {/* Background Image */}
             <div className="h-[62svh] ">
                 <OrbGif alignOrbCenter={false} />
-                <Lottie
+                {/* <Lottie
                     animationData={require("/public/congratsanimation.json")}
                     lottieRef={lottieRef}
 
@@ -27,14 +27,14 @@ export default function Congrats() {
                     onComplete={() => {
                         lottieRef.current.goToAndStop(3, true)
                     }}
-                />
+                /> */}
             </div>
             <div className="flex flex-col h-[37svh] justify-start items-center w-full">
                 <div className="text-2xl font-semibold text-center text-black">
                     Congratulations!
                 </div>
                 <div className="text-sm mt-4  text-center text-subtitle60">
-                    We can use this to share important updates to you
+                    Your account has been created. Let's build your AI!
                 </div>
                 <button
                     onClick={() => {

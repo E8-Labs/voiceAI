@@ -14,7 +14,7 @@ import MetaTags from './Metatags/MetaTags';
 import { Globe, InstagramLogo, YoutubeLogo } from '@phosphor-icons/react';
 
 const backgroundImage = {
-    backgroundImage: 'url("/backgroundImage.png")', // Ensure the correct path
+    backgroundImage: 'url("/creatorProfileBg.png")', // Ensure the correct path
     backgroundSize: "cover",
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',

@@ -84,7 +84,7 @@ export default function Home() {
                             }
                         </div>
                         <div className={currentIndex === 7 ? 'pt-4 sm:pt-0 sm:w-full w-10/12' : 'pt-0 sm:pt-28 sm:w-full w-10/12'}
-                            style={{ backgroundColor: '', height: currentIndex === 7 ? '100%' : '85%', }}>
+                            style={{ backgroundColor: '', height: currentIndex === 7 ? '100%' : '88%', }}>
                             <div className='w-full flex justify-center items-center' style={{ backgroundColor: '' }}
                             >
                                 <Animation onChangeIndex={handleCurrentIndex} />

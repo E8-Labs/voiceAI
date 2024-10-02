@@ -55,7 +55,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
     // }
   })
   const router = useRouter();
-  const [currentIndex, setCurrentIndex] = useState(2);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
 
   //code for getting value of input fields
@@ -441,13 +441,13 @@ export default function ScriptAnimation({ onChangeIndex }) {
             >
               <div className="w-full flex sm:justify-center justify-start">
                 <div className="w-full">
-                  <div>
+                  <div style={{ height: 24 }}>
                     {/* <button onClick={handleBack}>
-                                            <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
-                                        </button> */}
+                      <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
+                    </button> */}
                   </div>
                   <div
-                    // className="mt-6"
+                    className="mt-6"
                     style={{
                       fontSize: 24,
                       fontWeight: "600",
@@ -495,7 +495,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                       <button
                         disabled
                         // onClick={handleContinue}
-                        className="bg-purple2 hover:bg-purple text-white w-full mt-8"
+                        className="bg-purple2 hover:bg-purple2 text-white w-full mt-8"
                         style={{
                           fontSize: 15,
                           fontWeight: "400",
@@ -616,7 +616,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                       <button
                         disabled
                         // onClick={handleContinue}
-                        className="bg-purple2 hover:bg-purple text-white w-full mt-12"
+                        className="bg-purple2 hover:bg-purple2 text-white w-full mt-12"
                         style={{
                           fontSize: 15,
                           fontWeight: "400",
@@ -733,7 +733,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                       <button
                         disabled
                         // onClick={handleContinue}
-                        className="bg-purple2 hover:bg-purple text-white w-full mt-12"
+                        className="bg-purple2 hover:bg-purple2 text-white w-full mt-12"
                         style={{
                           fontSize: 15,
                           fontWeight: "400",
@@ -948,7 +948,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     <div style={{ maxHeight: "50vh", overflow: "auto", scrollbarWidth: "none" }}>
                       {
                         knowledgeData.map((item) => (
-                          <div key={item.id} className='border-2 mt-8 p-4 rounded-lg' style={{ borderColor: '#E6E6E6' }}>
+                          <div key={item.id} className='border-2 mt-4 p-4 rounded-lg' style={{ borderColor: '#E6E6E6' }}>
                             <div className='flex flex-row w-full justify-between items-center'>
                               <div style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 13, color: '#303240' }}>
                                 {item.type}
@@ -991,7 +991,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                           Add knowledge
                         </button> :
                         <button onClick={handleContinue}
-                          className='bg-purple hover:bg-purple text-white w-full mt-12'
+                          className='bg-purple hover:bg-purple text-white w-full mt-10'
                           style={{ fontSize: 15, fontWeight: "400", height: "44px", borderRadius: "50px" }}>
                           Continue
                         </button>

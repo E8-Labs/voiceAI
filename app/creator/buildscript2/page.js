@@ -60,7 +60,7 @@ export default function Home() {
                     className={`flex flex-row justify-center items-center ${currentIndex === 6 ? 'w-full' : 'lg:w-6/12 w-full'}`} //style={{ backgroundColor: 'green' }}
                 >
                     <div //style={{ backgroundColor: 'red' }}
-                        className='sm:w-11/12 w-full h-screen flex flex-col justify-between'
+                        className='sm:w-9/12 w-full h-screen flex flex-col justify-between'
                     >
                         <div
                             className='justify-between pt-8 sm:pt-8 md:pt-10 md:w-full w-10/12'
@@ -75,7 +75,7 @@ export default function Home() {
                         </div>
                         <div
                             className=' sm:w-full w-full' //className={currentIndex === 7 ? 'pt-28 sm:pt-0 sm:w-full w-10/12' : 'pt-28 sm:pt-28 sm:w-full w-10/12'}  //'pt-28 sm:w-full w-10/12' //{currentIndex === 7 ? 'pt-28 sm:pt-28 sm:w-full w-10/12' : 'sm:w-full w-10/12'} 
-                            style={{ backgroundColor: '', height: '68%', }}>
+                            style={{ backgroundColor: '', height: '65.5%', }}>
                             <div className='w-full flex justify-center items-center sm:mt-0 '>
                                 <ScriptAnimation2 onChangeIndex={handleCurrentIndex} />
                             </div>

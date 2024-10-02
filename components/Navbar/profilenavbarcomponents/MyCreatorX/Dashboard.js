@@ -156,16 +156,14 @@ const Dashboard = () => {
             if (result && result.data.data) {
                 console.log("Result of get dashboard :::", result);
                 localStorage.setItem('DashboardData', JSON.stringify(result.data.data));
-                setDashboardDetails(result.data.data);
-                // Don't set to '24_hours' directly, rely on the selected duration instead
-                const selectedData = result.data.data[analyticsDuration];
-                setDashBoardData(selectedData);
-                setTopeCallersDetails(selectedData.topTenCallers);
+                setDashboardDetails(result.data.data['24_hours']);
+                setDashBoardData(result.data.data['24_hours']);
+                setTopeCallersDetails(result.data.data['24_hours'].topTenCallers);
                 setProducts(result.data.data.products);
                 // setProducts(result.data.data.products);
             }
-        } catch (e) {
-            console.log('Dashboard API error:', e);
+        } catch (error) {
+            console.log('Dashboard API error:', error);
         } finally {
             setCallersLoader(false);
         }
@@ -257,7 +255,7 @@ const Dashboard = () => {
             <div className='flex flex-row w-full items-center gap-6'>
                 <div className='w-4/12 py-5 px-6' style={{ backgroundColor: "#ffffff50", borderRadius: "15px" }}>
                     <div className='w-full flex flex-row justify-between'>
-                        <div style={{ fontSize: 24, fontWeight: 300 }}>
+                        <div style={{ fontSize: 20, fontWeight: 700 }}>
                             Analytics
                         </div>
                         <div>
@@ -329,7 +327,7 @@ const Dashboard = () => {
                                 Minutes Talked
                             </div>
                             <div style={{ fontWeight: "300", fontFamily: "inter", fontSize: 32 }}>
-                                ${numOfCallers(selectedDuration)}
+                                ${dashBoardData?.totalEarnings}
                             </div>
                         </div>
 
@@ -354,8 +352,8 @@ const Dashboard = () => {
                             style={{
                                 fontSize: 20, fontWeight: "700", fontFamily: 'inter'
                             }}>Top Callers</div>
-                        {
-                            callersToDisplay.length > 3 && (
+                        {/* {
+                            topCallersDetails.length > 3 && (
                                 <button className='bg-purple text-white px-2 py-1'
                                     onClick={() => { setShowAlCallers(!showAllCallers) }}
                                     style={{
@@ -364,7 +362,14 @@ const Dashboard = () => {
                                     {showAllCallers ? "View less" : "View all"}
                                 </button>
                             )
-                        }
+                        } */}
+                        <button className='bg-purple text-white px-2 py-1'
+                            onClick={() => { setShowAlCallers(!showAllCallers) }}
+                            style={{
+                                borderRadius: "50px", fontSize: 13, fontWeight: "400", fontFamily: 'inter'
+                            }}>
+                            {showAllCallers ? "View less" : "View all"}
+                        </button>
                     </div>
                     <div className='w-full flex flex-row justify-between mt-5'>
                         <div className='w-4/12'>
@@ -421,42 +426,47 @@ const Dashboard = () => {
                             </div> :
                             <div>
                                 {
-                                    callersToDisplay.map((item) => (
-                                        <div key={item.id} className='w-full flex flex-row justify-between mt-10'>
-                                            <div className='w-4/12'>
-                                                <div style={styles.text2}>
-                                                    {item.name}
-                                                </div>
-                                            </div>
-                                            {/* <div className='w-3/12 border-2 border-red'>
+                                    topCallersDetails.length > 0 ?
+                                        <div>
+                                            {
+                                                callersToDisplay.map((item) => (
+                                                    <div key={item.id} className='w-full flex flex-row justify-between mt-10'>
+                                                        <div className='w-4/12'>
+                                                            <div style={styles.text2}>
+                                                                {item.name}
+                                                            </div>
+                                                        </div>
+                                                        {/* <div className='w-3/12 border-2 border-red'>
                                                 <div style={styles.text2}>
                                                     {item.city}
                                                 </div>
                                             </div> */}
-                                            <div className='w-3/12'>
-                                                <div style={styles.text2}>
-                                                    {item.totalMinutes}
-                                                </div>
-                                            </div>
-                                            <div className='w-2/12'>
-                                                <div style={styles.text2}>
-                                                    {item.callCount}
-                                                </div>
-                                            </div>
-                                            <div className='w-3/12 text-center ps-8'>
-                                                <div style={styles.text2}>
-                                                    ${Number(item.totalSpent).toFixed(2)}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))
+                                                        <div className='w-3/12'>
+                                                            <div style={styles.text2}>
+                                                                {item.totalMinutes}
+                                                            </div>
+                                                        </div>
+                                                        <div className='w-2/12'>
+                                                            <div style={styles.text2}>
+                                                                {item.callCount}
+                                                            </div>
+                                                        </div>
+                                                        <div className='w-3/12 text-center ps-8'>
+                                                            <div style={styles.text2}>
+                                                                ${Number(item.totalSpent).toFixed(2)}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            }
+                                        </div> : "No Caller"
                                 }
                             </div>
                     }
 
 
                 </div>
-                <div className='w-4/12 flex flex-col rounded-2xl px-6 pb-4' style={{ backgroundColor: "#ffffff50" }}>
+                <div className='w-5/12 flex flex-col rounded-2xl px-6 pb-4' style={{ backgroundColor: "#ffffff50" }}>
                     <div className='flex flex-row justify-between items-center mt-12'>
                         <div
                             style={{
@@ -488,35 +498,40 @@ const Dashboard = () => {
                                 <CircularProgress />
                             </div> :
                             <div>
-                                {itemsToDisplay.map((item) => (
-                                    // <React.Fragment key={item.id}>
-                                    <>
-                                        <div key={item.id} className='w-full flex flex-row gap-1 mt-10 justify-between'>
-                                            <div className='w-3/12'>
-                                                <div style={styles.text2}>{item.name}</div>
-                                            </div>
-                                            {/* <div className='w-4/12'>
+                                {
+                                    products.length > 0 ?
+                                        <div>
+                                            {itemsToDisplay.map((item) => (
+                                                // <React.Fragment key={item.id}>
+                                                <>
+                                                    <div key={item.id} className='w-full flex flex-row gap-1 mt-10 justify-between'>
+                                                        <div className='w-3/12'>
+                                                            <div style={styles.text2}>{item.name}</div>
+                                                        </div>
+                                                        {/* <div className='w-4/12'>
                                     <div style={styles.text2}>{item.customer}</div>
                                 </div> */}
-                                            {/* <div className='w-2/12'>
+                                                        {/* <div className='w-2/12'>
                                 <div style={styles.text2}>{item.city}</div>
                             </div> */}
-                                            <div className='w-3/12'>
-                                                <div style={styles.text2}>
-                                                    ${Number(item.productPrice).toFixed(2)}
-                                                </div>
-                                            </div>
-                                            <div className='w-3/12'>
-                                                <div style={styles.text2}>
-                                                    {/* {item.createdAt} */}
-                                                    {moment(item.createdAt).format("MM/DD/YYYY")}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='w-full bg-gray-200 h-0.5 rounded mt-2'></div>
-                                        {/* </React.Fragment> */}
-                                    </>
-                                ))}
+                                                        <div className='w-3/12'>
+                                                            <div style={styles.text2}>
+                                                                ${Number(item.productPrice).toFixed(2)}
+                                                            </div>
+                                                        </div>
+                                                        <div className='w-3/12'>
+                                                            <div style={styles.text2}>
+                                                                {/* {item.createdAt} */}
+                                                                {moment(item.createdAt).format("MM/DD/YYYY")}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className='w-full bg-gray-200 h-0.5 rounded mt-2'></div>
+                                                    {/* </React.Fragment> */}
+                                                </>
+                                            ))}
+                                        </div> : "No Product"
+                                }
                             </div>
                     }
                 </div>

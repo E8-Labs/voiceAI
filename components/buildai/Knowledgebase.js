@@ -263,6 +263,7 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
             if (selectedDocument) {
                 formData.append("media", selectedDocument);
                 console.log("Selected doc is", selectedDocument);
+                formData.append("description", documentDescription);
             }
             // return
             const response = await axios.post(ApiPath, formData, {

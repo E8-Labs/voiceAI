@@ -3,11 +3,14 @@ import Image from 'next/image'
 import { MenuItem, Select, InputLabel, FormControl, Switch, Button, CircularProgress } from '@mui/material'
 import { color } from 'framer-motion';
 
-function SetPrice({ handleBack, handleContinue, buildScriptLoader }) {
+function SetPrice({ handleContinue, buildScriptLoader }) {
 
     const [toogleActive, setToogleActive] = useState(false);
     // const [buildScriptLoader, setBuildScriptLoader] = useState(false);
     const [callPrice, setCallPrice] = useState("");
+    const [showInputErr, setShowInputErr] = useState(false);
+    const [showWarningText, setShowWarningText] = useState(false);
+    // const [showFreeAmount, setShowFreeAMount] = useState(false);
 
 
     const styles = {
@@ -18,7 +21,9 @@ function SetPrice({ handleBack, handleContinue, buildScriptLoader }) {
             backgroundColor: "#EDEDED80", /* Light grey background */
             bordeRadius: 20, /* Rounded corners */
             padding: "5px 0px",
-            paddingLeft: "15px"
+            paddingLeft: "15px",
+            border: showInputErr ? "2px solid red" : "none",
+            borderRadius: 5
 
         },
         input: {
@@ -59,19 +64,32 @@ function SetPrice({ handleBack, handleContinue, buildScriptLoader }) {
                     {/* <div>$</div> */}
                     <div className="flex items-center border-none border-gray-300 w-full">
                         <span className="mr-1">$</span>
-                        <input style={{
-                            ...styles.input,
-                            WebkitAppearance: "none",
-                            MozAppearance: "textfield",
-                            appearance: "none",
-                            // backgroundColor: 'red'
-                        }}
+                        <input
+                            disabled={toogleActive ? true : false}
+                            style={{
+                                ...styles.input,
+                                WebkitAppearance: "none",
+                                MozAppearance: "textfield",
+                                appearance: "none",
+                                // backgroundColor: 'red'
+                            }}
                             className='w-full border-none outline-none'
                             value={callPrice}
                             onChange={(e) => {
                                 e.target.value = e.target.value.replace(/[^0-9 .]/g, '');
                                 setCallPrice(e.target.value);
+                                let P = e.target.value;
+                                if (P) {
+                                    if (P < 1) {
+                                        console.log("Value is less then 1", P);
+                                        setShowInputErr(true)
+                                    } else {
+                                        setShowInputErr(false)
+                                    }
+                                }
                             }}
+                            onFocus={() => { setShowWarningText(true) }}
+                            onBlur={() => { setShowWarningText(false) }}
                             // placeholder='$'
                             type='text'
                             inputMode='number'
@@ -79,8 +97,14 @@ function SetPrice({ handleBack, handleContinue, buildScriptLoader }) {
                         />
                     </div>
                 </div>
-                <div className='text-gray-400 mt-3' style={styles.text}>
-                    Nothing less than $1 per minute
+                <div className='text-red mt-3'
+                    style={{
+                        fontSize: 11,
+                        fontWeight: 'normal',
+                        height: 12
+                        // color: '#'
+                    }}>
+                    {showWarningText && ("Nothing less than $1 per minute")}
                 </div>
 
                 <div className='w-10/12 flex flex-row justify-between'>
@@ -90,8 +114,11 @@ function SetPrice({ handleBack, handleContinue, buildScriptLoader }) {
                     <Switch checked={toogleActive} onChange={handleChange} defaultChecked />
                 </div>
 
-                <div className='' style={styles.text}>
-                    We'll charge $0.20 per minute for these calls.
+
+                <div className='' style={{ ...styles.text, height: 12 }}>
+                    {toogleActive && (
+                        "We'll charge $0.20 per minute for these calls."
+                    )}
                 </div>
 
                 <div className='w-10/12 mt-4'>
@@ -106,7 +133,7 @@ function SetPrice({ handleBack, handleContinue, buildScriptLoader }) {
                                         <button onClick={handleUploadClick}
                                             className='bg-purple hover:bg-purple text-white w-full'
                                             style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
-                                            Upload
+                                            Continue
                                         </button> :
                                         <button
                                             disabled
@@ -146,7 +173,13 @@ function SetPrice({ handleBack, handleContinue, buildScriptLoader }) {
 
                 </div>
                 <div style={styles.text2}>You keep the rest.</div>
-                <div className='mt-6' style={styles.text2}>Profit (straight to bank)</div>
+
+                <div className='flex flex-row justify-between w-10/12 mt-6'>
+                    <div className='' style={styles.text2}>Profit (straight to bank)</div>
+                    <div>$8</div>
+                </div>
+
+
                 {/* <div className = 'w-12/12 flex flex-col items-end mt-2' style = {{}}>
                     <div className='w-6/12 bg-white-500 shadow-lg p-5'>
                         <div style={{fontSize:12,color:'#00000080'}}>

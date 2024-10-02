@@ -31,6 +31,7 @@ import {
 import zIndex from "@mui/material/styles/zIndex";
 import VerifyPhoneNumber from "../loginform/VerifyPhoneNumber";
 import SigninNumberInput from "../signin/SigninNumberInput";
+import Congrats from "./Congrats";
 
 const boxVariants = {
   enter: (direction) => ({
@@ -112,8 +113,7 @@ export default function Animation({ onChangeIndex }) {
   const [numberFormatErr, setNumberFormatErr] = useState(null);
   const [verifyEmailLoader, setVerifyEmailLoader] = useState(false);
   const [resendCodeLoader, setResendCodeLoader] = useState(false);
-  const [emailVerificationCodeErr, setEmailVerificationCodeErr] =
-    useState(null);
+  const [emailVerificationCodeErr, setEmailVerificationCodeErr] = useState(null);
 
   const [verificationId, setVerificationId] = useState("");
   const [otp, setOtp] = useState([]);
@@ -123,6 +123,7 @@ export default function Animation({ onChangeIndex }) {
   const [isWideScreen, setIsWideScreen] = useState(false);
   const [isWideScreen2, setIsWideScreen2] = useState(false);
   const [verifyCodeSignUpLoader, setVerifyCodeSignUpLoader] = useState(false);
+  const [verifyPhoeCodeErr, setverifyPhoeCodeErr] = useState(null);
 
   const gifBackgroundImage = {
     backgroundImage: 'url("/assets/applogo2.png")', // Ensure the correct path
@@ -212,7 +213,7 @@ export default function Animation({ onChangeIndex }) {
       try {
         setVerifiyNumberLoader(true);
         if (!userPhoneNumber) {
-          console.log("Please enter a valid phone number");
+          console.log("Please enter a valid phone number", userPhoneNumber);
           return;
         }
 
@@ -235,6 +236,7 @@ export default function Animation({ onChangeIndex }) {
         }
       } catch (error) {
         console.error("Error during OTP sending:", error);
+        setverifyPhoeCodeErr(error);
       } finally {
         setVerifiyNumberLoader(false);
         // setIndex1Loader(false);
@@ -950,7 +952,7 @@ export default function Animation({ onChangeIndex }) {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    marginInline: 10,
+    // marginInline: 10,
 
   };
 
@@ -1709,7 +1711,7 @@ export default function Animation({ onChangeIndex }) {
                       marginBottom: 50,
                     }}
                   >
-                    Yes the good ones are still available
+                    Yes, the good ones are still available
                   </div>
 
                   <TextField
@@ -2728,7 +2730,7 @@ export default function Animation({ onChangeIndex }) {
                       <input
                         key={id}
                         id={id}
-                        type="number"
+                        type="text"
                         inputMode="numeric"
                         pattern="[0-9]*"
                         value={eval(id)}
@@ -2749,6 +2751,16 @@ export default function Animation({ onChangeIndex }) {
                         onPaste={(e) => handlePaste(e)}
                       />
                     ))}
+                  </div>
+
+                  <div>
+                    {
+                      verifyPhoeCodeErr ?
+                        <div>
+                          {verifyPhoeCodeErr}
+                        </div>
+                        : ""
+                    }
                   </div>
 
                   <div className="flex flex-row gap-1 mt-6">
@@ -2804,7 +2816,8 @@ export default function Animation({ onChangeIndex }) {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              // backgroundColor: "yellow",
+              backgroundColor: "",
+              width: "100%"
             }}
           >
             <Box
@@ -2815,19 +2828,22 @@ export default function Animation({ onChangeIndex }) {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                //   backgroundColor: "yellow",
+                backgroundColor: "",
+                width: "100%"
 
               }}
             >
-              {/* Lottie Animation Box */}
               <Box
                 sx={{
                   position: "absolute",
                   zIndex: 2,
                   display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  top: -10
+                  justifyContent: "start",
+                  alignItems: "start",
+                  top: -10,
+                  width: "100%",
+                  // left: 0,
+                  backgroundColor: ""
                 }}
               >
                 <Lottie
@@ -2835,14 +2851,38 @@ export default function Animation({ onChangeIndex }) {
                   lottieRef={lottieRef}
 
                   loop={true}
-                  style={{ height: "700px", width: "700px" }}
+                  style={{ height: "250px", width: "250px" }}
                   onComplete={() => {
                     lottieRef.current.goToAndStop(3, true)
                   }}
                 />
               </Box>
 
-              {/* Motion Div Content */}
+              <Box
+                sx={{
+                  position: "absolute",
+                  zIndex: 2,
+                  display: "flex",
+                  justifyContent: "end",
+                  alignItems: "start",
+                  top: -10,
+                  width: "100%",
+                  // left: 0,
+                  backgroundColor: ""
+                }}
+              >
+                <Lottie
+                  animationData={require("/public/congratsanimation.json")}
+                  lottieRef={lottieRef}
+
+                  loop={true}
+                  style={{ height: "250px", width: "250px" }}
+                  onComplete={() => {
+                    lottieRef.current.goToAndStop(3, true)
+                  }}
+                />
+              </Box>
+
               <Box
                 sx={{
                   zIndex: 1,
@@ -2870,15 +2910,10 @@ export default function Animation({ onChangeIndex }) {
                   //   style={styles}
                   // style={{ marginTop: -50, zIndex: 3 }}
                   >
-                    <div style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '' }}>
-                      <div style={{ height: 14 }}>
-                        {/* Back Button or Other Elements */}
-                      </div>
-
-                      {/* Additional Content */}
+                    {/* <div style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '', marginTop: -80 }}>
                       <div
                         className="w-full flex flex-row justify-center"
-                        style={{ marginTop: 20 }}
+                        // style={{ marginTop: 20 }}
                       >
                         <div
                           style={gifBackgroundImage}
@@ -2916,7 +2951,7 @@ export default function Animation({ onChangeIndex }) {
                             textAlign: "center",
                           }}
                         >
-                          Your account is created
+                          Your account has been created. Let's build your AI!
                         </div>
                       </div>
 
@@ -2932,8 +2967,8 @@ export default function Animation({ onChangeIndex }) {
                         </button>
                       </div>
 
-                      {/* Additional Footer Content */}
-                    </div>
+                    </div> */}
+                    <Congrats />
                   </motion.div>
                 </div>
               </Box>
