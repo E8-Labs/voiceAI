@@ -121,6 +121,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
   }
 
   useEffect(() => {
+    localStorage.removeItem("socialsUrl");
     getAiData();
   }, [])
 

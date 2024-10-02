@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { MenuItem, Select, InputLabel, FormControl, Switch, Button, CircularProgress } from '@mui/material'
+import { MenuItem, Select, InputLabel, FormControl, Switch, Button, CircularProgress, Popover, Typography } from '@mui/material'
 import { color } from 'framer-motion';
 
 function SetPrice({ handleContinue, buildScriptLoader }) {
@@ -10,6 +10,9 @@ function SetPrice({ handleContinue, buildScriptLoader }) {
     const [callPrice, setCallPrice] = useState("");
     const [showInputErr, setShowInputErr] = useState(false);
     const [showWarningText, setShowWarningText] = useState(false);
+    const [anchorel, setAnchorel] = useState(null);
+    const open = Boolean(anchorel)
+    const id = open ? '0' : undefined
     // const [showFreeAmount, setShowFreeAMount] = useState(false);
 
 
@@ -39,12 +42,12 @@ function SetPrice({ handleContinue, buildScriptLoader }) {
         text: {
             fontSize: 11,
             fontWeight: 'normal',
-            // color: '#050A08'
+            color: '#050A0860'
         },
         text2: {
             fontSize: 13,
             fontWeight: 'normal',
-            color: 'black'
+            color: '#050A0860'
         }
     }
 
@@ -104,7 +107,7 @@ function SetPrice({ handleContinue, buildScriptLoader }) {
                         height: 12
                         // color: '#'
                     }}>
-                    {showWarningText && ("Nothing less than $1 per minute")}
+                    {showInputErr && ("Nothing less than $1 per minute")}
                 </div>
 
                 <div className='w-10/12 flex flex-row justify-between'>
@@ -148,7 +151,7 @@ function SetPrice({ handleContinue, buildScriptLoader }) {
                 </div>
 
                 <div className='mt-8 w-10/12 flex flex-row justify-between'>
-                    <div className='' style={{ ...styles.text2, color: 'black' }}>
+                    <div className='' style={styles.text2}>
                         Your price per minute
                     </div>
 
@@ -164,11 +167,55 @@ function SetPrice({ handleContinue, buildScriptLoader }) {
                         <div style={styles.text2}>
                             Our fee - 20% to run our engine.
                         </div>
-                        <img src={'/assets/questionImage.png'}
-                            style={{ alignSelf: 'center', height: 15, width: 15 }} />
+                        {/* <button aria-describedby={id}
+                            onMouseEnter={(e) => { setAnchorel(e.currentTarget) }}
+                        // onMouseLeave={(e) => { setAnchorel(null) }}
+                        >
+                            <img src={'/assets/questionImage.png'}
+                                style={{ alignSelf: 'center', height: 15, width: 15 }} />
+                        </button> */}
+
+                        <div>
+
+                            <Typography
+                                aria-owns={open ? 'mouse-over-popover' : undefined}
+                                aria-haspopup="true"
+                                onMouseEnter={(e)=> {
+                                    setAnchorel(e.currentTarget)
+                                }}
+                                onMouseLeave={(e)=> {
+                                    setAnchorel(null)
+                                }}
+                            >
+                                <img src={'/assets/questionImage.png'}
+                                style={{ alignSelf: 'center', height: 15, width: 15 }} />
+                            </Typography>
+                            <Popover
+                                id="mouse-over-popover"
+                                sx={{ pointerEvents: 'none' }}
+                                open={open}
+                                anchorEl={anchorel}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'left',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'left',
+                                }}
+                                onClose={()=> {
+                                    setAnchorel(null)
+                                }}
+                                disableRestoreFocus
+                            >
+                                <Typography sx={{ p: 1, fontSize: 13 }}>We share this with our creators. We pay<br /> OpenAI, twilio, 11labs, Amazon Web<br /> Services, Stripe, 3rd Party Providers,<br />and not to mention…our expensive<br /> developers at E8 Labs.</Typography>
+                            </Popover>
+                        </div>
+
+                        
                     </div>
                     <div className='' style={styles.text2}>
-                        $2
+                        ${(20 / 100) * callPrice}
                     </div>
 
                 </div>
@@ -176,7 +223,7 @@ function SetPrice({ handleContinue, buildScriptLoader }) {
 
                 <div className='flex flex-row justify-between w-10/12 mt-6'>
                     <div className='' style={styles.text2}>Profit (straight to bank)</div>
-                    <div>$8</div>
+                    <div style={styles.text2}>${(80 / 100) * callPrice}</div>
                 </div>
 
 

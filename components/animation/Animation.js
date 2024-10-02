@@ -117,8 +117,7 @@ export default function Animation({ onChangeIndex }) {
 
   const [verificationId, setVerificationId] = useState("");
   const [otp, setOtp] = useState([]);
-  const [emailVerificationCodeErr2, setEmailVerificationCodeErr2] =
-    useState(null);
+  const [emailVerificationCodeErr2, setEmailVerificationCodeErr2] = useState(null);
   const [isHighScreen, setIsHighScreen] = useState(false);
   const [isWideScreen, setIsWideScreen] = useState(false);
   const [isWideScreen2, setIsWideScreen2] = useState(false);
@@ -1182,7 +1181,7 @@ export default function Animation({ onChangeIndex }) {
       <AnimatePresence initial={false} custom={direction}>
         {currentIndex === 0 && (
           <div
-            className="flex flex-col h-auto sm:justify-center justify-start"
+            className="flex flex-col h-auto sm:justify-center justify-start pb-12"
             style={margin}
           >
             <motion.div
