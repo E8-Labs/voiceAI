@@ -287,6 +287,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
 
                 const LocalData = localStorage.getItem("route");
                 try {
+                    console.log('Trying to start login api');
                     setVerifyLoader(true);
                     const ApiPath = Apis.verifyCode;
                     const data = {
@@ -329,6 +330,12 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                                             router.push(`/${modalName}`);
                                         }
                                     }
+                                } else {
+                                    console.log("It is onboarding");
+                                    console.log('Onboarding data recieved is', response.data.data);
+                                    let routePath = response.data.data.user.assitant.name
+                                    router.push(`/${routePath}.ai`);
+                                    // return
                                 }
                             }
                             console.log(

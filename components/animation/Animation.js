@@ -416,8 +416,13 @@ export default function Animation({ onChangeIndex }) {
                   const modalName = D.modalName;
                   localStorage.setItem("User", JSON.stringify(response.data));
                   router.push(`/${modalName}`);
+                } else {
+                  console.log("I am from onboarding flow");
+                  console.log('Response of api for login is', response.data.data);
+                  // router.push('')
                 }
               }
+
               console.log(
                 "Response of login verification code",
                 response.data.data
@@ -723,7 +728,7 @@ export default function Animation({ onChangeIndex }) {
     const AssistantData = JSON.parse(localAssistantData);
     console.log('AssistantData Recieved from localstorage is', AssistantData);
     //code if assistant trial mode is true
-    if (AssistantData.assitant.allowTrial === true) {
+    if (AssistantData?.assitant.allowTrial === true) {
       setIndex1Loader(true);
       // return
       let sent = await sendOtp();

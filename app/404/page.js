@@ -81,7 +81,7 @@ export default function Page() {
       </Link> */}
       <div className='h-svh w-full flex flex-row justify-center items-center backdrop-blur-lg'>
         <div style={gifBackgroundImage} className='flex flex-row justify-center items-center md:flex hidden'>
-          <Image src="/maingif.gif" alt='gif' style={{
+          <Image src="/maingif.gif" alt='gif' className="grayscale" style={{
             backgroundColor: "",
             borderRadius: "50%", height: windowHeight / 2.14, width: windowHeight / 2.14
           }} height={600} width={600} />
