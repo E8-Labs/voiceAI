@@ -456,6 +456,9 @@ export default function ScriptAnimation({ onChangeIndex }) {
                   >
                     Name your AI
                   </div>
+                  <div className="mt-1" style={{ fontWeight: "400", fontSize: 12, fontFamily: "inter", color: "#050A0860" }}>
+                    This is how your AI will identify itself in calls
+                  </div>
                   <div className="w-full sm:w-9/12 mt-10">
                     <TextField
                       className="w-full"// sm:w-9/12" //style={{marginTop: 6}}

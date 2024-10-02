@@ -706,7 +706,7 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
                         <div className='w-full'>
                             {
                                 loginLoader ?
-                                    <div className='bg-purple w-full flex flex-row justify-center px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15, borderRadius: "50px" }}>
+                                    <div className='bg-none w-full flex flex-row justify-center px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15, borderRadius: "50px" }}>
                                         <CircularProgress size={20} />
                                     </div> :
                                     <button onClick={handleLogin} className='bg-purple w-full px-8 text-white py-3' style={{ fontWeight: "400", fontSize: 15, borderRadius: "50px" }}>

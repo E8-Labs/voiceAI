@@ -73,7 +73,7 @@ const CycleArray = ({ data, assistantData, onLargeScreen }) => {
                 >
                     <div className='flex flex-row gap-2 items-center'
                         style={{
-                            backgroundColor: "#ffffff40",
+                            backgroundColor: "#ffffff",
                             padding: 4,
                             borderRadius: 10,
                             // paddingTop: 10,

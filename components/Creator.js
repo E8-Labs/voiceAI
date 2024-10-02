@@ -870,10 +870,10 @@ const Creator = () => {
                                                                 {
                                                                     getAssistantData.name ?
                                                                         <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                                            {getAssistantData.name}
+                                                                            {getAssistantData.name.slice(0, 6)}
                                                                         </div> :
                                                                         <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                                                            {getAssistantData.assitant.name}
+                                                                            {getAssistantData.assitant.name.slice(0, 6)}
                                                                         </div>
                                                                 }
                                                             </div>
