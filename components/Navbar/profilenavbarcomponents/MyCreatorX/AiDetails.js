@@ -297,7 +297,7 @@ export const AiDetails = () => {
                 Call Instruction
               </div>
               <div className={`mt-4 ${showMoreInstruction ? 'line-clamp-none' : 'line-clamp-5'}`}>
-                {myProfile.assitant.prompt}
+                {myProfile?.assitant?.prompt}
                 {/* Lorem ipsum dolor sit amet consectetur. Amet quis interdum ipsum non eu aliquam aliquet consequat et. Tincidunt pharetra quam ac viverra. Sit pellentesque faucibus non sit. Feugiat consequat ultrices erat est. Nulla.
                 Lorem ipsum dolor sit amet consectetur. Amet quis interdum ipsum non eu aliquam aliquet consequat et. Tincidunt pharetra quam ac viverra. Sit pellentesque faucibus non sit. Feugiat consequat ultrices erat est. Nulla.
                 Lorem ipsum dolor sit amet consectetur. Amet quis interdum ipsum non eu aliquam aliquet consequat et. Tincidunt pharetra quam ac viverra. Sit pellentesque faucibus non sit. Feugiat consequat ultrices erat est. Nulla. */}
