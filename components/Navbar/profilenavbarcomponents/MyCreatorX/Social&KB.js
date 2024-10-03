@@ -443,7 +443,7 @@ export const SocialKB = () => {
           <div style={{ fontSize: 15, fontWeight: 700, fontFamily: "inter" }}>
             Knowledge Base
           </div>
-          <button className='text-purple underline self-start' onClick={() => { setKbPopup(true) }}>
+          <button className='text-purple underline self-start outline-none border-none' onClick={() => { setKbPopup(true) }}>
             Add New
           </button>
         </div>
@@ -468,7 +468,7 @@ export const SocialKB = () => {
                 color: '#000',
               }}
               placeholder="Lorem ipsum dolor sit amet consectetur. Volutpat sit condimentum purus lorem. Praesent odio morbi sit sem risus habitant vitae. Neque aliquam risus gravida vivamus non. Suscipit ut sed elementum ullamcorper varius integer. Sit penatibus posuere."
-              rows={8} // Adjust the number of rows to set the height of the textarea
+              rows={4} // Adjust the number of rows to set the height of the textarea
               multiple
             />
             {/* <button className='w-2/12 self-start'>
@@ -478,69 +478,60 @@ export const SocialKB = () => {
             </button> */}
           </div>
 
-          <div className='w-full flex flex-col mt-5 gap-5'>
-            {/* <div className='w-full flex flex-row justify-between'>
-              <button>
-                <div style={{ fontSize: 14, fontWeight: 400, textDecoration: 'underline' }}>
-                  document.pdf
-                </div>
-              </button>
-              <div className='flex flex-row gap-4'>
-                <button className='text-purple' style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter" }}>
-                  Edit
-                </button>
-                <button className='text-red' style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter" }}>
-                  Delete
-                </button>
-              </div>
-            </div> */}
+          <div className='w-full flex flex-col gap-5'>
 
-            {/* <div className='w-full flex flex-row justify-between mb-5'>
-              <button>
-                <div style={{ fontSize: 14, fontWeight: 400, textDecoration: 'underline' }}>
-                  URL
-                </div>
-              </button>
-              <div className='flex flex-row gap-4'>
-                <button className='text-purple' style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter" }}>
-                  Edit
-                </button>
-                <button className='text-red' style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter" }}>
-                  Delete
-                </button>
-              </div>
-            </div> */}
-
-            <div style={{ maxHeight: "50vh", overflow: "auto", scrollbarWidth: "none" }}>
+            <div style={{ maxHeight: "50vh", overflow: "auto", scrollbarWidth: "none", paddingBottom: 20 }}>
               {
                 knowledgeData.map((item) => (
-                  <div key={item.id} className='border-2 mt-4 p-4 rounded-lg' style={{ borderColor: '#E6E6E6' }}>
+                  <div key={item.id} className='mt-6 rounded-lg' style={{ borderColor: '' }}>
                     <div className='flex flex-row w-full justify-between items-center'>
-                      <div style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 13, color: '#303240' }}>
+                      {/* <div style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 13, color: '#303240' }}>
                         {item.type}
+                      </div> */}
+                      <div className='w-full' style={{
+                        fontWeight: '400', fontFamily: 'inter',
+                        fontSize: 15, color: '#000000',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis', textDecoration: 'underline'
+                      }}>
+                        {item.documentUrl ?
+                          (
+                            <button
+                              onClick={() => {
+                                let path = item.documentUrl
+                                window.open(path, "_blank")
+                              }} style={{ width: "200px", border: "", overflowX: "auto" }}>
+                              {item.documentUrl}
+                            </button>
+                          ) : (
+                            <button
+                              className='text-start underline'
+                              onClick={() => {
+                                let path = item.content
+                                window.open(path, "_blank")
+                              }}>
+                              {item.content}
+                            </button>
+                          )}
                       </div>
-                      <div>
+                      <div className='flex flex-row gap-4 items-center'>
+                        <button className='text-purple' style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter" }}>
+                          Edit
+                        </button>
                         {
                           delKBLoader === item.id ?
                             <CircularProgress size={20} /> :
-                            <button
+                            <button className='text-red' style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter" }}
                               onClick={() => handleDelAddedData(item.id)}
                             >
-                              <Image src="/assets/delIcon.png" height={20} width={20} alt='del' />
+                              {/* <Image src="/assets/delIcon.png" height={20} width={20} alt='del' /> */}
+                              Delete
                             </button>
                         }
                       </div>
-                    </div>
-                    <div className='w-full' style={{
-                      fontWeight: '400', fontFamily: 'inter',
-                      fontSize: 15, color: '#000000',
-                      display: '-webkit-box',
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: 'vertical',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                    }}>
-                      {item.content}
                     </div>
                   </div>
                 ))

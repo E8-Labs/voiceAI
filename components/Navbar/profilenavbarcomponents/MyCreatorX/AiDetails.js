@@ -1,7 +1,7 @@
 
 import Apis from '@/components/apis/Apis';
 import SliderSizes from '@/components/RangeSlider';
-import { Box, Slider } from '@mui/material';
+import { Box, CircularProgress, Slider } from '@mui/material';
 import { CaretDown, CaretRight } from '@phosphor-icons/react';
 import axios from 'axios';
 import Image from 'next/image'
@@ -10,6 +10,7 @@ import React, { useEffect, useRef, useState } from 'react'
 export const AiDetails = () => {
 
   const valuesInputRef = useRef(null);
+  const fileInputRef = useRef(null);
 
   //code for showing and hiding the questions
   const [interactionQuestions, setInterractionQuestions] = useState([
@@ -37,6 +38,38 @@ export const AiDetails = () => {
   const [showMoreObjectiveText, setShowMoreObjectiveText] = useState(false);
   const [callInstructions, setShowCallInstructions] = useState(false);
   const [showMoreInstruction, setshowMoreInstruction] = useState(false);
+  const [aiData, setAiData] = useState(false);
+
+  const [selectedAudio, setSelectedAudio] = useState(null);
+  const [audioUrl, setAudioUrl] = useState(null);
+  const [updateLoader, setUpdateLoader] = useState(false);
+
+  //calling my AI api
+  const getAiApi = async () => {
+    const ApiPath = Apis.MyAiapi;
+    const localData = localStorage.getItem('User');
+    const Data = JSON.parse(localData);
+    const AuthToken = Data.data.token;
+    console.log("Authtoken is", AuthToken);
+    console.log("Apipath is", ApiPath);
+
+    const response = await axios.get(ApiPath, {
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": "Bearer " + AuthToken
+      }
+    });
+    if (response) {
+      console.log("Response of getai api", response.data.data);
+      if (response.data) {
+        setAiData(response.data.data);
+      }
+    }
+  }
+
+  useEffect(() => {
+    getAiApi()
+  }, []);
 
   const handleInterRactionQuestionDetails = (id) => {
     setInteractionQuestionsDetails(interactionQuestionsDetails === id ? null : id);
@@ -99,6 +132,57 @@ export const AiDetails = () => {
     },
   }
 
+  const handleAudioChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setSelectedAudio(file);
+      const url = URL.createObjectURL(file);
+      setAudioUrl(url);
+      console.log("Selected audio file url is", url);
+    }
+  };
+
+  const handleUploadClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const updateAi = async () => {
+    try {
+      setUpdateLoader(true);
+      const localData = localStorage.getItem('User');
+      const Data = JSON.parse(localData);
+      const AuthToken = Data.data.token;
+      // console.log("Authtoken is", AuthToken);
+      const ApiPath = Apis.BuildScript;
+      const formData = new FormData();
+      // formData.append('media', selectedAudio);
+      formData.append('media', selectedAudio);
+      console.log("Audio sending in api")
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}:`, value);
+      }
+      const response = await axios.post(ApiPath, formData, {
+        headers: {
+          "Authorization": "Bearer " + AuthToken,
+          "Content-Type": "application/json"
+        }
+      });
+      if (response) {
+        console.log("Response of api is", response);
+      }
+    } catch (error) {
+      console.error("Error occured in updateAI api is", error);
+    } finally {
+      setUpdateLoader(false);
+    }
+  }
+
+  useEffect(() => {
+    updateAi()
+  }, [selectedAudio]);
+
   return (
     <div
       className='w-full flex flex-col p-15 pl-5'
@@ -138,14 +222,41 @@ export const AiDetails = () => {
               <div>
                 <Image src='/assets/playIcon.png' alt='ply' height={32} width={32} />
               </div>
-              <div className='w-11/12 flex flex-row justify-between'>
-                <div>
-                  Audio name
+              <div className='w-11/12 flex flex-row justify-between items-center'>
+                <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
+                  {audioUrl ?
+                    <div>
+                      {audioUrl}
+                    </div> :
+                    <div>
+                      {aiData?.ai?.audio ? (
+                        <div>
+                          {
+                            aiData.ai.audio
+                          }
+                        </div>
+                      ) : "No audio"}
+                    </div>
+                  }
+
                 </div>
                 <div>
-                  <button className='text-purple' style={{ fontSize: 13, fontWeight: '500', fontFamily: 'inter' }}>
-                    Change
-                  </button>
+                  <input
+                    type="file"
+                    // accept="audio/*"
+                    accept="audio/*,.mov,.mp3,.wav, .mp4/*"
+                    ref={fileInputRef}
+                    onChange={handleAudioChange}
+                    className="hidden"
+                  />
+                  {
+                    updateLoader ?
+                      <CircularProgress size={20} /> :
+                      <button onClick={handleUploadClick}
+                        className='text-purple' style={{ fontSize: 13, fontWeight: '500', fontFamily: 'inter' }}>
+                        Change
+                      </button>
+                  }
                 </div>
               </div>
             </div>

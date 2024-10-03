@@ -829,7 +829,9 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                     </div>
 
                                     {/* Code to make dynamic routes */}
-                                    <div className='mt-8 w-full sm:w-9/12' style={{ maxHeight: "20vh", overflowY: "auto", scrollbarWidth: "none" }}>
+                                    <div //className='w-full sm:w-9/12' //style={{ maxHeight: "40vh", overflowY: "auto", scrollbarWidth: "none" }}
+                                        className="mt-8 w-full sm:w-9/12 max-h-[40vh] overflow-y-auto scrollbar scrollbar-thumb-purple scrollbar-track-transparent scrollbar-thin"
+                                    >
                                         {inputRows.map((row, index) => (
                                             <div className='w-full flex flex-row gap-2 mt-2' key={index} style={{}}>
                                                 <div className='w-3/12 px-3 py-3 rounded-lg flex flex-row gap-4 items-center' style={{ backgroundColor: "#EDEDED80", }}>
@@ -948,11 +950,13 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                     <div className='mt-6' style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
                                         Conversion goals?
                                     </div>
-                                    <div className='w-full flex flex-col justify-center items-center'
+                                    <div
+                                        className='w-full sm:w-11/12  flex flex-col justify-center items-center overflow-y-auto scrollbar scrollbar-thumb-purple scrollbar-thin scrollbar-track-transparent'
+                                        //overflow-y-auto scrollbar scrollbar-thumb-purple scrollbar-track-transparent scrollbar-thin
                                         style={{
-                                            overflow: 'auto',
+                                            // overflow: 'auto',
                                             height: '40vh',
-                                            scrollbarWidth: 'none',
+                                            // scrollbarWidth: 'none',
                                             // paddingTop: 300,
                                             // border: "2px solid red"
                                         }}
@@ -963,9 +967,9 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                             </div>
 
 
-                                            <div className='w-full sm:w-11/12 flex flex-col mt-8'>
+                                            <div className='flex flex-col mt-8'>
                                                 <div>
-                                                    <div className='flex flex-row w-11/12 items-center justify-between '
+                                                    <div className='w-full flex flex-row w-11/12 items-center justify-between '
                                                         style={goalsStyles.button}
                                                     >
                                                         <div style={{ fontSize: 12, fontWeight: 'normal' }}>
@@ -987,7 +991,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
                                             {
                                                 sellProduct &&
-                                                <div className='w-11/12 sm:w-10/12 flex flex-col mt-8'>
+                                                <div className='w-full flex flex-col mt-8'>
                                                     <FormControl className='w-full mt-4'>
                                                         <Select
                                                             className=' border-none rounded-md'
@@ -1030,9 +1034,9 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                 </div>
                                             }
 
-                                            <div className='w-full sm:w-11/12 flex flex-col mt-8'>
+                                            <div className='w-full flex flex-col mt-8'>
                                                 <div>
-                                                    <div className='flex flex-row w-11/12 items-center justify-between '
+                                                    <div className='flex flex-row w-full items-center justify-between '
                                                         style={goalsStyles.button}
                                                     >
                                                         <div style={{ fontSize: 12, fontWeight: 'normal' }}>
@@ -1052,7 +1056,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
                                                 {
                                                     inviteWebinar &&
-                                                    <div className='w-11/12 mt-8' style={{}}>
+                                                    <div className='w-full mt-8' style={{}}>
                                                         <input
                                                             value={webinarUrl}
                                                             onChange={(e) => {
@@ -1084,9 +1088,9 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
                                             </div>
 
-                                            <div className='w-full sm:w-11/12 flex flex-col mt-8'>
+                                            <div className='w-full flex flex-col mt-8'>
                                                 <div>
-                                                    <div className='flex flex-row w-11/12 items-center justify-between '
+                                                    <div className='flex flex-row w-full items-center justify-between '
                                                         style={goalsStyles.button}
                                                     >
                                                         <div style={{ fontSize: 12, fontWeight: 'normal' }}>
@@ -1105,7 +1109,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                     {
                                                         somethingElse &&
                                                         <div>
-                                                            <div className='w-11/12 mt-8' style={{}}>
+                                                            <div className='w-full mt-8' style={{}}>
                                                                 <input
                                                                     value={otherGoal}
                                                                     onChange={(e) => setOtherGoal(e.target.value)}
@@ -1115,7 +1119,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                                     style={{ backgroundColor: "#EDEDED80", border: "1px solid #EDEDED" }}
                                                                 />
                                                             </div>
-                                                            <div className='w-11/12 mt-8' style={{}}>
+                                                            <div className='w-full mt-8' style={{}}>
                                                                 <input
                                                                     value={otherUrl}
                                                                     onChange={(e) => {

@@ -721,18 +721,26 @@ export default function ScriptAnimation({ onChangeIndex }) {
 
                   <div className="w-full sm:w-9/12 pb-4">
                     {helpTagline ? (
-                      <button
-                        onClick={handleContinue}
-                        className="bg-purple hover:bg-purple outline-none border-none text-white w-full mt-12"
-                        style={{
-                          fontSize: 15,
-                          fontWeight: "400",
-                          height: "52px",
-                          borderRadius: "50px",
-                        }}
-                      >
-                        Continue
-                      </button>
+                      <div>
+                        {
+                          buildAiLoader ?
+                            <div className="w-full flex flex-row justify-center">
+                              <CircularProgress size={25} />
+                            </div> :
+                            <button
+                              onClick={handleBuildAI}
+                              className="bg-purple hover:bg-purple outline-none border-none text-white w-full mt-12"
+                              style={{
+                                fontSize: 15,
+                                fontWeight: "400",
+                                height: "52px",
+                                borderRadius: "50px",
+                              }}
+                            >
+                              Continue
+                            </button>
+                        }
+                      </div>
                     ) : (
                       <button
                         disabled
@@ -755,7 +763,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
             </motion.div>
           </div>
         )}
-        {currentIndex === 3 && (
+        {/* {currentIndex === 3 && (
           <div
             className="flex flex-col sm:justify-center justify-start"
             style={{ height: "" }}
@@ -796,19 +804,11 @@ export default function ScriptAnimation({ onChangeIndex }) {
                   <div>
                     <AiSocialLinks handleContinue={handleContinue} aiName={aiName} />
                   </div>
-
-                  {/* <div className='w-10/12'>
-                                        <Button onClick={handleTempContinue}
-                                            className='bg-purple hover:bg-purple text-white w-full mt-12'
-                                            style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
-                                            Continue
-                                        </Button>
-                                    </div> */}
                 </div>
               </div>
             </motion.div>
           </div>
-        )}
+        )} */}
         {/* {currentIndex === 4 && (
           <div
             className="flex flex-col h-screen sm:justify-center justify-start"
@@ -857,7 +857,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
             </motion.div>
           </div>
         )} */}
-        {currentIndex === 4 && (
+        {/* {currentIndex === 4 && (
           <div
             className="flex flex-col sm:justify-center justify-start lg:w-10/12"
             style={{ height: "" }}
@@ -930,7 +930,6 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     <Box className="lg:w-4/12 md:w-5/12 sm:w-7/12"
                       sx={styleLoginModal}
                     >
-                      {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
                       <div className='flex flex-row justify-center'>
                         <Knowledgebase closeModal={handleCloseModal} getknowledgeData={getknowledgeData} />
                       </div>
@@ -948,7 +947,6 @@ export default function ScriptAnimation({ onChangeIndex }) {
                   </div>
 
                   <div className="mt-8">
-                    {/* <Knowledgebase handleContinue={handleContinue} /> */}
                     <div style={{ maxHeight: "50vh", overflow: "auto", scrollbarWidth: "none" }}>
                       {
                         knowledgeData.map((item) => (
@@ -1005,8 +1003,8 @@ export default function ScriptAnimation({ onChangeIndex }) {
               </div>
             </motion.div>
           </div>
-        )}
-        {currentIndex === 5 && (
+        )} */}
+        {/* {currentIndex === 5 && (
           <div
             className="flex flex-col sm:justify-center justify-start"
             style={{ height: "" }}
@@ -1023,7 +1021,6 @@ export default function ScriptAnimation({ onChangeIndex }) {
             >
               <div className="w-full flex justify-center">
                 <div className="w-full flex flex-row items-center gap-4">
-                  {/* <div style={{ height: "100%", width: "2px", backgroundColor: 'black' }} /> */}
 
                   <div>
                     <div className="flex flex-row w-full justify-between items-center">
@@ -1095,15 +1092,15 @@ export default function ScriptAnimation({ onChangeIndex }) {
                           ))}
                         </div>
                       )}
-
-                      {/* {selectedAudios.length > 0 && (
+remove the following div
+                      {selectedAudios.length > 0 && (
                         <button onClick={handleSendApi} className="btn-send-api">
                           Send to API
                         </button>
-                      )} */}
+                      )}
 
-
-                      {/* {audioUrl && (
+remove the following div
+                      {audioUrl && (
                         <div className="flex flex-row items-center gap-4">
                           <audio controls className="mb-">
                             <source src={audioUrl} type="audio/mpeg" />
@@ -1121,7 +1118,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                             </button>
                           </div>
                         </div>
-                      )} */}
+                      )}
                     </div>
 
                     <div className="mt-6 flex flex-row items-center">
@@ -1180,7 +1177,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
               </div>
             </motion.div>
           </div>
-        )}
+        )} */}
         {currentIndex === 6 && (
           <div
             className="flex flex-col sm:justify-center justify-start"

@@ -335,7 +335,7 @@ const VerifyPhoneNumber = ({ handleBack, handleContinue, userLoginDetails, handl
                                     console.log('Onboarding data recieved is', response.data.data);
                                     localStorage.setItem("User", JSON.stringify(response.data));
                                     let routePath = response.data.data.user.assitant.name
-                                    router.push(`/${routePath}.ai`);
+                                    router.push(`/${routePath}`);
                                     // return
                                 }
                             }
