@@ -205,8 +205,9 @@ export default function ScriptAnimation({ onChangeIndex }) {
         setSkipLoader(true);
       } else {
         // setUploadLoader(true);
-        setBuildAiLoader(true)
       }
+      setBuildAiLoader(true)
+
 
       const ApiPath = Apis.BuildAI;
       const LocalData = localStorage.getItem("User");
@@ -724,7 +725,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                       <div>
                         {
                           buildAiLoader ?
-                            <div className="w-full flex flex-row justify-center">
+                            <div className="w-full flex flex-row justify-center mt-12">
                               <CircularProgress size={25} />
                             </div> :
                             <button

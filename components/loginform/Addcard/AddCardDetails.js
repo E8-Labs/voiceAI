@@ -97,7 +97,7 @@ const AddCardDetails = ({
                 borderRadius: 10,
                 padding: 10,
                 '::placeholder': {
-                    color: 'gray',
+                    color: '#00000050',
                 },
             },
             invalid: {
