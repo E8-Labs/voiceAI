@@ -56,7 +56,7 @@ const AnimationBox2 = () => {
 
 
     return (
-        <div>
+        <div className='w-full'>
             <div
                 style={gifBackgroundImage}
                 className="flex flex-row justify-center items-center"

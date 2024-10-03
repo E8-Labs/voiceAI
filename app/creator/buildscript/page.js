@@ -5,7 +5,7 @@ import BoxAnimationIndex1 from "@/components/creatorOnboarding/BoxAnimationIndex
 import BoxAnimationIndex2 from "@/components/creatorOnboarding/BoxAnimationIndex2";
 import ScriptAnimation from "@/components/creatorOnboarding/ScriptAnimation";
 import ScriptAiAnimation from "@/components/creatorOnboarding/ScriptAnimation";
-import AnimationBox1 from "@/components/creatorOnboarding/TestAnimationBox2";
+import AnimationBox1 from "@/components/creatorOnboarding/AnimationBox1";
 import { Box } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
@@ -138,31 +138,33 @@ export default function Home() {
           {/* <img src="/assets/mainLogo.png" alt='app' style={{ height: "850px", width: "100%", resize: "cover", objectFit: "contain" }} /> */}
           {
             (currentIndex === 0 || currentIndex > 2) && (
-              <div
-                style={gifBackgroundImage}
-                className="flex flex-row justify-center items-center"
-              >
-                <Image
-                  // onClick={handleContinue}
-                  src="/mainAppGif3.gif"
-                  alt="gif"
-                  className={`rounded-full ${isHighScreen ? 'h-[780px] w-[780px]' : 'h-[450px] w-[450px]'}`}
-                  height={600}
-                  width={600}
-                />
+              <div className="w-full flex flex-row justify-center">
+                <div
+                  style={gifBackgroundImage}
+                  className="flex flex-row justify-center items-center w-full"
+                >
+                  <Image
+                    // onClick={handleContinue}
+                    src="/mainAppGif3.gif"
+                    alt="gif"
+                    className={`rounded-full ${isHighScreen ? 'h-[780px] w-[780px]' : 'h-[450px] w-[450px]'}`}
+                    height={600}
+                    width={600}
+                  />
+                </div>
               </div>
             )
           }
           {
             currentIndex === 2 &&
-            <div className="w-full">
+            <div>
               {/*<BoxAnimationIndex1 currentIndex={currentIndex} />*/}
               <AnimationBox2 />
             </div>
           }
           {
             currentIndex === 1 &&
-            <div className="w-full">
+            <div>
               {/*<BoxAnimationIndex2 currentIndex={currentIndex} />*/}
               <AnimationBox1 />
             </div>
