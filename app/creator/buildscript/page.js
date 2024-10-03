@@ -94,7 +94,7 @@ export default function Home() {
           className="flex flex-row justify-center h-screen lg:w-6/12 w-full"
           style={{ backgroundColor: "" }}
         >
-          <div className="sm:w-9/12 w-full h-screen flex flex-col justify-between px-8 sm:px-0"
+          <div className="sm:w-10/12 w-full h-screen flex flex-col justify-between px-8 sm:px-0"
             style={{ backgroundColor: "" }}
           >
             <div

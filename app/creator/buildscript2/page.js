@@ -1,5 +1,6 @@
 'use client'
 import ScriptAnimation2 from '@/components/creatorOnboarding/ScriptAnimation2';
+import SellProductsAnimations from '@/components/creatorOnboarding/SellProductsAnimations';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { useState, useEffect } from "react";
@@ -60,7 +61,8 @@ export default function Home() {
                     className={`flex flex-row justify-center items-center ${currentIndex === 6 ? 'w-full' : 'lg:w-6/12 w-full'}`} //style={{ backgroundColor: 'green' }}
                 >
                     <div //style={{ backgroundColor: 'red' }}
-                        className='sm:w-9/12 w-full h-screen flex flex-col justify-between'
+                        // className='sm:w-10/12 w-full h-screen flex flex-col justify-between'
+                        className={`w-full h-screen flex flex-col justify-between ${currentIndex === 6 ? "sm:w-11/12" : "sm:w-10/12"}`}
                     >
                         <div
                             className='justify-between pt-8 sm:pt-8 md:pt-10 md:w-full w-10/12'
@@ -76,7 +78,7 @@ export default function Home() {
                         <div
                             className=' sm:w-full w-full' //className={currentIndex === 7 ? 'pt-28 sm:pt-0 sm:w-full w-10/12' : 'pt-28 sm:pt-28 sm:w-full w-10/12'}  //'pt-28 sm:w-full w-10/12' //{currentIndex === 7 ? 'pt-28 sm:pt-28 sm:w-full w-10/12' : 'sm:w-full w-10/12'} 
                             style={{ backgroundColor: '', height: '65.5%', }}>
-                            <div className='w-full flex justify-center items-center sm:mt-0 '>
+                            <div className='w-full flex justify-center items-center sm:mt-0'>
                                 <ScriptAnimation2 onChangeIndex={handleCurrentIndex} />
                             </div>
                         </div>
@@ -85,8 +87,7 @@ export default function Home() {
                     </div>
                 </div>
                 {
-                    currentIndex === 6 ?
-                        "" :
+                    currentIndex === 6 || currentIndex === 3 ? "" :
                         <div className='w-6/12 flex lg:flex hidden justify-center' style={{ height: "100%" }}>
                             {/* <img src="/assets/mainLogo.png" alt='app' style={{ height: "850px", width: "100%", resize: "cover", objectFit: "contain" }} /> */}
                             <div style={gifBackgroundImage} className='flex flex-row justify-center items-center'>
@@ -98,6 +99,20 @@ export default function Home() {
                                     }} height={600} width={600} />
                             </div>
                         </div>
+                }
+                {
+                    currentIndex === 3 &&
+                    <div className='w-6/12 flex lg:flex hidden justify-center' style={{ height: "100%" }}>
+                        <SellProductsAnimations />
+                        {/* <div style={gifBackgroundImage} className='flex flex-row justify-center items-center'>
+                            <Image
+                                // onClick={handleContinue}
+                                src="/mainAppGif3.gif" alt='gif' style={{
+                                    backgroundColor: "",
+                                    borderRadius: "50%", height: isHighScreen ? '780px' : '450px', width: isHighScreen ? '780px' : '450px'
+                                }} height={600} width={600} />
+                        </div> */}
+                    </div>
                 }
                 {/* {
                     currentIndex === 1 &&

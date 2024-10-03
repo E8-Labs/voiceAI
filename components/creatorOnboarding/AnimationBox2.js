@@ -178,7 +178,7 @@ const AnimationBox2 = () => {
                                 width={50}
                             />
                             {/*<div style={{ color: "#00000060", width: "130px" }}>Alex Hormozi</div>*/}
-                            <div className='line-clamp-3' style={{ width: "150px" }}>
+                            <div className='line-clamp-3' style={{ width: "100%" }}>
                                 tortor, in convallis felis. Cras auctor turpis non metus facilisis, ut aliquam quam tristique. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse a nibh ut purus feugiat euismod. Duis ac pellentesque leo.
                             </div>
                         </div>

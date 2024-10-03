@@ -70,7 +70,7 @@ export default function Home() {
                     style={{ backgroundColor: '' }}
                     className='flex flex-row justify-center items-start md:w-6/12 w-full'
                 >
-                    <div className='w-full flex flex-col justify-between sm:w-9/12 justify-start items-center' style={{ backgroundColor: '', height: '100vh' }}
+                    <div className='w-full flex flex-col justify-between sm:w-10/12 justify-start items-center' style={{ backgroundColor: '', height: '100vh' }}
                     >
                         <div className='justify-between pt-8 sm:pt-8 md:pt-10 md:w-full w-10/12' style={{ backgroundColor: '' }}
                         >

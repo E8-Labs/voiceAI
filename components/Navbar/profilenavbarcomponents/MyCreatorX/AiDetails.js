@@ -43,6 +43,7 @@ export const AiDetails = () => {
   const [selectedAudio, setSelectedAudio] = useState(null);
   const [audioUrl, setAudioUrl] = useState(null);
   const [updateLoader, setUpdateLoader] = useState(false);
+  const [myProfile, setMyProfile] = useState(null);
 
   //calling my AI api
   const getAiApi = async () => {
@@ -67,8 +68,32 @@ export const AiDetails = () => {
     }
   }
 
+  const getMyProfile = async () => {
+    const localData = localStorage.getItem('User');
+    if (localData) {
+      const Data = JSON.parse(localData);
+      console.log("localdata  of user is", Data.data.user);
+      // return
+      const AuthToken = Data.data.token;
+      const response = await axios.get(Apis.MyProfile, {
+        headers: {
+          'Authorization': 'Bearer ' + AuthToken,
+          'Content-Type': 'application/json'
+        }
+      });
+      if (response) {
+        console.log("Response of get profile api", response.data);
+        localStorage.setItem('MyProfileData', JSON.stringify(response.data.data));
+        setMyProfile(response.data.data);
+
+        localStorage.setItem('User', JSON.stringify(Data));
+      }
+    }
+  }
+
   useEffect(() => {
-    getAiApi()
+    getAiApi();
+    getMyProfile();
   }, []);
 
   const handleInterRactionQuestionDetails = (id) => {
@@ -272,9 +297,10 @@ export const AiDetails = () => {
                 Call Instruction
               </div>
               <div className={`mt-4 ${showMoreInstruction ? 'line-clamp-none' : 'line-clamp-5'}`}>
+                {myProfile.assitant.prompt}
+                {/* Lorem ipsum dolor sit amet consectetur. Amet quis interdum ipsum non eu aliquam aliquet consequat et. Tincidunt pharetra quam ac viverra. Sit pellentesque faucibus non sit. Feugiat consequat ultrices erat est. Nulla.
                 Lorem ipsum dolor sit amet consectetur. Amet quis interdum ipsum non eu aliquam aliquet consequat et. Tincidunt pharetra quam ac viverra. Sit pellentesque faucibus non sit. Feugiat consequat ultrices erat est. Nulla.
-                Lorem ipsum dolor sit amet consectetur. Amet quis interdum ipsum non eu aliquam aliquet consequat et. Tincidunt pharetra quam ac viverra. Sit pellentesque faucibus non sit. Feugiat consequat ultrices erat est. Nulla.
-                Lorem ipsum dolor sit amet consectetur. Amet quis interdum ipsum non eu aliquam aliquet consequat et. Tincidunt pharetra quam ac viverra. Sit pellentesque faucibus non sit. Feugiat consequat ultrices erat est. Nulla.
+                Lorem ipsum dolor sit amet consectetur. Amet quis interdum ipsum non eu aliquam aliquet consequat et. Tincidunt pharetra quam ac viverra. Sit pellentesque faucibus non sit. Feugiat consequat ultrices erat est. Nulla. */}
               </div>
               <button
                 onClick={() => { setshowMoreInstruction(!showMoreInstruction) }}

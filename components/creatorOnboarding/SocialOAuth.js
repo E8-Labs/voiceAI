@@ -6,7 +6,7 @@ import YouTubeVideos from '../socialAuth/YoutubeVideos';
 import axios from 'axios';
 import Apis from '../apis/Apis';
 import { CircularProgress } from '@mui/material';
-import { AppleLogo, FacebookLogo, InstagramLogo, SpotifyLogo, XLogo, YoutubeLogo } from '@phosphor-icons/react';
+import { AppleLogo, ApplePodcastsLogo, FacebookLogo, InstagramLogo, SpotifyLogo, XLogo, YoutubeLogo } from '@phosphor-icons/react';
 
 function SocialOAuth() {
 
@@ -248,7 +248,7 @@ function SocialOAuth() {
                         {/* <Image style={styles.image}
                             src={'/assets/appleProducts.png'} alt='Icon'
                             height={30} width={30} /> */}
-                        <AppleLogo size={25} />
+                        <ApplePodcastsLogo size={25} />
                         <div>
                             Apple Podcast
                         </div>

@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Apis from '@/components/apis/Apis'
 import axios from 'axios'
 import SocialOAuth from '@/components/creatorOnboarding/SocialOAuth'
-import { AppleLogo, FacebookLogo, InstagramLogo, SpotifyLogo, XLogo, YoutubeLogo } from '@phosphor-icons/react'
+import { AppleLogo, ApplePodcastsLogo, FacebookLogo, InstagramLogo, SpotifyLogo, XLogo, YoutubeLogo } from '@phosphor-icons/react'
 import { Box, CircularProgress, Modal } from '@mui/material'
 import Knowledgebase from '@/components/buildai/Knowledgebase'
 
@@ -247,7 +247,7 @@ export const SocialKB = () => {
               {/* <Image style={styles.image}
                 src={'/assets/appleProducts.png'} alt='appleProducts'
                 height={30} width={30} /> */}
-              <AppleLogo size={25} />
+              <ApplePodcastsLogo size={25} />
               <div className='bg-transparent w-full flex flex-row justify-between gap-2'
                 style={styles.button}
               >

@@ -3,7 +3,7 @@ import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { Box, Button, Modal } from '@mui/material'
 import { color } from 'framer-motion';
-import { AppleLogo, FacebookLogo, Globe, InstagramLogo, LinkedinLogo, SpotifyLogo, TwitterLogo, XLogo, YoutubeLogo } from '@phosphor-icons/react';
+import { AppleLogo, ApplePodcastsLogo, FacebookLogo, Globe, InstagramLogo, LinkedinLogo, SpotifyLogo, TwitterLogo, XLogo, YoutubeLogo } from '@phosphor-icons/react';
 
 function AiSocialLinks({ handleContinue, aiName }) {
 
@@ -198,7 +198,7 @@ function AiSocialLinks({ handleContinue, aiName }) {
                                 twitterUrl && <XLogo size={25} />
                             }
                             {
-                                appleProducts && <AppleLogo size={25} />
+                                appleProducts && <ApplePodcastsLogo size={25} />
                             }
                             {
                                 spotifyurl && <SpotifyLogo size={25} />
@@ -449,7 +449,7 @@ function AiSocialLinks({ handleContinue, aiName }) {
                                 {/* <Image style={styles.image}
                                     src={'/assets/appleProducts.png'} alt='Icon'
                                     height={30} width={30} /> */}
-                                <AppleLogo size={30} />
+                                <ApplePodcastsLogo size={30} />
                                 <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
                                     <input style={styles.urlsInput}
                                         value={appleProducts}
@@ -592,7 +592,7 @@ function AiSocialLinks({ handleContinue, aiName }) {
                                         setShowApplePodcast(true);
                                         setAddSocialsPopup(false);
                                     }}>
-                                        <AppleLogo size={30} />
+                                        <ApplePodcastsLogo size={30} />
                                     </button>}
                                     {showSpotify ? "" : <button onClick={() => {
                                         setShowSpotify(true);

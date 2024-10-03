@@ -46,7 +46,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
     const stripePromise = loadStripe(stripePublickKey);
 
     const router = useRouter();
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState(3);
     const [direction, setDirection] = useState(0);
     const [value, setValue] = useState("");
 
@@ -1262,7 +1262,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                     )
                 }
                 {currentIndex === 6 && (
-                    <div className='flex flex-col justify-center' style={{ height: "", width: '100%', backgroundColor: '' }}>
+                    <div className='flex flex-col justify-center w-full' style={{ height: "",  backgroundColor: '' }}>
                         <motion.div
                             key="box7"
                             custom={direction}
@@ -1465,7 +1465,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                 style={styles}>
                                 <div className='w-full flex justify-center'>
                                     <div className='w-full flex flex-col justify-center items-center '>
-                                        <div className='w-8/12'>
+                                        <div className='w-full'>
                                             {/* <button style={{ marginTop: 20 }}
                                                 onClick={handleBack}
                                             >

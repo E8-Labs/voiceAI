@@ -206,7 +206,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
       } else {
         // setUploadLoader(true);
       }
-      setBuildAiLoader(true)
+      setBuildAiLoader(true);
 
 
       const ApiPath = Apis.BuildAI;
@@ -258,6 +258,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
         console.log("Response of create builai api is", response.data);
         if (response.data.status === true) {
           router.push("/creator/buildscript2");
+          setBuildAiLoader(false);
           console.log("response of build ai apis is", response.data.data);
         } else {
           console.log("status of api", response.data.status);
@@ -266,9 +267,9 @@ export default function ScriptAnimation({ onChangeIndex }) {
       }
     } catch (error) {
       console.error("ERror occured in build ai api", error);
+      setBuildAiLoader(false);
     } finally {
       // setUploadLoader(false);
-      setBuildAiLoader(false);
       setSkipLoader(false);
     }
   };
