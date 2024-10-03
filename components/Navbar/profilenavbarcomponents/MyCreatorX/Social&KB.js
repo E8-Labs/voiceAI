@@ -4,6 +4,8 @@ import Apis from '@/components/apis/Apis'
 import axios from 'axios'
 import SocialOAuth from '@/components/creatorOnboarding/SocialOAuth'
 import { AppleLogo, FacebookLogo, InstagramLogo, SpotifyLogo, XLogo, YoutubeLogo } from '@phosphor-icons/react'
+import { Box, CircularProgress, Modal } from '@mui/material'
+import Knowledgebase from '@/components/buildai/Knowledgebase'
 
 export const SocialKB = () => {
 
@@ -14,6 +16,9 @@ export const SocialKB = () => {
   const [twitterUrl, setTwitterurl] = useState("");
   const [spotifyurl, setSpotifyurl] = useState("");
   const [instaUrl, setInstaurl] = useState("");
+  const [showKbPopup, setKbPopup] = useState(false);
+  const [knowledgeData, setKnowledgeData] = useState([]);
+  const [delKBLoader, setDelKBLoader] = useState(null);
 
   //calling my AI api
   const getAiApi = async () => {
@@ -54,14 +59,67 @@ export const SocialKB = () => {
             setInstaurl(response.data.data.ai.instaUrl);
           }
         }
+        setKnowledgeData(response.data.data.kb)
+        //can be useful to show no data msg
+        // if (response.data.data.kb.length > 0) {
+        //   setkbData(false);
+        // } else {
+        //   setkbData(true);
+        // }
       }
     }
   }
 
   useEffect(() => {
     getAiApi()
-  }, [])
+  }, []);
 
+  //kb popup close
+  const handleCloseModal = (status) => {
+    setKbPopup(status)
+  }
+
+  const getknowledgeData = (data) => {
+    getAiApi();
+  }
+
+  const handleDelAddedData = async (itemId) => {
+    const localData = localStorage.getItem('User');
+    if (localData) {
+      setDelKBLoader(itemId);
+      const Data = JSON.parse(localData);
+      const AuthToken = Data.data.token;
+      const ApiPath = Apis.DelKnowledgeBase;
+      console.log("Authtoken", ApiPath, AuthToken);
+      const apiData = {
+        kbId: itemId
+      }
+      console.log("Kb id sending in api", apiData);
+      try {
+        const response = await axios.post(ApiPath, apiData, {
+          headers: {
+            'Authorization': 'Bearer ' + AuthToken,
+            'Content-Type': 'application/json'
+          }
+        });
+        if (response) {
+          console.log("Response of api is", response.data);
+          if (response.data.status === true) {
+            console.log("Response of api is", response.data);
+            getAiApi();
+          } else {
+            console.log("Response of api is", response.data.message);
+          }
+        }
+      } catch (error) {
+        console.error("Error occured in api", error);
+      } finally {
+        setDelKBLoader(null);
+        setKnowledgeData(knowledgeData.filter(knowledgeData => knowledgeData.id !== itemId));
+      }
+
+    }
+  }
 
   const styles = {
     inputContainer: {
@@ -103,6 +161,19 @@ export const SocialKB = () => {
     }
   }
 
+  const kbPopupStyle = {
+    height: 'auto',
+    // bgcolor: 'white',
+    p: 2,
+    mx: 'auto',
+    my: '50vh',
+    transform: 'translateY(-50%)',
+    borderRadius: 2,
+    border: "none",
+    outline: "none",
+    // border: "2px solid green"
+  };
+
 
   return (
     <div
@@ -122,7 +193,7 @@ export const SocialKB = () => {
               {/* <Image style={styles.image}
                 src={'/assets/fbIcon.png'} alt='facebook'
                 height={30} width={30} /> */}
-                <FacebookLogo size={25} />
+              <FacebookLogo size={25} />
               <div className='bg-transparent w-full flex flex-row justify-between gap-2'
                 style={styles.button}
               >
@@ -140,7 +211,7 @@ export const SocialKB = () => {
               {/* <Image style={styles.image}
                 src={'/assets/youtubeIcon.png'} alt='Youtube'
                 height={30} width={30} /> */}
-                <YoutubeLogo size={25} />
+              <YoutubeLogo size={25} />
               <div className='bg-transparent w-full flex flex-row justify-between gap-2'
                 style={styles.button}
               >
@@ -158,7 +229,7 @@ export const SocialKB = () => {
               {/* <Image style={styles.image}
                 src={'/assets/twiterIcon.png'} alt='Icon'
                 height={30} width={30} /> */}
-                <XLogo size={25} />
+              <XLogo size={25} />
               <div className='bg-transparent w-full flex flex-row justify-between gap-2'
                 style={styles.button}
               >
@@ -176,7 +247,7 @@ export const SocialKB = () => {
               {/* <Image style={styles.image}
                 src={'/assets/appleProducts.png'} alt='appleProducts'
                 height={30} width={30} /> */}
-                <AppleLogo size={25} />
+              <AppleLogo size={25} />
               <div className='bg-transparent w-full flex flex-row justify-between gap-2'
                 style={styles.button}
               >
@@ -194,7 +265,7 @@ export const SocialKB = () => {
               {/* <Image style={styles.image}
                 src={'/assets/spotify.png'} alt='spotifyIcon'
                 height={30} width={30} /> */}
-                <SpotifyLogo size={25} />
+              <SpotifyLogo size={25} />
               <div className='bg-transparent w-full flex flex-row justify-between gap-2'
                 style={styles.button}
               >
@@ -212,7 +283,7 @@ export const SocialKB = () => {
               {/* <Image style={styles.image}
                 src={'/assets/instagram.png'} alt='insta'
                 height={32} width={32} /> */}
-                <InstagramLogo size={25} />
+              <InstagramLogo size={25} />
               <div className='bg-transparent w-full flex flex-row justify-between gap-2'
                 style={styles.button}
               >
@@ -345,12 +416,34 @@ export const SocialKB = () => {
       </div>
       <div className='w-4/12 mt-4 px-6 rounded-2xl flex flex-col mb-12' style={{ backgroundColor: "#ffffff40" }}>
 
+        <div>
+          <Modal
+            open={showKbPopup}
+            onClose={(() => setKbPopup(false))}
+            closeAfterTransition
+            BackdropProps={{
+              timeout: 1000,
+              sx: {
+                backgroundColor: 'transparent',
+                backdropFilter: 'blur(30px)',
+              },
+            }} //style={{ backgroundColor: "red" }}
+          >
+            <Box className="lg:w-4/12 md:w-5/12 sm:w-7/12"
+              sx={kbPopupStyle}
+            >
+              <div className='flex flex-row justify-center'>
+                <Knowledgebase closeModal={handleCloseModal} getknowledgeData={getknowledgeData} />
+              </div>
+            </Box>
+          </Modal>
+        </div>
 
         <div className='flex flex-row justify-between items-center' style={{ marginTop: 20 }}>
           <div style={{ fontSize: 15, fontWeight: 700, fontFamily: "inter" }}>
             Knowledge Base
           </div>
-          <button className='text-purple underline self-start'>
+          <button className='text-purple underline self-start' onClick={() => { setKbPopup(true) }}>
             Add New
           </button>
         </div>
@@ -386,7 +479,7 @@ export const SocialKB = () => {
           </div>
 
           <div className='w-full flex flex-col mt-5 gap-5'>
-            <div className='w-full flex flex-row justify-between'>
+            {/* <div className='w-full flex flex-row justify-between'>
               <button>
                 <div style={{ fontSize: 14, fontWeight: 400, textDecoration: 'underline' }}>
                   document.pdf
@@ -400,9 +493,9 @@ export const SocialKB = () => {
                   Delete
                 </button>
               </div>
-            </div>
+            </div> */}
 
-            <div className='w-full flex flex-row justify-between mb-5'>
+            {/* <div className='w-full flex flex-row justify-between mb-5'>
               <button>
                 <div style={{ fontSize: 14, fontWeight: 400, textDecoration: 'underline' }}>
                   URL
@@ -416,6 +509,42 @@ export const SocialKB = () => {
                   Delete
                 </button>
               </div>
+            </div> */}
+
+            <div style={{ maxHeight: "50vh", overflow: "auto", scrollbarWidth: "none" }}>
+              {
+                knowledgeData.map((item) => (
+                  <div key={item.id} className='border-2 mt-4 p-4 rounded-lg' style={{ borderColor: '#E6E6E6' }}>
+                    <div className='flex flex-row w-full justify-between items-center'>
+                      <div style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 13, color: '#303240' }}>
+                        {item.type}
+                      </div>
+                      <div>
+                        {
+                          delKBLoader === item.id ?
+                            <CircularProgress size={20} /> :
+                            <button
+                              onClick={() => handleDelAddedData(item.id)}
+                            >
+                              <Image src="/assets/delIcon.png" height={20} width={20} alt='del' />
+                            </button>
+                        }
+                      </div>
+                    </div>
+                    <div className='w-full' style={{
+                      fontWeight: '400', fontFamily: 'inter',
+                      fontSize: 15, color: '#000000',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}>
+                      {item.content}
+                    </div>
+                  </div>
+                ))
+              }
             </div>
 
           </div>

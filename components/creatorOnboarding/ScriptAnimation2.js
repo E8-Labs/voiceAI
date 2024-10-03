@@ -46,7 +46,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
     const stripePromise = loadStripe(stripePublickKey);
 
     const router = useRouter();
-    const [currentIndex, setCurrentIndex] = useState(7);
+    const [currentIndex, setCurrentIndex] = useState(0);
     const [direction, setDirection] = useState(0);
     const [value, setValue] = useState("");
 
@@ -733,7 +733,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             exit="exit"
                             transition={{ duration: 0 }}
                             style={styles}>
-                            <div className='w-full flex justify-center'>
+                            <div className='w-full flex justify-center overflow-none'>
                                 <div className='w-11/12 sm:w-full'>
                                     <div>
                                         <button onClick={handleBack}>
@@ -777,7 +777,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
                                     {
                                         inputs.length < 10 && (
-                                            <button onClick={addInputField} className='text-purple mt-8 outline-none border-none' style={{ textDecoration: 'underline' }}>
+                                            <button onClick={addInputField} className='text-purple mt-4 outline-none border-none' style={{ textDecoration: 'underline' }}>
                                                 New Question
                                             </button>
                                         )
@@ -787,14 +787,14 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         {
                                             allQuestionsFilled ?
                                                 <button onClick={handleContinue}
-                                                    className='bg-purple hover:bg-purple text-white w-full mt-12'
+                                                    className='bg-purple hover:bg-purple text-white w-full mt-6'
                                                     style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
                                                     Continue
                                                 </button> :
                                                 <button
                                                     disabled
                                                     // onClick={handleContinue}
-                                                    className='bg-purple2 hover:bg-purple2 text-white w-full mt-12'
+                                                    className='bg-purple2 hover:bg-purple2 text-white w-full mt-6'
                                                     style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px", color: "white" }}>
                                                     Continue
                                                 </button>
