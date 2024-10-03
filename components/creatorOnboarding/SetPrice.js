@@ -142,7 +142,7 @@ function SetPrice({ handleContinue, buildScriptLoader }) {
                                         <button
                                             disabled
                                             //onClick={handleUploadClick}
-                                            className='bg-purple2 hover:bg-purple text-white w-full'
+                                            className='bg-purple2 hover:bg-purple2 text-white w-full'
                                             style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px", color: "white" }}>
                                             Continue
                                         </button>

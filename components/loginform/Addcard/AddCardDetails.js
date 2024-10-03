@@ -421,7 +421,7 @@ const AddCardDetails = ({
             <div className='w-full mt-6 flex justify-center'>
                 {
                     addCardLoader ?
-                        <div className='flex flex-row justify-end items-center mt-8 w-full'>
+                        <div className='flex flex-row justify-center items-center mt-8 w-full'>
                             <CircularProgress size={30} />
                         </div> :
                         <div className='flex flex-row justify-end items-center mt-8 w-full'>

@@ -993,7 +993,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                             }}
                                                             renderValue={(selected) => {
                                                                 if (selected.length === 0) {
-                                                                    return <em>Product / Service</em>;
+                                                                    return <span style={{ textDecoration: 'none' }}>Service</span>;
                                                                 }
                                                                 return selected;
                                                             }}
@@ -1010,7 +1010,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                             }}
                                                         >
                                                             <MenuItem value="">
-                                                                <em>Product / Service</em>
+                                                                <span>Product / Service</span>
                                                             </MenuItem>
                                                             {
                                                                 inputRows.map((item) => (
@@ -1293,7 +1293,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         <div className='items-center w-8/12 px-6 rounded-xl justify-between' style={{ height: "70px", border: "1px solid #EFEFEF", marginTop: 50 }}>
                                             <div className='w-full flex flex-row justify-end'>
                                                 <div className='bg-purple text-white px-2 py-1' style={{ borderRadius: "50px", width: "fit-content", marginTop: "-18px" }}>
-                                                    Recomended
+                                                    Recommended
                                                 </div>
                                             </div>
                                             <div className='flex flex-row items-center w-full rounded-xl justify-between'>
@@ -1302,7 +1302,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                         $1200/ yr
                                                     </div>
                                                     <div style={{ fontWeight: "400", fontSize: 18, fontFamily: "inter" }}>
-                                                        Save $200 (12%)
+                                                        (Save $200)
                                                     </div>
                                                 </div>
                                                 <div className='flex flex-row gap-2 items-center'>
