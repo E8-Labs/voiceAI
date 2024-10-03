@@ -1160,14 +1160,14 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         sellProduct || inviteWebinar || somethingElse ?
                                             <div className='w-full sm:w-10/12'>
                                                 <button onClick={handleContinue}
-                                                    className='bg-purple hover:bg-purple text-white w-full mt-12'
+                                                    className='bg-purple hover:bg-purple text-white w-full mt-4'
                                                     style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
                                                     Continue
                                                 </button>
                                             </div> :
                                             <div className='w-full sm:w-10/12'>
                                                 <button disabled //onClick={handleContinue}
-                                                    className='bg-purple2 hover:bg-purple2 text-white w-full mt-12'
+                                                    className='bg-purple2 hover:bg-purple2 text-white w-full mt-4'
                                                     style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
                                                     Continue
                                                 </button>
@@ -1262,7 +1262,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                     )
                 }
                 {currentIndex === 6 && (
-                    <div className='flex flex-col justify-center w-full' style={{ height: "",  backgroundColor: '' }}>
+                    <div className='flex flex-col justify-center w-full' style={{ height: "", backgroundColor: '' }}>
                         <motion.div
                             key="box7"
                             custom={direction}
