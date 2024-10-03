@@ -830,7 +830,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
                                     {/* Code to make dynamic routes */}
                                     <div //className='w-full sm:w-9/12' //style={{ maxHeight: "40vh", overflowY: "auto", scrollbarWidth: "none" }}
-                                        className="mt-8 w-full sm:w-9/12 max-h-[40vh] overflow-y-auto scrollbar scrollbar-thumb-purple scrollbar-track-transparent scrollbar-thin"
+                                        className="mt-8 w-full sm:w-9/12 max-h-[30vh] overflow-y-auto scrollbar scrollbar-thumb-purple scrollbar-track-transparent scrollbar-thin"
                                     >
                                         {inputRows.map((row, index) => (
                                             <div className='w-full flex flex-row gap-2 mt-2' key={index} style={{}}>
@@ -888,7 +888,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         ))}
                                     </div>
 
-                                    <div className='mt-6'>
+                                    <div className='mt-4'>
                                         <button onClick={addInputRow} className='text-purple' style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter" }}>
                                             <u>
                                                 Add New
@@ -898,7 +898,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                     {inputRows.every(row => row.productAmount && row.productName) ?
                                         <div className='w-full w-full sm:w-9/12'>
                                             <button onClick={handleContinue}
-                                                className='bg-purple hover:bg-purple text-white w-full mt-12'
+                                                className='bg-purple hover:bg-purple text-white w-full mt-6'
                                                 style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
                                                 Continue
                                             </button>
@@ -908,7 +908,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                             <button
                                                 disabled
                                                 // onClick={handleContinue}
-                                                className='bg-purple2 hover:bg-purple2 text-white w-full mt-12'
+                                                className='bg-purple2 hover:bg-purple2 text-white w-full mt-6'
                                                 style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px", color: "white" }}>
                                                 Continue
                                             </button>
