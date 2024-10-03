@@ -46,7 +46,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
     const stripePromise = loadStripe(stripePublickKey);
 
     const router = useRouter();
-    const [currentIndex, setCurrentIndex] = useState(3);
+    const [currentIndex, setCurrentIndex] = useState(0);
     const [direction, setDirection] = useState(0);
     const [value, setValue] = useState("");
 
@@ -305,7 +305,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
     const inputStyle = {
         inputContainer: {
-            marginTop: 30,
+            marginTop: 15,
             // display: "flex",
             // alignItems: "center",
             backgroundColor: "#EDEDED29", //EDEDED29 /* Light grey background */
