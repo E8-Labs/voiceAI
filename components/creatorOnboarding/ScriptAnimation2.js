@@ -749,7 +749,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         Your AI will qualify prospects and give you a better understanding about the person.
                                     </div>
                                     <div
-                                        className="w-full sm:w-9/12 max-h-[40vh] overflow-y-auto scrollbar scrollbar-thumb-purple scrollbar-track-transparent scrollbar-thin"
+                                        className="w-full sm:w-9/12 max-h-[30vh] overflow-y-auto scrollbar scrollbar-thumb-purple scrollbar-track-transparent scrollbar-thin"
                                     // className="w-full sm:w-9/12 max-h-[40vh] overflow-y-auto scrollbar-thin scrollbar-thumb-red"
                                     // className='w-full sm:w-9/12'
                                     // style={{ maxHeight: "40vh", overflowY: "auto", scrollbarWidth: '3px' }}
