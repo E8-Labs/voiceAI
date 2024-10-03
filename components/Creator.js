@@ -883,7 +883,7 @@ const Creator = () => {
                                                     // style={{ marginTop: 10 }}
                                                     >
                                                         {
-                                                            getAssistantData && getAssistantData.ai.instaUrl ?
+                                                            getAssistantData && getAssistantData?.ai?.instaUrl ?
                                                                 <button onClick={handleInstaClick}>
                                                                     <InstagramLogo size={25} />
                                                                     {/*<Image
@@ -892,7 +892,7 @@ const Creator = () => {
                                                                 </button> : ''
                                                         }
                                                         {
-                                                            getAssistantData && getAssistantData.ai.youtubeUrl ?
+                                                            getAssistantData && getAssistantData?.ai?.youtubeUrl ?
                                                                 <button onClick={handleYoutubeClick}>
                                                                     <YoutubeLogo size={25} />
                                                                     {/* <Image
@@ -901,7 +901,7 @@ const Creator = () => {
                                                                 </button> : ''
                                                         }
                                                         {
-                                                            getAssistantData && getAssistantData.ai.webUrl ?
+                                                            getAssistantData && getAssistantData?.ai?.webUrl ?
                                                                 <button onClick={handleWebClick}>
                                                                     <Globe size={25} />
                                                                     {/*<Image
