@@ -993,7 +993,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                             }}
                                                             renderValue={(selected) => {
                                                                 if (selected.length === 0) {
-                                                                    return <span style={{ textDecoration: 'none' }}>Service</span>;
+                                                                    return <span style={{ textDecoration: 'none' }}>Select</span>;
                                                                 }
                                                                 return selected;
                                                             }}
@@ -1010,7 +1010,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                             }}
                                                         >
                                                             <MenuItem value="">
-                                                                <span>Product / Service</span>
+                                                                <span>Select</span>
                                                             </MenuItem>
                                                             {
                                                                 inputRows.map((item) => (
@@ -1301,7 +1301,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                     <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
                                                         $1200/ yr
                                                     </div>
-                                                    <div style={{ fontWeight: "400", fontSize: 18, fontFamily: "inter" }}>
+                                                    <div style={{ fontWeight: "400", fontSize: 14, fontFamily: "inter" }}>
                                                         (Save $200)
                                                     </div>
                                                 </div>
@@ -1481,12 +1481,12 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                 // onClick={sendNotification}
                                                 >
                                                     {/* <div className='text-red'> */}
-                                                    Allow notifications.
+                                                    Allow notifications
                                                     {/* </div> */}
                                                 </button>
                                                 <button className='w-3/12 mt-5'
                                                     style={{
-                                                        fontSize: 15, fontWeight: '500', fontFamily: 'inter'
+                                                        fontSize: 16, fontWeight: '600', fontFamily: 'inter', color: '#000000'
                                                     }}
                                                     onClick={() => {
                                                         router.push("/tate.ai")
