@@ -166,11 +166,11 @@ export const AiDetails = () => {
       const response = await axios.post(ApiPath, formData, {
         headers: {
           "Authorization": "Bearer " + AuthToken,
-          "Content-Type": "application/json"
+          // "Content-Type": "application/json"
         }
       });
       if (response) {
-        console.log("Response of api is", response);
+        console.log("Response of api is", response.data.data);
       }
     } catch (error) {
       console.error("Error occured in updateAI api is", error);
