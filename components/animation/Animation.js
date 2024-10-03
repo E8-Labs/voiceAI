@@ -241,7 +241,44 @@ export default function Animation({ onChangeIndex }) {
         // setIndex1Loader(false);
         // setResendCodeLoader(false);
       }
-    } else {
+    }
+    else if (e === "Resend") {
+      // return
+      try {
+        setResendCodeLoader(true);
+        if (!userPhoneNumber) {
+          console.log("Please enter a valid phone number", userPhoneNumber);
+          return;
+        }
+
+        const appVerifier = window.recaptchaVerifier;
+
+        // Send OTP
+        const formattedPhoneNumber = `+${userPhoneNumber.replace(
+          /\D/g,
+          ""
+        )}`;
+        const confirmation = await signInWithPhoneNumber(
+          auth,
+          formattedPhoneNumber,
+          window.recaptchaVerifier
+        );
+
+        setVerificationId(confirmation.verificationId);
+        console.log("OTP sent successfully");
+        if (e === "Resend") {
+          return
+        } else {
+          handleContinue();
+        }
+      } catch (error) {
+        console.error("Error during OTP sending:", error);
+      } finally {
+        setIndex1Loader(false);
+        setResendCodeLoader(false);
+      }
+    }
+    else {
       // return
       try {
         if (!signinVerificationNumber) {
@@ -273,7 +310,6 @@ export default function Animation({ onChangeIndex }) {
         console.error("Error during OTP sending:", error);
       } finally {
         setIndex1Loader(false);
-        setResendCodeLoader(false);
       }
     }
   };
@@ -772,8 +808,8 @@ export default function Animation({ onChangeIndex }) {
   };
 
   const handleCaller_toCreator_Continue = () => {
-    setDirection(5);
-    setCurrentIndex((prevIndex) => prevIndex + 5);
+    setDirection(4);
+    setCurrentIndex((prevIndex) => prevIndex + 4);
   };
 
   //code when user want to become creator
@@ -2460,131 +2496,6 @@ export default function Animation({ onChangeIndex }) {
                     6 digit code was sent to number ending in {Number(userPhoneNumber.slice(-4))}
                   </div>
 
-                  {/*<div className="flex flex-row gap-4 mt-8">
-                    <input
-                      id="P1"
-                      type="number"
-                      inputMode="numeric"
-                      pattern="[0-9]*"
-                      autoFocus={true}
-                      value={P1}
-                      ref={signUpref}
-                      onChange={(e) => handleInputChange(e, setP1, "P2")}
-                      maxLength={1}
-                      style={{
-                        height: "40px",
-                        width: "40px",
-                        borderRadius: 6,
-                        backgroundColor: "#EDEDEDC7",
-                        textAlign: "center",
-                        outline: "none",
-                        border: "none",
-                      }}
-                      onKeyDown={(e) => handleBackspace(e, setP1, null)}
-                      onPaste={(e) => handlePaste(e)}
-                    />
-                    <input
-                      id="P2"
-                      type="number"
-                      inputMode="numeric"
-                      pattern="[0-9]*"
-                      value={P2}
-                      onChange={(e) => handleInputChange(e, setP2, "P3")}
-                      maxLength={1}
-                      style={{
-                        height: "40px",
-                        width: "40px",
-                        borderRadius: 6,
-                        backgroundColor: "#EDEDEDC7",
-                        textAlign: "center",
-                        outline: "none",
-                        border: "none",
-                      }}
-                      onKeyDown={(e) => handleBackspace(e, setP2, "P1")}
-                      onPaste={(e) => handlePaste(e)}
-                    />
-                    <input
-                      id="P3"
-                      type="number"
-                      inputMode="numeric"
-                      pattern="[0-9]*"
-                      value={P3}
-                      onChange={(e) => handleInputChange(e, setP3, "P4")}
-                      maxLength={1}
-                      style={{
-                        height: "40px",
-                        width: "40px",
-                        borderRadius: 6,
-                        backgroundColor: "#EDEDEDC7",
-                        textAlign: "center",
-                        outline: "none",
-                        border: "none",
-                      }}
-                      onKeyDown={(e) => handleBackspace(e, setP3, "P2")}
-                      onPaste={(e) => handlePaste(e)}
-                    />
-                    <input
-                      id="P4"
-                      type="number"
-                      inputMode="numeric"
-                      pattern="[0-9]*"
-                      value={P4}
-                      onChange={(e) => handleInputChange(e, setP4, "P5")}
-                      maxLength={1}
-                      style={{
-                        height: "40px",
-                        width: "40px",
-                        borderRadius: 6,
-                        backgroundColor: "#EDEDEDC7",
-                        textAlign: "center",
-                        outline: "none",
-                        border: "none",
-                      }}
-                      onKeyDown={(e) => handleBackspace(e, setP4, "P3")}
-                      onPaste={(e) => handlePaste(e)}
-                    />
-                    <input
-                      id="P5"
-                      type="number"
-                      inputMode="numeric"
-                      pattern="[0-9]*"
-                      value={P5}
-                      onChange={(e) => handleInputChange(e, setP5, "P6")}
-                      maxLength={1}
-                      style={{
-                        height: "40px",
-                        width: "40px",
-                        borderRadius: 6,
-                        backgroundColor: "#EDEDEDC7",
-                        textAlign: "center",
-                        outline: "none",
-                        border: "none",
-                      }}
-                      onKeyDown={(e) => handleBackspace(e, setP5, "P4")}
-                      onPaste={(e) => handlePaste(e)}
-                    />
-                    <input
-                      id="P6"
-                      type="number"
-                      inputMode="numeric"
-                      pattern="[0-9]*"
-                      value={P6}
-                      onChange={(e) => handleInputChange(e, setP6, null)}
-                      maxLength={1}
-                      style={{
-                        height: "40px",
-                        width: "40px",
-                        borderRadius: 6,
-                        backgroundColor: "#EDEDEDC7",
-                        textAlign: "center",
-                        outline: "none",
-                        border: "none",
-                      }}
-                      onKeyDown={(e) => handleBackspace(e, setP6, "P5")}
-                      onPaste={(e) => handlePaste(e)}
-                    />
-                    </div>*/}
-
                   <div className="flex flex-row gap-4 mt-8">
                     {["P1", "P2", "P3", "P4", "P5", "P6"].map((id, index) => (
                       <input
@@ -2634,7 +2545,13 @@ export default function Animation({ onChangeIndex }) {
                       <CircularProgress className="mt-4 ms-6" size={20} />
                     ) : (
                       <button style={{ fontSize: 13, fontWeight: "400" }}
-                        onClick={(e) => sendOtp("Resend")}>
+                        // onClick={() => {
+                        // }}
+                        onClick={(e) => {
+                          console.log("Number is", userPhoneNumber)
+                          sendOtp("Resend");
+                        }}
+                      >
                         Resend
                       </button>
                     )}

@@ -46,8 +46,8 @@ export default function ScriptAnimation2({ onChangeIndex }) {
     const stripePromise = loadStripe(stripePublickKey);
 
     const router = useRouter();
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [direction, setDirection] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState(2);
+    const [direction, setDirection] = useState(2);
     const [value, setValue] = useState("");
 
     //code for getting value of input fields
@@ -75,6 +75,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
     const [isVisible, setIsVisible] = useState(true);
     const [buildScriptLoader, setBuildScriptLoader] = useState(false);
     const [allQuestionsFilled, setAllQuestionsFilled] = useState(null);
+    const [productAmountInputErr, setProductAmountErr] = useState(null)
     // const [validLinkErr, setValidOtherLinkErr] = useState
 
     //code to add subscription
@@ -538,7 +539,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
     return (
         <div style={containerStyles}>
             <AnimatePresence initial={false} custom={direction}>
-                {currentIndex === 0 && (
+                {/* {currentIndex === 0 && (
                     <div className='flex flex-col w-full sm:justify-center justify-start' style={{ height: "", backgroundColor: '' }}>
                         <motion.div
                             key="box1"
@@ -553,15 +554,12 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             <div className='w-full flex justify-center'>
                                 <div className='w-11/12 sm:w-full'>
                                     <div style={{ backgroundColor: "", height: 24 }}>
-                                        {/* <button onClick={handleBack}>
-                                            <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
-                                        </button> */}
                                     </div>
                                     <div className='mt-6' style={{ fontSize: 24, fontWeight: "600", fontFamily: "inter" }}>
                                         Greet callers
                                     </div>
                                     <div className='text-lightWhite mt-2' style={{ fontSize: 13, fontWeight: "400" }}>
-                                        {/* Name you ai */}
+
                                     </div>
                                     <div className='text-lightWhite' style={{ fontSize: 13, fontWeight: "400", fontFamily: "inter" }}>
                                         How would you like to greet your callers?
@@ -635,8 +633,8 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
                         </motion.div>
                     </div>
-                )}
-                {currentIndex === 1 && (
+                )} */}
+                {/* {currentIndex === 1 && (
                     <div className='flex flex-col  sm:justify-center justify-start' style={{ height: "", }}>
                         <motion.div
                             key="box2"
@@ -721,7 +719,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             </div>
                         </motion.div>
                     </div>
-                )}
+                )} */}
                 {currentIndex === 2 && (
                     <div className='flex flex-col  sm:justify-center justify-start' style={{ height: "", }}>
                         <motion.div
@@ -735,10 +733,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             style={styles}>
                             <div className='w-full flex justify-center overflow-none'>
                                 <div className='w-11/12 sm:w-full'>
-                                    <div>
-                                        <button onClick={handleBack}>
-                                            <Image src={'/assets/backarrow.png'} alt='back' height={14} width={16} />
-                                        </button>
+                                    <div style={{ backgroundColor: "", height: 24 }}>
                                     </div>
                                     {/* <CallerInfo /> */}
 
@@ -834,19 +829,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                     >
                                         {inputRows.map((row, index) => (
                                             <div className='w-full flex flex-row gap-2 mt-2' key={index} style={{}}>
-                                                <div className='w-3/12 px-3 py-3 rounded-lg flex flex-row gap-4 items-center' style={{ backgroundColor: "#EDEDED80", }}>
-                                                    {/* <input
-                                                        className='w-full border-none bg-transparent outline-none'
-                                                        type="number"
-                                                        value={row.name}
-                                                        autoFocus={true}
-                                                        onChange={(e) => handleInputChange2(index, 'productAmount', e)}
-                                                        placeholder="$"
-                                                        style={{
-                                                            WebkitAppearance: "none", // Remove spinner arrows
-                                                            MozAppearance: "textfield",
-                                                        }}
-                                                    /> */}
+                                                <div className='w-3/12 px-3 py-3 rounded-lg flex flex-row gap-4 items-center' style={{ backgroundColor: "#EDEDED80", border: productAmountInputErr === index ? "1px solid red" : "none" }}>
                                                     <div className="flex items-center border-none border-gray-300">
                                                         <span className="mr-1">$</span>
                                                         <input
@@ -860,6 +843,13 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                             onInput={(e) => {
                                                                 // Remove any non-numeric characters
                                                                 e.target.value = e.target.value.replace(/[^0-9 .]/g, '');
+                                                                if (e.target.value === '0') {
+                                                                    console.log(`Value is zero at index: ${index}`);
+                                                                    setProductAmountErr(index);
+                                                                }
+                                                                else {
+                                                                    setProductAmountErr(false);
+                                                                }
                                                                 handleInputChange2(index, 'productAmount', e); // Update your handler
                                                             }}
                                                             // placeholder="Amount"
@@ -1019,7 +1009,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                                                 },
                                                             }}
                                                         >
-                                                            <MenuItem value="none">
+                                                            <MenuItem value="">
                                                                 <em>Product / Service</em>
                                                             </MenuItem>
                                                             {
@@ -1157,7 +1147,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                     </div>
 
                                     {
-                                        sellProduct || inviteWebinar || somethingElse ?
+                                        webinarUrl || otherUrl || otherGoal || selected ?
                                             <div className='w-full sm:w-10/12'>
                                                 <button onClick={handleContinue}
                                                     className='bg-purple hover:bg-purple text-white w-full mt-4'

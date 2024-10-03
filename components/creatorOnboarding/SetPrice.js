@@ -181,19 +181,27 @@ function SetPrice({ handleContinue, buildScriptLoader }) {
                             <Typography
                                 aria-owns={open ? 'mouse-over-popover' : undefined}
                                 aria-haspopup="true"
-                                onMouseEnter={(e)=> {
+                                onMouseEnter={(e) => {
                                     setAnchorel(e.currentTarget)
                                 }}
-                                onMouseLeave={(e)=> {
+                                onMouseLeave={(e) => {
                                     setAnchorel(null)
                                 }}
                             >
                                 <img src={'/assets/questionImage.png'}
-                                style={{ alignSelf: 'center', height: 15, width: 15 }} />
+                                    style={{ alignSelf: 'center', height: 15, width: 15 }} />
                             </Typography>
                             <Popover
                                 id="mouse-over-popover"
-                                sx={{ pointerEvents: 'none' }}
+                                sx={{
+                                    pointerEvents: 'none',
+                                }}
+                                PaperProps={{
+                                    sx: {
+                                      borderRadius: '10px', // Add borderRadius here
+                                      padding: "2px"
+                                    },
+                                  }}
                                 open={open}
                                 anchorEl={anchorel}
                                 anchorOrigin={{
@@ -204,16 +212,16 @@ function SetPrice({ handleContinue, buildScriptLoader }) {
                                     vertical: 'top',
                                     horizontal: 'left',
                                 }}
-                                onClose={()=> {
+                                onClose={() => {
                                     setAnchorel(null)
                                 }}
                                 disableRestoreFocus
                             >
-                                <Typography sx={{ p: 1, fontSize: 13 }}>We share this with our creators. We pay<br /> OpenAI, twilio, 11labs, Amazon Web<br /> Services, Stripe, 3rd Party Providers,<br />and not to mention…our expensive<br /> developers at E8 Labs.</Typography>
+                                <Typography sx={{ p: 1, fontSize: 13, padding: 1 }}>We share this with our creators. We pay<br /> OpenAI, twilio, 11labs, Amazon Web<br /> Services, Stripe, 3rd Party Providers,<br />and not to mention…our expensive<br /> developers at E8 Labs.</Typography>
                             </Popover>
                         </div>
 
-                        
+
                     </div>
                     <div className='' style={styles.text2}>
                         ${(20 / 100) * callPrice}
