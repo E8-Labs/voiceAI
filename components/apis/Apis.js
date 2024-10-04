@@ -42,7 +42,8 @@ const Apis = {
     verifyEmail: `${BasePath}api/user/verifyEmail`,
     MyProfile: `${BasePath}api/user/myProfile`,
     GetCreators: `${BasePath}api/user/getCreatorsx`,
-    UpdateCreatorAdminSide: `${BasePath}api/user/updateCreatorAI`
+    UpdateCreatorAdminSide: `${BasePath}api/user/updateCreatorAI`,
+    UpdateAi:`${BasePath}api/ai/updateAi`
 }
 
 export default Apis;
