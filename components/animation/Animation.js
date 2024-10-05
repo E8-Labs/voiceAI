@@ -94,7 +94,8 @@ export default function Animation({ onChangeIndex }) {
   const [EmailP3, setEmailP3] = useState("");
   const [EmailP4, setEmailP4] = useState("");
   const [EmailP5, setEmailP5] = useState("");
-  const [signinVerificationNumber, setSigninVerificationNumber] = useState(null);
+  const [signinVerificationNumber, setSigninVerificationNumber] =
+    useState(null);
   const [openWrongNumberPopup, setOpenWrongNumberPopup] = useState(false);
   const [emailValidationError, setEmailValidationError] = useState(false);
   const [sendEmailCodeLoader, setSendEmailCodeLoader] = useState(false);
@@ -113,11 +114,13 @@ export default function Animation({ onChangeIndex }) {
   const [numberFormatErr, setNumberFormatErr] = useState(null);
   const [verifyEmailLoader, setVerifyEmailLoader] = useState(false);
   const [resendCodeLoader, setResendCodeLoader] = useState(false);
-  const [emailVerificationCodeErr, setEmailVerificationCodeErr] = useState(null);
+  const [emailVerificationCodeErr, setEmailVerificationCodeErr] =
+    useState(null);
 
   const [verificationId, setVerificationId] = useState("");
   const [otp, setOtp] = useState([]);
-  const [emailVerificationCodeErr2, setEmailVerificationCodeErr2] = useState(null);
+  const [emailVerificationCodeErr2, setEmailVerificationCodeErr2] =
+    useState(null);
   const [isHighScreen, setIsHighScreen] = useState(false);
   const [isWideScreen, setIsWideScreen] = useState(false);
   const [isWideScreen2, setIsWideScreen2] = useState(false);
@@ -141,9 +144,9 @@ export default function Animation({ onChangeIndex }) {
   // Auto-focus the first input field on component mount
   useEffect(() => {
     if (currentIndex === 4) {
-      console.log("It is index", currentIndex)
+      console.log("It is index", currentIndex);
       if (emailInputRefs.current[0]) {
-        console.log("Trying to focus")
+        console.log("Trying to focus");
         emailInputRefs.current[0].focus();
       }
     }
@@ -229,7 +232,7 @@ export default function Animation({ onChangeIndex }) {
         console.log("Event valus is", e);
 
         if (e === "Resend") {
-          return
+          return;
         } else {
           handleContinue();
         }
@@ -241,8 +244,7 @@ export default function Animation({ onChangeIndex }) {
         // setIndex1Loader(false);
         // setResendCodeLoader(false);
       }
-    }
-    else if (e === "Resend") {
+    } else if (e === "Resend") {
       // return
       try {
         setResendCodeLoader(true);
@@ -254,10 +256,7 @@ export default function Animation({ onChangeIndex }) {
         const appVerifier = window.recaptchaVerifier;
 
         // Send OTP
-        const formattedPhoneNumber = `+${userPhoneNumber.replace(
-          /\D/g,
-          ""
-        )}`;
+        const formattedPhoneNumber = `+${userPhoneNumber.replace(/\D/g, "")}`;
         const confirmation = await signInWithPhoneNumber(
           auth,
           formattedPhoneNumber,
@@ -267,7 +266,7 @@ export default function Animation({ onChangeIndex }) {
         setVerificationId(confirmation.verificationId);
         console.log("OTP sent successfully");
         if (e === "Resend") {
-          return
+          return;
         } else {
           handleContinue();
         }
@@ -277,8 +276,7 @@ export default function Animation({ onChangeIndex }) {
         setIndex1Loader(false);
         setResendCodeLoader(false);
       }
-    }
-    else {
+    } else {
       // return
       try {
         if (!signinVerificationNumber) {
@@ -302,7 +300,7 @@ export default function Animation({ onChangeIndex }) {
         setVerificationId(confirmation.verificationId);
         console.log("OTP sent successfully");
         if (e === "Resend") {
-          return
+          return;
         } else {
           handleContinue();
         }
@@ -440,21 +438,26 @@ export default function Animation({ onChangeIndex }) {
             console.log("Response of ", response.data);
 
             if (response.data.status === true) {
+              localStorage.setItem("User", JSON.stringify(response.data));
               localStorage.removeItem("signinNumber");
-              if (fromBuyStatus) {
+              if (response.data.data.user.role == "admin") {
+                router.push(`/admin/admin`);
+              } else if (fromBuyStatus) {
                 const Data = JSON.parse(fromBuyStatus);
                 window.open(`/buyproduct/${Data.id}`);
                 localStorage.removeItem("fromBuyScreen");
-                localStorage.setItem("User", JSON.stringify(response.data));
               } else {
                 if (LocalData) {
                   const D = JSON.parse(LocalData);
                   const modalName = D.modalName;
-                  localStorage.setItem("User", JSON.stringify(response.data));
+                  // localStorage.setItem("User", JSON.stringify(response.data));
                   router.push(`/${modalName}`);
                 } else {
                   console.log("I am from onboarding flow");
-                  console.log('Response of api for login is', response.data.data);
+                  console.log(
+                    "Response of api for login is",
+                    response.data.data
+                  );
                   // router.push('')
                 }
               }
@@ -511,7 +514,7 @@ export default function Animation({ onChangeIndex }) {
   useEffect(() => {
     if (currentIndex === 1 && inputFocusRef.current) {
       // Using a small timeout to ensure rendering of the input after animation
-      console.log("Focusing on verify code")
+      console.log("Focusing on verify code");
       setTimeout(() => {
         inputFocusRef.current.focus();
       }, 300); // Adjust this delay according to the animation timing
@@ -760,9 +763,9 @@ export default function Animation({ onChangeIndex }) {
     // let sent = await sendOtp();
 
     let phoneNumber = signinVerificationNumber;
-    const localAssistantData = localStorage.getItem('assistantData');
+    const localAssistantData = localStorage.getItem("assistantData");
     const AssistantData = JSON.parse(localAssistantData);
-    console.log('AssistantData Recieved from localstorage is', AssistantData);
+    console.log("AssistantData Recieved from localstorage is", AssistantData);
     //code if assistant trial mode is true
     if (AssistantData?.assitant.allowTrial === true) {
       setIndex1Loader(true);
@@ -781,7 +784,6 @@ export default function Animation({ onChangeIndex }) {
         // setVerifiyNumberLoader(false);
       }
     }
-
   };
 
   //signup click
@@ -993,7 +995,6 @@ export default function Animation({ onChangeIndex }) {
     alignItems: "center",
     justifyContent: "center",
     // marginInline: 10,
-
   };
 
   //code for wide screen
@@ -1064,7 +1065,7 @@ export default function Animation({ onChangeIndex }) {
   };
 
   const handleBackspace3 = (e, index) => {
-    if (e.key === 'Backspace') {
+    if (e.key === "Backspace") {
       if (otp[index] === "" && index > 0) {
         inputRefs.current[index - 1].focus();
       }
@@ -1122,7 +1123,11 @@ export default function Animation({ onChangeIndex }) {
       const input = document.getElementById(inputId);
       if (input) {
         input.value = value;
-        handleInputChange({ target: { value } }, eval(`setP${index + 1}`), `P${index + 2}`);
+        handleInputChange(
+          { target: { value } },
+          eval(`setP${index + 1}`),
+          `P${index + 2}`
+        );
       }
     });
   };
@@ -1141,13 +1146,14 @@ export default function Animation({ onChangeIndex }) {
   };
 
   const loginBoxesstyle = {
-    height: "40px", width: "40px", //isWideScreen2 ? "40px" : "30px", width: isWideScreen2 ? "40px" : "30px",
+    height: "40px",
+    width: "40px", //isWideScreen2 ? "40px" : "30px", width: isWideScreen2 ? "40px" : "30px",
     borderRadius: 6,
     backgroundColor: "red",
     textAlign: "center",
     outline: "2px solid red",
     border: "2px solid red",
-  }
+  };
 
   const boxStyle = {
     height: isWideScreen ? "40px" : "30px",
@@ -1156,7 +1162,7 @@ export default function Animation({ onChangeIndex }) {
     backgroundColor: "#EDEDEDC7",
     textAlign: "center",
     outline: "none",
-    border: "none"
+    border: "none",
   };
 
   const handleVerifyLoginCode = async () => {
@@ -1204,12 +1210,12 @@ export default function Animation({ onChangeIndex }) {
   };
 
   const wrongNumberModalStyle = {
-    height: 'auto',
-    bgcolor: 'transparent',
+    height: "auto",
+    bgcolor: "transparent",
     // p: 2,
-    mx: 'auto',
-    my: '50vh',
-    transform: 'translateY(-55%)',
+    mx: "auto",
+    my: "50vh",
+    transform: "translateY(-55%)",
     borderRadius: 2,
     border: "none",
     outline: "none",
@@ -1376,45 +1382,87 @@ export default function Animation({ onChangeIndex }) {
                 </div>
                 <Modal
                   open={openWrongNumberPopup}
-                  onClose={(() => setOpenWrongNumberPopup(false))}
+                  onClose={() => setOpenWrongNumberPopup(false)}
                   closeAfterTransition
                   BackdropProps={{
                     timeout: 1000,
                     sx: {
-                      backgroundColor: 'transparent',
-                      backdropFilter: 'blur(40px)',
+                      backgroundColor: "transparent",
+                      backdropFilter: "blur(40px)",
                     },
                   }}
                 >
-                  <Box className="lg:w-8/12 sm:w-9/12 w-full"
+                  <Box
+                    className="lg:w-8/12 sm:w-9/12 w-full"
                     sx={wrongNumberModalStyle}
                   >
                     {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
-                    <div className='flex flex-row justify-center w-full'>
-                      <div className='sm:w-7/12 w-full' style={{ backgroundColor: "#ffffff23", padding: 20, borderRadius: 10 }}>
+                    <div className="flex flex-row justify-center w-full">
+                      <div
+                        className="sm:w-7/12 w-full"
+                        style={{
+                          backgroundColor: "#ffffff23",
+                          padding: 20,
+                          borderRadius: 10,
+                        }}
+                      >
                         {/* <AddCard handleBack={handleBack} closeForm={closeForm} /> */}
-                        <div style={{ backgroundColor: 'white', padding: 18, borderRadius: 10 }}>
+                        <div
+                          style={{
+                            backgroundColor: "white",
+                            padding: 18,
+                            borderRadius: 10,
+                          }}
+                        >
                           {/* <div className='mt-2 flex flex-row justify-between items-center'>
                                     <Image src="/assets/claimIcon.png" alt='claimimg' height={38} width={38} />
                                     <button onClick={(() => setOpenWrongNumberPopup(false))}>
                                         <Image src="/assets/crossBtn.png" alt='cross' height={14} width={14} />
                                     </button>
                                 </div> */}
-                          <div className='' style={{ fontWeight: '600', fontSize: 24, fontFamily: 'inter' }}>
+                          <div
+                            className=""
+                            style={{
+                              fontWeight: "600",
+                              fontSize: 24,
+                              fontFamily: "inter",
+                            }}
+                          >
                             Only in the US & Canada!
                           </div>
-                          <div className='text-black' style={{ fontWeight: "400", fontSize: 15, fontFamily: "inter", marginTop: 10 }}>
-                            We're not available in your country yet, but we're expanding soon! We'll keep you updated so you'll be the first to know when CreatorX launches in your region. You've been added to the waitlist!
+                          <div
+                            className="text-black"
+                            style={{
+                              fontWeight: "400",
+                              fontSize: 15,
+                              fontFamily: "inter",
+                              marginTop: 10,
+                            }}
+                          >
+                            We're not available in your country yet, but we're
+                            expanding soon! We'll keep you updated so you'll be
+                            the first to know when CreatorX launches in your
+                            region. You've been added to the waitlist!
                           </div>
-                          <div className='flex flex-row justify-center mt-4 w-full' style={{ marginTop: 30 }}>
+                          <div
+                            className="flex flex-row justify-center mt-4 w-full"
+                            style={{ marginTop: 30 }}
+                          >
                             <div>
                               <button
                                 onClick={() => {
                                   // window.open("https://www.youtube.com", '_blank')
                                   // closeForm();
                                   setOpenWrongNumberPopup(false);
-                                }} className='bg-purple px-6 py-2 text-white'
-                                style={{ fontWeight: "400", fontFamily: "inter", fontSize: 15, borderRadius: "50px" }}>
+                                }}
+                                className="bg-purple px-6 py-2 text-white"
+                                style={{
+                                  fontWeight: "400",
+                                  fontFamily: "inter",
+                                  fontSize: 15,
+                                  borderRadius: "50px",
+                                }}
+                              >
                                 Close
                               </button>
                             </div>
@@ -1592,9 +1640,12 @@ export default function Animation({ onChangeIndex }) {
                 </div> */}
 
                 <div className="w-full md:w-8/12">
-                  <VerifyPhoneNumber currentIndex={currentIndex} signinVerificationNumber={signinVerificationNumber}
+                  <VerifyPhoneNumber
+                    currentIndex={currentIndex}
+                    signinVerificationNumber={signinVerificationNumber}
                     fromSignInPage={true} //setVerifyErr={setVerifyErr} setVerifyLoader={setVerifyLoader}
-                    verificationId={verificationId} handleContinue={handleContinue}
+                    verificationId={verificationId}
+                    handleContinue={handleContinue}
                   />
                 </div>
 
@@ -1849,7 +1900,7 @@ export default function Animation({ onChangeIndex }) {
                       {userName ? (
                         <div>
                           {checkUserNameData &&
-                            checkUserNameData.status === true ? (
+                          checkUserNameData.status === true ? (
                             <div
                               style={{
                                 fontWeight: "400",
@@ -1912,7 +1963,8 @@ export default function Animation({ onChangeIndex }) {
                   >
                     <div style={{ fontSize: 12, fontWeight: "400" }}>Or</div>
                     <button
-                      onClick={handleMoveLogin} className="text-purple"
+                      onClick={handleMoveLogin}
+                      className="text-purple"
                       style={{ fontSize: 12, fontWeight: "500" }}
                     >
                       Login
@@ -2077,7 +2129,7 @@ export default function Animation({ onChangeIndex }) {
                         ) : (
                           <div>
                             {checkUserEmailData &&
-                              checkUserEmailData.status === true ? (
+                            checkUserEmailData.status === true ? (
                               <div
                                 style={{
                                   fontWeight: "400",
@@ -2398,7 +2450,7 @@ export default function Animation({ onChangeIndex }) {
                   </div>
                   <div>
                     {checkUserPhoneNumberData &&
-                      checkUserPhoneNumberData.status === true ? (
+                    checkUserPhoneNumberData.status === true ? (
                       <div
                         style={{
                           fontWeight: "400",
@@ -2493,7 +2545,8 @@ export default function Animation({ onChangeIndex }) {
                     className="text-lightWhite mt-3"
                     style={{ fontSize: 13, fontWeight: "400" }}
                   >
-                    6 digit code was sent to number ending in {Number(userPhoneNumber.slice(-4))}
+                    6 digit code was sent to number ending in{" "}
+                    {Number(userPhoneNumber.slice(-4))}
                   </div>
 
                   <div className="flex flex-row gap-4 mt-8">
@@ -2507,7 +2560,13 @@ export default function Animation({ onChangeIndex }) {
                         value={eval(id)}
                         ref={index === 0 ? signUpref : null}
                         autoFocus={index === 0}
-                        onChange={(e) => handlePhoneOtpInputChange(e, eval(`set${id}`), `P${index + 2}`)}
+                        onChange={(e) =>
+                          handlePhoneOtpInputChange(
+                            e,
+                            eval(`set${id}`),
+                            `P${index + 2}`
+                          )
+                        }
                         maxLength={1}
                         style={{
                           height: "40px",
@@ -2518,20 +2577,20 @@ export default function Animation({ onChangeIndex }) {
                           outline: "none",
                           border: "none",
                         }}
-                        onKeyDown={(e) => handleBackspace(e, eval(`set${id}`), index > 0 ? `P${index}` : null)}
+                        onKeyDown={(e) =>
+                          handleBackspace(
+                            e,
+                            eval(`set${id}`),
+                            index > 0 ? `P${index}` : null
+                          )
+                        }
                         onPaste={(e) => handlePaste(e)}
                       />
                     ))}
                   </div>
 
                   <div>
-                    {
-                      verifyPhoeCodeErr ?
-                        <div>
-                          {verifyPhoeCodeErr}
-                        </div>
-                        : ""
-                    }
+                    {verifyPhoeCodeErr ? <div>{verifyPhoeCodeErr}</div> : ""}
                   </div>
 
                   <div className="flex flex-row gap-1 mt-6">
@@ -2544,11 +2603,12 @@ export default function Animation({ onChangeIndex }) {
                     {resendCodeLoader ? (
                       <CircularProgress className="mt-4 ms-6" size={20} />
                     ) : (
-                      <button style={{ fontSize: 13, fontWeight: "400" }}
+                      <button
+                        style={{ fontSize: 13, fontWeight: "400" }}
                         // onClick={() => {
                         // }}
                         onClick={(e) => {
-                          console.log("Number is", userPhoneNumber)
+                          console.log("Number is", userPhoneNumber);
                           sendOtp("Resend");
                         }}
                       >
@@ -2594,7 +2654,7 @@ export default function Animation({ onChangeIndex }) {
               justifyContent: "center",
               alignItems: "center",
               backgroundColor: "",
-              width: "100%"
+              width: "100%",
             }}
           >
             <Box
@@ -2606,8 +2666,7 @@ export default function Animation({ onChangeIndex }) {
                 justifyContent: "center",
                 alignItems: "center",
                 backgroundColor: "",
-                width: "100%"
-
+                width: "100%",
               }}
             >
               <Box
@@ -2620,17 +2679,16 @@ export default function Animation({ onChangeIndex }) {
                   top: -10,
                   width: "100%",
                   // left: 0,
-                  backgroundColor: ""
+                  backgroundColor: "",
                 }}
               >
                 <Lottie
                   animationData={require("/public/congratsanimation.json")}
                   lottieRef={lottieRef}
-
                   loop={true}
                   style={{ height: "250px", width: "250px" }}
                   onComplete={() => {
-                    lottieRef.current.goToAndStop(3, true)
+                    lottieRef.current.goToAndStop(3, true);
                   }}
                 />
               </Box>
@@ -2645,17 +2703,16 @@ export default function Animation({ onChangeIndex }) {
                   top: -10,
                   width: "100%",
                   // left: 0,
-                  backgroundColor: ""
+                  backgroundColor: "",
                 }}
               >
                 <Lottie
                   animationData={require("/public/congratsanimation.json")}
                   lottieRef={lottieRef}
-
                   loop={true}
                   style={{ height: "250px", width: "250px" }}
                   onComplete={() => {
-                    lottieRef.current.goToAndStop(3, true)
+                    lottieRef.current.goToAndStop(3, true);
                   }}
                 />
               </Box>
@@ -2684,8 +2741,8 @@ export default function Animation({ onChangeIndex }) {
                     animate="center"
                     exit="exit"
                     transition={{ duration: 0 }}
-                  //   style={styles}
-                  // style={{ marginTop: -50, zIndex: 3 }}
+                    //   style={styles}
+                    // style={{ marginTop: -50, zIndex: 3 }}
                   >
                     {/* <div style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '', marginTop: -80 }}>
                       <div
@@ -2751,7 +2808,6 @@ export default function Animation({ onChangeIndex }) {
               </Box>
             </Box>
           </Box>
-
         )}
       </AnimatePresence>
     </div>
