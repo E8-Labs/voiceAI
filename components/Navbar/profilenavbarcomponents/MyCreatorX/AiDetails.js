@@ -180,8 +180,9 @@ export const AiDetails = () => {
       const Data = JSON.parse(localData);
       const AuthToken = Data.data.token;
       // console.log("Authtoken is", AuthToken);
-      const ApiPath = Apis.BuildScript;
+      const ApiPath = Apis.UpdateBuilAI;
       const formData = new FormData();
+      console.log("Api path for update audio is", ApiPath);
       // formData.append('media', selectedAudio);
       formData.append('media', selectedAudio);
       console.log("Audio sending in api")
@@ -195,7 +196,7 @@ export const AiDetails = () => {
         }
       });
       if (response) {
-        console.log("Response of api is", response.data.data);
+        console.log("Response of api is", response);
       }
     } catch (error) {
       console.error("Error occured in updateAI api is", error);

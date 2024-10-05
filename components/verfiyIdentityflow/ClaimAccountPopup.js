@@ -2,6 +2,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import React from 'react';
 import { useState, useEffect } from 'react';
+import LicenseFrontSide from './LicenseFrontSide';
+import LicenseBackSide from './LicenseBackSide';
 
 const ClaimAccountPopup = ({ getAssistantData, handleClosePopup }) => {
 
@@ -48,6 +50,12 @@ const ClaimAccountPopup = ({ getAssistantData, handleClosePopup }) => {
         // setUserLoginDetails(details);
     };
 
+    const handleBack = (details) => {
+        // handleCurrentIndex();
+        setDirection(1);
+        setCurrentIndex((prevIndex) => prevIndex - 1);
+        // setUserLoginDetails(details);
+    };
 
 
     //styles for input fields
@@ -179,6 +187,7 @@ const ClaimAccountPopup = ({ getAssistantData, handleClosePopup }) => {
                                 </div>
                                 <div className='w-full mt-8'>
                                     <button className='w-full bg-purple'
+                                        onClick={handleContinue}
                                         style={{
                                             borderRadius: '50px',
                                             height: '45px', fontSize: 15, fontWeight: '500', fontFamily: 'inter', color: 'white'
@@ -192,7 +201,7 @@ const ClaimAccountPopup = ({ getAssistantData, handleClosePopup }) => {
                 )}
 
                 {currentIndex === 2 && (
-                    <div className='flex flex-col w-full lg:w-10/12 xl:w-8/12 h- justify-center'>
+                    <div className='flex flex-col w-full justify-center'>
                         <motion.div
                             className='px-3 py-5'
                             key="box3"
@@ -204,11 +213,33 @@ const ClaimAccountPopup = ({ getAssistantData, handleClosePopup }) => {
                             transition={{ duration: 0 }}
                             style={styles}
                         >
-                            <div className='w-full lg:w-full '>
+                            <div className='w-full'>
+                                <LicenseFrontSide handleContinue={handleContinue} handleBack={handleBack} />
                             </div>
                         </motion.div>
                     </div>
                 )}
+
+                {currentIndex === 3 && (
+                    <div className='flex flex-col w-full justify-center'>
+                        <motion.div
+                            className='px-3 py-5'
+                            key="box4"
+                            custom={direction}
+                            variants={boxVariants}
+                            initial="enter"
+                            animate="center"
+                            exit="exit"
+                            transition={{ duration: 0 }}
+                            style={styles}
+                        >
+                            <div className='w-full'>
+                                <LicenseBackSide handleContinue={handleContinue} handleBack={handleBack} />
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+
             </AnimatePresence>
 
 

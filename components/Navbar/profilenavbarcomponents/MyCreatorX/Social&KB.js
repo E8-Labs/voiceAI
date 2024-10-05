@@ -480,7 +480,9 @@ export const SocialKB = () => {
 
           <div className='w-full flex flex-col gap-5'>
 
-            <div style={{ maxHeight: "50vh", overflow: "auto", scrollbarWidth: "none", paddingBottom: 20 }}>
+            <div
+              className='overflow-y-auto scrollbar scrollbar-thumb-purple scrollbar-track-transparent scrollbar-thin'
+              style={{ maxHeight: "50vh", overflow: "auto", scrollbarWidth: "none", paddingBottom: 20 }}>
               {
                 knowledgeData.map((item) => (
                   <div key={item.id} className='mt-6 rounded-lg' style={{ borderColor: '' }}>
@@ -500,10 +502,11 @@ export const SocialKB = () => {
                         {item.documentUrl ?
                           (
                             <button
+                              className='overflow-x-auto scrollbar scrollbar-thumb-purple scrollbar-track-transparent scrollbar-thin'
                               onClick={() => {
                                 let path = item.documentUrl
                                 window.open(path, "_blank")
-                              }} style={{ width: "200px", border: "", overflowX: "auto" }}>
+                              }} style={{ width: "90%", border: "", overflowX: "auto" }}>
                               {item.documentUrl}
                             </button>
                           ) : (

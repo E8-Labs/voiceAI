@@ -100,7 +100,7 @@ const Page = () => {
                 {
                   manu.map((item) => (
                     <div key={item.id} className='flex flex-col items-center gap-8' style={{ backgroundColor: "" }}>
-                      <button
+                      <button className='outline-none border-none'
                         style={styles.buttonText(item)}
                         onClick={() => {
                           setSelectedMenu(item.id)

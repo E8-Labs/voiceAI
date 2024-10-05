@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Drawer from '@mui/material/Drawer';
+import Modal, { CircularProgress } from '@mui/material';
 import moment from 'moment';
 import Apis from '@/components/apis/Apis';
 import { FormControl, MenuItem, Select } from '@mui/material';
@@ -26,6 +27,7 @@ const Calls = () => {
     { id: 4, name: "Jordyn Korsgaard", talkTime: '2mins 19sec', date: '21.12.2024 01:25', amount: '$1.0' },
     { id: 5, name: "Lincoln Stanton", talkTime: '2mins 19sec', date: '21.12.2024 01:25', amount: '$1.0' },
   ];
+  console.log("Data of drawer", open);
 
   const callLogs = [
     {
@@ -48,6 +50,7 @@ const Calls = () => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [endDate, setEndDate] = useState(null);
   const [showEndDateCalendar, setEndDateCalendar] = useState(false);
+  const [callLoader, setCallsLoader] = useState(false);
 
   // Function to format date as MM/DD/YYYY
   const formatDate = (date) => {
@@ -117,6 +120,7 @@ const Calls = () => {
 
   const getCallsData = async () => {
     try {
+      setCallsLoader(true);
       const LocalData = localStorage.getItem('User');
       const Data = JSON.parse(LocalData);
       console.log("Local data is", Data);
@@ -142,6 +146,9 @@ const Calls = () => {
       }
     } catch (e) {
       console.log('calls api error is', e);
+    }
+    finally {
+      setCallsLoader(false);
     }
   }
 
@@ -204,7 +211,7 @@ const Calls = () => {
         </div>
       </div>
 
-      <div className='w-7/12 mt-8 px-6 py-8 rounded-2xl' style={{ backgroundColor: "#ffffff40" }}>
+      <div className='w-11/12 mt-8 px-6 py-8 rounded-2xl' style={{ backgroundColor: "#ffffff40" }}>
         <div className='w-full flex flex-row items-center justify-center gap-4'>
           <div className='w-full rounded' style={styles.inputContainer}>
             <input
@@ -363,31 +370,44 @@ const Calls = () => {
           </div>
         </div>
 
-        {callsData && callsData.calls && callsData.calls.length > 0 ? callsData.calls.map((item) => (
-          <>
-            <button className='w-full' style={{}} onClick={() => { setOpen(item) }}>
-              <div className='w-full flex flex-row justify-between mt-10' key={item.id}>
-                <div className='w-3/12' style={{}}>
-                  <div style={styles.text2}>{item.caller.name}</div>
+        {
+          callLoader ?
+            <div className='w-full flex flex-row justify-center mt-8'>
+              <CircularProgress />
+            </div> :
+            <div className='w-full'>
+              {callsData && callsData.calls && callsData.calls.length > 0 ? callsData.calls.map((item) => (
+                <>
+                  <button className='w-full' style={{}} onClick={() => { setOpen(item) }}>
+                    <div className='w-full flex flex-row justify-between mt-10' key={item.id}>
+                      <div className='w-3/12' style={{}}>
+                        <div style={styles.text2}>{item.caller.name}</div>
+                      </div>
+                      <div className='w-3/12'>
+                        <div style={styles.text2}>
+                          {item.durationString}
+                        </div>
+                      </div>
+                      <div className='w-3/12 '>
+                        <div style={styles.text2}>
+                          {/* {formateDate(item.createdAt)} */}
+                          {moment(item.createdAt).format('MM/DD/YYYY')}
+                        </div>
+                      </div>
+                      <div className='w-2/12'>
+                        <div style={styles.text2}>{item.amount.toFixed(2)}</div>
+                      </div>
+                    </div>
+                    <div className='w-full bg-gray-200 h-0.5 rounded mt-2'></div>
+                  </button>
+                </>
+              )) : (
+                <div>
+                  No calls
                 </div>
-                <div className='w-3/12'>
-                  <div style={styles.text2}>{item.talkTime}</div>
-                </div>
-                <div className='w-3/12 '>
-                  <div style={styles.text2}>{formateDate(item.createdAt)}</div>
-                </div>
-                <div className='w-2/12'>
-                  <div style={styles.text2}>{item.caller.earned}</div>
-                </div>
-              </div>
-              <div className='w-full bg-gray-200 h-0.5 rounded mt-2'></div>
-            </button>
-          </>
-        )) : (
-          <div>
-            No calls
-          </div>
-        )}
+              )}
+            </div>
+        }
 
       </div>
 
@@ -414,7 +434,7 @@ const Calls = () => {
                 </div>
                 <div className='w-6/12 flex-col'>
                   <div style={{ textAlign: 'center', fontSize: 14, fontWeight: 300, color: '#000000' }}>
-                    ${open && open.caller.earned}
+                    ${open && open.amount.toFixed(2)}
                   </div>
                 </div>
               </div>
@@ -440,7 +460,7 @@ const Calls = () => {
                 Lorem ipsum dolor sit amet consectetur. Volutpat sit condimentum purus lorem. Praesent odio morbi sit sem risus habitant vitae. Neque aliquam risus gravida vivamus non. Suscipit ut sed elementum ullamcorper varius integer. Sit penatibus posuere.
               </div>
               <div className='w-full flex flex-row items-center gap-2 mt-5'>
-                <Image src={'/assets/playBtn.png'} alt='play'
+                <Image src='/assets/playIcon.png' alt='play'
                   height={32} width={32}
                 />
                 <div className='' style={{ fontSize: 14, fontWeight: 400, color: '#000000' }}>
@@ -450,11 +470,11 @@ const Calls = () => {
               <div className='mt-5' style={{ fontSize: 14, fontWeight: 300, color: '#00000080' }}>
                 Call log
               </div>
-              {
+              {/* {
                 callLogs.map((item) => (
                   <div className='w-full flex flex-col mt-5'>
                     <div key={item.id} className='w-full flex flex-row items-start gap-2'>
-                      <Image src={"/assets/callIcon.png"} alt='call'
+                      <Image src={"/assets/makeCallIcon.png"} alt='call' className='mt-2'
                         height={22} width={16}
                       />
                       <div className='flex flex-col'>
@@ -468,7 +488,22 @@ const Calls = () => {
                     </div>
                   </div>
                 ))
-              }
+              } */}
+              <div className='w-full flex flex-col mt-2'>
+                <div key={open.id} className='w-full flex flex-row items-start gap-2'>
+                  <Image src={"/assets/makeCallIcon.png"} alt='call' className='mt-2'
+                    height={22} width={16}
+                  />
+                  <div className='flex flex-col'>
+                    <div className='' style={{ fontSize: 14, fontWeight: 400, color: '#000000' }}>
+                      {moment(open.createdAt).format('MM/DD/YYYY')} {moment(open.createdAt).format('hh:mm:ss A')}
+                    </div>
+                    <div className='' style={{ fontSize: 12, fontWeight: 400, color: '#000000' }}>
+                      {open?.durationString}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </Drawer>

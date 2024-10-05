@@ -26,6 +26,7 @@ const MyAi = () => {
     //code for conversational goals
     const [converstationGoals, setConverstationGoals] = useState([]);
     const [converstationGoalsBtn, setConverstationGoalsBtn] = useState(null);
+    const [successSnackMessage, setSuccessSnackMessage] = useState(true);
 
     const handleGreetingInputFocus = () => { greetingTextRef.current.focus() }
 
@@ -133,7 +134,7 @@ const MyAi = () => {
                 }
             });
             if (response) {
-                console.log("Response of api is", response.data.data);
+                console.log("Response of api is", response);
             }
         } catch (error) {
             console.error("Error occured in update api is :::", error);

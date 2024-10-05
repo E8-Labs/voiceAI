@@ -823,87 +823,103 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                         Do you sell any products or services that can offer to qualified callers?
                                     </div>
 
-                                    {/* Code to make dynamic routes */}
-                                    <div //className='w-full sm:w-9/12' //style={{ maxHeight: "40vh", overflowY: "auto", scrollbarWidth: "none" }}
-                                        className="mt-8 w-full sm:w-9/12 max-h-[30vh] overflow-y-auto scrollbar scrollbar-thumb-purple scrollbar-track-transparent scrollbar-thin"
-                                    >
-                                        {inputRows.map((row, index) => (
-                                            <div className='w-full flex flex-row gap-2 mt-2' key={index} style={{}}>
-                                                <div className='w-3/12 px-3 py-3 rounded-lg flex flex-row gap-4 items-center' style={{ backgroundColor: "#EDEDED80", border: productAmountInputErr === index ? "1px solid red" : "none" }}>
-                                                    <div className="flex items-center border-none border-gray-300">
-                                                        <span className="mr-1">$</span>
-                                                        <input
-                                                            className="w-full border-none bg-transparent outline-none"
-                                                            type="text"
-                                                            inputMode="numeric"  // Add this line
-                                                            pattern="[0-9]*"
-                                                            value={row.productAmount}
-                                                            autoFocus={true}
-                                                            // onChange={(e) => handleInputChange2(index, 'productAmount', e)}
-                                                            onInput={(e) => {
-                                                                // Remove any non-numeric characters
-                                                                e.target.value = e.target.value.replace(/[^0-9 .]/g, '');
-                                                                if (e.target.value === '0') {
-                                                                    console.log(`Value is zero at index: ${index}`);
-                                                                    setProductAmountErr(index);
-                                                                }
-                                                                else {
-                                                                    setProductAmountErr(false);
-                                                                }
-                                                                handleInputChange2(index, 'productAmount', e); // Update your handler
-                                                            }}
-                                                            // placeholder="Amount"
-                                                            style={{
-                                                                WebkitAppearance: "none",
-                                                                MozAppearance: "textfield",
-                                                                appearance: "none",
-                                                            }}
-                                                        />
+                                    <div className='max-h-[50vh] overflow-y-auto scrollbar scrollbar-thumb-purple scrollbar-track-transparent scrollbar-thin'>
+                                        {/* Code to make dynamic routes */}
+                                        <div //className='w-full sm:w-9/12' //style={{ maxHeight: "40vh", overflowY: "auto", scrollbarWidth: "none" }}
+                                            className="mt-8 w-full sm:w-9/12 max-h-[30vh] overflow-y-auto scrollbar scrollbar-thumb-purple scrollbar-track-transparent scrollbar-thin"
+                                        >
+                                            {inputRows.map((row, index) => (
+                                                <div className='w-full flex flex-row gap-2 mt-2' key={index} style={{}}>
+                                                    <div className='w-3/12 px-3 py-3 rounded-lg flex flex-row gap-4 items-center' style={{ backgroundColor: "#EDEDED80", border: productAmountInputErr === index ? "1px solid red" : "none" }}>
+                                                        <div className="flex items-center border-none border-gray-300">
+                                                            <span className="mr-1">$</span>
+                                                            <input
+                                                                className="w-full border-none bg-transparent outline-none"
+                                                                type="text"
+                                                                inputMode="numeric"  // Add this line
+                                                                pattern="[0-9]*"
+                                                                value={row.productAmount}
+                                                                autoFocus={true}
+                                                                // onChange={(e) => handleInputChange2(index, 'productAmount', e)}
+                                                                onInput={(e) => {
+                                                                    // Remove any non-numeric characters
+                                                                    e.target.value = e.target.value.replace(/[^0-9 .]/g, '');
+                                                                    if (e.target.value === '0') {
+                                                                        console.log(`Value is zero at index: ${index}`);
+                                                                        setProductAmountErr(index);
+                                                                    }
+                                                                    else {
+                                                                        setProductAmountErr(false);
+                                                                    }
+                                                                    handleInputChange2(index, 'productAmount', e); // Update your handler
+                                                                }}
+                                                                // placeholder="Amount"
+                                                                style={{
+                                                                    WebkitAppearance: "none",
+                                                                    MozAppearance: "textfield",
+                                                                    appearance: "none",
+                                                                }}
+                                                            />
+                                                        </div>
+
                                                     </div>
+                                                    <div className='w-9/12 px-3 py-3 rounded-lg flex flex-row gap-4 items-center' style={{ backgroundColor: "#EDEDED80", }}>
+                                                        <input
+                                                            className='w-full border-none bg-transparent outline-none'
+                                                            type="text"
+                                                            value={row.productName}
+                                                            onChange={(e) => handleInputChange2(index, 'productName', e)}
+                                                            placeholder="Product Name"
+                                                        />
+                                                        <button onClick={() => handleDeleteRow(index)} style={{ backgroundColor: "", }}>
+                                                            <Image src="/assets/croseBtn.png" alt='cross' height={20} width={20} />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
 
-                                                </div>
-                                                <div className='w-9/12 px-3 py-3 rounded-lg flex flex-row gap-4 items-center' style={{ backgroundColor: "#EDEDED80", }}>
-                                                    <input
-                                                        className='w-full border-none bg-transparent outline-none'
-                                                        type="text"
-                                                        value={row.productName}
-                                                        onChange={(e) => handleInputChange2(index, 'productName', e)}
-                                                        placeholder="Product Name"
-                                                    />
-                                                    <button onClick={() => handleDeleteRow(index)} style={{ backgroundColor: "", }}>
-                                                        <Image src="/assets/croseBtn.png" alt='cross' height={20} width={20} />
-                                                    </button>
-                                                </div>
+                                        <div className='mt-4'>
+                                            <button onClick={addInputRow} className='text-purple' style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter" }}>
+                                                <u>
+                                                    Add New
+                                                </u>
+                                            </button>
+                                        </div>
+                                        {inputRows.every(row => row.productAmount && row.productName) ?
+                                            <div className='w-full sm:w-9/12'>
+                                                <button onClick={handleContinue}
+                                                    className='bg-purple hover:bg-purple text-white w-full mt-6'
+                                                    style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
+                                                    Continue
+                                                </button>
                                             </div>
-                                        ))}
-                                    </div>
-
-                                    <div className='mt-4'>
-                                        <button onClick={addInputRow} className='text-purple' style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter" }}>
-                                            <u>
-                                                Add New
-                                            </u>
-                                        </button>
-                                    </div>
-                                    {inputRows.every(row => row.productAmount && row.productName) ?
-                                        <div className='w-full w-full sm:w-9/12'>
-                                            <button onClick={handleContinue}
-                                                className='bg-purple hover:bg-purple text-white w-full mt-6'
-                                                style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
-                                                Continue
+                                            :
+                                            <div className='w-full w-full sm:w-9/12'>
+                                                <button
+                                                    disabled
+                                                    // onClick={handleContinue}
+                                                    className='bg-purple2 hover:bg-purple2 text-white w-full mt-6'
+                                                    style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px", color: "white" }}>
+                                                    Continue
+                                                </button>
+                                            </div>
+                                        }
+                                        <div className='w-full sm:w-9/12 flex flex-row mt-16 justify-between items-center text-purple'>
+                                            <iframe
+                                                src="https://www.youtube.com/embed/Dy9DM5u_GVg" //?autoplay=1&mute=1 to make it autoplay
+                                                frameBorder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                allowFullScreen
+                                                title="YouTube video"
+                                                // className='w-20vh h-40vh'
+                                                style={{ width: '40%', height: '50%', borderRadius: 15 }}
+                                            />
+                                            <button style={{ fontWeight: "700", fontFamily: "inter", fontSize: 13 }}>
+                                                Interested in an explainer video?
                                             </button>
                                         </div>
-                                        :
-                                        <div className='w-full w-full sm:w-9/12'>
-                                            <button
-                                                disabled
-                                                // onClick={handleContinue}
-                                                className='bg-purple2 hover:bg-purple2 text-white w-full mt-6'
-                                                style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px", color: "white" }}>
-                                                Continue
-                                            </button>
-                                        </div>
-                                    }
+                                    </div>
                                     {/* 
                                     <div className='w-10/12'>
                                         <Button onClick={handleContinue}
