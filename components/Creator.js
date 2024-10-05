@@ -12,6 +12,7 @@ import CycleArray from './animation/CycleArray';
 import AnimatedButton from './testcomponents/Dropdown';
 import MetaTags from './Metatags/MetaTags';
 import { Globe, InstagramLogo, YoutubeLogo } from '@phosphor-icons/react';
+import ClaimAccountPopup from './verfiyIdentityflow/ClaimAccountPopup';
 
 const backgroundImage = {
     backgroundImage: 'url("/creatorProfileBg.png")', // Ensure the correct path
@@ -604,6 +605,12 @@ const Creator = () => {
     // setSnackMessage(true);
     // }, 1000);
     // },[])
+
+
+    //code for close claimpopup
+    const handleClosePopup = (e) => {
+        setOpenClaimPopup(e)
+    }
 
     //code to make triangle
     const triangle = {
@@ -1549,69 +1556,9 @@ const Creator = () => {
                                     <div className='flex flex-row justify-center w-full'>
                                         <div className='sm:w-7/12 w-full' style={{ backgroundColor: "#ffffff23", padding: 20, borderRadius: 10 }}>
                                             {/* <AddCard handleBack={handleBack} closeForm={closeForm} /> */}
-                                            <div style={{ backgroundColor: 'white', padding: 18, borderRadius: 10 }}>
-                                                <div className='mt-2 flex flex-row justify-between items-center'>
-                                                    <Image src="/assets/claimIcon.png" alt='claimimg' height={38} width={38} />
-                                                    <button onClick={(() => setOpenClaimPopup(false))}>
-                                                        <Image src="/assets/crossBtn.png" alt='cross' height={14} width={14} />
-                                                    </button>
-                                                </div>
-                                                <div className='mt-8' style={{ fontWeight: '600', fontSize: 24, fontFamily: 'inter' }}>
-                                                    Claim Account
-                                                </div>
-                                                <div className='text-black' style={{ fontWeight: "400", fontSize: 15, fontFamily: "inter", marginTop: 10 }}>
-                                                    This account hasn't been claimed by its creator. In order to claim this creator, you must be the real creator and verify your identity.
-                                                </div>
-                                                <div className='flex flex-row mt-4'>
-                                                    <div style={{ fontSize: 12, color: "#000000", fontWeight: "400", fontFamily: "inter" }}>
-                                                        Calls:
-                                                    </div>
-                                                    <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 12 }}>
-                                                        {
-                                                            getAssistantData &&
-                                                            <div>
-                                                                {getAssistantData.calls ?
-                                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
-                                                                        {getAssistantData.calls}
-                                                                    </div> :
-                                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
-                                                                        0
-                                                                    </div>
-                                                                }
-                                                            </div>
-                                                        }
-                                                    </div>
-                                                    <div className='ms-2' style={{ fontSize: 12, color: "#000000", fontWeight: "400", fontFamily: "inter" }}>
-                                                        Earned:
-                                                    </div>
-                                                    <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
-                                                        {
-                                                            getAssistantData &&
-                                                            <div>
-                                                                {getAssistantData.earned ?
-                                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
-                                                                        ${Number(getAssistantData.earned).toFixed(2)}
-                                                                    </div> :
-                                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
-                                                                        $ 0
-                                                                    </div>
-                                                                }
-                                                            </div>
-                                                        }
-                                                    </div>
-                                                </div>
-                                                <div className='flex flex-row justify-start mt-4 w-full' style={{ marginTop: 30 }}>
-                                                    <div>
-                                                        <button
-                                                            onClick={() => {
-                                                                window.open("https://www.youtube.com", '_blank')
-                                                            }} className='bg-purple px-6 py-2 text-white'
-                                                            style={{ fontWeight: "400", fontFamily: "inter", fontSize: 15, borderRadius: "50px" }}>
-                                                            Verify Identity
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <ClaimAccountPopup getAssistantData={getAssistantData} handleClosePopup={handleClosePopup}
+                                            // onClick={(() => setOpenClaimPopup(false))}
+                                            />
                                         </div>
                                     </div>
                                 </Box>
