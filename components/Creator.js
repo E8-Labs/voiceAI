@@ -29,6 +29,7 @@ import {
   InstagramLogo,
   YoutubeLogo,
   TwitterLogo,
+  FacebookLogo,
 } from "@phosphor-icons/react";
 import ClaimAccountPopup from "./verfiyIdentityflow/ClaimAccountPopup";
 
@@ -196,6 +197,14 @@ const Creator = () => {
   const handleYoutubeClick = () => {
     console.log("youtube link recieved is", getAssistantData.ai.youtubeUrl);
     window.open(getAssistantData.ai.youtubeUrl, "_blank");
+  };
+  const handleTwitterClick = () => {
+    console.log("youtube link recieved is", getAssistantData.ai.twitterUrl);
+    window.open(getAssistantData.ai.twitterUrl, "_blank");
+  };
+  const handleFbClick = () => {
+    console.log("youtube link recieved is", getAssistantData.ai.fbUrl);
+    window.open(getAssistantData.ai.fbUrl, "_blank");
   };
 
   const handleWebClick = () => {
@@ -1051,7 +1060,7 @@ const Creator = () => {
                           )}
                           {getAssistantData &&
                           getAssistantData?.ai?.twitterUrl ? (
-                            <button onClick={handleWebClick}>
+                            <button onClick={handleTwitterClick}>
                               <TwitterLogo size={25} />
                               {/*<Image
                                                                         // layout='responsive'
@@ -1062,8 +1071,18 @@ const Creator = () => {
                             ""
                           )}
                           {getAssistantData && getAssistantData?.ai?.webUrl ? (
-                            <button onClick={handleYoutubeClick}>
+                            <button onClick={handleWebClick}>
                               <Globe size={25} />
+                              {/* <Image
+                                                                        // layout='responsive'
+                                                        objectFit='contain' src={"/assets/youtubeIcon.png"} alt='social' height={25} width={25} style={{ resize: "cover", borderRadius: 3 }} />*/}
+                            </button>
+                          ) : (
+                            ""
+                          )}
+                          {getAssistantData && getAssistantData?.ai?.fbUrl ? (
+                            <button onClick={handleFbClick}>
+                              <FacebookLogo size={25} />
                               {/* <Image
                                                                         // layout='responsive'
                                                         objectFit='contain' src={"/assets/youtubeIcon.png"} alt='social' height={25} width={25} style={{ resize: "cover", borderRadius: 3 }} />*/}
