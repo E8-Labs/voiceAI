@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import axios from 'axios';
 import Apis from '@/components/apis/Apis';
-import { CircularProgress } from '@mui/material';
+import { Alert, CircularProgress, Fade, Snackbar } from '@mui/material';
 
 const MyAi = () => {
 
@@ -26,7 +26,7 @@ const MyAi = () => {
     //code for conversational goals
     const [converstationGoals, setConverstationGoals] = useState([]);
     const [converstationGoalsBtn, setConverstationGoalsBtn] = useState(null);
-    const [successSnackMessage, setSuccessSnackMessage] = useState(true);
+    const [successSnackMessage, setSuccessSnackMessage] = useState(null);
 
     const handleGreetingInputFocus = () => { greetingTextRef.current.focus() }
 
@@ -128,13 +128,15 @@ const MyAi = () => {
             for (let [key, value] of formData.entries()) {
                 console.log(`${key}:`, value)
             }
-            const response = await axios.post(Apis.BuildScript, formData, {
+            console.log('Apipath for the updateAI API is ::', Apis.UpdateBuilAI)
+            const response = await axios.post(Apis.UpdateBuilAI, formData, {
                 headers: {
                     "Authorization": "Bearer " + AuthToken
                 }
             });
             if (response) {
-                console.log("Response of api is", response);
+                console.log("Response of api is", response.data);
+                setSuccessSnackMessage(response.data.message);
             }
         } catch (error) {
             console.error("Error occured in update api is :::", error);
@@ -209,7 +211,7 @@ const MyAi = () => {
                         //         setShowGreetingSaveBtn(false);
                         //     }
                         // }}
-                        placeholder="Lorem ipsum"
+                        placeholder="Greeting Text"
                     />
                     <div>
                         {
@@ -256,7 +258,7 @@ const MyAi = () => {
                             paddingLeft: '10px',
                             color: '#000',
                         }}
-                        placeholder="Lorem ipsum dolor sit amet consectetur. Volutpat sit condimentum purus lorem. Praesent odio morbi sit sem risus habitant vitae. Neque aliquam risus gravida vivamus non. Suscipit ut sed elementum ullamcorper varius integer. Sit penatibus posuere."
+                        placeholder="What might users ask you about during the calls?"
                         rows={6} // Adjust the number of rows to set the height of the textarea
                         multiple
                     />
@@ -466,6 +468,34 @@ const MyAi = () => {
 
 
             </div>
+
+
+            <div>
+                <Snackbar
+                    open={successSnackMessage}
+                    autoHideDuration={3000}
+                    onClose={() => {
+                        setSuccessSnackMessage(null)
+                    }}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center'
+                    }}
+                    TransitionComponent={Fade}
+                    TransitionProps={{
+                        direction: 'center'
+                    }}
+                >
+                    <Alert
+                        onClose={() => {
+                            setSuccessSnackMessage(null)
+                        }} severity="none"
+                        sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22', backgroundColor: "white", paddingInline: "10px" }}>
+                        {successSnackMessage}
+                    </Alert>
+                </Snackbar>
+            </div>
+
         </div>
     )
 }

@@ -10,6 +10,8 @@ const Page = () => {
 
     const [callLogDetails, setCallLogDetails] = useState([]);
     const [callLogloader, setCallLogloader] = useState(false);
+    const [transcriptSummaryText, setTranscriptSummaryText] = useState('');
+    const [transcriptText, setTranscriptText] = useState('');
 
     const getCallLogs = async () => {
         const localData = localStorage.getItem('User');
@@ -67,35 +69,7 @@ const Page = () => {
         }
     }
 
-    const callLogs = [
-        {
-            id: 1,
-            name: 'Rayna Vaccaro',
-            image: '/assets/profileImage.png',
-            price: '$400',
-            time: '32 minutes',
-            date: '10/3/2007'
-        },
-        {
-            id: 2,
-            name: 'Rayna Vaccaro',
-            image: '/assets/profileImage.png',
-            price: '$400',
-            time: '32 minutes',
-            date: '10/3/2007'
-        },
-        {
-            id: 3,
-            name: 'Rayna Vaccaro',
-            image: '/assets/profileImage.png',
-            price: '$400',
-            time: '32 minutes',
-            date: '10/3/2007'
-        },
-    ]
 
-    const [transcriptSummaryText, setTranscriptSummaryText] = useState('');
-    const [transcriptText, setTranscriptText] = useState('');
     const styleDetails = {
         maxHeight: '60vh',
         overflow: 'auto',
@@ -126,7 +100,7 @@ const Page = () => {
         return setTranscriptSummaryText(formattedContent)
     };
 
-    const [transcriptData, setTranscriptData] = useState('');
+    // const [transcriptData, setTranscriptData] = useState('');
     const fetchTranscript = async (Text) => {
         const apiResponse = Text;
 

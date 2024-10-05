@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import axios from 'axios';
 import Apis from '@/components/apis/Apis';
-import { CircularProgress } from '@mui/material';
+import { Alert, CircularProgress, Fade, Snackbar } from '@mui/material';
 
 const BasicInfo = () => {
 
@@ -27,6 +27,7 @@ const BasicInfo = () => {
     const [creatorBtn, setCreatorBtn] = useState(false);
     const [comunityHelpText, setComunityHelpText] = useState("");
     const [comunityHelpBtn, setComunityHelpBtn] = useState(false);
+    const [successSnack, setSuccessSnack] = useState(null);
 
     //get aiData
     const getAiDetails = async () => {
@@ -185,13 +186,14 @@ const BasicInfo = () => {
                 console.log("name sendng in api")
                 console.log(`${key}`, value)
             }
-            const response = await axios.post(Apis.UpdateAi, formData, {
+            const response = await axios.post(Apis.UpdateBuilAI, formData, {
                 headers: {
                     "Authorization": "Bearer " + AuthToken
                 }
             });
             if (response) {
-                console.log("Response of update AI api is :::::", response.data)
+                console.log("Response of update AI api is :::::", response.data);
+                setSuccessSnack(response.data.message);
             }
         } catch (error) {
             console.error("Error occured in update api is :::", error);
@@ -223,6 +225,7 @@ const BasicInfo = () => {
             });
             if (response) {
                 console.log('Response of update profile api is', response.data);
+                setSuccessSnack(response.data.message);
             }
         } catch (error) {
             console.error("Error occured in update profile api is", error);
@@ -691,6 +694,32 @@ const BasicInfo = () => {
 
                 </div>
 
+            </div>
+
+            <div>
+                <Snackbar
+                    open={successSnack}
+                    autoHideDuration={3000}
+                    onClose={() => {
+                        setSuccessSnack(null)
+                    }}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center'
+                    }}
+                    TransitionComponent={Fade}
+                    TransitionProps={{
+                        direction: 'center'
+                    }}
+                >
+                    <Alert
+                        onClose={() => {
+                            setSuccessSnack(null)
+                        }} severity="success"
+                        sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22', backgroundColor: "white", paddingInline: "10px" }}>
+                        {successSnack}
+                    </Alert>
+                </Snackbar>
             </div>
 
         </div >

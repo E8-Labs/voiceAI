@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Drawer from '@mui/material/Drawer';
-import Modal, { CircularProgress } from '@mui/material';
+import { Modal, Box, CircularProgress } from '@mui/material';
 import moment from 'moment';
 import Apis from '@/components/apis/Apis';
 import { FormControl, MenuItem, Select } from '@mui/material';
@@ -18,7 +18,7 @@ import { CalendarDots } from '@phosphor-icons/react';
 const Calls = () => {
   const [open, setOpen] = useState('');
   const [callsData, setCallsData] = useState({ calls: [] });
-  const [openFilterDrawer, setOpenFilterDrawer] = useState(false);
+  const [openFilterModal, setOpenFilterModal] = useState(false);
   const [productType, setProductType] = useState('none');
   const callDetails = [
     { id: 1, name: "Rayna Passaquindici Arcand", talkTime: '2mins 19sec', date: '21.12.2024 01:25', amount: '$1.0' },
@@ -28,22 +28,6 @@ const Calls = () => {
     { id: 5, name: "Lincoln Stanton", talkTime: '2mins 19sec', date: '21.12.2024 01:25', amount: '$1.0' },
   ];
   console.log("Data of drawer", open);
-
-  const callLogs = [
-    {
-      id: 1,
-      date: '21.12.2024 01:25pm',
-      talkTime: '12mins 30sec'
-    }, {
-      id: 2,
-      date: '21.12.2024 01:25pm',
-      talkTime: '12mins 30sec'
-    }, {
-      id: 3,
-      date: '21.12.2024 01:25pm',
-      talkTime: '12mins 30sec'
-    },
-  ]
 
   //code for calender
   const [date, setDate] = useState(null);
@@ -103,6 +87,20 @@ const Calls = () => {
     }
   };
 
+
+  const styleLoginModal = {
+    height: 'auto',
+    bgcolor: 'transparent',
+    // p: 2,
+    mx: 'auto',
+    my: '50vh',
+    transform: 'translateY(-55%)',
+    borderRadius: 2,
+    border: "none",
+    outline: "none",
+    // border: "2px solid green"
+  };
+
   const toggleDrawer = (open) => (event) => {
     if (
       event &&
@@ -160,7 +158,7 @@ const Calls = () => {
   //open drawer
 
   const handleFilterDrawer = (status) => {
-    setOpenFilterDrawer(status);
+    setOpenFilterModal(status);
   };
 
   const handleProductType = (e) => {
@@ -221,138 +219,160 @@ const Calls = () => {
             />
             <Image src={"/assets/searchIcon.png"} width={20} height={20} />
           </div>
-          <button onClick={() => handleFilterDrawer(true)} className='text-purple' style={{ fontWeight: "400", fontFamily: "inter", fontSize: 15 }}>
+          <button onClick={() => handleFilterDrawer(true)} className='text-purple outline-none border-none' style={{ fontWeight: "400", fontFamily: "inter", fontSize: 15 }}>
             Filter
           </button>
-          <Drawer open={openFilterDrawer} onClose={() => handleFilterDrawer(false)}
-            anchor='right'
-            sx={{ '& .MuiDrawer-paper': { width: '30%' } }}>
-            <div className='pt-6 px-8' style={{ backgroundColor: "#ffffff70", height: "100%" }}>
-              <div className='flex flex-row w-full justify-between items-center'>
-                <div style={{ color: 'black', fontWeight: '400', fontSize: 15, fontFamily: 'inter' }}>
-                  Filter
-                </div>
-                <div>
-                  <button onClick={() => handleFilterDrawer(false)}>
-                    <Image src="/assets/crossBtn2.png" alt='cross' height={15} width={15} />
-                  </button>
-                </div>
-              </div>
-              <div className='mt-6' style={{ fontWeight: '400', fontSize: 11, fontFamily: 'inter' }}>
-                Range
-              </div>
+          <div className='w-full'>
+            <Modal
+              open={openFilterModal}
+              onClose={(() => setOpenFilterModal(false))}
+              closeAfterTransition
+              BackdropProps={{
+                timeout: 1000,
+                sx: {
+                  backgroundColor: 'transparent',
+                  backdropFilter: 'blur(40px)',
+                  height: "100%"
+                },
+              }}
+              className=' '
+            >
+              <Box className="lg:w-5/12 sm:w-7/12 w-11/12"
+                sx={styleLoginModal}
+              >
+                {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
+                <div className='rounded' style={{ padding: 20, backgroundColor: '#ffffff60' }}>
+                  <div className='w-full' style={{}}>
+                    <div className='pt-6 px-8 pb-6' style={{ backgroundColor: "#ffffff70", height: "100%" }}>
+                      <div className='flex flex-row w-full justify-between items-center'>
+                        <div style={{ color: 'black', fontWeight: '400', fontSize: 15, fontFamily: 'inter' }}>
+                          Filter
+                        </div>
+                        <div>
+                          <button onClick={() => handleFilterDrawer(false)}>
+                            <Image src="/assets/crossBtn2.png" alt='cross' height={15} width={15} />
+                          </button>
+                        </div>
+                      </div>
+                      <div className='mt-6' style={{ fontWeight: '400', fontSize: 11, fontFamily: 'inter' }}>
+                        Range
+                      </div>
 
-              {/* Code for calender input fields */}
+                      {/* Code for calender input fields */}
 
-              <div className='mt-1 w-full'>
-                {/* <input className='w-full bg-gray-200' type='text' placeholder='Start Date' /> */}
-                {/* <Calendar onChange={setDate} value={date} /> */}
-                <div className='w-full bg-gray-200 rounded' style={{ position: 'relative', display: 'inline-block' }}>
-                  <div className='flex flex-row justify-between items-center w-full' style={{ padding: '10px', backgroundColor: "" }}>
-                    <input
-                      className='w-full'
-                      type="text"
-                      placeholder='Start date'
-                      value={date ? formatDate(date) : ''}
-                      onClick={() => setShowCalendar(!showCalendar)}
-                      readOnly
-                      style={{ cursor: 'pointer', width: '150px', backgroundColor: "transparent" }}
-                    />
-                    <button onClick={() => setShowCalendar(!showCalendar)}>
-                      <CalendarDots size={20} />
-                    </button>
-                  </div>
-                  {showCalendar && (
-                    <div style={{ position: 'absolute', zIndex: 100 }}>
-                      <Calendar onChange={handleDateChange} value={date} />
+                      <div className='mt-1 w-full'>
+                        {/* <input className='w-full bg-gray-200' type='text' placeholder='Start Date' /> */}
+                        {/* <Calendar onChange={setDate} value={date} /> */}
+                        <div className='w-full bg-gray-200 rounded' style={{ position: 'relative', display: 'inline-block' }}>
+                          <div className='flex flex-row justify-between items-center w-full' style={{ padding: '10px', backgroundColor: "" }}>
+                            <input
+                              className='w-full'
+                              type="text"
+                              placeholder='Start date'
+                              value={date ? formatDate(date) : ''}
+                              onClick={() => setShowCalendar(!showCalendar)}
+                              readOnly
+                              style={{ cursor: 'pointer', width: '150px', backgroundColor: "transparent" }}
+                            />
+                            <button onClick={() => setShowCalendar(!showCalendar)}>
+                              <CalendarDots size={20} />
+                            </button>
+                          </div>
+                          {showCalendar && (
+                            <div style={{ position: 'absolute', zIndex: 100 }}>
+                              <Calendar onChange={handleDateChange} value={date} />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className='mt-4 w-full'>
+                        {/* <input className='w-full bg-gray-200' type='text' placeholder='End Date' /> */}
+                        <div className='w-full bg-gray-200 rounded' style={{ position: 'relative', display: 'inline-block' }}>
+                          <div className='flex flex-row justify-between items-center w-full' style={{ padding: '10px', backgroundColor: "" }}>
+                            <input
+                              className='w-full'
+                              type="text"
+                              placeholder='End date'
+                              value={endDate ? formatDate(endDate) : ''}
+                              onClick={() => setEndDateCalendar(!showEndDateCalendar)}
+                              readOnly
+                              style={{ cursor: 'pointer', width: '150px', backgroundColor: "transparent" }}
+                            />
+                            <button onClick={() => setEndDateCalendar(!showEndDateCalendar)}>
+                              <CalendarDots size={20} />
+                            </button>
+                          </div>
+                          {showEndDateCalendar && (
+                            <div style={{ position: 'absolute', zIndex: 100 }}>
+                              <Calendar onChange={handleEndDateChange} value={endDate} />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className='mt-6' style={{ fontWeight: '600', fontSize: 11, fontFamily: 'inter' }}>
+                        Produt
+                      </div>
+
+                      {/* Dropdown for products */}
+                      <div>
+                        <FormControl className='w-full mt-4'>
+                          <Select
+                            className=' border-none rounded-md'
+                            displayEmpty
+                            value={productType}
+                            onChange={handleProductType}
+                            // renderValue={(selected) => {
+                            //   if (selected.length === 0) {
+                            //     return <em>Select Type</em>;
+                            //   }
+                            //   return selected;
+                            // }}
+                            sx={{
+                              backgroundColor: '#EDEDED80',
+                              '& .MuiOutlinedInput-notchedOutline': {
+                                border: 'none',
+                              },
+                            }}
+                            MenuProps={{
+                              PaperProps: {
+                                sx: { backgroundColor: '#ffffff' },
+                              },
+                            }}
+                          >
+                            <MenuItem value="none">
+                              <em>Select Product</em>
+                            </MenuItem>
+                            <MenuItem value="P1">Product 1</MenuItem>
+                            <MenuItem value="P2">Product 2</MenuItem>
+                            <MenuItem value="P3">Product 3</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </div>
+
+                      <div className='w-full flex flex-row justify-center mt-12'>
+                        <button
+                          onClick={() => {
+                            let Data = {
+                              startDate: date,
+                              endDate: endDate,
+                              product: productType
+                            }
+                            console.log("Data for filters is :", Data);
+                          }}
+                          className='w-full py-3 w-10/12 bg-purple'
+                          style={{ fontWeight: '400', fontSize: 15, fontFamily: 'inter', color: 'white', borderRadius: '50px' }}>
+                          Apply Filter
+                        </button>
+                      </div>
+
                     </div>
-                  )}
-                </div>
-              </div>
-
-              <div className='mt-4 w-full'>
-                {/* <input className='w-full bg-gray-200' type='text' placeholder='End Date' /> */}
-                <div className='w-full bg-gray-200 rounded' style={{ position: 'relative', display: 'inline-block' }}>
-                  <div className='flex flex-row justify-between items-center w-full' style={{ padding: '10px', backgroundColor: "" }}>
-                    <input
-                      className='w-full'
-                      type="text"
-                      placeholder='End date'
-                      value={endDate ? formatDate(endDate) : ''}
-                      onClick={() => setEndDateCalendar(!showEndDateCalendar)}
-                      readOnly
-                      style={{ cursor: 'pointer', width: '150px', backgroundColor: "transparent" }}
-                    />
-                    <button onClick={() => setEndDateCalendar(!showEndDateCalendar)}>
-                      <CalendarDots size={20} />
-                    </button>
                   </div>
-                  {showEndDateCalendar && (
-                    <div style={{ position: 'absolute', zIndex: 100 }}>
-                      <Calendar onChange={handleEndDateChange} value={endDate} />
-                    </div>
-                  )}
                 </div>
-              </div>
-
-              <div className='mt-6' style={{ fontWeight: '600', fontSize: 11, fontFamily: 'inter' }}>
-                Produt
-              </div>
-
-              {/* Dropdown for products */}
-              <div>
-                <FormControl className='w-full mt-4'>
-                  <Select
-                    className=' border-none rounded-md'
-                    displayEmpty
-                    value={productType}
-                    onChange={handleProductType}
-                    // renderValue={(selected) => {
-                    //   if (selected.length === 0) {
-                    //     return <em>Select Type</em>;
-                    //   }
-                    //   return selected;
-                    // }}
-                    sx={{
-                      backgroundColor: '#EDEDED80',
-                      '& .MuiOutlinedInput-notchedOutline': {
-                        border: 'none',
-                      },
-                    }}
-                    MenuProps={{
-                      PaperProps: {
-                        sx: { backgroundColor: '#ffffff' },
-                      },
-                    }}
-                  >
-                    <MenuItem value="none">
-                      <em>Select Product</em>
-                    </MenuItem>
-                    <MenuItem value="P1">Product 1</MenuItem>
-                    <MenuItem value="P2">Product 2</MenuItem>
-                    <MenuItem value="P3">Product 3</MenuItem>
-                  </Select>
-                </FormControl>
-              </div>
-
-              <div className='w-full flex flex-row justify-center mt-12'>
-                <button
-                  onClick={() => {
-                    let Data = {
-                      startDate: date,
-                      endDate: endDate,
-                      product: productType
-                    }
-                    console.log("Data for filters is :", Data);
-                  }}
-                  className='w-full py-3 w-10/12 bg-purple'
-                  style={{ fontWeight: '400', fontSize: 15, fontFamily: 'inter', color: 'white', borderRadius: '50px' }}>
-                  Apply Filter
-                </button>
-              </div>
-
-            </div>
-          </Drawer>
+              </Box>
+            </Modal>
+          </div>
         </div>
 
         <div className='w-full flex flex-row justify-between mt-10'>
