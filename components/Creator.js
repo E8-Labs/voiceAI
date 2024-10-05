@@ -24,7 +24,12 @@ import Apis from "./apis/Apis";
 import CycleArray from "./animation/CycleArray";
 import AnimatedButton from "./testcomponents/Dropdown";
 import MetaTags from "./Metatags/MetaTags";
-import { Globe, InstagramLogo, YoutubeLogo } from "@phosphor-icons/react";
+import {
+  Globe,
+  InstagramLogo,
+  YoutubeLogo,
+  TwitterLogo,
+} from "@phosphor-icons/react";
 import ClaimAccountPopup from "./verfiyIdentityflow/ClaimAccountPopup";
 
 const backgroundImage = {
@@ -1044,13 +1049,24 @@ const Creator = () => {
                           ) : (
                             ""
                           )}
-                          {getAssistantData && getAssistantData?.ai?.webUrl ? (
+                          {getAssistantData &&
+                          getAssistantData?.ai?.twitterUrl ? (
                             <button onClick={handleWebClick}>
-                              <Globe size={25} />
+                              <TwitterLogo size={25} />
                               {/*<Image
                                                                         // layout='responsive'
                                                                         objectFit='contain' src={"/assets/webIcon.png"} alt='social' height={25} width={25}
                                                         style={{ resize: "cover", borderRadius: 3 }} />*/}
+                            </button>
+                          ) : (
+                            ""
+                          )}
+                          {getAssistantData && getAssistantData?.ai?.webUrl ? (
+                            <button onClick={handleYoutubeClick}>
+                              <Globe size={25} />
+                              {/* <Image
+                                                                        // layout='responsive'
+                                                        objectFit='contain' src={"/assets/youtubeIcon.png"} alt='social' height={25} width={25} style={{ resize: "cover", borderRadius: 3 }} />*/}
                             </button>
                           ) : (
                             ""
