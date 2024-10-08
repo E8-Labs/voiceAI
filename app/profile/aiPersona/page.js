@@ -270,10 +270,13 @@ const Page = () => {
                                     <button className='outline-none border-none flex flex-row items-center text-start justify-between w-full'
                                         style={styles.buttonText(item)}
                                         onClick={() => {
-                                            setSelectedMenu(item.id);
                                             // Handle dropdown toggle for IDs 4, 6, 8
                                             if ([4, 8, 9].includes(item.id)) {
                                                 handleDropdownToggle(item.id);
+                                                setSelectedMenu(item.id);
+                                            } else {
+                                                setDropdownOpen(null);
+                                                setSelectedMenu(item.id);
                                             }
                                         }}
                                     // onClick={() => {
