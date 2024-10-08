@@ -35,14 +35,14 @@ const ProfileNav = () => {
             name: 'Social',
             href: '/profile/plans',
             image: '/assets/creatorProfileNavIcons/focusSocial.png',
-            unSelectedImg: '/assets/creatorProfileNavIcons/socialUnFocus.png'
+            unSelectedImg: '/assets/creatorProfileNavIcons/socialUnfocus.png'
         },
         {
             id: 4,
             name: 'Knowledge Base',
             href: '',
             image: '/assets/selectedfeedbackIcon.png',
-            unSelectedImg: '/assets/creatorProfileNavIcons/kbUnFocus.png'
+            unSelectedImg: '/assets/creatorProfileNavIcons/kbUnfocus.png'
         },
         {
             id: 5,
