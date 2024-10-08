@@ -561,7 +561,7 @@ const Page = () => {
                         </div>
                         <div>
                             <button onClick={() => setOpenBuyProductDrawer(null)}>
-                                <Image src="/assets/crossBtn2.png" alt='cross' height={15} width={15} />
+                                <Image src="/assets/croseBtn.png" alt='cross' height={15} width={15} />
                             </button>
                         </div>
                     </div>

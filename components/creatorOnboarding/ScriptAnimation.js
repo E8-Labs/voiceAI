@@ -202,6 +202,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
     try {
 
       if (event) {
+        console.log("Event is sent")
         setSkipLoader(true);
       } else {
         // setUploadLoader(true);
@@ -213,6 +214,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
       const LocalData = localStorage.getItem("User");
       const Data = JSON.parse(LocalData);
       const AuthToken = Data.data.token;
+      // const AuthToken = "Helloksjdhfis";
       console.log("Authtoken is", AuthToken);
       const formData = new FormData();
       formData.append("name", aiName);
@@ -270,6 +272,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
       setBuildAiLoader(false);
     } finally {
       // setUploadLoader(false);
+      console.log("loader is false")
       setSkipLoader(false);
     }
   };
@@ -730,7 +733,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                               <CircularProgress size={25} />
                             </div> :
                             <button
-                              onClick={handleBuildAI}
+                              onClick={handleContinue}
                               className="bg-purple hover:bg-purple outline-none border-none text-white w-full mt-12"
                               style={{
                                 fontSize: 15,
@@ -765,7 +768,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
             </motion.div>
           </div>
         )}
-        {/* {currentIndex === 3 && (
+        {currentIndex === 3 && (
           <div
             className="flex flex-col sm:justify-center justify-start"
             style={{ height: "" }}
@@ -793,7 +796,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                       />
                     </button>
                     <button
-                      onClick={handleContinue}
+                      onClick={(event) => { handleBuildAI(event) }}
                       style={{
                         fontWeight: '400',
                         fontFamily: 'inter',
@@ -804,13 +807,13 @@ export default function ScriptAnimation({ onChangeIndex }) {
                   </div>
 
                   <div>
-                    <AiSocialLinks handleContinue={handleContinue} aiName={aiName} />
+                    <AiSocialLinks handleBuildAI={handleBuildAI} buildAiLoader={buildAiLoader} aiName={aiName} />
                   </div>
                 </div>
               </div>
             </motion.div>
           </div>
-        )} */}
+        )}
         {/* {currentIndex === 4 && (
           <div
             className="flex flex-col h-screen sm:justify-center justify-start"

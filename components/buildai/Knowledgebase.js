@@ -21,6 +21,7 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
     const [documentName, setDocumentName] = useState("");
     const [documentDescription, setDocumentDescription] = useState("");
     const [urlData, setUrlData] = useState("");
+    const [subjectData, setSubjectData] = useState("");
     const [loader, setLoader] = useState(false);
     const [showError, setShowError] = useState(false);
     const [aiData, setAiData] = useState([]);
@@ -254,6 +255,7 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
             formData.append("type", questionType);
             if (urlData) {
                 formData.append("content", urlData);
+                formData.append("subject", subjectData);
             } else
                 if (textData) {
                     formData.append("content", textData);
@@ -513,6 +515,35 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
                                         </div> : ""
                                 }
                             </div>
+                            <TextField className=' w-full'
+                                autofill='off'
+                                id="filled-basic"
+                                value={subjectData}
+                                onChange={(e) => {
+                                    setSubjectData(e.target.value);
+                                    const url = e.target.value;
+
+                                    // if (subjectData) {
+                                    //     // if (validateUrl(url)) {
+                                    //     //     console.log("Valid URL");
+                                    //     //     setValidLinkErr(false);
+                                    //     // } else {
+                                    //     //     console.log("Invalid URL");
+                                    //     //     setValidLinkErr(true);
+                                    //     // }
+                                    // }
+                                }}
+                                // label="URL" 
+                                variant="outlined"
+                                placeholder='Enter subject'
+                                sx={MuiFieldStyle}
+                                inputProps={{
+                                    style: {
+                                        color: 'black !important',  // Apply black color directly
+                                    },
+                                }}
+                                style={{ color: "black", marginTop: 25 }}
+                            />
                         </div>
                     }
 

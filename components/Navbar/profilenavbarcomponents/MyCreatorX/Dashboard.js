@@ -3,8 +3,16 @@ import { CircularProgress, duration, FormControl, MenuItem, Select } from '@mui/
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import moment from 'moment';
+import { CircularProgressbar, CircularProgressbarWithChildren } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+import { ArrowDown, ArrowRight, ArrowUp } from '@phosphor-icons/react';
+import Image from 'next/image';
+
 
 const Dashboard = () => {
+
+
+    const value = 0.66
     const [selectedDuration, setSelectedDuration] = useState(1);
     const [HrsData, setHrsData] = useState({})
     const [daysData, setDaysData] = useState({})
@@ -40,92 +48,16 @@ const Dashboard = () => {
         { id: 5, productName: 'Product 5', customer: 'Iyana Mostafa', city: 'San Francisco, CA', amount: '$1.0', date: '10/3/2007' },
     ];
 
-    // useEffect(() => {
-    //     console.log("Analytics value is", analyticsDuration);
-    //     const DashboardLocalData = localStorage.getItem("DashboardData");
-    //     if (dashboardDetails) {
-    //         const details = JSON.parse(DashboardLocalData);
-    //         if (analyticsDuration === "7days") {
-    //             // setDashboardDetails()
-    //             setDashBoardData(details['7_days']);
-    //             setTopeCallersDetails(details['7_days'].topTenCallers)
-    //             console.log("Details are", details['7_days'])
-    //         } else if (analyticsDuration === "24hrs") {
-    //             // setDashboardDetails()
-    //             setDashBoardData(details['24_hours']);
-    //             setTopeCallersDetails(details['24_hours'].topTenCallers)
-    //         } else if (analyticsDuration === "30days") {
-    //             // setDashboardDetails()
-    //             setDashBoardData(details['30_days']);
-    //             setTopeCallersDetails(details['30_days'].topTenCallers)
-    //         }
-    //     }
-    // }, [analyticsDuration])
-
-
-    // useEffect(() => {
-    //     getDashboardData()
-    // }, [])
-
-
-    // const getDashboardData = async () => {
-    //     setCallersLoader(true);
-    //     try {
-    //         const localData = localStorage.getItem('User');
-    //         const Data = JSON.parse(localData);
-    //         console.log("Local data is", Data);
-    //         const AuthToken = Data.data.token;
-    //         console.log("Authtoken is", AuthToken);
-    //         // const token = m;
-    //         const ApiPath = Apis.DashBoardApi;
-    //         const result = await axios.get(ApiPath, {
-    //             headers: {
-    //                 "Authorization": "Bearer " + AuthToken,
-    //                 "Content-Type": "application/json"
-    //             }
-    //         });
-    //         if (result) {
-    //             console.log("Result of get dashboard :::", result)
-    //             if (result.data.data) {
-    //                 // if()
-    //                 localStorage.setItem('DashboardData', JSON.stringify(result.data.data));
-    //                 setDashboardDetails(result.data.data);
-    //                 setDashBoardData(result.data.data["24_hours"]);
-    //                 setTopeCallersDetails(result.data.data["24_hours"].topTenCallers);
-    //                 setProducts(result.data.data.products);
-    //             }
-    //         }
-    //         // if (result) {
-    //         //     let json = await result.json()
-
-    //         //     if (json.status === true) {
-    //         //         console.log('dashboard data is', json.data);
-    //         //         const Data = json.data
-    //         //         setHrsData(json.data["24_hours"]);
-    //         //         setDaysData(json.data["7_days"]);
-    //         //         setMonthData(json.data["30_days"]);
-    //         //         setDashboardDetails()
-    //         //     } else {
-    //         //         console.log('dashboard api message is', json.message)
-    //         //     }
-    //         // }
-    //     } catch (e) {
-    //         console.log('dashboard api error is', e);
-    //         setCallersLoader(false);
-    //     } finally {
-    //         setCallersLoader(false);
-    //     }
-    // }
-
     useEffect(() => {
         console.log("Analytics value is", analyticsDuration);
+        console.log("Test case check 1 for loca.duration change")
         const DashboardLocalData = localStorage.getItem("DashboardData");
         if (DashboardLocalData) {
             const details = JSON.parse(DashboardLocalData);
             if (analyticsDuration === "7days") {
                 setDashBoardData(details['7_days']);
                 setTopeCallersDetails(details['7_days'].topTenCallers);
-                console.log("Details for 7 days:", details['7_days']);
+                // console.log("Details for 7 days:", details['7_days']);
             } else if (analyticsDuration === "24hrs") {
                 setDashBoardData(details['24_hours']);
                 setTopeCallersDetails(details['24_hours'].topTenCallers);
@@ -134,11 +66,12 @@ const Dashboard = () => {
                 setTopeCallersDetails(details['30_days'].topTenCallers);
             }
         }
-    }, [analyticsDuration]); // Only runs when analyticsDuration changes
+    }, [analyticsDuration]);
 
     useEffect(() => {
+        console.log("Api call check 1 ----------")
         getDashboardData();
-    }, []); // Fetch dashboard data on component mount
+    }, []);
 
     const getDashboardData = async () => {
         setCallersLoader(true);
@@ -217,13 +150,24 @@ const Dashboard = () => {
         },
         text2: {
             textAlignLast: 'left',
-            fontSize: 18,
-            color: '#000000',
-            fontWeight: 300,
+            fontSize: 13,
+            color: '#00000060',
+            fontWeight: "500",
             whiteSpace: 'nowrap', // Prevent text from wrapping
             overflow: 'hidden', // Hide overflow text
             textOverflow: 'ellipsis', // Add ellipsis for overflow text
         },
+        statsHeading: {
+            fontWeight: "400",
+            fontFamily: "inter",
+            fontSize: 12,
+            color: "#ffffff70"
+        },
+        statsSubText: {
+            fontSize: 12,
+            fontFamily: "inter",
+            fontWeight: "400", color: "#00FF57"
+        }
     };
 
 
@@ -246,57 +190,63 @@ const Dashboard = () => {
     //     setAnalyticsDuration(event.target.value);
     // };
 
+    //code for analytics
+    // {
+    //     callersLoader ?
+    //         <CircularProgress size={20} /> :
+    //         <div>
+    //             <FormControl>
+    //                 {/* <InputLabel id="demo-simple-select-label">Age</InputLabel> */}
+    //                 <Select
+    //                     labelId="demo-simple-select-label"
+    //                     id="demo-simple-select"
+    //                     value={analyticsDuration}
+    //                     // label="Age"
+    //                     onChange={handleSelectTime}
+    //                     sx={{
+    //                         backgroundColor: 'white',
+    //                         '& .MuiOutlinedInput-notchedOutline': {
+    //                             borderColor: 'transparent',
+    //                         },
+    //                         '&:hover .MuiOutlinedInput-notchedOutline': {
+    //                             borderColor: 'transparent',
+    //                         },
+    //                         '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+    //                             borderColor: 'transparent',
+    //                         },
+    //                         '& .MuiSelect-select': {
+    //                             paddingTop: 1,
+    //                             paddingBottom: 1,
+    //                         },
+    //                     }}
+    //                 >
+    //                     <MenuItem value={"24hrs"}>Last 24 hrs</MenuItem>
+    //                     <MenuItem value={"7days"}>Last 7 days</MenuItem>
+    //                     <MenuItem value={"30days"}>Last 30 days</MenuItem>
+    //                 </Select>
+    //             </FormControl>
+    //         </div>
+    // }
+
 
     return (
         <div
             className='w-full flex flex-col p-15 pl-5'
             style={{ height: '90vh', overflow: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none', marginTop: 20 }}
         >
-            <div className='flex flex-row w-full items-center gap-6'>
+            {/* <div className='flex flex-row w-full items-center gap-6'>
                 <div className='w-4/12 py-5 px-6' style={{ backgroundColor: "#ffffff50", borderRadius: "15px" }}>
                     <div className='w-full flex flex-row justify-between'>
                         <div style={{ fontSize: 20, fontWeight: 700 }}>
                             Analytics
                         </div>
-                        <div>
-                            <FormControl>
-                                {/* <InputLabel id="demo-simple-select-label">Age</InputLabel> */}
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    value={analyticsDuration}
-                                    // label="Age"
-                                    onChange={handleSelectTime}
-                                    sx={{
-                                        backgroundColor: 'white',
-                                        '& .MuiOutlinedInput-notchedOutline': {
-                                            borderColor: 'transparent',
-                                        },
-                                        '&:hover .MuiOutlinedInput-notchedOutline': {
-                                            borderColor: 'transparent',
-                                        },
-                                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                            borderColor: 'transparent',
-                                        },
-                                        '& .MuiSelect-select': {
-                                            paddingTop: 1,
-                                            paddingBottom: 1,
-                                        },
-                                    }}
-                                >
-                                    <MenuItem value={"24hrs"}>Last 24 hrs</MenuItem>
-                                    <MenuItem value={"7days"}>Last 7 days</MenuItem>
-                                    <MenuItem value={"30days"}>Last 30 days</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </div>
+
                     </div>
 
                     <div className='w-full flex flex-row gap-7 mt-7 ml-2'>
                         <div className=' flex flex-col'>
                             <div style={{ fontSize: 13, fontWeight: "400", fontFamily: "inter" }}>Callers</div>
                             <div style={{ fontWeight: "300", fontFamily: "inter", fontSize: 32 }}>
-                                {/* {numOfCallers(selectedDuration)} */}
                                 {dashBoardData?.totalCalls}
                             </div>
                         </div>
@@ -305,12 +255,8 @@ const Dashboard = () => {
                             <div style={{ fontSize: 13, fontWeight: "400", fontFamily: "inter" }}>Minutes</div>
                             <div className='w-full flex flex-row items-center'>
                                 <div style={{ fontWeight: "300", fontFamily: "inter", fontSize: 32 }}>
-                                    {/* {totalMin(selectedDuration)} */}
                                     {dashBoardData?.totalDurationMinutes}
                                 </div>
-                                {/* <div style={{ fontWeight: "300", fontFamily: "inter", fontSize: 15, color: "#00000080" }}>
-                                    Mins
-                                </div> */}
                             </div>
                         </div>
                     </div>
@@ -343,16 +289,339 @@ const Dashboard = () => {
                         </div>
                     </div>
                 </div>
+            </div> */}
+
+            <div className='w-11/12 flex flex-row justify-end'>
+                <Image
+                    src="/assets/placeholderImg.jpg"
+                    alt='profile'
+                    height={70}
+                    width={70}
+                    style={{
+                        width: '70px',
+                        height: '70px',
+                        backgroundColor: "",
+                        borderRadius: "50%",
+                        border: "3px solid white",
+                        objectFit: 'cover',
+                        objectPosition: 'center',
+                        // backgroundColor: 'red'
+                    }}
+                />
             </div>
 
-            <div className='w-full mt-6 flex flex-row gap-2'>
-                <div className='w-6/12 flex flex-col rounded-2xl px-6 pb-4' style={{ backgroundColor: "#ffffff50" }}>
+            <div className='w-11/12 flex flex-row items-center justify-between mt-4 bg-white px-6 py-4 rounded-2xl'>
+                <div className='flex flex-row items-center gap-2'>
+                    <div style={{ height: "71px", width: "71px" }}>
+                        <CircularProgressbar value={value} maxValue={1} text={`${value * 100}%`}
+                            strokeWidth={4}
+                            styles={{
+                                path: {
+                                    stroke: `#552AFF`, // Change the color to red
+                                },
+                                text: {
+                                    fill: '#000000', // Change the text color to red
+                                    fontSize: 20,
+                                    fontWeight: "500"
+                                },
+                                trail: {
+                                    stroke: '#d6d6d6', // Change the trail color (if needed)
+                                },
+                            }} />
+                    </div>
+                    <div className='flex flex-col gap-1'>
+                        <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
+                            Complete Profile
+                        </div>
+                        <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
+                            Voice, Kb, SocialLinks etc
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button className='text-white bg-purple px-4 py-2' style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter", borderRadius: "50px" }}>
+                        Complete
+                    </button>
+                </div>
+            </div>
+
+            <div className='bg-purple rounded-2xl bg-purple px-4 py-4 text-white w-11/12 mt-4'>
+                <div className='w-full items-center justify-between flex flex-row'>
+                    <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter", color: "#ffffff60" }}>
+                        Good to see you back <span className='text-white'>Salman</span>
+                    </div>
+                    <div>
+                        {/* {
+                    callersLoader ? */}
+                        {/* < size={20} /> : */}
+                        <div>
+                            <FormControl>
+                                {/* <InputLabel id="demo-simple-select-label">Age</InputLabel> */}
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={analyticsDuration}
+                                    // label="Age"
+                                    onChange={handleSelectTime}
+                                    sx={{
+                                        backgroundColor: 'white',
+                                        '& .MuiOutlinedInput-notchedOutline': {
+                                            borderColor: 'transparent',
+                                        },
+                                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                                            borderColor: 'transparent',
+                                        },
+                                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                            borderColor: 'transparent',
+                                        },
+                                        '& .MuiSelect-select': {
+                                            paddingTop: 1,
+                                            paddingBottom: 1,
+                                        },
+                                    }}
+                                >
+                                    <MenuItem value={"24hrs"}>Last 24 hrs</MenuItem>
+                                    <MenuItem value={"7days"}>Last 7 days</MenuItem>
+                                    <MenuItem value={"30days"}>Last 30 days</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </div>
+                        {/* } */}
+                    </div>
+                </div>
+                <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter", color: "#ffffff" }}>
+                    See your stats
+                </div>
+
+                <div className='w-10/12 flex flex-row items-center mt-6 pb-8 justify-between'>
+                    <div className='flex flex-row items-center gap-6'>
+                        <div style={{ height: "71px", width: "71px" }}>
+                            <CircularProgressbarWithChildren value={66}
+                                strokeWidth={4}
+                                styles={{
+                                    path: {
+                                        stroke: `white`, // Change the color to red
+                                    },
+                                    text: {
+                                        fill: '#000000', // Change the text color to red
+                                        fontSize: 20,
+                                        fontWeight: "500"
+                                    },
+                                    trail: {
+                                        stroke: '#ffffff60', // Change the trail color (if needed)
+                                    },
+                                }}>
+                                {/* Image centered inside the circular progress bar */}
+                                <img style={{ width: 17, marginTop: -5 }} src="/assets/creatorProfileNavIcons/document.png" alt="doge" />
+                            </CircularProgressbarWithChildren>
+                        </div>
+                        <div className='flex flex-col gap-2'>
+                            <div style={styles.statsHeading}>
+                                Callers
+                            </div>
+                            <div className='flex flex-row items-center gap-1'>
+                                <p style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>87</p>
+                                <div className='flex flex-row items-center'>
+                                    {/* <Image src="/assets/creatorProfileNavIcons/greenUp.png" alt='up' height={13} width={10} /> */}
+                                    <ArrowUp className='mb-1' size={15} weight="bold" color='#00FF57' />
+                                    <div style={styles.statsSubText}>
+                                        2%
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='flex flex-row items-center gap-6'>
+                        <div style={{ height: "71px", width: "71px" }}>
+                            <CircularProgressbarWithChildren value={66}
+                                strokeWidth={4}
+                                styles={{
+                                    path: {
+                                        stroke: `white`, // Change the color to red
+                                    },
+                                    text: {
+                                        fill: '#000000', // Change the text color to red
+                                        fontSize: 20,
+                                        fontWeight: "500"
+                                    },
+                                    trail: {
+                                        stroke: '#ffffff60', // Change the trail color (if needed)
+                                    },
+                                }}>
+                                {/* Image centered inside the circular progress bar */}
+                                <img style={{ width: 17, marginTop: -5 }} src="/assets/creatorProfileNavIcons/document.png" alt="doge" />
+                            </CircularProgressbarWithChildren>
+                        </div>
+                        <div className='flex flex-col gap-2'>
+                            <div style={styles.statsHeading}>
+                                Minutes
+                            </div>
+                            <div className='flex flex-row items-center gap-1'>
+                                <p style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>87</p>
+                                <div className='flex flex-row items-center'>
+                                    {/* <Image src="/assets/creatorProfileNavIcons/greenUp.png" alt='up' height={13} width={10} /> */}
+                                    <ArrowUp className='mb-1' size={15} weight="bold" color='#00FF57' />
+                                    <div style={styles.statsSubText}>
+                                        2%
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='flex flex-row items-center gap-6'>
+                        <div style={{ height: "71px", width: "71px" }}>
+                            <CircularProgressbarWithChildren value={66}
+                                strokeWidth={4}
+                                styles={{
+                                    path: {
+                                        stroke: `white`, // Change the color to red
+                                    },
+                                    text: {
+                                        fill: '#000000', // Change the text color to red
+                                        fontSize: 20,
+                                        fontWeight: "500"
+                                    },
+                                    trail: {
+                                        stroke: '#ffffff60', // Change the trail color (if needed)
+                                    },
+                                }}>
+                                {/* Image centered inside the circular progress bar */}
+                                <img style={{ width: 17, marginTop: -5 }} src="/assets/creatorProfileNavIcons/document.png" alt="doge" />
+                            </CircularProgressbarWithChildren>
+                        </div>
+                        <div className='flex flex-col gap-2'>
+                            <div style={styles.statsHeading}>
+                                Minutes Talked
+                            </div>
+                            <div className='flex flex-row items-center gap-1'>
+                                <p style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>87</p>
+                                <div className='flex flex-row items-center'>
+                                    {/* <Image src="/assets/creatorProfileNavIcons/greenUp.png" alt='up' height={13} width={10} /> */}
+                                    <ArrowDown className='mb-1' size={15} weight="bold" color='#FF7918' />
+                                    <div style={{ ...styles.statsSubText, color: "#FF7918" }}>
+                                        2%
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='flex flex-row items-center gap-6'>
+                        <div style={{ height: "71px", width: "71px" }}>
+                            <CircularProgressbarWithChildren value={66}
+                                strokeWidth={4}
+                                styles={{
+                                    path: {
+                                        stroke: `white`, // Change the color to red
+                                    },
+                                    text: {
+                                        fill: '#000000', // Change the text color to red
+                                        fontSize: 20,
+                                        fontWeight: "500"
+                                    },
+                                    trail: {
+                                        stroke: '#ffffff60', // Change the trail color (if needed)
+                                    },
+                                }}>
+                                {/* Image centered inside the circular progress bar */}
+                                <img style={{ width: 17, marginTop: -5 }} src="/assets/creatorProfileNavIcons/document.png" alt="doge" />
+                            </CircularProgressbarWithChildren>
+                        </div>
+                        <div className='flex flex-col gap-2'>
+                            <div style={styles.statsHeading}>
+                                Product Rev
+                            </div>
+                            <div className='flex flex-row items-center gap-1'>
+                                <p style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>$87</p>
+                                <div className='flex flex-row items-center'>
+                                    {/* <Image src="/assets/creatorProfileNavIcons/greenUp.png" alt='up' height={13} width={10} /> */}
+                                    <ArrowRight className='mb-1' size={15} weight="bold" color='white' />
+                                    <div style={{ ...styles.statsSubText, color: "white" }}>
+                                        Flat
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div className='w-full mt-6 mb-8 flex flex-row gap-2'>
+                <div className='w-5/12 flex flex-col rounded-2xl px-6 pb-4' style={{ backgroundColor: "#ffffff50", height: "auto" }}>
+                    <div className='flex flex-row justify-between items-center mt-12 w-11/12 ps-6'>
+                        <div
+                            style={{
+                                fontSize: 20, fontWeight: "500", fontFamily: 'inter'
+                            }}>Products</div>
+                        {
+                            products.length > 3 && (
+                                <button
+                                    onClick={() => { setShowAlProductsl(!showAllProducts) }}
+                                    className='text-purple py-1 underline'
+                                    style={{
+                                        borderRadius: "50px", fontSize: 13, fontWeight: "400", fontFamily: 'inter'
+                                    }}>
+                                    {showAllProducts ? "View Products" : "View Products"}
+                                </button>
+                            )}
+                    </div>
+                    {/* <div className='w-full flex flex-row gap-1 mt-5 justify-between'>
+                        <div className='w-3/12'>
+                            <div style={styles.text}>Product Name</div>
+                        </div>
+                        <div className='w-3/12'>
+                            <div style={styles.text}>Amount</div>
+                        </div>
+                        <div className='w-3/12'>
+                            <div style={styles.text}>Date</div>
+                        </div>
+                    </div> */}
+                    <div className='w-full flex flex-col items-center'>
+                        {
+                            callersLoader ?
+                                <div className='w-10/12 flex flex-row justify-center mt-4'>
+                                    <CircularProgress />
+                                </div> :
+                                <div className='w-10/12'>
+                                    {
+                                        products.length > 0 ?
+                                            <div key={products.id}>
+                                                {itemsToDisplay.map((item) => (
+                                                    // <React.Fragment key={item.id}>
+                                                    <div key={item.id}>
+                                                        <div key={item.id} className='w-full flex flex-row gap-1 mt-10 justify-between'>
+                                                            <div>
+                                                                <div style={{ ...styles.text2, color: "#000000", fontSize: 15, fontWeight: "500" }}>{item.name}</div>
+                                                                <div style={styles.text2}>
+                                                                    {/* {item.createdAt} */}
+                                                                    {moment(item.createdAt).format("MM/DD/YYYY")}
+                                                                </div>
+                                                            </div>
+                                                            <div className='flex flex-col items-end'>
+                                                                <div style={{ ...styles.text2, color: "#000000", fontSize: 20 }}>
+                                                                    ${Number(item.productPrice).toFixed(2)}
+                                                                </div>
+                                                                <div style={styles.text2}>
+                                                                    200 Purchased
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        {/* </React.Fragment> */}
+                                                    </div>
+                                                ))}
+                                            </div> : "No Product"
+                                    }
+                                </div>
+                        }
+                    </div>
+                </div>
+                <div className='w-6/12 flex flex-col rounded-2xl px-6 pb-4' style={{ backgroundColor: "#ffffff50", height: "auto" }}>
                     <div className='mt-12 flex flex-row justify-between items-center'>
                         <div className='font-light'
                             style={{
-                                fontSize: 20, fontWeight: "700", fontFamily: 'inter'
+                                fontSize: 20, fontWeight: "500", fontFamily: 'inter'
                             }}>Top Callers</div>
-                        {/* {
+                        {
                             topCallersDetails.length > 3 && (
                                 <button className='bg-purple text-white px-2 py-1'
                                     onClick={() => { setShowAlCallers(!showAllCallers) }}
@@ -361,15 +630,7 @@ const Dashboard = () => {
                                     }}>
                                     {showAllCallers ? "View less" : "View all"}
                                 </button>
-                            )
-                        } */}
-                        <button className='bg-purple text-white px-2 py-1'
-                            onClick={() => { setShowAlCallers(!showAllCallers) }}
-                            style={{
-                                borderRadius: "50px", fontSize: 13, fontWeight: "400", fontFamily: 'inter'
-                            }}>
-                            {showAllCallers ? "View less" : "View all"}
-                        </button>
+                            )}
                     </div>
                     <div className='w-full flex flex-row justify-between mt-5'>
                         <div className='w-4/12'>
@@ -390,35 +651,6 @@ const Dashboard = () => {
                     </div>
 
 
-                    {/* {topCallers(selectedDuration) && topCallers(selectedDuration).length > 0 ? topCallers(selectedDuration).map((item) => (
-                        <React.Fragment key={item.id}>
-                            <div key={item.id} className='w-full flex flex-row justify-between mt-10'>
-                                <div className='w-4/12'>
-                                    <div style={styles.text2}>
-                                        {item.name}
-                                    </div>
-                                </div>
-                                <div className='w-3/12'>
-                                <div style={styles.text2}>{item.city}</div>
-                            </div>
-                                <div className='w-3/12'>
-                                    <div style={styles.text2}>{item.totalMinutes}</div>
-                                </div>
-                                <div className='w-2/12'>
-                                    <div style={styles.text2}>{item.callCount}</div>
-                                </div>
-                                <div className='w-3/12 text-center'>
-                                    <div style={styles.text2}>{item.totalSpent}</div>
-                                </div>
-                            </div>
-                            <div className='w-full bg-gray-200 h-0.5 rounded mt-2'></div>
-                        </React.Fragment>
-                    )) : (
-                        <div className='mt-3'> No callers</div>
-                    )
-                    } */}
-
-
                     {
                         callersLoader ?
                             <div className='w-full flex flex-row justify-center mt-4'>
@@ -427,7 +659,7 @@ const Dashboard = () => {
                             <div>
                                 {
                                     topCallersDetails.length > 0 ?
-                                        <div>
+                                        <div key={topCallersDetails.id}>
                                             {
                                                 callersToDisplay.map((item) => (
                                                     <div key={item.id} className='w-full flex flex-row justify-between mt-10'>
@@ -465,75 +697,6 @@ const Dashboard = () => {
                     }
 
 
-                </div>
-                <div className='w-5/12 flex flex-col rounded-2xl px-6 pb-4' style={{ backgroundColor: "#ffffff50" }}>
-                    <div className='flex flex-row justify-between items-center mt-12'>
-                        <div
-                            style={{
-                                fontSize: 20, fontWeight: "700", fontFamily: 'inter'
-                            }}>Products</div>
-                        <button
-                            onClick={() => { setShowAlProductsl(!showAllProducts) }}
-                            className='bg-purple text-white px-2 py-1'
-                            style={{
-                                borderRadius: "50px", fontSize: 13, fontWeight: "400", fontFamily: 'inter'
-                            }}>
-                            {showAllProducts ? "View less" : "View all"}
-                        </button>
-                    </div>
-                    <div className='w-full flex flex-row gap-1 mt-5 justify-between'>
-                        <div className='w-3/12'>
-                            <div style={styles.text}>Product Name</div>
-                        </div>
-                        <div className='w-3/12'>
-                            <div style={styles.text}>Amount</div>
-                        </div>
-                        <div className='w-3/12'>
-                            <div style={styles.text}>Date</div>
-                        </div>
-                    </div>
-                    {
-                        callersLoader ?
-                            <div className='w-full flex flex-row justify-center mt-4'>
-                                <CircularProgress />
-                            </div> :
-                            <div>
-                                {
-                                    products.length > 0 ?
-                                        <div>
-                                            {itemsToDisplay.map((item) => (
-                                                // <React.Fragment key={item.id}>
-                                                <>
-                                                    <div key={item.id} className='w-full flex flex-row gap-1 mt-10 justify-between'>
-                                                        <div className='w-3/12'>
-                                                            <div style={styles.text2}>{item.name}</div>
-                                                        </div>
-                                                        {/* <div className='w-4/12'>
-                                    <div style={styles.text2}>{item.customer}</div>
-                                </div> */}
-                                                        {/* <div className='w-2/12'>
-                                <div style={styles.text2}>{item.city}</div>
-                            </div> */}
-                                                        <div className='w-3/12'>
-                                                            <div style={styles.text2}>
-                                                                ${Number(item.productPrice).toFixed(2)}
-                                                            </div>
-                                                        </div>
-                                                        <div className='w-3/12'>
-                                                            <div style={styles.text2}>
-                                                                {/* {item.createdAt} */}
-                                                                {moment(item.createdAt).format("MM/DD/YYYY")}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className='w-full bg-gray-200 h-0.5 rounded mt-2'></div>
-                                                    {/* </React.Fragment> */}
-                                                </>
-                                            ))}
-                                        </div> : "No Product"
-                                }
-                            </div>
-                    }
                 </div>
             </div>
 

@@ -245,11 +245,12 @@ export const AiDetails = () => {
             </div>
 
             <div className='w-full flex flex-row gap-4 mt-2 items-center'>
-              <div>
-                <Image src='/assets/playIcon.png' alt='ply' height={32} width={32} />
+              <div className='w-1/12'>
+                <Image src='/assets/playIcon.png' alt='ply' //style={{ height: "32px", width: "32px", objectFit: "" }} 
+                  height={32} width={32} />
               </div>
               <div className='w-11/12 flex flex-row justify-between items-center'>
-                <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
+                <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter", width: "90%", overflow: "auto", scrollbarWidth: "none" }}>
                   {audioUrl ?
                     <div>
                       {audioUrl}

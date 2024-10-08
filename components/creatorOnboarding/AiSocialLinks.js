@@ -1,11 +1,11 @@
 "use client"
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
-import { Box, Button, Modal } from '@mui/material'
+import { Box, Button, CircularProgress, Modal } from '@mui/material'
 import { color } from 'framer-motion';
 import { AppleLogo, ApplePodcastsLogo, FacebookLogo, Globe, InstagramLogo, LinkedinLogo, SpotifyLogo, TwitterLogo, XLogo, YoutubeLogo } from '@phosphor-icons/react';
 
-function AiSocialLinks({ handleContinue, aiName }) {
+function AiSocialLinks({ handleBuildAI, aiName, buildAiLoader }) {
 
     const [text, setText] = useState("");
     //socials url values
@@ -33,6 +33,7 @@ function AiSocialLinks({ handleContinue, aiName }) {
     const [showApplePodCast, setShowApplePodcast] = useState(false);
     const [showFb, setShowFb] = useState(false);
     const [showSpotify, setShowSpotify] = useState(false);
+    const [aiLoader, setAiLoader] = useState(buildAiLoader);
 
     useEffect(() => {
         const localData = localStorage.getItem('User');
@@ -43,6 +44,7 @@ function AiSocialLinks({ handleContinue, aiName }) {
         }
     }, []);
 
+    console.log("Loader status is", aiLoader)
     useEffect(() => {
         const localData = localStorage.getItem('socialsUrl');
         if (localData) {
@@ -101,7 +103,7 @@ function AiSocialLinks({ handleContinue, aiName }) {
         console.log("Social links url", data);
 
         localStorage.setItem('socialsUrl', JSON.stringify(data));
-        handleContinue();
+        handleBuildAI();
     }
 
     const styles = {
@@ -208,6 +210,9 @@ function AiSocialLinks({ handleContinue, aiName }) {
                             }
                             {
                                 webUrl && <Globe size={25} />
+                            }
+                            {
+                                linkedInUrl && <LinkedinLogo size={25} />
                             }
                         </div>
                     </div>
@@ -527,12 +532,20 @@ function AiSocialLinks({ handleContinue, aiName }) {
             </div>
             <div className='w-full'>
                 {
-                    fbUrl || youtubeUrl || appleProducts || twitterUrl || spotifyurl || instaUrl ?
-                        <button onClick={handleContinueSocial}
-                            className='bg-purple hover:bg-purple text-white px-4 mt-2 w-full sm:w-9/12 py-2'
-                            style={{ fontSize: 15, fontWeight: "400", borderRadius: "50px" }}>
-                            Continue
-                        </button> :
+                    fbUrl || youtubeUrl || appleProducts || twitterUrl || spotifyurl || instaUrl || linkedInUrl || webUrl ?
+                        <div>
+                            {
+                                buildAiLoader ?
+                                    <div className=' w-full sm:w-9/12 flex flex-row justify-center mt-2'>
+                                        <CircularProgress size={20} />
+                                    </div> :
+                                    <button onClick={handleContinueSocial}
+                                        className='bg-purple hover:bg-purple text-white px-4 mt-2 w-full sm:w-9/12 py-2'
+                                        style={{ fontSize: 15, fontWeight: "400", borderRadius: "50px" }}>
+                                        Continue
+                                    </button>
+                            }
+                        </div> :
                         <button
                             disabled
                             // onClick={handleContinueSocial}

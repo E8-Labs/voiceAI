@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
     return (
         <html lang="en">
             <head>
-                <link rel="icon" href="/Xlogo.png" />
+                <link rel="icon" href="/creaatorXlogomain.png" />
                 {/* Code for popins */}
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />

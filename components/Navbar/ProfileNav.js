@@ -18,38 +18,45 @@ const ProfileNav = () => {
     const links = [
         {
             id: 1,
-            name: 'My CreatorX',
+            name: 'Dashboard',
             href: '/profile',
-            image: '/assets/selectedCreatorIcon.png',
-            unSelectedImg: '/assets/unselectedCreatorIcon.png'
+            image: '/assets/creatorProfileNavIcons/dashboardFocus.png',
+            unSelectedImg: '/assets/creatorProfileNavIcons/unFocusDashboard.png'
         },
         {
             id: 2,
-            name: 'My Account',
-            href: '/profile/myaccount',
-            image: '/assets/about.png',
-            unSelectedImg: '/unselectedAccountIcon.png'
+            name: 'Ai Persona',
+            href: '/profile/aiPersona',
+            image: '/assets/creatorProfileNavIcons/focusAiPersona.png',
+            unSelectedImg: '/assets/creatorProfileNavIcons/aiPersoneUnFocus.png'
         },
         {
             id: 3,
-            name: 'Plans',
+            name: 'Social',
             href: '/profile/plans',
-            image: '/assets/selectedplansIcon.png',
-            unSelectedImg: '/assets/plansI.png'
+            image: '/assets/creatorProfileNavIcons/focusSocial.png',
+            unSelectedImg: '/assets/creatorProfileNavIcons/socialUnFocus.png'
         },
         {
             id: 4,
-            name: 'Feedback',
+            name: 'Knowledge Base',
             href: '',
             image: '/assets/selectedfeedbackIcon.png',
-            unSelectedImg: '/assets/feedback.png'
+            unSelectedImg: '/assets/creatorProfileNavIcons/kbUnFocus.png'
         },
         {
             id: 5,
-            name: 'Terms & Condition',
+            name: 'Calls',
             href: '',
             image: '/assets/selectedtermsIcon.png',
-            unSelectedImg: '/assets/terms.png'
+            unSelectedImg: '/assets/creatorProfileNavIcons/callUnfous.png'
+        },
+        {
+            id: 6,
+            name: 'Conversations',
+            href: '',
+            image: '/assets/selectedtermsIcon.png',
+            unSelectedImg: '/assets/creatorProfileNavIcons/conversationsUnfocus.png'
         }
     ]
 

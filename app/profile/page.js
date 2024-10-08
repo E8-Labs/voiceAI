@@ -6,13 +6,19 @@ import { AiDetails } from '@/components/Navbar/profilenavbarcomponents/MyCreator
 import { SocialKB } from '@/components/Navbar/profilenavbarcomponents/MyCreatorX/Social&KB';
 import Calls from '@/components/Navbar/profilenavbarcomponents/MyCreatorX/Calls';
 import SocialOAuth from '@/components/creatorOnboarding/SocialOAuth';
-import { Box, Modal } from '@mui/material';
+import { Box, FormControl, MenuItem, Modal, Select } from '@mui/material';
 import Image from 'next/image';
+import { CircularProgressbar, CircularProgressbarWithChildren } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+
+import { color } from 'framer-motion';
+import { ArrowDown, ArrowRight, ArrowUp } from '@phosphor-icons/react';
 
 const Page = () => {
 
   const [selectedMenu, setSelectedMenu] = useState(1);
   const [testAIPopup, setTestAIPopup] = useState(false);
+  const [analyticsDuration, setAnalyticsDuration] = useState('24hrs');
 
   const styles = {
     buttonText: (item) => ({
@@ -42,6 +48,17 @@ const Page = () => {
       color: '#000',
       marginTop: 20
     },
+    statsHeading: {
+      fontWeight: "400",
+      fontFamily: "inter",
+      fontSize: 12,
+      color: "#ffffff70"
+    },
+    statsSubText: {
+      fontSize: 12,
+      fontFamily: "inter",
+      fontWeight: "400", color: "#00FF57"
+    }
   }
 
   const manu = [{
@@ -64,7 +81,7 @@ const Page = () => {
     id: 5,
     manu: 'Conversations',
   }
-]
+  ]
 
   const navbarComponent = {
     height: "100vh", // Full screen height
@@ -90,12 +107,19 @@ const Page = () => {
     // border: "2px solid green"
   };
 
+  const value = 0.66;
+
+  const handleSelectTime = (event) => {
+    event.preventDefault();
+    setAnalyticsDuration(event.target.value); // This will trigger the useEffect to update the data based on duration
+  };
+
   return (
     <div className={navbarComponent}>
       <div className='w-full flex flex-row justify-between pl-5 pt-10 pr-5 h-screen' style={{ overflow: 'hidden', backgroundColor: "#ffffff40" }}>
         <div className='w-full'>
           <div className='w-full flex flex-col'>
-            <div className='flex flex-row justify-between items-center w-10/12'>
+            {/* <div className='flex flex-row justify-between items-center w-10/12'>
               <div className='flex flex-row gap-10'>
                 {
                   manu.map((item) => (
@@ -120,7 +144,9 @@ const Page = () => {
               <button onClick={() => { setTestAIPopup(true) }} className='text-white px-3 py-2 bg-purple' style={{ borderRadius: "50px" }}>
                 Test Your AI
               </button>
-            </div>
+            </div> */}
+            
+
             <div className='w-full flex flex-col'>
               {
                 selectedMenu === 1 ? (

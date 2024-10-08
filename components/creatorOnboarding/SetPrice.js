@@ -25,7 +25,7 @@ function SetPrice({ handleContinue, buildScriptLoader }) {
             bordeRadius: 20, /* Rounded corners */
             padding: "5px 0px",
             paddingLeft: "15px",
-            border: showInputErr ? "1px solid red" : "none",
+            border: callPrice && showInputErr ? "1px solid red" : "none",
             borderRadius: 5
 
         },
@@ -108,14 +108,28 @@ function SetPrice({ handleContinue, buildScriptLoader }) {
                         height: 12
                         // color: '#'
                     }}>
-                    {showInputErr && ("Nothing less than $1 per minute")}
+                    {callPrice && showInputErr && ("Nothing less than $1 per minute")}
                 </div>
 
                 <div className='w-10/12 flex flex-row justify-between'>
                     <div className='text-gray-400 mt-3' style={styles.text}>
                         Make it free
                     </div>
-                    <Switch checked={toogleActive} onChange={handleChange} defaultChecked />
+                    <Switch checked={toogleActive} onChange={handleChange} defaultChecked
+                        sx={{
+                            '& .MuiSwitch-switchBase.Mui-checked': {
+                                color: '#620FEB', // Color for the thumb when checked
+                            },
+                            '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                                backgroundColor: '#620FEB', // Color for the track when checked
+                            },
+                            '& .MuiSwitch-switchBase': {
+                                color: 'gray', // Color for the thumb when unchecked
+                            },
+                            '& .MuiSwitch-track': {
+                                backgroundColor: 'gray', // Color for the track when unchecked
+                            },
+                        }} />
                 </div>
 
 
@@ -133,7 +147,7 @@ function SetPrice({ handleContinue, buildScriptLoader }) {
                             </div> :
                             <div>
                                 {
-                                    toogleActive || callPrice ?
+                                    showInputErr === false && (toogleActive || callPrice) ?
                                         <button onClick={handleUploadClick}
                                             className='bg-purple hover:bg-purple text-white w-full'
                                             style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px" }}>
@@ -198,10 +212,10 @@ function SetPrice({ handleContinue, buildScriptLoader }) {
                                 }}
                                 PaperProps={{
                                     sx: {
-                                      borderRadius: '10px', // Add borderRadius here
-                                      padding: "2px"
+                                        borderRadius: '10px', // Add borderRadius here
+                                        padding: "2px"
                                     },
-                                  }}
+                                }}
                                 open={open}
                                 anchorEl={anchorel}
                                 anchorOrigin={{
@@ -231,7 +245,7 @@ function SetPrice({ handleContinue, buildScriptLoader }) {
                 <div style={styles.text2}>You keep the rest.</div>
 
                 <div className='flex flex-row justify-between w-10/12 mt-6'>
-                    <div className='' style={styles.text2}>Profit (straight to bank)</div>
+                    <div className='' style={styles.text2}>Profit (straight to the bank)</div>
                     <div style={styles.text2}>${(80 / 100) * callPrice}</div>
                 </div>
 

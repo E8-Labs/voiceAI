@@ -94,7 +94,7 @@ const ClaimAccountPopup = ({ getAssistantData, handleClosePopup }) => {
                                     <Image src="/assets/claimIcon.png" alt='claimimg' height={38} width={38} />
                                     <button onClick={(() => handleClosePopup(false))}
                                     >
-                                        <Image src="/assets/crossBtn.png" alt='cross' height={14} width={14} />
+                                        <Image src="/assets/croseBtn.png" alt='cross' height={14} width={14} />
                                     </button>
                                 </div>
                                 <div className='mt-8' style={{ fontWeight: '600', fontSize: 24, fontFamily: 'inter' }}>

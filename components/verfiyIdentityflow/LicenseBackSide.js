@@ -147,7 +147,7 @@ const LicenseBackSide = ({ handleContinue, handleBack }) => {
                                     e.stopPropagation();
                                     handleRemoveBackImage();
                                 }} className='pe-4' >
-                                <Image src="/assets/crossBtn3.png" style={{
+                                <Image src="/assets/croseBtn.png" style={{
                                     height: '15px', width: "15px",
                                     objectFit: 'cover', objectPosition: "center"
                                 }} height={15} width={15} />

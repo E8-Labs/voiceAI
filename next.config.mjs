@@ -10,12 +10,13 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: false,
   images: {
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'www.blindcircle.com',
-        port: '444',  // Specify the port here
+        // port: '444',  // Specify the port here
         pathname: '/voiceapp/uploads/images/**',  // Allow specific path
       },
       {

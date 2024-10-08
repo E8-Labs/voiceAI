@@ -527,7 +527,7 @@ const VerifyPhoneNumber = ({
             ) : (
               <button
                 onClick={handleVerifyClick}
-                className="bg-purple px-8 text-white py-2 w-full"
+                className="bg-purple px-8 text-white py-3 w-full"
                 style={{
                   fontWeight: "400",
                   fontSize: 15,

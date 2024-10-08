@@ -250,7 +250,7 @@ const Calls = () => {
                         </div>
                         <div>
                           <button onClick={() => handleFilterDrawer(false)}>
-                            <Image src="/assets/crossBtn2.png" alt='cross' height={15} width={15} />
+                            <Image src="/assets/croseBtn.png" alt='cross' height={15} width={15} />
                           </button>
                         </div>
                       </div>

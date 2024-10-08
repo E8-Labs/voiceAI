@@ -1,6 +1,7 @@
 "use client";
 import {
   Alert,
+  Box,
   Button,
   CircularProgress,
   Fade,
@@ -9,6 +10,7 @@ import {
   InputAdornment,
   InputLabel,
   MenuItem,
+  Modal,
   Select,
   Slide,
   Snackbar,
@@ -86,6 +88,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
   const [buildScriptLoader, setBuildScriptLoader] = useState(false);
   const [allQuestionsFilled, setAllQuestionsFilled] = useState(null);
   const [productAmountInputErr, setProductAmountErr] = useState(null);
+  const [openVideoPopup, setOpenVideoPopup] = useState(false);
   // const [validLinkErr, setValidOtherLinkErr] = useState
 
   //code to add subscription
@@ -99,11 +102,18 @@ export default function ScriptAnimation2({ onChangeIndex }) {
   const [subscribeFailureErr, setSubscribeFailureErr] = useState(null);
   const [validLinkErr, setValidLinkErr] = useState(false);
   const [validOtherLinkErr, setValidOtherLinkErr] = useState(false);
+  const [aiName, setAiName] = useState("");
 
-  //update ref when selectedplan changed
-  // useEffect(() => {
-  //     selectedPlanRef.current = selectedPlan;
-  // }, [selectedPlan]);
+  useEffect(() => {
+    const localData = localStorage.getItem('User');
+    if (localData) {
+      const Data = JSON.parse(localData);
+      console.log("Local Data recieved from localstorage", Data)
+      if (Data.data.user.username) {
+        setAiName(Data.data.user.username)
+      }
+    }
+  }, [])
 
   //code to check if all questions are filled
   useEffect(() => {
@@ -540,6 +550,19 @@ export default function ScriptAnimation2({ onChangeIndex }) {
   //     getToken();
   // }, []);
 
+  const videoPopupStyle = {
+    height: "auto",
+    bgcolor: "transparent",
+    // p: 2,
+    mx: "auto",
+    my: "50vh",
+    transform: "translateY(-50%)",
+    borderRadius: 2,
+    border: "none",
+    outline: "none",
+    // border: "2px solid green"
+  };
+
   return (
     <div style={containerStyles}>
       <AnimatePresence initial={false} custom={direction}>
@@ -760,9 +783,9 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                   </div>
                   <div
                     className="w-full sm:w-9/12 max-h-[30vh] overflow-y-auto scrollbar scrollbar-thumb-purple scrollbar-track-transparent scrollbar-thin"
-                    // className="w-full sm:w-9/12 max-h-[40vh] overflow-y-auto scrollbar-thin scrollbar-thumb-red"
-                    // className='w-full sm:w-9/12'
-                    // style={{ maxHeight: "40vh", overflowY: "auto", scrollbarWidth: '3px' }}
+                  // className="w-full sm:w-9/12 max-h-[40vh] overflow-y-auto scrollbar-thin scrollbar-thumb-red"
+                  // className='w-full sm:w-9/12'
+                  // style={{ maxHeight: "40vh", overflowY: "auto", scrollbarWidth: '3px' }}
                   >
                     {inputs.map((input, index) => (
                       <div
@@ -860,7 +883,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
             >
               <div className="w-full flex justify-center">
                 <div className="w-11/12 sm:w-full">
-                  <div>
+                  <div className="w-full sm:w-9/12 flex flex-row justify-between items-center">
                     <button onClick={handleBack}>
                       <Image
                         src={"/assets/backarrow.png"}
@@ -869,7 +892,66 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                         width={16}
                       />
                     </button>
+                    <button className="text-purple"
+                      style={{
+                        fontWeight: "700",
+                        fontFamily: "inter",
+                        fontSize: 13,
+                      }} onClick={() => { setOpenVideoPopup(true) }}
+                    >
+                      Interested in an explainer video?
+                    </button>
                   </div>
+
+                  {/* Code for video popup */}
+                  <Modal
+                    open={openVideoPopup}
+                    onClose={() => setOpenVideoPopup(false)}
+                    closeAfterTransition
+                    BackdropProps={{
+                      timeout: 1000,
+                      sx: {
+                        backgroundColor: "transparent",
+                        backdropFilter: "blur(40px)",
+                      },
+                    }}
+                  >
+                    <Box className="lg:w-10/12 sm:w-10/12 w-full" sx={videoPopupStyle}>
+                      {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
+                      <div className="flex flex-row justify-center w-full">
+                        <div
+                          className="w-full w-full"
+                          style={{
+                            backgroundColor: "#ffffff23",
+                            padding: 20,
+                            borderRadius: 10,
+                          }}
+                        >
+                          <div className="p-2 rounded w-full">
+                            <div className="w-full flex flex-row justify-end pb-6">
+                              <button onClick={() => setOpenVideoPopup(false)}>
+                                <Image src="/assets/croseBtn.png" height={25} width={25} />
+                              </button>
+                            </div>
+                            <iframe
+                              src="https://www.youtube.com/embed/Dy9DM5u_GVg?autoplay=1&mute=1" //?autoplay=1&mute=1 to make it autoplay
+                              frameBorder="0"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                              title="YouTube video"
+                              // className='w-20vh h-40vh'
+                              style={{
+                                width: "100%",
+                                height: "80vh",
+                                borderRadius: 15,
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </Box>
+                  </Modal>
+
                   <div
                     className="mt-6 w-full sm:w-9/12"
                     style={{
@@ -878,11 +960,12 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                       fontFamily: "inter",
                     }}
                   >
-                    Do you sell any products or services that can offer to
+                    Do you sell any products or services that {aiName.charAt(0).toUpperCase(0) + aiName.slice(1)} can offer to
                     qualified callers?
                   </div>
 
-                  <div className="max-h-[50vh] overflow-y-auto scrollbar scrollbar-thumb-purple scrollbar-track-transparent scrollbar-thin">
+                  <div //className="max-h-[50vh] overflow-y-auto scrollbar scrollbar-thumb-purple scrollbar-track-transparent scrollbar-thin"
+                  >
                     {/* Code to make dynamic routes */}
                     <div //className='w-full sm:w-9/12' //style={{ maxHeight: "40vh", overflowY: "auto", scrollbarWidth: "none" }}
                       className="mt-8 w-full sm:w-9/12 max-h-[30vh] overflow-y-auto scrollbar scrollbar-thumb-purple scrollbar-track-transparent scrollbar-thin"
@@ -1015,30 +1098,6 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                         </button>
                       </div>
                     )}
-                    <div className="w-full sm:w-9/12 flex flex-row mt-16 justify-between items-center text-purple">
-                      <iframe
-                        src="https://www.youtube.com/embed/Dy9DM5u_GVg" //?autoplay=1&mute=1 to make it autoplay
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        title="YouTube video"
-                        // className='w-20vh h-40vh'
-                        style={{
-                          width: "40%",
-                          height: "50%",
-                          borderRadius: 15,
-                        }}
-                      />
-                      <button
-                        style={{
-                          fontWeight: "700",
-                          fontFamily: "inter",
-                          fontSize: 13,
-                        }}
-                      >
-                        Interested in an explainer video?
-                      </button>
-                    </div>
                   </div>
                   {/* 
                                     <div className='w-10/12'>
@@ -1083,14 +1142,14 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                     </button>
                   </div>
                   <div
-                    className="mt-6"
+                    className="mt-6 w-full sm:w-11/12"
                     style={{
                       fontSize: 24,
                       fontWeight: "600",
                       fontFamily: "inter",
                     }}
                   >
-                    Conversion goals?
+                    what do you want your AI to offer during a call?
                   </div>
                   <div
                     className="w-full sm:w-11/12  flex flex-col justify-center items-center overflow-y-auto scrollbar scrollbar-thumb-purple scrollbar-thin scrollbar-track-transparent"
@@ -1706,7 +1765,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                           border: "2px solid #EDEDED80",
                         }}
                       >
-                        {}
+                        { }
                       </Alert>
                     </Snackbar>
 
@@ -1786,8 +1845,8 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                         subscribePlan={subscribePlan}
                         fromBuildAiScreen={true}
                         subscribeLoader={subscribeLoaderStatus}
-                        // selectedPlan={selectedPlan}
-                        // stop={stop}
+                      // selectedPlan={selectedPlan}
+                      // stop={stop}
                       />
                     </Elements>
                   </div>
@@ -1859,7 +1918,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                           fontWeight: "400",
                           fontFamily: "inter",
                         }}
-                        // onClick={sendNotification}
+                      // onClick={sendNotification}
                       >
                         {/* <div className='text-red'> */}
                         Allow notifications
