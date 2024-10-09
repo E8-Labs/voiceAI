@@ -50,7 +50,13 @@ const Apis = {
     //new apis for creator dashboard flow
     AddTrait: `${BasePath}api/ai/addTrait`,
     DeleteTrait: `${BasePath}api/ai/deleteTrait`,
-    UpdateTrait: `${BasePath}api/ai/updateTrait`
+    UpdateTrait: `${BasePath}api/ai/updateTrait`,
+    AddValues: `${BasePath}api/ai/addUserValue`,
+    DeleteValues: `${BasePath}api/ai/deleteUserValue`,
+    UpdateValues: `${BasePath}api/ai/updateUserValue`,
+    AddBeliefs: `${BasePath}api/ai/addUserBeliefs`,
+    DeleteBeliefs: `${BasePath}api/ai/deleteUserBeliefs`,
+    UpdateBeliefs: `${BasePath}api/ai/updateUserBeliefs`
 
 
 }

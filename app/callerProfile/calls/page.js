@@ -5,6 +5,7 @@ import Apis from '@/components/apis/Apis';
 import axios from 'axios';
 import { Box, CircularProgress, Modal } from '@mui/material';
 import moment from 'moment';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const Page = () => {
 
@@ -13,44 +14,106 @@ const Page = () => {
     const [transcriptSummaryText, setTranscriptSummaryText] = useState('');
     const [transcriptText, setTranscriptText] = useState('');
 
-    const getCallLogs = async () => {
+    const [hasMore, setHasMore] = useState(true);
+    const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState(false);
+
+    // const getCallLogs = async () => {
+    //     const localData = localStorage.getItem('User');
+    //     if (localData) {
+    //         try {
+    //             setCallLogloader(true);
+    //             const Data = JSON.parse(localData);
+    //             // console.log("Data recieved is", Data);
+    //             // const ApiPath = "http://localhost:8005/api/user/call_logs";
+    //             const AuthToken = Data.data.token;
+    //             console.log("Auth token", AuthToken);
+    //             const ApiPath = Apis.CallerCallLogs;
+    //             const response = await axios.get(ApiPath, {
+    //                 headers: {
+    //                     "Content-Type": "application/json",
+    //                     "Authorization": "Bearer " + AuthToken
+    //                 }
+    //             });
+
+    //             if (response) {
+    //                 console.log("Response of CallLogs api", response);
+    //                 if (response.data.status === true) {
+    //                     setCallLogDetails(response.data.data);
+    //                 } else {
+    //                     console.log("Status of calllog api", response.data.status);
+    //                 }
+
+    //             }
+    //         } catch (error) {
+    //             console.error("Error occured in call log api", error);
+    //         } finally {
+    //             setCallLogloader(false);
+    //         }
+    //     }
+    // }
+
+    console.log("Status of has more is", hasMore);
+    console.log("Status of loading is", loading);
+
+
+    const getCallLogs = async (currentPage) => {
         const localData = localStorage.getItem('User');
         if (localData) {
             try {
-                setCallLogloader(true);
+                setLoading(true);
+                // setCallLogloader(true);
                 const Data = JSON.parse(localData);
-                // console.log("Data recieved is", Data);
-                // const ApiPath = "http://localhost:8005/api/user/call_logs";
                 const AuthToken = Data.data.token;
-                console.log("Auth token", AuthToken);
                 const ApiPath = Apis.CallerCallLogs;
-                const response = await axios.get(ApiPath, {
+
+                // Modify the API call with pagination
+                let api = `${ApiPath}?offset=${callLogDetails.length}`
+                console.log("Loading on ", api)
+                const response = await axios.get(api, {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": "Bearer " + AuthToken
                     }
                 });
 
-                if (response) {
-                    console.log("Response of CallLogs api", response);
-                    if (response.data.status === true) {
-                        setCallLogDetails(response.data.data);
-                    } else {
-                        console.log("Status of calllog api", response.data.status);
-                    }
+                if (response.data.status === true) {
+                    console.log("Response of call logs api is", response.data);
+                    const newCallLogs = response.data.data;
+                    setCallLogDetails((prev) => [...prev, ...newCallLogs]);
 
+                    // If less than 10 logs are fetched, stop further loading
+                    if (newCallLogs.length < 10) {
+                        setHasMore(false);
+                    }
+                } else {
+                    setHasMore(false);
                 }
             } catch (error) {
-                console.error("Error occured in call log api", error);
+                console.error("Error occurred in call log API", error);
             } finally {
+                setLoading(false);
                 setCallLogloader(false);
             }
         }
-    }
+    };
 
+    // Fetch the initial call logs
     useEffect(() => {
-        getCallLogs();
-    }, [])
+        getCallLogs(1);
+        setCallLogloader(true);
+    }, []);
+
+    // Function to fetch more data when scrolling down
+    const fetchMoreData = () => {
+        if (!loading) {
+            setPage(prevPage => {
+                const nextPage = prevPage + 1;
+                getCallLogs(nextPage); // Fetch the next set of logs
+                return nextPage;
+            });
+        }
+    };
 
     const styles = {
         text: {
@@ -121,7 +184,7 @@ const Page = () => {
                 </div>
 
                 <div className='w-full p-5 rounded-xl border-2'
-                    style={{ backgroundColor: "#FFFFFF40", maxHeight: '', overflow: 'auto' }}
+                    style={{ backgroundColor: "#FFFFFF40", maxHeight: '90vh', overflow: '' }}
                 >
                     <div className='w-full flex flex-row justify-between lg:flex hidden'
                         style={{
@@ -157,170 +220,218 @@ const Page = () => {
                                         <div style={{ textAlign: 'center', marginTop: 20, fontWeight: '500', fontSize: 15, fontFamily: 'inter' }}>
                                             No Call Log
                                         </div> :
-                                        <div>
-                                            <div className='lg:flex hidden flex flex-col'>
-                                                {callLogDetails.map((item) => (
-                                                    <>
-                                                        <button className='w-full' //</>style={{}} onClick={() => { setOpen(item) }}
-                                                        >
-                                                            <div className='w-full flex flex-row justify-between mt-10 items-center' key={item.id}>
-                                                                <div className='w-3/12 flex flex-row gap-2 items-center' style={{}}>
-                                                                    {item.model.profile_image ?
-                                                                        <img src={item.model.profile_image} alt='profile' style={{ borderRadius: "50%" }}
-                                                                            height={25} width={25}
-                                                                        />
-                                                                        :
-                                                                        <div>
-                                                                            {
-                                                                                item.model.name == "Tristan" ?
-                                                                                    <img src="/tristan.png" alt='profile'
-                                                                                        // height={30} width={30} 
-                                                                                        style={{ borderRadius: "50%", objectFit: 'cover', height: "40px", width: '40px' }}
-                                                                                    /> :
-                                                                                    <img src="/andrew.webp" alt='profile'
-                                                                                        // height={30} width={40} 
-                                                                                        style={{ borderRadius: "50%", objectFit: 'contain', height: "40px", width: '40px' }}
-                                                                                    />
-                                                                            }
-                                                                        </div>
-                                                                    }
+                                        <div style={{ height: "100%" }}>
+                                            <div className='' id="scrollableDiv1" style={{ maxHeight: '70vh', overflow: "auto" }}>
+                                                <InfiniteScroll className='lg:flex hidden flex-col w-full'
+                                                    endMessage={
+                                                        <p style={{ textAlign: 'center', paddingTop: '10px', fontWeight: "400", fontFamily: "inter", fontSize: 16, color: "#00000060" }}>
+                                                            {`You're all caught up`}
+                                                        </p>
+                                                    }
+                                                    scrollableTarget="scrollableDiv1"
+                                                    dataLength={callLogDetails.length}
+                                                    next={() => {
+                                                        console.log("Loading more...")
+                                                        getCallLogs()
+                                                    }}
+                                                    hasMore={hasMore}
+                                                    loader={
+                                                        <div className='w-full flex flex-row justify-center mt-8'>
+                                                            <CircularProgress size={35} />
+                                                        </div>
+                                                    } // Show spinner while loading
 
-                                                                    <div style={styles.text2}>
-                                                                        {item.model.name}
-                                                                    </div>
-                                                                </div>
-                                                                <div className='w-2/12 lg:w-2/12'>
-                                                                    <div style={{
-                                                                        textAlignLast: 'left',
-                                                                        fontSize: 14,
-                                                                        color: item.status === "completed" ? 'green' : '#FF424250',
-                                                                        fontWeight: 300,
-                                                                        whiteSpace: 'nowrap',  // Prevent text from wrapping
-                                                                        overflow: 'hidden',    // Hide overflow text
-                                                                        textOverflow: 'ellipsis'  // Add ellipsis for overflow text
-                                                                    }}>
-                                                                        {/* {item.status} */}
-                                                                        {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
-                                                                    </div>
-                                                                </div>
-                                                                <div className='w-2/12 lg:w-1/12'>
-                                                                    <div style={styles.text2}>
-                                                                        ${Number(item.amount).toFixed(2)}
-                                                                    </div>
-                                                                </div>
-                                                                <div className='w-3/12 lg:w-2/12 '>
-                                                                    <div style={{ ...styles.text2, paddingLeft: 13 }}>
-                                                                        {item.durationString}
-                                                                    </div>
-                                                                </div>
-                                                                <div className='w-3/12 lg:w-2/12'>
-                                                                    <div style={styles.text2}>
-                                                                        {/* {item.model.owner.assitant.createdAt} */}
-                                                                        {moment(item.createdAt).format('MM/DD/YYYY')}
-                                                                    </div>
-                                                                </div>
-                                                                <div className='w-3/12 lg:w-2/12'>
-                                                                    <div style={styles.text2}>
-                                                                        {/* {item.model.owner.assitant.createdAt} */}
-                                                                        {/* {moment(item.createdAt).format('MM/DD/YYYY')} */}
-                                                                        <button
-                                                                            onClick={() => {
-                                                                                if (item.summary !== "") {
-                                                                                    formatToHtml(item.summary);
-                                                                                } else {
-                                                                                    fetchTranscript(item.transcript);
-                                                                                }
-                                                                            }} className='text-purple' style={{ fontWeight: '400', fontSize: 15, fontFamily: 'inter' }}>
-                                                                            Details
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className='w-full h-0.5 rounded mt-2' style={{ backgroundColor: '#00000011' }}></div>
-                                                        </button>
-                                                    </>
-                                                ))}
-                                            </div>
-                                            <div className='lg:hidden pb-4' style={{ border: '' }}>
-                                                {callLogDetails.map((item) => (
-                                                    <div
-                                                        key={item.id}
-                                                        className='px-2 py-1 rounded w-full lg:hidden mt-4'
-                                                        style={{ border: '1px solid #00000020' }}>
-                                                        <div>
-                                                            {/* <div style={{ fontWeight: '500', fontFamily: 'inter', fontSize: '18' }}>
-                                                                Spoke To:
-                                                            </div> */}
-                                                            <div
-                                                                className='w-full flex flex-row justify-between mt-1'
-                                                                style={{ fontWeight: '400', fontFamily: 'inter', fontSize: '15' }}>
-                                                                <div className='flex flex-row gap-2 items-center' style={{}}>
-                                                                    {item.model.profile_image ?
-                                                                        <img src={item.model.profile_image} alt='profile' style={{ borderRadius: "50%" }}
-                                                                            height={40} width={40}
-                                                                        />
-                                                                        :
-                                                                        <div>
-                                                                            {
-                                                                                item.model.name == "Tristan" ?
-                                                                                    <img src="/tristan.png" alt='profile'
-                                                                                        // height={30} width={30} 
-                                                                                        style={{ borderRadius: "50%", objectFit: 'cover', height: "55px", width: '55px' }}
-                                                                                    /> :
-                                                                                    <img src="/andrew.webp" alt='profile'
-                                                                                        // height={30} width={40} 
-                                                                                        style={{ borderRadius: "50%", objectFit: 'contain', height: "55px", width: '55px' }}
-                                                                                    />
+                                                    style={{ overflow: "unset" }}
+                                                >
+                                                    <div className='lg:flex hidden flex flex-col'>
+                                                        {callLogDetails.map((item, index) => (
+                                                            <div key={item.id}>
+                                                                <div className='w-full' //</>style={{}} onClick={() => { setOpen(item) }}
+                                                                >
+                                                                    <div className='w-full flex flex-row justify-between mt-10 items-center' key={item.id}>
+                                                                        <div className='w-3/12 flex flex-row gap-2 items-center' style={{}}>
+                                                                            {item.model.profile_image ?
+                                                                                <img src={item.model.profile_image} alt='profile' style={{ borderRadius: "50%" }}
+                                                                                    height={25} width={25}
+                                                                                />
+                                                                                :
+                                                                                <div>
+                                                                                    {
+                                                                                        item.model.name == "Tristan" ?
+                                                                                            <img src="/tristan.png" alt='profile'
+                                                                                                // height={30} width={30} 
+                                                                                                style={{ borderRadius: "50%", objectFit: 'cover', height: "40px", width: '40px' }}
+                                                                                            /> :
+                                                                                            <img src="/andrew.webp" alt='profile'
+                                                                                                // height={30} width={40} 
+                                                                                                style={{ borderRadius: "50%", objectFit: 'contain', height: "40px", width: '40px' }}
+                                                                                            />
+                                                                                    }
+                                                                                </div>
                                                                             }
-                                                                        </div>
-                                                                    }
 
-                                                                    <div style={styles.text2} className='flex flex-col items-start justify-start'>
-                                                                        <div>
-                                                                            {item.model.name}
+                                                                            <div style={styles.text2}>
+                                                                                {item.model.name}
+                                                                            </div>
                                                                         </div>
-                                                                        <div
-                                                                            style={{
+                                                                        <div className='w-2/12 lg:w-2/12'>
+                                                                            <div style={{
                                                                                 textAlignLast: 'left',
-                                                                                fontSize: 13,
+                                                                                fontSize: 14,
                                                                                 color: item.status === "completed" ? 'green' : '#FF424250',
                                                                                 fontWeight: 300,
                                                                                 whiteSpace: 'nowrap',  // Prevent text from wrapping
                                                                                 overflow: 'hidden',    // Hide overflow text
                                                                                 textOverflow: 'ellipsis'  // Add ellipsis for overflow text
                                                                             }}>
-                                                                            {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
+                                                                                {/* {item.status} */}
+                                                                                {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className='w-2/12 lg:w-1/12'>
+                                                                            <div style={styles.text2}>
+                                                                                ${Number(item.amount).toFixed(2)}
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className='w-3/12 lg:w-2/12 '>
+                                                                            <div style={{ ...styles.text2, paddingLeft: 13 }}>
+                                                                                {item.durationString}
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className='w-3/12 lg:w-2/12'>
+                                                                            <div style={styles.text2}>
+                                                                                {/* {item.model.owner.assitant.createdAt} */}
+                                                                                {moment(item.createdAt).format('MM/DD/YYYY')}
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className='w-3/12 lg:w-2/12'>
+                                                                            <div style={styles.text2}>
+                                                                                {/* {item.model.owner.assitant.createdAt} */}
+                                                                                {/* {moment(item.createdAt).format('MM/DD/YYYY')} */}
+                                                                                <button
+                                                                                    onClick={() => {
+                                                                                        if (item.summary !== "") {
+                                                                                            formatToHtml(item.summary);
+                                                                                        } else {
+                                                                                            fetchTranscript(item.transcript);
+                                                                                        }
+                                                                                    }} className='text-purple' style={{ fontWeight: '400', fontSize: 15, fontFamily: 'inter' }}>
+                                                                                    Details
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className='w-full h-0.5 rounded mt-2' style={{ backgroundColor: '#00000011' }}></div>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </InfiniteScroll>
+                                            </div>
+                                            <div className='' id="scrollableDiv" style={{ maxHeight: '70vh', overflow: "auto" }}>
+                                                <InfiniteScroll className='lg:hidden flex-col w-full'
+                                                    endMessage={
+                                                        <p style={{ textAlign: 'center', paddingTop: '10px', fontWeight: "400", fontFamily: "inter", fontSize: 16, color: "#00000060" }}>
+                                                            {`You're all caught up`}
+                                                        </p>
+                                                    }
+                                                    scrollableTarget="scrollableDiv"
+                                                    dataLength={callLogDetails.length}
+                                                    next={() => {
+                                                        console.log("Loading more...")
+                                                        fetchMoreData();
+                                                    }}
+                                                    hasMore={hasMore}
+                                                    loader={
+                                                        <div className='w-full flex flex-row justify-center mt-8'>
+                                                            <CircularProgress size={35} />
+                                                        </div>
+                                                    } // Show spinner while loading
+
+                                                    style={{ overflow: "unset" }}
+                                                >
+                                                    <div className='lg:hidden pb-4' style={{ border: '' }}>
+                                                        {callLogDetails.map((item) => (
+                                                            <div
+                                                                key={item.id}
+                                                                className='px-2 py-1 rounded w-full lg:hidden mt-4'
+                                                                style={{ border: '1px solid #00000020' }}>
+                                                                <div>
+                                                                    {/* <div style={{ fontWeight: '500', fontFamily: 'inter', fontSize: '18' }}>
+                                                                Spoke To:
+                                                            </div> */}
+                                                                    <div
+                                                                        className='w-full flex flex-row justify-between mt-1'
+                                                                        style={{ fontWeight: '400', fontFamily: 'inter', fontSize: '15' }}>
+                                                                        <div className='flex flex-row gap-2 items-center' style={{}}>
+                                                                            {item.model.profile_image ?
+                                                                                <img src={item.model.profile_image} alt='profile' style={{ borderRadius: "50%" }}
+                                                                                    height={40} width={40}
+                                                                                />
+                                                                                :
+                                                                                <div>
+                                                                                    {
+                                                                                        item.model.name == "Tristan" ?
+                                                                                            <img src="/tristan.png" alt='profile'
+                                                                                                // height={30} width={30} 
+                                                                                                style={{ borderRadius: "50%", objectFit: 'cover', height: "55px", width: '55px' }}
+                                                                                            /> :
+                                                                                            <img src="/andrew.webp" alt='profile'
+                                                                                                // height={30} width={40} 
+                                                                                                style={{ borderRadius: "50%", objectFit: 'contain', height: "55px", width: '55px' }}
+                                                                                            />
+                                                                                    }
+                                                                                </div>
+                                                                            }
+
+                                                                            <div style={styles.text2} className='flex flex-col items-start justify-start'>
+                                                                                <div>
+                                                                                    {item.model.name}
+                                                                                </div>
+                                                                                <div
+                                                                                    style={{
+                                                                                        textAlignLast: 'left',
+                                                                                        fontSize: 13,
+                                                                                        color: item.status === "completed" ? 'green' : '#FF424250',
+                                                                                        fontWeight: 300,
+                                                                                        whiteSpace: 'nowrap',  // Prevent text from wrapping
+                                                                                        overflow: 'hidden',    // Hide overflow text
+                                                                                        textOverflow: 'ellipsis'  // Add ellipsis for overflow text
+                                                                                    }}>
+                                                                                    {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div style={{ fontWeight: '500', fontFamily: 'inter', fontSize: '15' }}>
+                                                                            {item.durationString}
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div style={{ fontWeight: '500', fontFamily: 'inter', fontSize: '15' }}>
-                                                                    {item.durationString}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div>
-                                                            {/* <div className='mt-1' style={{ fontWeight: '500', fontFamily: 'inter', fontSize: '18' }}>
+                                                                <div>
+                                                                    {/* <div className='mt-1' style={{ fontWeight: '500', fontFamily: 'inter', fontSize: '18' }}>
                                                                 Status:
                                                             </div> */}
-                                                            <div className='w-full flex flex-row justify-between mt-2'>
-                                                                <div style={{ fontWeight: '500', fontFamily: 'inter', fontSize: '15' }}>
-                                                                    ${Number(item.amount).toFixed(2)}
+                                                                    <div className='w-full flex flex-row justify-between mt-2'>
+                                                                        <div style={{ fontWeight: '500', fontFamily: 'inter', fontSize: '15' }}>
+                                                                            ${Number(item.amount).toFixed(2)}
+                                                                        </div>
+                                                                        <div
+                                                                            style={{ ...styles.text2, fontWeight: '400', fontFamily: 'inter', fontSize: '15' }}>
+                                                                            {moment(item.createdAt).format('MM/DD/YYYY')}
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                                <div
-                                                                    style={{ ...styles.text2, fontWeight: '400', fontFamily: 'inter', fontSize: '15' }}>
-                                                                    {moment(item.createdAt).format('MM/DD/YYYY')}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        {/* <div className='mt-1' style={{ fontWeight: '500', fontFamily: 'inter', fontSize: '18' }}>
+                                                                {/* <div className='mt-1' style={{ fontWeight: '500', fontFamily: 'inter', fontSize: '18' }}>
                                                             Date:
                                                         </div> */}
-                                                        {/* <div
+                                                                {/* <div
                                                             style={{ ...styles.text2, fontWeight: '400', fontFamily: 'inter', fontSize: '15' }}>
                                                             {moment(item.createdAt).format('MM/DD/YYYY')}
                                                         </div> */}
+                                                            </div>
+                                                        ))}
                                                     </div>
-                                                ))}
+                                                </InfiniteScroll>
                                             </div>
                                         </div>
                                 }

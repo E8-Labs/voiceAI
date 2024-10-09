@@ -17,6 +17,7 @@ import {
 import { Elements } from "@stripe/react-stripe-js";
 import AddCardDetails from "@/components/loginform/Addcard/AddCardDetails";
 import { loadStripe } from "@stripe/stripe-js";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const Page = () => {
   let stripePublickKey =
@@ -26,8 +27,8 @@ const Page = () => {
   console.log("Public key is ", stripePublickKey);
   const stripePromise = loadStripe(stripePublickKey);
 
-  const [defaultCart, setDefaultCard] = useState("");
   const [paymentHistory, setPaymentHistory] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
   const [cardsListData, setCardsListData] = useState([]);
   const [cardLoader, setCardLoader] = useState(false);
   const [invoiceLoader, setInvoiceLoader] = useState(false);
@@ -88,11 +89,10 @@ const Page = () => {
     const localData = localStorage.getItem("User");
     if (localData) {
       try {
-        setInvoiceLoader(true);
         const Data = JSON.parse(localData);
         const AuthToken = Data.data.token;
         console.log("Authtoken is", AuthToken);
-        const ApiPath = Apis.CallerInvoices;
+        const ApiPath = `${Apis.CallerInvoices}?offset=${paymentHistory.length}`;
         console.log("Api Path iis", ApiPath);
         const response = await axios.get(ApiPath, {
           headers: {
@@ -103,7 +103,190 @@ const Page = () => {
         if (response) {
           if (response.data.status === true) {
             console.log("Response is", response.data.data);
-            setPaymentHistory(response.data.data);
+            // if (response.data.data.length === 0) {
+            //   console.log("Array khali hy");
+            //   const DummyData = [
+            //     {
+            //       id: 1,
+            //       invoice_id: "ksdfyiwerwerewrelj",
+            //       payment_intent_id: "jshdfkaeu7",
+            //       product_name: "Bike",
+            //       creatorName: "Tatee",
+            //       payment_amount: "12",
+            //       payment_date: "12/12/1212"
+            //     },
+            //     {
+            //       id: 2,
+            //       invoice_id: "ksdfrewrewyielj",
+            //       payment_intent_id: "jshdfkaeu7",
+            //       product_name: "Bike",
+            //       creatorName: "Tatee",
+            //       payment_amount: "12",
+            //       payment_date: "12/12/1212"
+            //     },
+            //     {
+            //       id: 3,
+            //       invoice_id: "ksdfyiwerrewelj",
+            //       payment_intent_id: "jshdfkaeu7",
+            //       product_name: "Bike",
+            //       creatorName: "Tatee",
+            //       payment_amount: "12",
+            //       payment_date: "12/12/1212"
+            //     },
+            //     {
+            //       id: 4,
+            //       invoice_id: "ksrewfyielj",
+            //       payment_intent_id: "jshdfkaeu7",
+            //       product_name: "Bike",
+            //       creatorName: "Tatee",
+            //       payment_amount: "12",
+            //       payment_date: "12/12/1212"
+            //     },
+            //     {
+            //       id: 5,
+            //       invoice_id: "ksdfewryielj",
+            //       payment_intent_id: "jshdfkaeu7",
+            //       product_name: "Bike",
+            //       creatorName: "Tatee",
+            //       payment_amount: "12",
+            //       payment_date: "12/12/1212"
+            //     },
+            //     {
+            //       id: 6,
+            //       invoice_id: "ksdfweweyielj",
+            //       payment_intent_id: "jshdfkaeu7",
+            //       product_name: "Bike",
+            //       creatorName: "Tatee",
+            //       payment_amount: "12",
+            //       payment_date: "12/12/1212"
+            //     },
+            //     {
+            //       id: 7,
+            //       invoice_id: "ksdfyiewelj",
+            //       payment_intent_id: "jshdfkaeu7",
+            //       product_name: "Bike",
+            //       creatorName: "Tatee",
+            //       payment_amount: "12",
+            //       payment_date: "12/12/1212"
+            //     },
+            //     {
+            //       id: 8,
+            //       invoice_id: "ksdfyirrelj",
+            //       payment_intent_id: "jshdfkaeu7",
+            //       product_name: "Bike",
+            //       creatorName: "Tatee",
+            //       payment_amount: "12",
+            //       payment_date: "12/12/1212"
+            //     },
+
+            //     {
+            //       id: 9,
+            //       invoice_id: "kerwsdfyrewielj",
+            //       payment_intent_id: "jshdfkaeu7",
+            //       product_name: "Bike",
+            //       creatorName: "Tatee",
+            //       payment_amount: "12",
+            //       payment_date: "12/12/1212"
+            //     },
+            //     {
+            //       id: 10,
+            //       invoice_id: "ksdfywerielj",
+            //       payment_intent_id: "jshdfkaeu7",
+            //       product_name: "Bike",
+            //       creatorName: "Tatee",
+            //       payment_amount: "12",
+            //       payment_date: "12/12/1212"
+            //     },
+            //     {
+            //       id: 11,
+            //       invoice_id: "ksdfyswreerwferielj",
+            //       payment_intent_id: "jshdfkaeu7",
+            //       product_name: "Bike",
+            //       creatorName: "Tatee",
+            //       payment_amount: "12",
+            //       payment_date: "12/12/1212"
+            //     },
+            //     {
+            //       id: 12,
+            //       invoice_id: "ksdfysdfvielj",
+            //       payment_intent_id: "jshdfkaeu7",
+            //       product_name: "Bike",
+            //       creatorName: "Tatee",
+            //       payment_amount: "12",
+            //       payment_date: "12/12/1212"
+            //     },
+            //     {
+            //       id: 13,
+            //       invoice_id: "ksdfywerielj",
+            //       payment_intent_id: "jshdfkaeu7",
+            //       product_name: "Bike",
+            //       creatorName: "Tatee",
+            //       payment_amount: "12",
+            //       payment_date: "12/12/1212"
+            //     },
+            //     {
+            //       id: 14,
+            //       invoice_id: "ksdfewyielj",
+            //       payment_intent_id: "jshdfkaeu7",
+            //       product_name: "Bike",
+            //       creatorName: "Tatee",
+            //       payment_amount: "12",
+            //       payment_date: "12/12/1212"
+            //     },
+            //     {
+            //       id: 15,
+            //       invoice_id: "ksdasfdfyielj",
+            //       payment_intent_id: "jshdfkaeu7",
+            //       product_name: "Bike",
+            //       creatorName: "Tatee",
+            //       payment_amount: "12",
+            //       payment_date: "12/12/1212"
+            //     },
+            //     {
+            //       id: 16,
+            //       invoice_id: "ksdfvyielj",
+            //       payment_intent_id: "jshdfkaeu7",
+            //       product_name: "Bike",
+            //       creatorName: "Tatee",
+            //       payment_amount: "12",
+            //       payment_date: "12/12/1212"
+            //     },
+            //     {
+            //       id: 1,
+            //       invoice_id: "ksdfyivelj",
+            //       payment_intent_id: "jshdfkaeu7",
+            //       product_name: "Bike",
+            //       creatorName: "Tatee",
+            //       payment_amount: "12",
+            //       payment_date: "12/12/1212"
+            //     },
+
+            //     {
+            //       id: 17,
+            //       invoice_id: "ksdfqyielj",
+            //       payment_intent_id: "jshdfkaeu7",
+            //       product_name: "Bike",
+            //       creatorName: "Tatee",
+            //       payment_amount: "12",
+            //       payment_date: "12/12/1212"
+            //     },
+            //     {
+            //       id: 18,
+            //       invoice_id: "ksdfyiwelj",
+            //       payment_intent_id: "jshdfkaeu7",
+            //       product_name: "Bike",
+            //       creatorName: "Tatee",
+            //       payment_amount: "12",
+            //       payment_date: "12/12/1212"
+            //     },
+            //   ]
+            //   const paymentHistory = DummyData;
+            //   setPaymentHistory((prevData) => [...prevData, ...paymentHistory]);
+            // } else {
+
+            // }
+            const paymentHistory = response.data.data;
+            setPaymentHistory((prevData) => [...prevData, ...paymentHistory]);
           } else {
             console.log("Not recieved data", response.data.message);
             console.log("Status is", response.data.status);
@@ -146,6 +329,7 @@ const Page = () => {
   };
 
   useEffect(() => {
+    setInvoiceLoader(true);
     getInvoicesDetails();
     getCards();
   }, []);
@@ -538,41 +722,64 @@ const Page = () => {
                   </div>
                 ) : (
                   <div>
-                    <div className="lg:flex hidden flex-col">
-                      {paymentHistory.map((item) => (
-                        <div>
-                          {/* <button className='w-full' //</>style={{}} onClick={() => { setOpen(item) }}> */}
-                          <div className="flex flex-col gap-2">
-                            <div
-                              className="w-full flex flex-row justify-between mt-10 gap-2"
-                              key={item.invoice_id}
-                            >
-                              <div className="w-3/12 lg:w-2/12">
-                                <div style={styles.text2}>
-                                  {item.payment_intent_id}
-                                </div>
-                              </div>
-                              <div className="w-2/12 lg:w-2/12">
-                                <div style={styles.text2}>
-                                  {item.product_name}
-                                </div>
-                              </div>
-                              <div className="lg:flex hidden lg:w-2/12 ms-2">
-                                <div style={styles.text2}>
-                                  {item.creatorName}
-                                </div>
-                              </div>
-                              <div className="w-2/12 lg:w-2/12 ms-2">
-                                <div style={styles.text2}>
-                                  ${item.payment_amount}
-                                </div>
-                              </div>
-                              <div className="w-3/12 lg:w-2/12">
-                                <div style={styles.text2}>
-                                  {item.payment_date}
-                                </div>
-                              </div>
-                              {/* <div className='w-2/12'>
+
+                    <div id="scrollableDiv1" style={{ maxHeight: '70vh', overflow: "auto" }}>
+                      <InfiniteScroll className='lg:flex hidden flex-col w-full'
+                        endMessage={
+                          <p style={{ textAlign: 'center', paddingTop: '10px', fontWeight: "400", fontFamily: "inter", fontSize: 16, color: "#00000060" }}>
+                            {`You're all caught up`}
+                          </p>
+                        }
+                        scrollableTarget="scrollableDiv1"
+                        dataLength={paymentHistory.length}
+                        next={() => {
+                          console.log("Loading more...")
+                          getInvoicesDetails()
+                        }}
+                        hasMore={hasMore}
+                        loader={
+                          <div className='w-full flex flex-row justify-center mt-8'>
+                            <CircularProgress size={35} />
+                          </div>
+                        } // Show spinner while loading
+
+                        style={{ overflow: "unset" }}
+                      >
+                        <div className="lg:flex hidden flex-col">
+                          {paymentHistory.map((item) => (
+                            <div>
+                              {/* <button className='w-full' //</>style={{}} onClick={() => { setOpen(item) }}> */}
+                              <div className="flex flex-col gap-2">
+                                <div
+                                  className="w-full flex flex-row justify-between mt-10 gap-2"
+                                  key={item.invoice_id}
+                                >
+                                  <div className="w-3/12 lg:w-2/12">
+                                    <div style={styles.text2}>
+                                      {item.payment_intent_id}
+                                    </div>
+                                  </div>
+                                  <div className="w-2/12 lg:w-2/12">
+                                    <div style={styles.text2}>
+                                      {item.product_name}
+                                    </div>
+                                  </div>
+                                  <div className="lg:flex hidden lg:w-2/12 ms-2">
+                                    <div style={styles.text2}>
+                                      {item.creatorName}
+                                    </div>
+                                  </div>
+                                  <div className="w-2/12 lg:w-2/12 ms-2">
+                                    <div style={styles.text2}>
+                                      ${item.payment_amount}
+                                    </div>
+                                  </div>
+                                  <div className="w-3/12 lg:w-2/12">
+                                    <div style={styles.text2}>
+                                      {item.payment_date}
+                                    </div>
+                                  </div>
+                                  {/* <div className='w-2/12'>
                                                                 <button onClick={() => handleOpenPdf(item.pdf_url)} style={{
                                                                     fontSize: 12, textDecoration: 'underline', fontWeight: 400, fontFamily: 'inter',
                                                                     color: '#2548FD'
@@ -580,15 +787,17 @@ const Page = () => {
                                                                     PDF
                                                                 </button>
                                                             </div> */}
+                                </div>
+                              </div>
+                              <div
+                                className="w-full h-0.5 rounded mt-2"
+                                style={{ backgroundColor: "#00000011" }}
+                              ></div>
+                              {/* </button> */}
                             </div>
-                          </div>
-                          <div
-                            className="w-full h-0.5 rounded mt-2"
-                            style={{ backgroundColor: "#00000011" }}
-                          ></div>
-                          {/* </button> */}
+                          ))}
                         </div>
-                      ))}
+                      </InfiniteScroll>
                     </div>
 
                     <div className="lg:hidden" style={{ height: "45vh" }}>

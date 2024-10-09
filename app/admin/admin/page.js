@@ -157,7 +157,7 @@ const Page = () => {
     return (
         <div className='w-full flex flex-row' style={backgroundImage}
         >
-            <div className='w-2/12 ps-4' style={{ border: '2px solid green' }}>
+            <div className='w-2/12 ps-4' style={{ border: '' }}>
                 <div className='flex flex-row gap-2 items-center mt-8'>
                     <Image src={adminData?.profile_image ? adminData?.profile_image : "/assets/placeholderImg.jpg"} alt='Profile'
                         height={50}
@@ -220,7 +220,7 @@ const Page = () => {
             <div className='w-9/12'>
                 {
                     creatorDetails ?
-                        <div className='w-full flex flex-col gap-4 pt-8 ps-4' style={{ backgroundColor: '#ffffff60', border: '2px solid red', height: '100%' }}>
+                        <div className='w-full flex flex-col gap-4 pt-8 ps-4' style={{ backgroundColor: '#ffffff60', border: '', height: '100%' }}>
                             <div>
                                 <div style={headingStyle}>
                                     Name:

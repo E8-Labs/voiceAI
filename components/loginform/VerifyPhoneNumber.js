@@ -338,6 +338,7 @@ const VerifyPhoneNumber = ({
             if (response.data.status === true) {
               localStorage.removeItem("signinNumber");
               if (response.data.data.user.role == "admin") {
+                localStorage.setItem("User", JSON.stringify(response.data));
                 router.push(`/admin/admin`);
               } else if (fromBuyStatus) {
                 const Data = JSON.parse(fromBuyStatus);

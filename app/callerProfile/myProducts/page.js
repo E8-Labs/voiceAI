@@ -8,13 +8,109 @@ import moment from 'moment'
 import { useRouter } from 'next/navigation'
 import { AnimatePresence, motion } from 'framer-motion'
 import zIndex from '@mui/material/styles/zIndex'
+import InfiniteScroll from 'react-infinite-scroll-component'
 const Page = () => {
 
     const router = useRouter();
 
     const [callerDashboardData, setCallerDashboardData] = useState([]);
+    // const [callerDashboardData, setCallerDashboardData] = [
+    //     {
+    //         profile: {
+    //             id: 1,
+    //             name: "John Doe",
+    //             profile_image: "/assets/john_profile.jpg"
+    //         },
+    //         products: [
+    //             {
+    //                 id: 1,
+    //                 name: "Personal Growth Course",
+    //                 productPrice: "200",
+    //                 createdAt: "2024-09-15T12:00:00Z",
+    //                 user: { name: "John Doe" }
+    //             },
+    //             {
+    //                 id: 2,
+    //                 name: "Life Coach Program",
+    //                 productPrice: "500",
+    //                 createdAt: "2024-09-16T12:00:00Z",
+    //                 user: { name: "John Doe" }
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         profile: {
+    //             id: 2,
+    //             name: "Jane Smith",
+    //             profile_image: "/assets/jane_profile.jpg"
+    //         },
+    //         products: [
+    //             {
+    //                 id: 3,
+    //                 name: "Fitness Transformation",
+    //                 productPrice: "400",
+    //                 createdAt: "2024-09-17T12:00:00Z",
+    //                 user: { name: "Jane Smith" }
+    //             },
+    //             {
+    //                 id: 4,
+    //                 name: "Mindfulness Mastery",
+    //                 productPrice: "350",
+    //                 createdAt: "2024-09-18T12:00:00Z",
+    //                 user: { name: "Jane Smith" }
+    //             }
+    //         ]
+    //     }
+    // ];
+
     const [buyedProducts, setBuyedProducts] = useState([]);
+    // const [buyedProducts, setBuyedProducts] = [
+    //     {
+    //         id: 1,
+    //         name: "30 days transformation journey for the mind and body",
+    //         productPrice: "400",
+    //         createdAt: "2024-09-01T12:00:00Z",
+    //         user: { name: "Andrew Tate" }
+    //     },
+    //     {
+    //         id: 2,
+    //         name: "7 Days Ultimate Fitness Program",
+    //         productPrice: "350",
+    //         createdAt: "2024-09-10T12:00:00Z",
+    //         user: { name: "John Doe" }
+    //     },
+    //     {
+    //         id: 3,
+    //         name: "Mindfulness Mastery",
+    //         productPrice: "300",
+    //         createdAt: "2024-09-20T12:00:00Z",
+    //         user: { name: "Jane Smith" }
+    //     }
+    // ];
+
     const [openProducts, setOpenProducts] = useState([]);
+    // const openProducts = {
+    //     profile: {
+    //         id: 1,
+    //         name: "John Doe",
+    //         profile_image: "/assets/john_profile.jpg"
+    //     },
+    //     products: [
+    //         {
+    //             id: 1,
+    //             name: "Personal Growth Course",
+    //             productPrice: "200",
+    //             createdAt: "2024-09-15T12:00:00Z"
+    //         },
+    //         {
+    //             id: 2,
+    //             name: "Life Coach Program",
+    //             productPrice: "500",
+    //             createdAt: "2024-09-16T12:00:00Z"
+    //         }
+    //     ]
+    // };
+
     const [showAll, setShowAll] = useState(false);
     const itemsToDisplay = showAll ? buyedProducts : buyedProducts.slice(0, 3);
     const [openBuyProductDrawer, setOpenBuyProductDrawer] = useState(null);
@@ -95,8 +191,6 @@ const Page = () => {
         const localData = localStorage.getItem("User");
         if (localData) {
             try {
-                setCreatorsLoader(true);
-                setPurchasedProductLoaderLoader(true);
                 const Data = JSON.parse(localData);
                 const AuthToken = Data.data.token;
                 const ApiPath = Apis.CallerDashboard;
@@ -144,6 +238,8 @@ const Page = () => {
     }, [buyProductSuccess]);
 
     useEffect(() => {
+        setCreatorsLoader(true);
+        setPurchasedProductLoaderLoader(true);
         getCallerDashoboard();
     }, []);
 
@@ -369,71 +465,64 @@ const Page = () => {
 
                                                     </div> :
                                                     <div>
-                                                        <div className='w-full flex flex-col gap-5 px-4 pb-4 pt-4'
+                                                        <div className='w-full flex flex-col gap-5 px-4 pb-4 pt-4' id='scrollableDiv1'
                                                             style={{ maxHeight: "30vh", overflow: "auto", scrollbarWidth: "none", backgroundColor: "#ffffff69" }}>
-                                                            {
-                                                                openProducts.products.map((product) => (
-                                                                    <div key={product.id} className='w-full flex flex-col'>
-                                                                        <div className='flex flex-row justify-between items-start'>
-                                                                            <div className='flex flex-col'>
-                                                                                <div
-                                                                                    style={{ fontSize: 13, fontWeight: "400", fontFamily: 'inter' }}>
-                                                                                    {/* {item.disc} */}
-                                                                                    {product.name}
-                                                                                </div>
-                                                                                <div style={{ fontSize: 20, fontWeight: "500", fontFamily: 'inter' }}>
-                                                                                    {/* {item.price} */}
-                                                                                    ${product.productPrice}
+                                                            {/* <InfiniteScroll className='lg:flex hidden flex-col w-full'
+                                                                endMessage={
+                                                                    <p style={{ textAlign: 'center', paddingTop: '10px', fontWeight: "400", fontFamily: "inter", fontSize: 16, color: "#00000060" }}>
+                                                                        {`You're all caught up`}
+                                                                    </p>
+                                                                }
+                                                                scrollableTarget="scrollableDiv1"
+                                                                dataLength={openProducts.length}
+                                                                next={() => {
+                                                                    console.log("Loading more...")
+                                                                    getCallerDashoboard()
+                                                                }}
+                                                                hasMore={true}
+                                                                loader={
+                                                                    <div className='w-full flex flex-row justify-center mt-8'>
+                                                                        <CircularProgress size={35} />
+                                                                    </div>
+                                                                } // Show spinner while loading
+
+                                                                style={{ overflow: "unset" }}
+                                                            > */}
+                                                                <div className='w-full flex flex-col gap-5 px-4 pb-4 pt-4'>
+                                                                    {
+                                                                        openProducts.products.map((product, index) => (
+                                                                            <div key={index} className='w-full flex flex-col'>
+                                                                                <div className='flex flex-row justify-between items-start'>
+                                                                                    <div className='flex flex-col'>
+                                                                                        <div
+                                                                                            style={{ fontSize: 13, fontWeight: "400", fontFamily: 'inter' }}>
+                                                                                            {/* {item.disc} */}
+                                                                                            {product.name}
+                                                                                        </div>
+                                                                                        <div style={{ fontSize: 20, fontWeight: "500", fontFamily: 'inter' }}>
+                                                                                            {/* {item.price} */}
+                                                                                            ${product.productPrice}
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <button className='px-3'
+                                                                                        onClick={() => {
+                                                                                            handleBuyProductClick(product);
+                                                                                        }}
+                                                                                        style={{
+                                                                                            color: 'white', backgroundColor: '#552AFF', borderRadius: 20, fontSize: 14,
+                                                                                            paddingTop: "2px", paddingBottom: "2px"
+                                                                                        }}>
+                                                                                        Buy
+                                                                                    </button>
+
+
                                                                                 </div>
                                                                             </div>
-
-                                                                            {/* <button className='px-3'
-                                                    onClick={() => {
-                                                        console.log("Product sendding in api", product);
-                                                        // return
-                                                        // setOpenBuyProductDrawer(product);
-                                                        // router.push(`/callerProfile/myProducts/${product.id}`);
-                                                        console.log("product id is", product.id);
-                                                        //add event listener here
-                                                        const event = new CustomEvent('buyProduct', {
-                                                            detail: {
-                                                                message: "Hello, this is a buy product event"
-                                                            }
-                                                        });
-                                                        window.dispatchEvent(event);
-                                                        console.log("Event dispatched:", event);
-                                                        console.log("Event added");
-    
-                                                        setTimeout(() => {
-                                                            window.open(`/buyproduct/${product.id}`, '_blank');
-                                                        }, 500);
-    
-                                                        return
-                                                        window.open(`/buyproduct/${product.id}`, '_blank');
-                                                    }}
-                                                    style={{
-                                                        color: 'white', backgroundColor: '#552AFF', borderRadius: 20, fontSize: 14,
-                                                        paddingTop: "2px", paddingBottom: "2px"
-                                                    }}>
-                                                    Buy
-                                                </button> */}
-
-                                                                            <button className='px-3'
-                                                                                onClick={() => {
-                                                                                    handleBuyProductClick(product);
-                                                                                }}
-                                                                                style={{
-                                                                                    color: 'white', backgroundColor: '#552AFF', borderRadius: 20, fontSize: 14,
-                                                                                    paddingTop: "2px", paddingBottom: "2px"
-                                                                                }}>
-                                                                                Buy
-                                                                            </button>
-
-
-                                                                        </div>
-                                                                    </div>
-                                                                ))
-                                                            }
+                                                                        ))
+                                                                    }
+                                                                </div>
+                                                            {/* </InfiniteScroll> */}
                                                         </div>
                                                     </div>
                                             }
@@ -624,7 +713,7 @@ const Page = () => {
                         </div>
                     }
                 </div>
-            </Drawer >
+            </Drawer>
 
             <Snackbar
                 open={buyProductSuccess}

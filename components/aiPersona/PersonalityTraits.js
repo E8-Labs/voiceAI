@@ -244,7 +244,7 @@ const PersonalityTraits = () => {
                                             Personality Trait
                                         </div>
                                         <button className='underline text-purple'
-                                            onClick={() => { setOpenAddTraitPopup(true) }}>
+                                            onClick={() => { setOpenManuallyTrait(true) }}>
                                             Add New
                                         </button>
                                     </div>
@@ -363,7 +363,7 @@ const PersonalityTraits = () => {
                                             <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter", color: "#050A0860", textAlign: "center" }}>
                                                 Please add a knowledge base or connect to your social <br /> media account.
                                             </div>
-                                            <button className='bg-purple px-4 py-2 text-white' style={{ borderRadius: "50px" }} onClick={() => { setOpenAddTraitPopup(true) }}>
+                                            <button className='bg-purple px-4 py-2 text-white' style={{ borderRadius: "50px" }} onClick={() => { setOpenManuallyTrait(true) }}>
                                                 Add New
                                             </button>
                                         </div>
@@ -461,7 +461,7 @@ const PersonalityTraits = () => {
                     timeout: 1000,
                     sx: {
                         backgroundColor: "transparent",
-                        // backdropFilter: "blur(40px)",
+                        backdropFilter: "blur(20px)",
                     },
                 }}
             >
