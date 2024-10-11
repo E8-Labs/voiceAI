@@ -1,11 +1,14 @@
 "use client"
 import CallInstructions from '@/components/aiPersona/CallInstructions';
+import FrameWorkAndTec from '@/components/aiPersona/FrameWorkAndTec';
 import Objectives from '@/components/aiPersona/Objectives';
 import PersonalityTraits from '@/components/aiPersona/PersonalityTraits';
 import ValuesandBeliefs from '@/components/aiPersona/ValuesandBeliefs';
+import Apis from '@/components/apis/Apis';
 import { CaretDown } from '@phosphor-icons/react';
+import axios from 'axios';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CircularProgressbar, CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
@@ -16,6 +19,8 @@ const Page = () => {
     const [dropdownOpen, setDropdownOpen] = useState(null);
     const [selectedGetToolMenu, setSelectedGetToolMenu] = useState(201);
     const [selectedGetProfessionalMenuMenu, setSelectedGetProfessionalMenuMenu] = useState(201);
+    const [aiData, setAiData] = useState(null);
+
 
     const menuItems = [{
         id: 1,
@@ -43,17 +48,55 @@ const Page = () => {
     },
     {
         id: 7,
-        menu: 'Specific Strategies & techniques',
+        menu: 'Specific Strategies & techniques', //added the values and beliefs here
     },
     {
         id: 8,
-        menu: 'Communication',
+        menu: 'Communication', //added the personality traits here
     },
     {
         id: 9,
         menu: 'Persona Characteristics',
     },
     ];
+
+    //code to call the get ai api
+    const getAiApi = async () => {
+        try {
+            console.log("Trying....")
+            const ApiPath = Apis.MyAiapi;
+            const localData = localStorage.getItem('User');
+            const Data = JSON.parse(localData);
+            const AuthToken = Data.data.token;
+            console.log("Authtoken is", AuthToken);
+            console.log("Apipath is", ApiPath);
+
+            const response = await axios.get(ApiPath, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": "Bearer " + AuthToken
+                }
+            });
+            if (response) {
+                console.log("Response of getai on parent screen api", response.data.data);
+                if (response.data) {
+                    setAiData(response.data.data);
+                }
+            }
+        } catch (error) {
+            console.error("ERR occured in get ai api is", error);
+        } finally {
+            // setLoadTraitsLoader(false);
+        }
+    }
+
+    useEffect(() => {
+        getAiApi();
+    }, []);
+
+    const recallApi = () => {
+        getAiApi();
+    }
 
     //code for dropdown in ID 4, 6 & 8
     const handleDropdownToggle = (id) => {
@@ -288,7 +331,7 @@ const Page = () => {
                                             <Image src={item.id === selectedMenu ? "/assets/claimLogo2.png" : "/assets/TickIcon.png"} alt='icon' height={10} width={10} />
                                         </div>
                                         {
-                                            [4, 6, 8 , 9].includes(item.id) &&
+                                            [4, 6, 8, 9].includes(item.id) &&
                                             <CaretDown size={22} weight="light" />
                                         }
                                     </button>
@@ -322,6 +365,8 @@ const Page = () => {
                                         ) : ""
                                     }
                                 </div>
+                            ) : selectedMenu === 7 ? (
+                                <FrameWorkAndTec recallApi={recallApi} aiData={aiData} />
                             ) : selectedMenu === 9 ? (
                                 <div>
                                     {
@@ -330,9 +375,9 @@ const Page = () => {
                                         ) : selectedGetProfessionalMenuMenu === 202 ? (
                                             "it is selectedGetProfessionalMenu 202 "
                                         ) : selectedGetProfessionalMenuMenu === 203 ? (
-                                            <ValuesandBeliefs />
+                                            <ValuesandBeliefs recallApi={recallApi} aiData={aiData} />
                                         ) : selectedGetProfessionalMenuMenu === 204 ? (
-                                            <PersonalityTraits />
+                                            <PersonalityTraits aiData={aiData} recallApi={recallApi} />
                                         ) : ""
                                     }
                                 </div>

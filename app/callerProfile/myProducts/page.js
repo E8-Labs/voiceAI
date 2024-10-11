@@ -208,7 +208,7 @@ const Page = () => {
                             console.log("Api data set to true")
                         } else {
                             setCallerDashboardData(response.data.data.callersDashboardData);
-                            console.log("Caller dashboard data recieved is")
+                            console.log("Caller dashboard data recieved is");
                             setOpenProducts(response.data.data.callersDashboardData[0]);
                             setBuyedProducts(response.data.data.products);
                         }
@@ -219,7 +219,6 @@ const Page = () => {
                 }
             } catch (error) {
                 console.error("Eror ocured in api", error);
-
             }
             finally {
                 setCreatorsLoader(false);

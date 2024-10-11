@@ -92,7 +92,12 @@ const Page = () => {
         const Data = JSON.parse(localData);
         const AuthToken = Data.data.token;
         console.log("Authtoken is", AuthToken);
-        const ApiPath = `${Apis.CallerInvoices}?offset=${paymentHistory.length}`;
+        //code to send last index id
+        const lastIndexId = paymentHistory.length > 0 ? paymentHistory[paymentHistory.length - 1].payment_intent_id : "";
+        console.log("Last index is", lastIndexId)
+        // return
+        const ApiPath = `${Apis.CallerInvoices}?lastInvoiceId=${lastIndexId}`;
+        // const ApiPath = Apis.CallerInvoices;
         console.log("Api Path iis", ApiPath);
         const response = await axios.get(ApiPath, {
           headers: {
@@ -102,7 +107,7 @@ const Page = () => {
 
         if (response) {
           if (response.data.status === true) {
-            console.log("Response is", response.data.data);
+            console.log("Response of payment history is", response.data.data);
             // if (response.data.data.length === 0) {
             //   console.log("Array khali hy");
             //   const DummyData = [
@@ -285,11 +290,15 @@ const Page = () => {
             // } else {
 
             // }
-            const paymentHistory = response.data.data;
+            const paymentHistory = Array.isArray(response.data.data) ? response.data.data : [];
             setPaymentHistory((prevData) => [...prevData, ...paymentHistory]);
+            if (paymentHistory.length < 10) {
+              setHasMore(false);
+            }
           } else {
             console.log("Not recieved data", response.data.message);
             console.log("Status is", response.data.status);
+            setHasMore(false);
           }
         }
       } catch (error) {
@@ -663,10 +672,10 @@ const Page = () => {
             )}
           </div>
           <div
-            className="w-full rounded-xl px-2 py-2 lg:p-8 mt-6"
+            className="w-full rounded-xl px-2 py-2 lg:p-8 mt-6 lg:max-h-[60vh] max-h-[60vh] "
             style={{
               backgroundColor: "#ffffff60",
-              maxHeight: "60vh",
+              // maxHeight: "60vh",
               overflow: "auto",
               scrollbarWidth: "none",
             }}
@@ -723,7 +732,7 @@ const Page = () => {
                 ) : (
                   <div>
 
-                    <div id="scrollableDiv1" style={{ maxHeight: '70vh', overflow: "auto" }}>
+                    <div className="lg:flex hidden w-full flex flex-col" id="scrollableDiv1" style={{ maxHeight: '40vh', overflow: "auto" }}>
                       <InfiniteScroll className='lg:flex hidden flex-col w-full'
                         endMessage={
                           <p style={{ textAlign: 'center', paddingTop: '10px', fontWeight: "400", fontFamily: "inter", fontSize: 16, color: "#00000060" }}>
@@ -800,106 +809,133 @@ const Page = () => {
                       </InfiniteScroll>
                     </div>
 
-                    <div className="lg:hidden" style={{ height: "45vh" }}>
-                      {paymentHistory.map((item) => (
-                        <div
-                          key={item.invoice_id}
-                          className="px-2 py-1 rounded w-full lg:hidden mt-4"
-                          style={{ border: "1px solid #00000020" }}
-                        >
-                          <div>
+
+                    <div className="lg:hidden" id="scrollableDiv2" style={{ maxHeight: '50vh', overflow: "auto" }}>
+                      <InfiniteScroll className='lg:hidden flex-col w-full'
+                        endMessage={
+                          <p style={{ textAlign: 'center', paddingTop: '10px', fontWeight: "400", fontFamily: "inter", fontSize: 16, color: "#00000060", height: "100%" }}>
+                            {`You're all caught up`}
+                          </p>
+                        }
+                        scrollableTarget="scrollableDiv2"
+                        dataLength={paymentHistory.length}
+                        next={() => {
+                          console.log("Loading more...")
+                          getInvoicesDetails()
+                        }}
+                        hasMore={hasMore}
+                        loader={
+                          <div className='w-full flex flex-row justify-center mt-8'>
+                            <CircularProgress size={35} />
+                          </div>
+                        } // Show spinner while loading
+
+                        style={{ overflow: "unset" }}
+                      >
+                        <div className="lg:hidden flex flex-col w-full">
+                          {paymentHistory.map((item) => (
                             <div
-                              style={{
-                                fontWeight: "500",
-                                fontFamily: "inter",
-                                fontSize: "15",
-                              }}
+                              key={item.invoice_id}
+                              className="px-2 py-1 rounded w-full lg:hidden mt-4"
+                              style={{ border: "1px solid #00000020" }}
                             >
-                              Name
-                            </div>
-                            <div
-                              className="w-full flex flex-row justify-between"
-                              style={{
-                                fontWeight: "400",
-                                fontFamily: "inter",
-                                fontSize: "10",
-                              }}
-                            >
+                              <div>
+                                <div
+                                  style={{
+                                    fontWeight: "500",
+                                    fontFamily: "inter",
+                                    fontSize: "15",
+                                  }}
+                                >
+                                  Name
+                                </div>
+                                <div
+                                  className="w-full flex flex-row justify-between"
+                                  style={{
+                                    fontWeight: "400",
+                                    fontFamily: "inter",
+                                    fontSize: "10",
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      fontWeight: "400",
+                                      fontFamily: "inter",
+                                      fontSize: "10",
+                                    }}
+                                  >
+                                    {item.product_name}
+                                  </div>
+                                  <div
+                                    style={{
+                                      fontWeight: "500",
+                                      fontFamily: "inter",
+                                      fontSize: "12",
+                                    }}
+                                  >
+                                    ${item.payment_amount}
+                                  </div>
+                                </div>
+                              </div>
+                              <div>
+                                <div
+                                  className="mt-1"
+                                  style={{
+                                    fontWeight: "500",
+                                    fontFamily: "inter",
+                                    fontSize: "15",
+                                  }}
+                                >
+                                  Creator
+                                </div>
+                                <div className="w-full flex flex-row justify-between">
+                                  <div
+                                    style={{
+                                      fontWeight: "400",
+                                      fontFamily: "inter",
+                                      fontSize: "10",
+                                    }}
+                                  >
+                                    {item.creatorName}
+                                  </div>
+                                  <div
+                                    style={{
+                                      fontWeight: "500",
+                                      fontFamily: "inter",
+                                      fontSize: "12",
+                                    }}
+                                  >
+                                    {item.payment_date}
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                className="mt-1"
+                                style={{
+                                  fontWeight: "500",
+                                  fontFamily: "inter",
+                                  fontSize: "15",
+                                }}
+                              >
+                                Product Id
+                              </div>
                               <div
                                 style={{
+                                  ...styles.text2,
                                   fontWeight: "400",
                                   fontFamily: "inter",
                                   fontSize: "10",
                                 }}
                               >
-                                {item.product_name}
-                              </div>
-                              <div
-                                style={{
-                                  fontWeight: "500",
-                                  fontFamily: "inter",
-                                  fontSize: "12",
-                                }}
-                              >
-                                ${item.payment_amount}
+                                {item.payment_intent_id}
                               </div>
                             </div>
-                          </div>
-                          <div>
-                            <div
-                              className="mt-1"
-                              style={{
-                                fontWeight: "500",
-                                fontFamily: "inter",
-                                fontSize: "15",
-                              }}
-                            >
-                              Creator
-                            </div>
-                            <div className="w-full flex flex-row justify-between">
-                              <div
-                                style={{
-                                  fontWeight: "400",
-                                  fontFamily: "inter",
-                                  fontSize: "10",
-                                }}
-                              >
-                                {item.creatorName}
-                              </div>
-                              <div
-                                style={{
-                                  fontWeight: "500",
-                                  fontFamily: "inter",
-                                  fontSize: "12",
-                                }}
-                              >
-                                {item.payment_date}
-                              </div>
-                            </div>
-                          </div>
-                          <div
-                            className="mt-1"
-                            style={{
-                              fontWeight: "500",
-                              fontFamily: "inter",
-                              fontSize: "15",
-                            }}
-                          >
-                            Product Id
-                          </div>
-                          <div
-                            style={{
-                              ...styles.text2,
-                              fontWeight: "400",
-                              fontFamily: "inter",
-                              fontSize: "10",
-                            }}
-                          >
-                            {item.payment_intent_id}
-                          </div>
+                          ))}
                         </div>
-                      ))}
+                      </InfiniteScroll>
                     </div>
+
+
                   </div>
                 )}
               </div>

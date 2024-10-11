@@ -193,7 +193,12 @@ const AddCardDetails = ({
                 if (localAssistanData) {
                     const asistantLocalData = JSON.parse(localAssistanData);
                     console.log("Assistant data retrived", asistantLocalData);
-                    modelId = (asistantLocalData.id);
+                    if (fromMYPlansScreen) {
+                        console.log("Adding new card");
+                        modelId = null;
+                    } else {
+                        modelId = (asistantLocalData.id);
+                    }
                 } else {
                     modelId = null;
                 }

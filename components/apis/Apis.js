@@ -56,7 +56,10 @@ const Apis = {
     UpdateValues: `${BasePath}api/ai/updateUserValue`,
     AddBeliefs: `${BasePath}api/ai/addUserBeliefs`,
     DeleteBeliefs: `${BasePath}api/ai/deleteUserBeliefs`,
-    UpdateBeliefs: `${BasePath}api/ai/updateUserBeliefs`
+    UpdateBeliefs: `${BasePath}api/ai/updateUserBeliefs`,
+    AddFrameWork: `${BasePath}api/ai/addFramework`,
+    UpdateFramWork: `${BasePath}api/ai/updateFramework`,
+    DeleteFrameWork: `${BasePath}api/ai/deleteFramework`
 
 
 }

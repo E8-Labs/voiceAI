@@ -1,20 +1,19 @@
-import { Box, CircularProgress, Modal, Popover, Slider } from '@mui/material'
+import { Alert, Box, CircularProgress, Fade, Modal, Popover, Slider, Snackbar } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import Apis from '../apis/Apis';
 import axios from 'axios';
 import { ArrowRight, DotsThree } from '@phosphor-icons/react';
 import Image from 'next/image';
 
-const PersonalityTraits = () => {
+const PersonalityTraits = ({ aiData, recallApi }) => {
 
-    const [myAiData, setMyAiData] = useState("");
     const [openManuallyTrait, setOpenManuallyTrait] = useState(false);
     const [newTrait, setNewTrait] = useState("");
     const [openAddTraitPopup, setOpenAddTraitPopup] = useState(false);
     const [openUpdateTraitPopup, setOpenUpdateTraitPopup] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const id = anchorEl ? 'simple-popover' : undefined;
-    const [newTraitSliderValue, setNewTraitSliderValue] = useState("");
+    const [newTraitSliderValue, setNewTraitSliderValue] = useState(1);
     const [personalityTraits, setPersonalityTraits] = useState([]);
     const [loadTraitsLoader, setLoadTraitsLoader] = useState(false);
     const [addTraitsLoader, setAddTraitsLoader] = useState(false);
@@ -24,6 +23,9 @@ const PersonalityTraits = () => {
     const [updateTraitId, setUpdateTraitId] = useState("");
     const [updateTraitItem, setUpdateTraitItem] = useState("");
     const [delTraitId, setDelTraitId] = useState("");
+    const [showSaveBtn, setShowSaveBtn] = useState(null);
+    const [updateTraitsLoader, setUpdateTraitsLoader] = useState(false);
+    const [updateSnackMsg, setUpdateSnackMsg] = useState(null);
 
     const handleClick = (event, item) => {
         setAnchorEl(event.currentTarget);
@@ -66,8 +68,17 @@ const PersonalityTraits = () => {
     }
 
     useEffect(() => {
-        getAiApi()
-    }, []);
+        // getAiApi();
+        try {
+            setLoadTraitsLoader(true);
+            console.log("Data recieved is", aiData);
+            setPersonalityTraits(aiData.traits);
+        } catch (error) {
+            console.error("ERror occured");
+        } finally {
+            setLoadTraitsLoader(false);
+        }
+    }, [recallApi]);
 
     //code to add trait api
     const handleAddTrait = async () => {
@@ -97,8 +108,10 @@ const PersonalityTraits = () => {
                 console.log("Response of add trait api is", response.data);
                 if (response.data.status === true) {
                     setOpenAddTraitPopup(false);
+                    setNewTrait("");
+                    setNewTraitSliderValue("");
                     setOpenManuallyTrait(false);
-                    getAiApi();
+                    recallApi();
                 } else {
                     console.log("Error occured")
                 }
@@ -122,9 +135,9 @@ const PersonalityTraits = () => {
     }
 
     //api call to update trait
-    const handleUpdateTrait = async () => {
+    const handleUpdateTrait = async (item) => {
         try {
-            setAddTraitsLoader(true);
+            setUpdateTraitsLoader(true);
             const ApiPath = Apis.UpdateTrait;
             const localData = localStorage.getItem('User');
             const Data = JSON.parse(localData);
@@ -132,10 +145,16 @@ const PersonalityTraits = () => {
             console.log("Authtoken is", AuthToken);
             console.log("Apipath is", ApiPath);
 
+            // const ApiData = {
+            //     id: updateTraitId,
+            //     trait: updateTraitValue,
+            //     score: updateTraitSliderValue,
+            // }
+
             const ApiData = {
-                id: updateTraitId,
-                trait: updateTraitValue,
-                score: updateTraitSliderValue,
+                id: item.id,
+                // trait: updateTraitValue,
+                score: item.score,
             }
 
             console.log("Data sendgin in api is", ApiData);
@@ -147,11 +166,12 @@ const PersonalityTraits = () => {
                 }
             });
             if (response) {
-                console.log("Response of add trait api is", response.data);
+                console.log("Response of update trait api is", response.data);
+                setUpdateSnackMsg(response.data.message);
                 if (response.data.status === true) {
                     setAnchorEl(null);
                     setOpenUpdateTraitPopup(false);
-                    getAiApi();
+                    recallApi();
                 } else {
                     console.log("Error occured")
                 }
@@ -160,7 +180,8 @@ const PersonalityTraits = () => {
         } catch (error) {
             console.error("ERR occured in add Trait api is", error);
         } finally {
-            setAddTraitsLoader(false);
+            setUpdateTraitsLoader(false);
+            setShowSaveBtn(null);
         }
     }
 
@@ -193,7 +214,10 @@ const PersonalityTraits = () => {
                 console.log("Response of add trait api is", response.data);
                 if (response.data.status === true) {
                     setAnchorEl(null);
-                    getAiApi();
+                    // getAiApi();
+                    setPersonalityTraits(prevTraits =>
+                        prevTraits.filter(trait => trait.id !== delTraitId)
+                    );
                 } else {
                     console.log("Error occured")
                 }
@@ -207,10 +231,21 @@ const PersonalityTraits = () => {
     }
 
     //code to change the value of slider from array
-    const handleSliderChange = (index, newValue) => {
-        const updatedTraits = [...personalityTraits];
-        updatedTraits[index].score = newValue;
-        setPersonalityTraits(updatedTraits);
+    const handleSliderChange = (index, newValue, item) => {
+
+        const oldValue = item.score;
+        console.log("Old value:", oldValue);  // Log the old value
+        console.log("New value:", newValue);  // Log the new value
+
+        // Now update the state if needed, depending on how you're handling the slider change
+        setPersonalityTraits(prevTraits => {
+            const updatedTraits = [...prevTraits];
+            updatedTraits[index].score = newValue;  // Update the score for the specific trait
+            return updatedTraits;
+        });
+
+        console.log("item is", item);
+        setShowSaveBtn(item);
     };
 
     const styles = {
@@ -278,14 +313,14 @@ const PersonalityTraits = () => {
                                                                     }}
                                                                 >
                                                                     <div className='p-2 flex flex-col justify-start items-start w-[100px]'>
-                                                                        <button className='text-purple' style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter" }} onClick={handleUpdateTraitPopupClick}>
+                                                                        {/* <button className='text-purple' style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter" }} onClick={handleUpdateTraitPopupClick}>
                                                                             Edit
-                                                                        </button>
+                                                                        </button> */}
                                                                         {
                                                                             addTraitsLoader ?
                                                                                 <div>
                                                                                     <CircularProgress size={15} />
-                                                                                    </div> :
+                                                                                </div> :
                                                                                 <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }}
                                                                                     onClick={handleDelTrait}>
                                                                                     Delete
@@ -295,7 +330,7 @@ const PersonalityTraits = () => {
                                                                 </Popover>
                                                             </div>
                                                         </div>
-                                                        <div className='mt-6 w-full'>
+                                                        <div className='mt-10 w-full'>
                                                             <Box className="w-full flex flex-row items-center gap-4">
                                                                 <div>
                                                                     1
@@ -307,7 +342,7 @@ const PersonalityTraits = () => {
                                                                     aria-label="Default"
                                                                     valueLabelDisplay="on"
                                                                     value={item.score}
-                                                                    onChange={(e, newValue) => handleSliderChange(index, newValue)}
+                                                                    onChange={(e, newValue) => handleSliderChange(index, newValue, item)}
                                                                     sx={{
                                                                         color: 'blue',
                                                                         '& .MuiSlider-valueLabel': {
@@ -346,6 +381,21 @@ const PersonalityTraits = () => {
                                                     </div>
                                                 ))
                                             }
+
+                                            {
+                                                showSaveBtn && (
+                                                    <div>
+                                                        {
+                                                            updateTraitsLoader ?
+                                                                <CircularProgress size={25} /> :
+                                                                <button className='text-white bg-purple p-4 py-2' style={{ borderRadius: "50px" }} onClick={() => { handleUpdateTrait(showSaveBtn) }}
+                                                                >
+                                                                    Save Changes
+                                                                </button>
+                                                        }
+                                                    </div>
+                                                )
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -375,7 +425,7 @@ const PersonalityTraits = () => {
 
 
 
-            {/* Code for add trait modal */}
+            {/* Code for frame work */}
             <Modal
                 open={openAddTraitPopup}
                 onClose={() => setOpenAddTraitPopup(false)}
@@ -452,7 +502,7 @@ const PersonalityTraits = () => {
                 </Box>
             </Modal>
 
-            {/* Modal to enter the trait manually */}
+            {/* Code for add trait modal */}
             <Modal
                 open={openManuallyTrait}
                 onClose={() => setOpenManuallyTrait(false)}
@@ -659,6 +709,32 @@ const PersonalityTraits = () => {
                     </div>
                 </Box>
             </Modal>
+
+            <div>
+                <Snackbar
+                    open={updateSnackMsg}
+                    autoHideDuration={3000}
+                    onClose={() => {
+                        setUpdateSnackMsg(null);
+                    }}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center'
+                    }}
+                    TransitionComponent={Fade}
+                    TransitionProps={{
+                        direction: 'center'
+                    }}
+                >
+                    <Alert
+                        onClose={() => {
+                            setUpdateSnackMsg(null);
+                        }} //severity="success"
+                        sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}>
+                        {updateSnackMsg}
+                    </Alert>
+                </Snackbar>
+            </div>
 
 
 

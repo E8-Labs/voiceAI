@@ -251,7 +251,17 @@ const Page = () => {
                                                                     <div className='w-full flex flex-row justify-between mt-10 items-center' key={item.id}>
                                                                         <div className='w-3/12 flex flex-row gap-2 items-center' style={{}}>
                                                                             {item.model.profile_image ?
-                                                                                <img src={item.model.profile_image} alt='profile' style={{ borderRadius: "50%" }}
+                                                                                <Image src={item.model.profile_image} alt='profile'
+                                                                                    style={{
+                                                                                        width: '35px',
+                                                                                        height: '35px',
+                                                                                        backgroundColor: "",
+                                                                                        borderRadius: "50%",
+                                                                                        border: "3px solid white",
+                                                                                        objectFit: 'cover',
+                                                                                        objectPosition: 'center',
+                                                                                        // backgroundColor: 'red'
+                                                                                    }}
                                                                                     height={25} width={25}
                                                                                 />
                                                                                 :
@@ -269,6 +279,20 @@ const Page = () => {
                                                                                     }
                                                                                 </div>
                                                                             }
+
+                                                                            {/* <div>
+                                                                                {
+                                                                                    item.model.name == "Tristan" ?
+                                                                                        <img src="/tristan.png" alt='profile'
+                                                                                            // height={30} width={30} 
+                                                                                            style={{ borderRadius: "50%", objectFit: 'cover', height: "40px", width: '40px' }}
+                                                                                        /> :
+                                                                                        <img src="/andrew.webp" alt='profile'
+                                                                                            // height={30} width={40} 
+                                                                                            style={{ borderRadius: "50%", objectFit: 'contain', height: "40px", width: '40px' }}
+                                                                                        />
+                                                                                }
+                                                                            </div> */}
 
                                                                             <div style={styles.text2}>
                                                                                 {item.model.name}
