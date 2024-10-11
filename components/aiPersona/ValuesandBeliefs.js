@@ -35,6 +35,7 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
     const [updateBeliefModal, setUpdateBeliefModal] = useState(false);
     const [updateBelief, setUpdateBelief] = useState("");
     const [updateBeliefDescription, setUpdateBeliefDescription] = useState("");
+    const [beliefData, setBeliefData] = useState(null);
 
 
     useEffect(() => {
@@ -42,8 +43,11 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
         setBeliefsData(aiData.beliefs);
     }, [recallApi])
 
-    const handleClick = (event) => {
+    const handleClick = (event, item) => {
         setAnchorEl(event.currentTarget);
+        setBeliefData(item);
+        setUpdateBelief(item.title);
+        setUpdateBeliefDescription(item.description);
     };
 
     const handleClose = () => {
@@ -243,6 +247,7 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
             console.log("Apipath is", ApiPath);
 
             const ApiData = {
+                id: beliefData.id,
                 title: updateBelief,
                 description: updateBeliefDescription
             }
@@ -258,10 +263,54 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
             if (response) {
                 console.log("Response of update belief api is", response.data);
                 if (response.data.status === true) {
-                    setAddBeliefModal(false);
-                    setAddBelief("");
-                    setBeliefDescription("");
+                    setUpdateBeliefModal(false);
+                    setUpdateBelief("");
+                    setUpdateBeliefDescription("");
+                    setAnchorEl(null);
                     recallApi();
+                } else {
+                    console.log("Error occured")
+                }
+            }
+
+        } catch (error) {
+            console.error("ERR occured in add belief api is", error);
+        } finally {
+            setAddValuesLoader(false);
+        }
+    }
+
+
+    //code to del belief
+    const handleDeleteBelief = async () => {
+        try {
+            setAddValuesLoader(true);
+            const ApiPath = Apis.DeleteBeliefs;
+            const localData = localStorage.getItem('User');
+            const Data = JSON.parse(localData);
+            const AuthToken = Data.data.token;
+            console.log("Authtoken is", AuthToken);
+            console.log("Apipath is", ApiPath);
+
+            const ApiData = {
+                id: beliefData.id,
+            }
+
+            console.log("Data sendgin in api is", ApiData);
+
+            const response = await axios.post(ApiPath, ApiData, {
+                headers: {
+                    "Authorization": "Bearer " + AuthToken,
+                    "Content-Type": "application/json"
+                }
+            });
+            if (response) {
+                console.log("Response of update belief api is", response.data);
+                if (response.data.status === true) {
+                    setAnchorEl(null);
+                    setBeliefsData(prevData =>
+                        prevData.filter(Belief => Belief.id !== beliefData.id)
+                    )
                 } else {
                     console.log("Error occured")
                 }
@@ -308,10 +357,10 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                 beliefsData.map((item) => (
                     <div key={item.id} className='flex flex-row items-center p-4 border border-[#00000010] mt-8 justify-between'>
                         <div>
-                            {item.myBelief}
+                            {item.description}
                         </div>
                         <div>
-                            <button aria-describedby={id} variant="contained" color="primary" onClick={handleClick}>
+                            <button aria-describedby={id} variant="contained" color="primary" onClick={(event) => { handleClick(event, item) }}>
                                 <DotsThree size={32} weight="bold" />
                             </button>
                             <Popover
@@ -333,12 +382,19 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                                         className='text-purple' style={{
                                             fontSize: 13, fontWeight: "500",
                                             fontFamily: "inter"
+                                        }}
+                                        onClick={() => {
+                                            setUpdateBeliefModal(true);
                                         }}>
                                         Edit
                                     </button>
-                                    <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }}>
-                                        Delete
-                                    </button>
+                                    {
+                                        valuesLoader ?
+                                            <CircularProgress size={15} /> :
+                                            <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }} onClick={handleDeleteBelief}>
+                                                Delete
+                                            </button>
+                                    }
                                 </div>
                             </Popover>
                         </div>
@@ -464,7 +520,7 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                                             </div> :
                                             <button className='w-full py-2 text-white bg-purple ' style={{ borderRadius: "50px", marginTop: 15 }}
                                                 onClick={handleAddValue}>
-                                                Add
+                                                Save
                                             </button>
                                     }
                                 </div>
@@ -599,7 +655,7 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                                             </div> :
                                             <button className='w-full py-2 text-white bg-purple ' style={{ borderRadius: "50px", marginTop: 15 }}
                                                 onClick={handleAddBelief}>
-                                                Add
+                                                Save
                                             </button>
                                     }
                                 </div>

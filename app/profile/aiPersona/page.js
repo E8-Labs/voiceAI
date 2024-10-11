@@ -1,6 +1,7 @@
 "use client"
 import CallInstructions from '@/components/aiPersona/CallInstructions';
 import FrameWorkAndTec from '@/components/aiPersona/FrameWorkAndTec';
+import IntractionExamples from '@/components/aiPersona/IntractionExamples';
 import Objectives from '@/components/aiPersona/Objectives';
 import PersonalityTraits from '@/components/aiPersona/PersonalityTraits';
 import ValuesandBeliefs from '@/components/aiPersona/ValuesandBeliefs';
@@ -20,6 +21,7 @@ const Page = () => {
     const [selectedGetToolMenu, setSelectedGetToolMenu] = useState(201);
     const [selectedGetProfessionalMenuMenu, setSelectedGetProfessionalMenuMenu] = useState(201);
     const [aiData, setAiData] = useState(null);
+    const [selectedCommunicationlMenu, setSelectedCommunicationlMenu] = useState(901);
 
 
     const menuItems = [{
@@ -163,6 +165,25 @@ const Page = () => {
             id: 204,
             heading: 'Personality Traits'
         },
+        {
+            id: 205,
+            heading: 'Intraction Examples'
+        },
+    ]
+
+    const communications = [
+        {
+            id: 901,
+            title: "Intraction examples"
+        },
+        {
+            id: 902,
+            title: "Item 2"
+        },
+        {
+            id: 903,
+            title: "Item 3"
+        },
     ]
 
     //different dropdowns for different ID
@@ -170,12 +191,12 @@ const Page = () => {
         switch (id) {
             case 4:
                 return (
-                    <div className='flex flex-col items-center rounded w-full'>
+                    <div className='flex flex-col items-start rounded w-ful ms-8'>
                         <ul>
                             {
                                 getTools.map((item) => (
                                     <div key={item.id} className='mb-4 flex flex-row items-center gap-2'>
-                                        <button className='text-end outline-noe border-none'
+                                        <button className='text-start outline-noe border-none'
                                             onClick={() => {
                                                 setSelectedGetToolMenu(item.id);
                                             }}
@@ -194,20 +215,20 @@ const Page = () => {
                 );
             case 8:
                 return (
-                    <div className='flex flex-col items-center rounded w-full'>
+                    <div className='flex flex-col items-start ms-8 rounded w-full'>
                         <ul>
                             {
-                                getTools.map((item) => (
+                                communications.map((item) => (
                                     <div key={item.id} className='mb-4 flex flex-row items-center gap-2'>
-                                        <button className='text-end outline-noe border-none'
+                                        <button className='text-start outline-noe border-none'
                                             onClick={() => {
-                                                setSelectedGetToolMenu(item.id);
+                                                setSelectedCommunicationlMenu(item.id);
                                             }}
-                                            style={{ color: selectedGetToolMenu === item.id ? "#620FEB" : "black" }}
+                                            style={{ color: selectedCommunicationlMenu === item.id ? "#620FEB" : "black" }}
                                         >
-                                            {item.heading}
+                                            {item.title}
                                         </button>
-                                        <Image src={item.id === selectedGetToolMenu ? "/assets/claimLogo2.png" : "/assets/TickIcon.png"} alt='icon' height={10} width={10} />
+                                        <Image src={item.id === selectedCommunicationlMenu ? "/assets/claimLogo2.png" : "/assets/TickIcon.png"} alt='icon' height={10} width={10} />
                                     </div>
                                 ))
                             }
@@ -218,12 +239,12 @@ const Page = () => {
                 );
             case 9:
                 return (
-                    <div className='flex flex-col items-center rounded w-full'>
+                    <div className='flex flex-col items-start ms-8 rounded w-full'>
                         <ul>
                             {
                                 personalCharacteristics.map((item) => (
                                     <div key={item.id} className='mb-4 flex flex-row items-center gap-2'>
-                                        <button className='text-end outline-noe border-none'
+                                        <button className='text-start outline-noe border-none'
                                             onClick={() => {
                                                 setSelectedGetProfessionalMenuMenu(item.id);
                                             }}
@@ -367,6 +388,18 @@ const Page = () => {
                                 </div>
                             ) : selectedMenu === 7 ? (
                                 <FrameWorkAndTec recallApi={recallApi} aiData={aiData} />
+                            ) : selectedMenu === 8 ? (
+                                <div>
+                                    {
+                                        selectedCommunicationlMenu === 901 ? (
+                                            <IntractionExamples recallApi={recallApi} aiData={aiData} />
+                                        ) : selectedCommunicationlMenu === 902 ? (
+                                            "Item 2"
+                                        ) : selectedCommunicationlMenu === 903 ? (
+                                            "Item 3"
+                                        ) : ""
+                                    }
+                                </div>
                             ) : selectedMenu === 9 ? (
                                 <div>
                                     {
@@ -378,6 +411,8 @@ const Page = () => {
                                             <ValuesandBeliefs recallApi={recallApi} aiData={aiData} />
                                         ) : selectedGetProfessionalMenuMenu === 204 ? (
                                             <PersonalityTraits aiData={aiData} recallApi={recallApi} />
+                                        ) : selectedGetProfessionalMenuMenu === 205 ? (
+                                            <IntractionExamples aiData={aiData} recallApi={recallApi} />
                                         ) : ""
                                     }
                                 </div>
