@@ -5,7 +5,7 @@ import axios from 'axios';
 import moment from 'moment';
 import { CircularProgressbar, CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { ArrowDown, ArrowRight, ArrowUp } from '@phosphor-icons/react';
+import { ArrowDown, ArrowRight, ArrowUp, CaretDown, CaretUpDown } from '@phosphor-icons/react';
 import Image from 'next/image';
 
 
@@ -363,8 +363,10 @@ const Dashboard = () => {
                                     value={analyticsDuration}
                                     // label="Age"
                                     onChange={handleSelectTime}
+                                    IconComponent={CaretDown}
                                     sx={{
-                                        backgroundColor: 'white',
+                                        backgroundColor: 'transparent',
+                                        color: "white",
                                         '& .MuiOutlinedInput-notchedOutline': {
                                             borderColor: 'transparent',
                                         },
@@ -377,6 +379,9 @@ const Dashboard = () => {
                                         '& .MuiSelect-select': {
                                             paddingTop: 1,
                                             paddingBottom: 1,
+                                        },
+                                        '& .MuiSelect-icon': {
+                                            color: 'white',  // Arrow color
                                         },
                                     }}
                                 >
@@ -395,7 +400,15 @@ const Dashboard = () => {
 
                 <div className='w-10/12 flex flex-row items-center mt-6 pb-8 justify-between'>
                     <div className='flex flex-row items-center gap-6'>
-                        <div style={{ height: "71px", width: "71px" }}>
+
+                        <div className='flex flex-row justify-center items-center border-2 border-white'
+                            style={{
+                                width: "55px",
+                                height: "55px", borderRadius: "50%",
+                            }}>
+                            <img style={{ width: 17 }} src="/assets/selectedCallIcon.png" alt="doge" />
+                        </div>
+                        {/* <div style={{ height: "71px", width: "71px" }}>
                             <CircularProgressbarWithChildren value={66}
                                 strokeWidth={4}
                                 styles={{
@@ -411,10 +424,9 @@ const Dashboard = () => {
                                         stroke: '#ffffff60', // Change the trail color (if needed)
                                     },
                                 }}>
-                                {/* Image centered inside the circular progress bar */}
                                 <img style={{ width: 17, marginTop: -5 }} src="/assets/creatorProfileNavIcons/document.png" alt="doge" />
                             </CircularProgressbarWithChildren>
-                        </div>
+                        </div> */}
                         <div className='flex flex-col gap-2'>
                             <div style={styles.statsHeading}>
                                 Callers
@@ -432,7 +444,14 @@ const Dashboard = () => {
                         </div>
                     </div>
                     <div className='flex flex-row items-center gap-6'>
-                        <div style={{ height: "71px", width: "71px" }}>
+                        <div className='flex flex-row justify-center items-center border-2 border-white'
+                            style={{
+                                width: "55px",
+                                height: "55px", borderRadius: "50%",
+                            }}>
+                            <img style={{ width: 17 }} src="/assets/carbon_time.png" alt="doge" />
+                        </div>
+                        {/* <div style={{ height: "71px", width: "71px" }}>
                             <CircularProgressbarWithChildren value={66}
                                 strokeWidth={4}
                                 styles={{
@@ -448,10 +467,9 @@ const Dashboard = () => {
                                         stroke: '#ffffff60', // Change the trail color (if needed)
                                     },
                                 }}>
-                                {/* Image centered inside the circular progress bar */}
                                 <img style={{ width: 17, marginTop: -5 }} src="/assets/creatorProfileNavIcons/document.png" alt="doge" />
                             </CircularProgressbarWithChildren>
-                        </div>
+                        </div> */}
                         <div className='flex flex-col gap-2'>
                             <div style={styles.statsHeading}>
                                 Minutes
@@ -469,7 +487,14 @@ const Dashboard = () => {
                         </div>
                     </div>
                     <div className='flex flex-row items-center gap-6'>
-                        <div style={{ height: "71px", width: "71px" }}>
+                        <div className='flex flex-row justify-center items-center border-2 border-white'
+                            style={{
+                                width: "55px",
+                                height: "55px", borderRadius: "50%",
+                            }}>
+                            <img style={{ width: 20, height: 20 }} src="/assets/minTalIcon.png" alt="doge" />
+                        </div>
+                        {/* <div style={{ height: "71px", width: "71px" }}>
                             <CircularProgressbarWithChildren value={66}
                                 strokeWidth={4}
                                 styles={{
@@ -485,10 +510,9 @@ const Dashboard = () => {
                                         stroke: '#ffffff60', // Change the trail color (if needed)
                                     },
                                 }}>
-                                {/* Image centered inside the circular progress bar */}
                                 <img style={{ width: 17, marginTop: -5 }} src="/assets/creatorProfileNavIcons/document.png" alt="doge" />
                             </CircularProgressbarWithChildren>
-                        </div>
+                        </div> */}
                         <div className='flex flex-col gap-2'>
                             <div style={styles.statsHeading}>
                                 Minutes Talked
@@ -506,7 +530,14 @@ const Dashboard = () => {
                         </div>
                     </div>
                     <div className='flex flex-row items-center gap-6'>
-                        <div style={{ height: "71px", width: "71px" }}>
+                        <div className='flex flex-row justify-center items-center border-2 border-white'
+                            style={{
+                                width: "55px",
+                                height: "55px", borderRadius: "50%",
+                            }}>
+                            <img style={{ width: 17, height: 17 }} src="/assets/revenueIcon.png" alt="doge" />
+                        </div>
+                        {/* <div style={{ height: "71px", width: "71px" }}>
                             <CircularProgressbarWithChildren value={66}
                                 strokeWidth={4}
                                 styles={{
@@ -522,10 +553,9 @@ const Dashboard = () => {
                                         stroke: '#ffffff60', // Change the trail color (if needed)
                                     },
                                 }}>
-                                {/* Image centered inside the circular progress bar */}
                                 <img style={{ width: 17, marginTop: -5 }} src="/assets/creatorProfileNavIcons/document.png" alt="doge" />
                             </CircularProgressbarWithChildren>
-                        </div>
+                        </div> */}
                         <div className='flex flex-col gap-2'>
                             <div style={styles.statsHeading}>
                                 Product Rev

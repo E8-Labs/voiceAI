@@ -33,6 +33,8 @@ import AddCardDetails from "../loginform/Addcard/AddCardDetails";
 
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+import { getMessaging, getToken } from "firebase/messaging";
+import { messaging } from "../firebase";
 
 const boxVariants = {
   enter: (direction) => ({
@@ -58,8 +60,8 @@ export default function ScriptAnimation2({ onChangeIndex }) {
   const stripePromise = loadStripe(stripePublickKey);
 
   const router = useRouter();
-  const [currentIndex, setCurrentIndex] = useState(2);
-  const [direction, setDirection] = useState(2);
+  const [currentIndex, setCurrentIndex] = useState(7);
+  const [direction, setDirection] = useState(7);
   const [value, setValue] = useState("");
 
   //code for getting value of input fields
@@ -562,6 +564,75 @@ export default function ScriptAnimation2({ onChangeIndex }) {
     outline: "none",
     // border: "2px solid green"
   };
+
+
+  //code for sending FCM notifications
+  // const sendNotification = () => {
+  //   console.log('Requesting permission...');
+  //   Notification.requestPermission().then((permission) => {
+  //     if (permission === 'granted') {
+  //       console.log('Notification permission granted.');
+  //     }
+  //   });
+
+
+
+  //   // Get registration token. Initially this makes a network call, once retrieved
+  //   // subsequent calls to getToken will return from cache.
+  //   const messaging = getMessaging();
+  //   getToken(messaging, { vapidKey: '<YOUR_PUBLIC_VAPID_KEY_HERE>' }).then((currentToken) => {
+  //     if (currentToken) {
+  //       // Send the token to your server and update the UI if necessary
+  //       // ...
+  //     } else {
+  //       // Show permission request UI
+  //       console.log('No registration token available. Request permission to generate one.');
+  //       // ...
+  //     }
+  //   }).catch((err) => {
+  //     console.log('An error occurred while retrieving token. ', err);
+  //     // ...
+  //   });
+
+
+  // }
+
+
+  const [showNotificationLoader, setShowNotificationLoader] = useState(false);
+  const sendNotification = () => {
+    console.log('Requesting permission...');
+
+    // Request Notification Permission
+    try {
+      setShowNotificationLoader(true);
+      Notification.requestPermission().then((permission) => {
+        if (permission === 'granted') {
+          console.log('Notification permission granted.');
+
+          // Get registration token. Initially this makes a network call, once retrieved
+          // subsequent calls to getToken will return from cache.
+          getToken(messaging, { vapidKey: 'BP02e6DxWt-XrDCaKSciMKcKiltnwSNHATw8IEwX_9E8efLn_6HNoymQHY' }).then((currentToken) => {
+            if (currentToken) {
+              console.log('Current Token:', currentToken);
+              // You can now send the token to your server or store it as needed
+            } else {
+              console.log('No registration token available. Request permission to generate one.');
+            }
+          }).catch((err) => {
+            console.log('An error occurred while retrieving token: ', err);
+          });
+
+        } else {
+          console.log('Notification permission denied.');
+        }
+      });
+    } catch (error) {
+      console.error("Error occured in getting notification");
+    } finally {
+      setShowNotificationLoader(false);
+    }
+  };
+
 
   return (
     <div style={containerStyles}>
@@ -1906,24 +1977,28 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                       <br /> consectetur adipiscing elit.
                     </div>
                     <div className="w-11/12 flex flex-row">
-                      <button
-                        className="w-6/12 mt-5"
-                        style={{
-                          height: 40,
-                          backgroundColor: "#552AFF",
-                          borderRadius: 5,
-                          color: "white",
-                          borderRadius: "50px",
-                          fontSize: 15,
-                          fontWeight: "400",
-                          fontFamily: "inter",
-                        }}
-                      // onClick={sendNotification}
-                      >
-                        {/* <div className='text-red'> */}
-                        Allow notifications
-                        {/* </div> */}
-                      </button>
+                      {
+                        showNotificationLoader ?
+                          <CircularProgress size={30} /> :
+                          <button
+                            className="w-6/12 mt-5"
+                            style={{
+                              height: 40,
+                              backgroundColor: "#552AFF",
+                              borderRadius: 5,
+                              color: "white",
+                              borderRadius: "50px",
+                              fontSize: 15,
+                              fontWeight: "400",
+                              fontFamily: "inter",
+                            }}
+                            onClick={sendNotification}
+                          >
+                            {/* <div className='text-red'> */}
+                            Allow notifications
+                            {/* </div> */}
+                          </button>
+                      }
                       <button
                         className="w-3/12 mt-5"
                         style={{

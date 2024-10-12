@@ -19,6 +19,19 @@ const SigninNumberInput = ({ fromSignIn, formatErr, phonenumber, autoFocus }) =>
             const Data = JSON.parse(localData);
             setPhone(Data.phonenumber);
         }
+        console.log("Getting number");
+        const timer = setTimeout(() => {
+            const SigninNumber = localStorage.getItem('SigninNumber');
+            if (!localData) {
+                if (SigninNumber) {
+                    console.log("Getting number check 2");
+                    const Number = JSON.parse(SigninNumber);
+                    console.log("Sign in number is", JSON.parse(SigninNumber));
+                    setPhone(Number);
+                }
+            }
+        }, 300);
+        return (() => clearTimeout(timer));
     }, []);
 
     useEffect(() => {

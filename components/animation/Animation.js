@@ -302,6 +302,8 @@ export default function Animation({ onChangeIndex }) {
         if (e === "Resend") {
           return;
         } else {
+          console.log("Number setting is", signinVerificationNumber);
+          localStorage.setItem('SigninNumber', JSON.stringify(signinVerificationNumber));
           handleContinue();
         }
       } catch (error) {
@@ -1900,7 +1902,7 @@ export default function Animation({ onChangeIndex }) {
                       {userName ? (
                         <div>
                           {checkUserNameData &&
-                          checkUserNameData.status === true ? (
+                            checkUserNameData.status === true ? (
                             <div
                               style={{
                                 fontWeight: "400",
@@ -2129,7 +2131,7 @@ export default function Animation({ onChangeIndex }) {
                         ) : (
                           <div>
                             {checkUserEmailData &&
-                            checkUserEmailData.status === true ? (
+                              checkUserEmailData.status === true ? (
                               <div
                                 style={{
                                   fontWeight: "400",
@@ -2450,7 +2452,7 @@ export default function Animation({ onChangeIndex }) {
                   </div>
                   <div>
                     {checkUserPhoneNumberData &&
-                    checkUserPhoneNumberData.status === true ? (
+                      checkUserPhoneNumberData.status === true ? (
                       <div
                         style={{
                           fontWeight: "400",
@@ -2741,8 +2743,8 @@ export default function Animation({ onChangeIndex }) {
                     animate="center"
                     exit="exit"
                     transition={{ duration: 0 }}
-                    //   style={styles}
-                    // style={{ marginTop: -50, zIndex: 3 }}
+                  //   style={styles}
+                  // style={{ marginTop: -50, zIndex: 3 }}
                   >
                     {/* <div style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '', marginTop: -80 }}>
                       <div

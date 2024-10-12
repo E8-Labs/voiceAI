@@ -64,8 +64,8 @@ const VerifyPhoneNumber = ({
       "recaptcha-container",
       {
         size: "invisible",
-        callback: (response) => {},
-        "expired-callback": () => {},
+        callback: (response) => { },
+        "expired-callback": () => { },
       }
     );
     return () => {
@@ -104,6 +104,7 @@ const VerifyPhoneNumber = ({
   }, [userLoginDetails]);
 
   const handleInputChange = (e, index) => {
+    setShowError(null);
     const value = e.target.value;
     console.log("On handle input ", e.target.value);
     // if (value.length >= 6) {
@@ -259,6 +260,7 @@ const VerifyPhoneNumber = ({
               localStorage.removeItem("formData");
               // localStorage.removeItem('LoginData');
             } else {
+              console.log("Error in update profile", response.data);
               setShowError(response.data.message);
             }
           }
@@ -287,6 +289,7 @@ const VerifyPhoneNumber = ({
       } catch (error) {
         setVerifyLoader(false);
         console.error("Error during OTP verification:", error);
+        setShowError("Invalid Code");
       } finally {
         setVerifyLoader(false);
       }
@@ -337,9 +340,13 @@ const VerifyPhoneNumber = ({
 
             if (response.data.status === true) {
               localStorage.removeItem("signinNumber");
+              localStorage.removeItem("SigninNumber");
               if (response.data.data.user.role == "admin") {
                 localStorage.setItem("User", JSON.stringify(response.data));
                 router.push(`/admin/admin`);
+              } else if (response.data.data.user.role == "creator") {
+                localStorage.setItem("User", JSON.stringify(response.data));
+                window.open('/profile', '_blank');
               } else if (fromBuyStatus) {
                 const Data = JSON.parse(fromBuyStatus);
                 window.open(`/buyproduct/${Data.id}`);
@@ -388,7 +395,8 @@ const VerifyPhoneNumber = ({
               // return
               localStorage.removeItem("route");
             } else if (response.data.status === false) {
-              console.log("Error in verify code api");
+              console.log("Error in verify code api", response.data.message);
+              setShowError(response.data.message);
               // setVerifyErr(response.data.message);
             }
           } else {
@@ -403,7 +411,21 @@ const VerifyPhoneNumber = ({
         }
       } catch (error) {
         setVerifyLoader(false);
+        // setShowError("Invalid Code");
         console.error("Error during OTP verification:", error);
+        if (error.code === 'auth/invalid-verification-code') {
+          console.log('The verification code is invalid.');
+          // You can show an error message to the user
+          alert('The verification code is incorrect. Please try again.');
+        } else if (error.code === 'auth/too-many-requests') {
+          console.log('Too many attempts. Please try again later.');
+          // Show a different message to the user
+          alert('You have tried too many times. Please wait before trying again.');
+        } else {
+          console.log('An unknown error occurred:', error);
+          // Handle other errors here
+          alert('An error occurred. Please try again.');
+        }
       } finally {
         setVerifyLoader(false);
       }
@@ -473,7 +495,7 @@ const VerifyPhoneNumber = ({
             //     border: "none"
             // }}
             autoComplete="one-time-code"
-            // maxLength={6}
+          // maxLength={6}
           />
         ))}
       </div>
