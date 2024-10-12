@@ -20,13 +20,25 @@ const auth = getAuth(app);
 console.log("Auth instance:", auth);
 //for notification permission
 const messaging = getMessaging(app);
-// getToken(messaging, {vapidKey: "BP02e6DxWt-XrDCaKSciMKcKiltnwSNHATw8IEwX_9E8efLn_6HNoymQHY"});
+
+const requestToken = ()=> {
+    //Wsm1QqLusvqnBUIT1PHoHymUfJua8iBVuKBU2O9arg4
+    getToken(messaging, { vapidKey: process.env.NEXT_PUBLIC_Public_Notification_VAPID_key }).then((currentToken) => {
+        if (currentToken) {
+          console.log("Token is", currentToken);
+        } else {
+          // Show permission request UI
+          console.log('No registration token available. Request permission to generate one.');
+          // ...
+        }
+      }).catch((err) => {
+        console.log('An error occurred while retrieving token. ', err);
+        // ...
+      });
+}
 
 // auth.settings.appVerificationDisabledForTesting = true;
 
 
-//key pair generated is
-//BP02e6DxWt-XrDCaKSciMKcKiltnwSNHATw8IEwX_9E8efLn_6HNoymQHY
-
-export { auth, RecaptchaVerifier, signInWithPhoneNumber, PhoneAuthProvider, signInWithCredential, messaging };
+export { auth, RecaptchaVerifier, signInWithPhoneNumber, PhoneAuthProvider, signInWithCredential, messaging ,requestToken };
 

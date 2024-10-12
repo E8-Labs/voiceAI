@@ -34,7 +34,9 @@ import AddCardDetails from "../loginform/Addcard/AddCardDetails";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { getMessaging, getToken } from "firebase/messaging";
-import { messaging } from "../firebase";
+// import { messaging } from "../firebase";
+// import { messaging } from "../../public/firebase-messaging-sw";
+import { requestToken } from "../firebase";
 
 const boxVariants = {
   enter: (direction) => ({
@@ -567,71 +569,64 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
 
   //code for sending FCM notifications
-  // const sendNotification = () => {
-  //   console.log('Requesting permission...');
-  //   Notification.requestPermission().then((permission) => {
-  //     if (permission === 'granted') {
-  //       console.log('Notification permission granted.');
-  //     }
-  //   });
+  const sendNotification = () => {
+    console.log('Requesting permission...');
+    Notification.requestPermission().then((permission) => {
+      if (permission === 'granted') {
+        console.log('Notification permission granted.');
+        requestToken()
+      }
+    });
+  }
 
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('/firebase-messaging-sw.js')
+        .then((registration) => {
+          console.log('Service Worker registered with scope:', registration.scope);
 
-
-  //   // Get registration token. Initially this makes a network call, once retrieved
-  //   // subsequent calls to getToken will return from cache.
-  //   const messaging = getMessaging();
-  //   getToken(messaging, { vapidKey: '<YOUR_PUBLIC_VAPID_KEY_HERE>' }).then((currentToken) => {
-  //     if (currentToken) {
-  //       // Send the token to your server and update the UI if necessary
-  //       // ...
-  //     } else {
-  //       // Show permission request UI
-  //       console.log('No registration token available. Request permission to generate one.');
-  //       // ...
-  //     }
-  //   }).catch((err) => {
-  //     console.log('An error occurred while retrieving token. ', err);
-  //     // ...
-  //   });
-
-
-  // }
+          // Firebase automatically uses this service worker for messaging
+        })
+        .catch((error) => {
+          console.error('Service Worker registration failed:', error);
+        });
+    }
+  }, []);
 
 
   const [showNotificationLoader, setShowNotificationLoader] = useState(false);
-  const sendNotification = () => {
-    console.log('Requesting permission...');
+  // const sendNotification = () => {
+  //   console.log('Requesting permission...');
 
-    // Request Notification Permission
+
+  //update user profile
+  const handleUpdateProfile = async (currentToken) => {
+    const ApiPath = Apis.updateProfile;
+    const localData = localStorage.getItem('User');
+    const Data = JSON.parse(localData);
+    console.log("user data", Data.data.user);
+    // return
+    const AuthToken = Data.data.token;
+    const formData = new FormData();
+    if (currentToken) {
+      formData.append("fcm_token", currentToken);
+    }
     try {
-      setShowNotificationLoader(true);
-      Notification.requestPermission().then((permission) => {
-        if (permission === 'granted') {
-          console.log('Notification permission granted.');
-
-          // Get registration token. Initially this makes a network call, once retrieved
-          // subsequent calls to getToken will return from cache.
-          getToken(messaging, { vapidKey: 'BP02e6DxWt-XrDCaKSciMKcKiltnwSNHATw8IEwX_9E8efLn_6HNoymQHY' }).then((currentToken) => {
-            if (currentToken) {
-              console.log('Current Token:', currentToken);
-              // You can now send the token to your server or store it as needed
-            } else {
-              console.log('No registration token available. Request permission to generate one.');
-            }
-          }).catch((err) => {
-            console.log('An error occurred while retrieving token: ', err);
-          });
-
-        } else {
-          console.log('Notification permission denied.');
+      const response = await axios.post(ApiPath, formData, {
+        headers: {
+          'Authorization': 'Bearer ' + AuthToken
         }
       });
+      if (response) {
+        console.log("Response of update api is :", response.data.data);
+      }
     } catch (error) {
-      console.error("Error occured in getting notification");
+      console.error("Error occured in update api");
     } finally {
-      setShowNotificationLoader(false);
+      setShowNotificationLoader(false); formData
     }
-  };
+  }
 
 
   return (
