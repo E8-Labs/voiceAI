@@ -18,26 +18,37 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 console.log("Auth instance:", auth);
-//for notification permission
-const messaging = getMessaging(app);
 
-const requestToken = () => {
-  //Wsm1QqLusvqnBUIT1PHoHymUfJua8iBVuKBU2O9arg4
-  getToken(messaging, { vapidKey: process.env.NEXT_PUBLIC_Public_Notification_VAPID_key }).then((currentToken) => {
-    if (currentToken) {
-      console.log("Token is", currentToken);
-    } else {
-      // Show permission request UI
-      console.log('No registration token available. Request permission to generate one.');
+//check for browser friendly environment
+let messaging = messaging;
+let requestToken = requestToken;
+
+
+if (typeof window !== 'undefined' && "serviceWorker" in navigator) {
+  //for notification permission
+  const messaging = getMessaging(app);
+
+  const requestToken = () => {
+    //Wsm1QqLusvqnBUIT1PHoHymUfJua8iBVuKBU2O9arg4
+    getToken(messaging, { vapidKey: process.env.NEXT_PUBLIC_Public_Notification_VAPID_key }).then((currentToken) => {
+      if (currentToken) {
+        console.log("Token is", currentToken);
+      } else {
+        // Show permission request UI
+        console.log('No registration token available. Request permission to generate one.');
+        // ...
+      }
+    }).catch((err) => {
+      console.log('An error occurred while retrieving token. ', err);
       // ...
-    }
-  }).catch((err) => {
-    console.log('An error occurred while retrieving token. ', err);
-    // ...
-  }).finally(() => {
-    console.log("Access token request completed")
-  });
+    }).finally(() => {
+      console.log("Access token request completed")
+    });
+  }
+} else {
+  console.log("FcM is not supported in this browser");
 }
+
 
 // auth.settings.appVerificationDisabledForTesting = true;
 

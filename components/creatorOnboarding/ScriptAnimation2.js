@@ -583,7 +583,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
   }
 
   useEffect(() => {
-    if ('serviceWorker' in navigator) {
+    if (typeof window !== "undefined" && "serviceWorker" in navigator) {
       navigator.serviceWorker
         .register('/firebase-messaging-sw.js')
         .then((registration) => {
