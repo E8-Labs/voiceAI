@@ -26,13 +26,14 @@ let requestToken = null;
 
 if (typeof window !== 'undefined' && "serviceWorker" in navigator) {
   //for notification permission
-  const messaging = getMessaging(app);
+  messaging = getMessaging(app);
 
-  const requestToken = () => {
+  requestToken = (FCMToken) => {
     //Wsm1QqLusvqnBUIT1PHoHymUfJua8iBVuKBU2O9arg4
     getToken(messaging, { vapidKey: process.env.NEXT_PUBLIC_Public_Notification_VAPID_key }).then((currentToken) => {
       if (currentToken) {
         console.log("Token is", currentToken);
+        FCMToken(currentToken);
       } else {
         // Show permission request UI
         console.log('No registration token available. Request permission to generate one.');

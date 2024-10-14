@@ -21,9 +21,6 @@ import Apis from "../apis/Apis";
 import axios from "axios";
 import AiSocialLinks from "./AiSocialLinks";
 import { useRouter } from "next/navigation";
-// import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
-import Knowledgebase from "../buildai/Knowledgebase";
-import SocialOAuth from "./SocialOAuth";
 
 const boxVariants = {
   enter: (direction) => ({

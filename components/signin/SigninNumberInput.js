@@ -35,20 +35,22 @@ const SigninNumberInput = ({ fromSignIn, formatErr, phonenumber, autoFocus }) =>
     }, []);
 
     useEffect(() => {
-        const handleVisibilityChange = () => {
-            if (document.visibilityState === 'visible' && fromSignIn && autoFocus && inputElementRef.current) {
-                setTimeout(() => {
-                    inputElementRef.current.focus();
-                    console.log('Focus is set to true');
-                }, 1000);
-            }
-        };
+        if (typeof document !== 'undefined') {
+            const handleVisibilityChange = () => {
+                if (document.visibilityState === 'visible' && fromSignIn && autoFocus && inputElementRef.current) {
+                    setTimeout(() => {
+                        inputElementRef.current.focus();
+                        console.log('Focus is set to true');
+                    }, 1000);
+                }
+            };
 
-        document.addEventListener('visibilitychange', handleVisibilityChange);
+            document.addEventListener('visibilitychange', handleVisibilityChange);
 
-        return () => {
-            document.removeEventListener('visibilitychange', handleVisibilityChange);
-        };
+            return () => {
+                document.removeEventListener('visibilitychange', handleVisibilityChange);
+            };
+        }
     }, []);
 
     useEffect(() => {

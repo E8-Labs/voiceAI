@@ -161,12 +161,16 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
     };
 
     const handleButtonClick = () => {
-        document.getElementById('fileInput').click();
+        if (typeof window !== 'undefined') {
+            document.getElementById('fileInput').click();
+        }
     };
 
     const handleDeselect = () => {
         setFileName('');
-        document.getElementById('fileInput').value = '';
+        if (typeof window !== 'undefined') {
+            document.getElementById('fileInput').value = '';
+        }
     };
 
     //code to compress document

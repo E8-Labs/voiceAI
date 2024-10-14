@@ -294,7 +294,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
   useEffect(() => {
     console.log("Selected Plan changed", selectedPlan);
   }, [selectedPlan]);
-  
+
   const handlePlanSelect = (index) => {
     console.log("Handle plan select", index);
     if (selectedPlan === index) {
@@ -482,7 +482,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
   //     }
   // };
 
-  // const sendNotification = () => {
+  // const requestNotificationPermission = () => {
   //     // Check if permission is granted
   //     if (permission === 'granted') {
   //         new Notification('Hello from Next.js!', {
@@ -499,7 +499,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
   // const [subscription, setSubscription] = useState(null);
 
   // Function to subscribe for push notifications
-  // const sendNotification = async () => {
+  // const requestNotificationPermission = async () => {
   //     if ('serviceWorker' in navigator) {
   //         try {
   //             const registration = await navigator.serviceWorker.register('/sw.js');
@@ -570,13 +570,27 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
 
   //code for sending FCM notifications
-  const sendNotification = () => {
+  const requestNotificationPermission = () => {
+    setShowNotificationLoader(true);
     console.log('Requesting permission...');
     Notification.requestPermission().then((permission) => {
       if (permission === 'granted') {
         console.log('Notification permission granted.');
-        // requestToken();
+        requestToken((FCMToken) => {
+          if (FCMToken) {
+            console.log("Token for fcm is", FCMToken);
+            handleUpdateProfile(FCMToken);
+          } else {
+            alert('FCM token not generated!!!');
+          }
+        });
+      } else {
+        router.push('/tristan.ai');
       }
+    }).catch((error) => {
+      console.error("Error occured in api is", error);
+    }).finally(() => {
+      setShowNotificationLoader(false);
     });
   }
 
@@ -597,12 +611,14 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
 
   const [showNotificationLoader, setShowNotificationLoader] = useState(false);
-  // const sendNotification = () => {
+  // const requestNotificationPermission = () => {
   //   console.log('Requesting permission...');
 
 
   //update user profile
-  const handleUpdateProfile = async (currentToken) => {
+
+  const handleUpdateProfile = async (FCMToken) => {
+    setShowNotificationLoader(true);
     const ApiPath = Apis.updateProfile;
     const localData = localStorage.getItem('User');
     const Data = JSON.parse(localData);
@@ -610,8 +626,8 @@ export default function ScriptAnimation2({ onChangeIndex }) {
     // return
     const AuthToken = Data.data.token;
     const formData = new FormData();
-    if (currentToken) {
-      formData.append("fcm_token", currentToken);
+    if (FCMToken) {
+      formData.append("fcm_token", FCMToken);
     }
     try {
       const response = await axios.post(ApiPath, formData, {
@@ -621,11 +637,14 @@ export default function ScriptAnimation2({ onChangeIndex }) {
       });
       if (response) {
         console.log("Response of update api is :", response.data.data);
+        if (response.data.status === true) {
+          router.push('/tristan.ai');
+        }
       }
     } catch (error) {
       console.error("Error occured in update api");
     } finally {
-      setShowNotificationLoader(false); formData
+      setShowNotificationLoader(false);
     }
   }
 
@@ -1975,7 +1994,9 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                     <div className="w-11/12 flex flex-row">
                       {
                         showNotificationLoader ?
-                          <CircularProgress size={30} /> :
+                          <div className="w-6/12 mt-5 flex flex-row justify-center mb-0">
+                            <CircularProgress size={20} />
+                          </div> :
                           <button
                             className="w-6/12 mt-5"
                             style={{
@@ -1988,7 +2009,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                               fontWeight: "400",
                               fontFamily: "inter",
                             }}
-                            onClick={sendNotification}
+                            onClick={requestNotificationPermission}
                           >
                             {/* <div className='text-red'> */}
                             Allow notifications

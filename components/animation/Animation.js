@@ -153,29 +153,31 @@ export default function Animation({ onChangeIndex }) {
   }, [currentIndex]);
 
   useEffect(() => {
-    if (!auth) {
-      return;
-    }
-    console.log("Init recaptcha");
-    // Initialize RecaptchaVerifier when 'auth' changes
-    window.recaptchaVerifier = new RecaptchaVerifier(
-      auth,
-      "recaptcha-container",
-      {
-        size: "invisible",
-        callback: (response) => {
-          // reCAPTCHA solved, allow signInWithPhoneNumber.
-          // ...
-        },
-        "expired-callback": () => {
-          // Response expired. Ask user to solve reCAPTCHA again.
-          // ...
-        },
+    if (typeof window !== "undefined" && auth) {
+      if (!auth) {
+        return;
       }
-    );
-    // Cleanup function for RecaptchaVerifier if you want you can add
-    return () => {
-      window.recaptchaVerifier.clear();
+      console.log("Init recaptcha");
+      // Initialize RecaptchaVerifier when 'auth' changes
+      window.recaptchaVerifier = new RecaptchaVerifier(
+        auth,
+        "recaptcha-container",
+        {
+          size: "invisible",
+          callback: (response) => {
+            // reCAPTCHA solved, allow signInWithPhoneNumber.
+            // ...
+          },
+          "expired-callback": () => {
+            // Response expired. Ask user to solve reCAPTCHA again.
+            // ...
+          },
+        }
+      );
+      // Cleanup function for RecaptchaVerifier if you want you can add
+      return () => {
+        window.recaptchaVerifier.clear();
+      };
     };
   }, [auth]);
 
@@ -446,7 +448,9 @@ export default function Animation({ onChangeIndex }) {
                 router.push(`/admin/admin`);
               } else if (fromBuyStatus) {
                 const Data = JSON.parse(fromBuyStatus);
-                window.open(`/buyproduct/${Data.id}`);
+                if (typeof window !== "undefined") {
+                  window.open(`/buyproduct/${Data.id}`);
+                }
                 localStorage.removeItem("fromBuyScreen");
               } else {
                 if (LocalData) {
@@ -514,43 +518,45 @@ export default function Animation({ onChangeIndex }) {
   };
 
   useEffect(() => {
-    if (currentIndex === 1 && inputFocusRef.current) {
-      // Using a small timeout to ensure rendering of the input after animation
-      console.log("Focusing on verify code");
-      setTimeout(() => {
-        inputFocusRef.current.focus();
-      }, 300); // Adjust this delay according to the animation timing
-    }
-    if (currentIndex === 2 && aiNameRef.current) {
-      console.log("Ai name ref index", currentIndex);
-      // Small timeout to ensure rendering and smooth animation
-      setTimeout(() => {
-        aiNameRef.current.focus();
-      }, 300); // Adjust this timing according to your animation
-      console.log("Ai name ref", aiNameRef);
-    }
+    if (typeof window !== 'undefined') {
+      if (currentIndex === 1 && inputFocusRef.current) {
+        // Using a small timeout to ensure rendering of the input after animation
+        console.log("Focusing on verify code");
+        setTimeout(() => {
+          inputFocusRef.current.focus();
+        }, 300); // Adjust this delay according to the animation timing
+      }
+      if (currentIndex === 2 && aiNameRef.current) {
+        console.log("Ai name ref index", currentIndex);
+        // Small timeout to ensure rendering and smooth animation
+        setTimeout(() => {
+          aiNameRef.current.focus();
+        }, 300); // Adjust this timing according to your animation
+        console.log("Ai name ref", aiNameRef);
+      }
 
-    if (currentIndex === 3 && aiEmailRef.current) {
-      console.log("Ai email ref index", currentIndex);
-      // Small timeout for email input focus after animation
-      setTimeout(() => {
-        aiEmailRef.current.focus();
-      }, 300); // Adjust this timing according to your animation
-    }
+      if (currentIndex === 3 && aiEmailRef.current) {
+        console.log("Ai email ref index", currentIndex);
+        // Small timeout for email input focus after animation
+        setTimeout(() => {
+          aiEmailRef.current.focus();
+        }, 300); // Adjust this timing according to your animation
+      }
 
-    if (currentIndex === 4 && emailVerifyInput.current) {
-      console.log("Ai email ref index", currentIndex);
-      // Small timeout for email input focus after animation
-      setTimeout(() => {
-        emailVerifyInput.current.focus();
-      }, 300); // Adjust this timing according to your animation
-    }
-    if (currentIndex === 6 && signUpref.current) {
-      console.log("Ai email ref index", currentIndex);
-      // Small timeout for email input focus after animation
-      setTimeout(() => {
-        signUpref.current.focus();
-      }, 300); // Adjust this timing according to your animation
+      if (currentIndex === 4 && emailVerifyInput.current) {
+        console.log("Ai email ref index", currentIndex);
+        // Small timeout for email input focus after animation
+        setTimeout(() => {
+          emailVerifyInput.current.focus();
+        }, 300); // Adjust this timing according to your animation
+      }
+      if (currentIndex === 6 && signUpref.current) {
+        console.log("Ai email ref index", currentIndex);
+        // Small timeout for email input focus after animation
+        setTimeout(() => {
+          signUpref.current.focus();
+        }, 300); // Adjust this timing according to your animation
+      }
     }
   }, [currentIndex]);
 
@@ -919,15 +925,19 @@ export default function Animation({ onChangeIndex }) {
     const value = e.target.value;
     setFunc(value);
 
-    if (value && nextInputId) {
-      document.getElementById(nextInputId).focus();
+    if (typeof window !== 'undefined') {
+      if (value && nextInputId) {
+        document.getElementById(nextInputId).focus();
+      }
     }
   };
 
   const handleBackspace = (e, setFunc, prevInputId) => {
-    if (e.key === "Backspace" && e.target.value === "") {
-      if (prevInputId) {
-        document.getElementById(prevInputId).focus();
+    if (typeof window !== 'undefined') {
+      if (e.key === "Backspace" && e.target.value === "") {
+        if (prevInputId) {
+          document.getElementById(prevInputId).focus()
+        };
       }
     }
   };
@@ -1077,43 +1087,6 @@ export default function Animation({ onChangeIndex }) {
     }
   };
 
-  // const handlePaste = (e) => {
-  //   e.preventDefault();
-  //   const paste = e.clipboardData.getData("text").split("");
-  //   paste.forEach((char, index) => {
-  //     if (index < 6) {
-  //       const inputId = `P${index + 1}`;
-  //       const input = document.getElementById(inputId);
-  //       if (input) {
-  //         input.value = char;
-  //         input.dispatchEvent(new Event("input", { bubbles: true })); // Trigger input change event
-  //       }
-  //     }
-  //   });
-  // };
-
-  // const handlePaste = (e) => {
-  //   // Prevent the default paste action
-  //   e.preventDefault();
-
-  //   // Get the pasted data as text
-  //   const pastedData = e.clipboardData.getData("text");
-
-  //   // If pasted data is not empty
-  //   if (pastedData) {
-  //     // Iterate over the pasted data and set the values
-  //     pastedData.split("").forEach((char, index) => {
-  //       // Check the id of each input element and set the corresponding state
-  //       if (index === 0) setP1(char);
-  //       if (index === 1) setP2(char);
-  //       if (index === 2) setP3(char);
-  //       if (index === 3) setP4(char);
-  //       if (index === 4) setP5(char);
-  //       if (index === 5) setP6(char);
-  //     });
-  //   }
-  // };
-
   const handlePaste = (e) => {
     e.preventDefault();
     const pasteData = e.clipboardData.getData("text").slice(0, 6); // Ensure we only take 6 digits
@@ -1122,7 +1095,10 @@ export default function Animation({ onChangeIndex }) {
     // Distribute values across input fields
     values.forEach((value, index) => {
       const inputId = `P${index + 1}`;
-      const input = document.getElementById(inputId);
+      let input = null;
+      if (typeof window !== 'undefined') {
+        input = document.getElementById(inputId);
+      }
       if (input) {
         input.value = value;
         handleInputChange(
@@ -1138,10 +1114,12 @@ export default function Animation({ onChangeIndex }) {
     const value = e.target.value;
     if (value.length <= 1 && /^[0-9]*$/.test(value)) {
       setValue(value);
-      if (nextId && value) {
-        const nextInput = document.getElementById(nextId);
-        if (nextInput) {
-          nextInput.focus();
+      if (typeof window !== 'undefined') {
+        if (nextId && value) {
+          const nextInput = document.getElementById(nextId);
+          if (nextInput) {
+            nextInput.focus();
+          }
         }
       }
     }
@@ -2367,107 +2345,132 @@ export default function Animation({ onChangeIndex }) {
             </motion.div>
           </div>
         )} */}
-        {currentIndex === 4 && (
-          <div
-            className="flex flex-col h-auto sm:justify-center justify-start pb-24"
-            style={margin}
-          >
-            <motion.div
-              key="box5"
-              custom={direction}
-              variants={boxVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0 }}
-              style={styles}
+
+        {
+          currentIndex === 4 && (
+            <div
+              className="flex flex-col h-auto sm:justify-center justify-start pb-24"
+              style={margin}
             >
-              <div className="w-full flex justify-center">
-                <div className="w-full sm:w-full">
-                  <div>
-                    <button onClick={handleBack}>
-                      <Image
-                        src={"/assets/backarrow.png"}
-                        alt="back"
-                        height={14}
-                        width={16}
-                      />
-                    </button>
-                  </div>
-                  <div
-                    className="mt-6"
-                    style={{ fontSize: 24, fontWeight: "600" }}
-                    onClick={handleContinue}
-                  >
-                    Add your phone number
-                  </div>
-                  <div className="text-lightWhite mt-2">
-                    We use this to share important updates with you
-                  </div>
-                  <div className="mt-12 w-full sm:w-full lg:w-8/12">
-                    <PhoneNumberInput
+              <motion.div
+                key="box5"
+                custom={direction}
+                variants={boxVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0 }}
+                style={styles}
+              >
+                <div className="w-full flex justify-center">
+                  <div className="w-full sm:w-full">
+                    <div>
+                      <button onClick={handleBack}>
+                        <Image
+                          src={"/assets/backarrow.png"}
+                          alt="back"
+                          height={14}
+                          width={16}
+                        />
+                      </button>
+                    </div>
+                    <div
+                      className="mt-6"
+                      style={{ fontSize: 24, fontWeight: "600" }}
+                      onClick={handleContinue}
+                    >
+                      Add your phone number
+                    </div>
+                    <div className="text-lightWhite mt-2">
+                      We use this to share important updates with you
+                    </div>
+                    <div className="mt-12 w-full sm:w-full lg:w-8/12">
+                      {/* <PhoneNumberInput
                       phonenumber={userNumber}
                       formatErr={getNumberFormat}
-                    />
-                  </div>
-                  <div style={{ height: 15 }}>
-                    {formatError ? (
-                      <div
-                        style={{
-                          fontWeight: "400",
-                          fontSize: 12,
-                          color: "red",
-                        }}
-                      >
-                        {formatError}
-                      </div>
-                    ) : (
-                      <div>
-                        {checkUserPhoneNumberData &&
-                          checkUserPhoneNumberData.status === true && (
-                            <div
+                    /> */}
+                    </div>
+                    <div style={{ height: 15 }}>
+                      {formatError ? (
+                        <div
+                          style={{
+                            fontWeight: "400",
+                            fontSize: 12,
+                            color: "red",
+                          }}
+                        >
+                          {formatError}
+                        </div>
+                      ) : (
+                        <div>
+                          {checkUserPhoneNumberData &&
+                            checkUserPhoneNumberData.status === true && (
+                              <div
+                                style={{
+                                  fontWeight: "400",
+                                  fontSize: 12,
+                                  color: "green",
+                                }}
+                              >
+                                {checkUserPhoneNumberData.message}
+                              </div>
+                            )}
+                          {checkUserPhoneNumberData &&
+                            checkUserPhoneNumberData.status === false && (
+                              <div
+                                style={{
+                                  fontWeight: "400",
+                                  fontSize: 12,
+                                  color: "red",
+                                }}
+                              >
+                                {checkUserPhoneNumberData.message}
+                              </div>
+                            )}
+                        </div>
+                      )}
+                    </div>
+                    <div>
+                      {checkUserPhoneNumberData &&
+                        checkUserPhoneNumberData.status === true ? (
+                        <div
+                          style={{
+                            fontWeight: "400",
+                            fontSize: 14,
+                            color: "green",
+                          }}
+                        >
+                          {VerifiyNumberLoader ? (
+                            <div className="w-full sm:w-full lg:w-8/12 flex flex-row justify-center mt-8">
+                              <CircularProgress size={20} />
+                            </div>
+                          ) : (
+                            <button
+                              onClick={(e) => sendOtp("signup")}
+                              className="w-full sm:w-full lg:w-8/12 mt-6 bg-purple hover:bg-purple text-white"
                               style={{
+                                height: 50,
+                                fontSize: 15,
                                 fontWeight: "400",
-                                fontSize: 12,
-                                color: "green",
+                                color: "white",
+                                borderRadius: "50px",
                               }}
                             >
-                              {checkUserPhoneNumberData.message}
-                            </div>
+                              Continue
+                            </button>
                           )}
-                        {checkUserPhoneNumberData &&
-                          checkUserPhoneNumberData.status === false && (
-                            <div
-                              style={{
-                                fontWeight: "400",
-                                fontSize: 12,
-                                color: "red",
-                              }}
-                            >
-                              {checkUserPhoneNumberData.message}
-                            </div>
-                          )}
-                      </div>
-                    )}
-                  </div>
-                  <div>
-                    {checkUserPhoneNumberData &&
-                      checkUserPhoneNumberData.status === true ? (
-                      <div
-                        style={{
-                          fontWeight: "400",
-                          fontSize: 14,
-                          color: "green",
-                        }}
-                      >
-                        {VerifiyNumberLoader ? (
-                          <div className="w-full sm:w-full lg:w-8/12 flex flex-row justify-center mt-8">
-                            <CircularProgress size={20} />
-                          </div>
-                        ) : (
+                        </div>
+                      ) : (
+                        <div
+                          style={{
+                            fontWeight: "400",
+                            fontSize: 14,
+                            color: "green",
+                          }}
+                        >
                           <button
-                            onClick={(e) => sendOtp("signup")}
-                            className="w-full sm:w-full lg:w-8/12 mt-6 bg-purple hover:bg-purple text-white"
+                            disabled
+                            className="w-full sm:w-full lg:w-8/12 mt-6 bg-placeholderColor text-white"
                             style={{
                               height: 50,
                               fontSize: 15,
@@ -2478,37 +2481,16 @@ export default function Animation({ onChangeIndex }) {
                           >
                             Continue
                           </button>
-                        )}
-                      </div>
-                    ) : (
-                      <div
-                        style={{
-                          fontWeight: "400",
-                          fontSize: 14,
-                          color: "green",
-                        }}
-                      >
-                        <button
-                          disabled
-                          className="w-full sm:w-full lg:w-8/12 mt-6 bg-placeholderColor text-white"
-                          style={{
-                            height: 50,
-                            fontSize: 15,
-                            fontWeight: "400",
-                            color: "white",
-                            borderRadius: "50px",
-                          }}
-                        >
-                          Continue
-                        </button>
-                      </div>
-                    )}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          </div>
-        )}
+              </motion.div>
+            </div>
+          )
+        }
+
         {currentIndex === 5 && (
           <div
             className="flex flex-col h-auto sm:justify-center justify-start"
