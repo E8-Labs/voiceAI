@@ -62,8 +62,8 @@ export default function ScriptAnimation2({ onChangeIndex }) {
   const stripePromise = loadStripe(stripePublickKey);
 
   const router = useRouter();
-  const [currentIndex, setCurrentIndex] = useState(7);
-  const [direction, setDirection] = useState(7);
+  const [currentIndex, setCurrentIndex] = useState(2);
+  const [direction, setDirection] = useState(2);
   const [value, setValue] = useState("");
 
   //code for getting value of input fields
@@ -574,7 +574,10 @@ export default function ScriptAnimation2({ onChangeIndex }) {
     Notification.requestPermission().then((permission) => {
       if (permission === 'granted') {
         console.log('Notification permission granted.');
-        requestToken()
+        requestToken();
+        router.push("/tate.ai");
+      } else {
+        router.push("/tate.ai");
       }
     });
   }

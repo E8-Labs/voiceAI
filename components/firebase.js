@@ -5,13 +5,13 @@ import { getMessaging, getToken } from "firebase/messaging"
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyAiuIyprCIjIZzd4vxUTJakKsdi9hpCHuI",
-    authDomain: "voice-ai-a36f3.firebaseapp.com",
-    projectId: "voice-ai-a36f3",
-    storageBucket: "voice-ai-a36f3.appspot.com",
-    messagingSenderId: "583480872487",
-    appId: "1:583480872487:web:2b9e895137623b3dfac802",
-    measurementId: "G-34XCWFD251"
+  apiKey: "AIzaSyAiuIyprCIjIZzd4vxUTJakKsdi9hpCHuI",
+  authDomain: "voice-ai-a36f3.firebaseapp.com",
+  projectId: "voice-ai-a36f3",
+  storageBucket: "voice-ai-a36f3.appspot.com",
+  messagingSenderId: "583480872487",
+  appId: "1:583480872487:web:2b9e895137623b3dfac802",
+  measurementId: "G-34XCWFD251"
 };
 
 // Initialize Firebase
@@ -21,24 +21,26 @@ console.log("Auth instance:", auth);
 //for notification permission
 const messaging = getMessaging(app);
 
-const requestToken = ()=> {
-    //Wsm1QqLusvqnBUIT1PHoHymUfJua8iBVuKBU2O9arg4
-    getToken(messaging, { vapidKey: process.env.NEXT_PUBLIC_Public_Notification_VAPID_key }).then((currentToken) => {
-        if (currentToken) {
-          console.log("Token is", currentToken);
-        } else {
-          // Show permission request UI
-          console.log('No registration token available. Request permission to generate one.');
-          // ...
-        }
-      }).catch((err) => {
-        console.log('An error occurred while retrieving token. ', err);
-        // ...
-      });
+const requestToken = () => {
+  //Wsm1QqLusvqnBUIT1PHoHymUfJua8iBVuKBU2O9arg4
+  getToken(messaging, { vapidKey: process.env.NEXT_PUBLIC_Public_Notification_VAPID_key }).then((currentToken) => {
+    if (currentToken) {
+      console.log("Token is", currentToken);
+    } else {
+      // Show permission request UI
+      console.log('No registration token available. Request permission to generate one.');
+      // ...
+    }
+  }).catch((err) => {
+    console.log('An error occurred while retrieving token. ', err);
+    // ...
+  }).finally(() => {
+    console.log("Access token request completed")
+  });
 }
 
 // auth.settings.appVerificationDisabledForTesting = true;
 
 
-export { auth, RecaptchaVerifier, signInWithPhoneNumber, PhoneAuthProvider, signInWithCredential, messaging ,requestToken };
+export { auth, RecaptchaVerifier, signInWithPhoneNumber, PhoneAuthProvider, signInWithCredential, messaging, requestToken };
 
