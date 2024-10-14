@@ -294,6 +294,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
   useEffect(() => {
     console.log("Selected Plan changed", selectedPlan);
   }, [selectedPlan]);
+  
   const handlePlanSelect = (index) => {
     console.log("Handle plan select", index);
     if (selectedPlan === index) {
@@ -574,10 +575,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
     Notification.requestPermission().then((permission) => {
       if (permission === 'granted') {
         console.log('Notification permission granted.');
-        requestToken();
-        router.push("/tate.ai");
-      } else {
-        router.push("/tate.ai");
+        // requestToken();
       }
     });
   }

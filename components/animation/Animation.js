@@ -1025,24 +1025,24 @@ export default function Animation({ onChangeIndex }) {
 
   //code for verification code whe user sign in
   //code for moving to next field
-  const handleInputChange2 = (e, setFunc, nextInputId) => {
-    const value = e.target.value;
-    if (value.length === 1) {
-      setFunc(value); // Update the current field
-      if (nextInputId) {
-        document.getElementById(nextInputId).focus(); // Move to the next field
-      }
-    }
-  };
+  // const handleInputChange2 = (e, setFunc, nextInputId) => {
+  //   const value = e.target.value;
+  //   if (value.length === 1) {
+  //     setFunc(value); // Update the current field
+  //     if (nextInputId) {
+  //       document.getElementById(nextInputId).focus(); // Move to the next field
+  //     }
+  //   }
+  // };
 
-  const handleBackspace2 = (e, setFunc, prevInputId) => {
-    if (e.key === "Backspace") {
-      setFunc(""); // Clear the current field
-      if (e.target.value === "" && prevInputId) {
-        document.getElementById(prevInputId).focus(); // Move to the previous field
-      }
-    }
-  };
+  // const handleBackspace2 = (e, setFunc, prevInputId) => {
+  //   if (e.key === "Backspace") {
+  //     setFunc(""); // Clear the current field
+  //     if (e.target.value === "" && prevInputId) {
+  //       document.getElementById(prevInputId).focus(); // Move to the previous field
+  //     }
+  //   }
+  // };
 
   const handleInputChange3 = (e, index) => {
     const value = e.target.value;

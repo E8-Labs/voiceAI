@@ -20,8 +20,8 @@ const auth = getAuth(app);
 console.log("Auth instance:", auth);
 
 //check for browser friendly environment
-let messaging = messaging;
-let requestToken = requestToken;
+let messaging = null;
+let requestToken = null;
 
 
 if (typeof window !== 'undefined' && "serviceWorker" in navigator) {
