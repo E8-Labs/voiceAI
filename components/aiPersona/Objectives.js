@@ -19,7 +19,7 @@ const Objectives = () => {
 
     return (
         <div className='w-full'>
-            <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
+            <div style={{ fontWeight: "medium", fontSize: 20, fontFamily: "inter" }}>
                 Objectives
             </div>
             <div className='flex flex-row items-center justify-between w-11/12 border-[2px] border-[#00000010] p-4 rounded mt-4'>

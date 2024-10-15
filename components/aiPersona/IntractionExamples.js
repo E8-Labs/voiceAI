@@ -185,6 +185,9 @@ const IntractionExamples = ({ recallApi, aiData }) => {
 
     return (
         <div>
+            <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
+                Communication
+            </div>
             <div className='flex flex-row items-center w-full justify-between mt-12'>
                 <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
                     Intractions

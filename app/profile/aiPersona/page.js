@@ -1,9 +1,16 @@
 "use client"
+import BasicInformation from '@/components/aiPersona/BasicInformation';
 import CallInstructions from '@/components/aiPersona/CallInstructions';
+import DoNotDiscuss from '@/components/aiPersona/DoNotDiscuss';
+import FAQ from '@/components/aiPersona/FAQ';
 import FrameWorkAndTec from '@/components/aiPersona/FrameWorkAndTec';
 import IntractionExamples from '@/components/aiPersona/IntractionExamples';
+import Objectionhandling from '@/components/aiPersona/Objectionhandling';
 import Objectives from '@/components/aiPersona/Objectives';
 import PersonalityTraits from '@/components/aiPersona/PersonalityTraits';
+import PhrasesandQuotes from '@/components/aiPersona/PhrasesandQuotes';
+import ProductDetails from '@/components/aiPersona/ProductDetails';
+import Profession from '@/components/aiPersona/Profession';
 import ValuesandBeliefs from '@/components/aiPersona/ValuesandBeliefs';
 import Apis from '@/components/apis/Apis';
 import { CaretDown } from '@phosphor-icons/react';
@@ -24,45 +31,98 @@ const Page = () => {
     const [selectedCommunicationlMenu, setSelectedCommunicationlMenu] = useState(901);
 
 
+
+    //code for new menu items
+    const [selectedAICharacteristics, setSelectedAICharacteristics] = useState(201);
+    const [selectedCommunication, setSelectedCommunication] = useState(301);
+    const [selectedProductService, setSelectedProductService] = useState(501);
+    const [selectedIntegrations, setSelectedIntegrations] = useState(701);
+
+
+
+    //new drop down menu
+
     const menuItems = [{
         id: 1,
-        menu: 'Call instructions',
-    },
-    {
-        id: 2,
         menu: 'Objective',
     },
     {
+        id: 2,
+        menu: 'AI Characteristics',
+    },
+    {
         id: 3,
-        menu: 'General guideline',
+        menu: 'Communication',
     },
     {
         id: 4,
-        menu: 'Get tools',
+        menu: 'Strategies & Techniques',
     },
     {
         id: 5,
-        menu: 'Objection handling',
-    },
-    {
-        id: 6,
         menu: 'Product & Services',
     },
     {
+        id: 6,
+        menu: 'Objection Handling',
+    },
+    {
         id: 7,
-        menu: 'Specific Strategies & techniques', //added the values and beliefs here
+        menu: 'Integrations', //added the values and beliefs here
     },
     {
         id: 8,
-        menu: 'Communication', //added the personality traits here
-    },
-    {
-        id: 9,
-        menu: 'Persona Characteristics',
+        menu: 'Call Strategy', //added the personality traits here
     },
     ];
 
+
+    // const menuItems = [{
+    //     id: 1,
+    //     menu: 'Call instructions',
+    // },
+    // {
+    //     id: 2,
+    //     menu: 'Objective',
+    // },
+    // {
+    //     id: 3,
+    //     menu: 'General guideline',
+    // },
+    // {
+    //     id: 4,
+    //     menu: 'Get tools',
+    // },
+    // {
+    //     id: 5,
+    //     menu: 'Objection handling',
+    // },
+    // {
+    //     id: 6,
+    //     menu: 'Product & Services',
+    // },
+    // {
+    //     id: 7,
+    //     menu: 'Specific Strategies & techniques', //added the values and beliefs here
+    // },
+    // {
+    //     id: 8,
+    //     menu: 'Communication', //added the personality traits here
+    // },
+    // {
+    //     id: 9,
+    //     menu: 'Persona Characteristics',
+    // },
+    // ];
+
     //code to call the get ai api
+
+
+    //
+
+
+
+
     const getAiApi = async () => {
         try {
             console.log("Trying....")
@@ -186,9 +246,121 @@ const Page = () => {
         },
     ]
 
+    //new drop downs for new list
+
+    //index 2 drop down
+    const AiCharacteristics = [
+        {
+            id: 201,
+            title: "Basic Information"
+        },
+        {
+            id: 202,
+            title: "Profession"
+        }
+    ]
+
+    //index 3 drop down
+    const CommunicationMenu = [
+        {
+            id: 301,
+            title: "Donot Discuss"
+        },
+        {
+            id: 302,
+            title: "Intraction Examples"
+        },
+        {
+            id: 303,
+            title: "Phrases & Quotes"
+        },
+        {
+            id: 304,
+            title: "FAQ"
+        },
+    ]
+
+    //index 5 drop down
+    const ProductsServicesMenu = [
+        {
+            id: 501,
+            title: "Product Details"
+        },
+        {
+            id: 502,
+            title: "Conversion Goals"
+        },
+    ]
+
+    //index 7 drop down
+    const integrationMenu = [
+        {
+            id: 701,
+            title: "Item 1"
+        },
+        {
+            id: 702,
+            title: "Item 2"
+        },
+    ]
+
     //different dropdowns for different ID
     const renderDropdownContent = (id) => {
         switch (id) {
+
+            //Dropdown for index 2 (AICharacteristics);
+            case 2:
+                return (
+                    <div className='flex flex-col items-start rounded w-ful ms-8'>
+                        <ul>
+                            {
+                                AiCharacteristics.map((item) => (
+                                    <div key={item.id} className='mb-4 flex flex-row items-center gap-2'>
+                                        <button className='text-start outline-noe border-none'
+                                            onClick={() => {
+                                                setSelectedAICharacteristics(item.id);
+                                            }}
+                                            style={{ color: selectedAICharacteristics === item.id ? "#620FEB" : "black" }}
+                                        >
+                                            {item.title}
+                                        </button>
+                                        <Image src={item.id === selectedAICharacteristics ? "/assets/claimLogo2.png" : "/assets/TickIcon.png"} alt='icon' height={10} width={10} />
+                                    </div>
+                                ))
+                            }
+                            {/* <button className='mt-4'>Get Tools Option 2</button>
+                            <button className='mt-4'>Get Tools Option 3</button> */}
+                        </ul>
+                    </div>
+                );
+
+            //Dropdown for index 3 (Communication);
+            case 3:
+                return (
+                    <div className='flex flex-col items-start rounded w-ful ms-8'>
+                        <ul>
+                            {
+                                CommunicationMenu.map((item) => (
+                                    <div key={item.id} className='mb-4 flex flex-row items-center gap-2'>
+                                        <button className='text-start outline-noe border-none'
+                                            onClick={() => {
+                                                setSelectedCommunication(item.id);
+                                            }}
+                                            style={{ color: selectedCommunication === item.id ? "#620FEB" : "black" }}
+                                        >
+                                            {item.title}
+                                        </button>
+                                        <Image src={item.id === selectedCommunication ? "/assets/claimLogo2.png" : "/assets/TickIcon.png"} alt='icon' height={10} width={10} />
+                                    </div>
+                                ))
+                            }
+                            {/* <button className='mt-4'>Get Tools Option 2</button>
+                            <button className='mt-4'>Get Tools Option 3</button> */}
+                        </ul>
+                    </div>
+                );
+
+
             case 4:
                 return (
                     <div className='flex flex-col items-start rounded w-ful ms-8'>
@@ -213,6 +385,35 @@ const Page = () => {
                         </ul>
                     </div>
                 );
+
+            //dropdown for index 5 (Products and services)
+            case 5:
+                return (
+                    <div className='flex flex-col items-start rounded w-ful ms-8'>
+                        <ul>
+                            {
+                                ProductsServicesMenu.map((item) => (
+                                    <div key={item.id} className='mb-4 flex flex-row items-center gap-2'>
+                                        <button className='text-start outline-noe border-none'
+                                            onClick={() => {
+                                                setSelectedProductService(item.id);
+                                            }}
+                                            style={{ color: selectedProductService === item.id ? "#620FEB" : "black" }}
+                                        >
+                                            {item.title}
+                                        </button>
+                                        <Image src={item.id === selectedProductService ? "/assets/claimLogo2.png" : "/assets/TickIcon.png"} alt='icon' height={10} width={10} />
+                                    </div>
+                                ))
+                            }
+                            {/* <button className='mt-4'>Get Tools Option 2</button>
+                            <button className='mt-4'>Get Tools Option 3</button> */}
+                        </ul>
+                    </div>
+                );
+
+
+
             case 8:
                 return (
                     <div className='flex flex-col items-start ms-8 rounded w-full'>
@@ -265,6 +466,8 @@ const Page = () => {
                 return null;
         }
     };
+
+
 
     return (
         <div className='w-full h-screen' style={{ overflow: 'auto', backgroundColor: "#ffffff40" }}>
@@ -335,7 +538,7 @@ const Page = () => {
                                         style={styles.buttonText(item)}
                                         onClick={() => {
                                             // Handle dropdown toggle for IDs 4, 6, 8
-                                            if ([4, 8, 9].includes(item.id)) {
+                                            if ([2, 3, 5, 7, 8].includes(item.id)) {
                                                 handleDropdownToggle(item.id);
                                                 setSelectedMenu(item.id);
                                             } else {
@@ -351,12 +554,21 @@ const Page = () => {
                                             <div>{item.menu}</div>
                                             <Image src={item.id === selectedMenu ? "/assets/claimLogo2.png" : "/assets/TickIcon.png"} alt='icon' height={10} width={10} />
                                         </div>
-                                        {
+                                        {/* {
                                             [4, 6, 8, 9].includes(item.id) &&
                                             <CaretDown size={22} weight="light" />
+                                        } */}
+
+                                        {
+                                            [2, 3, 5, 7, 8].includes(item.id) &&
+                                            <div className='pe-8'>
+                                                <CaretDown size={22} weight="light" />
+                                            </div>
                                         }
                                     </button>
-                                    {(item.id === dropdownOpen) && renderDropdownContent(item.id)}
+                                    <div>
+                                        {(item.id === dropdownOpen) && renderDropdownContent(item.id)}
+                                    </div>
                                 </div>
                             ))
                         }
@@ -366,15 +578,35 @@ const Page = () => {
                     <div className='w-full flex flex-col w-7/12 ps-4'>
                         {
                             selectedMenu === 1 ? (
-                                <CallInstructions />
-                            ) : selectedMenu === 2 ? (
                                 <Objectives />
-                            ) : selectedMenu === 3 ? (
-                                "I am Good"
-                                // <SocialOAuth />
-                            ) : selectedMenu === 4 ? (
+                            ) : selectedMenu === 2 ? (
                                 <div>
                                     {
+                                        selectedAICharacteristics === 201 ? (
+                                            <BasicInformation recallApi={recallApi} aiData={aiData} />
+                                        ) : selectedAICharacteristics === 202 ? (
+                                            <Profession recallApi={recallApi} aiData={aiData} />
+                                        ) : ""
+                                    }
+                                </div>
+                            ) : selectedMenu === 3 ? (
+                                <div>
+                                    {
+                                        selectedCommunication === 301 ? (
+                                            <DoNotDiscuss recallApi={recallApi} aiData={aiData} />
+                                        ) : selectedCommunication === 302 ? (
+                                            <IntractionExamples recallApi={recallApi} aiData={aiData} />
+                                        ) : selectedCommunication === 303 ? (
+                                            <PhrasesandQuotes />
+                                        ) : selectedCommunication === 304 ? (
+                                            <FAQ />
+                                        ) : ""
+                                    }
+                                </div>
+                            ) : selectedMenu === 4 ? (
+                                <div>
+                                    <FrameWorkAndTec recallApi={recallApi} aiData={aiData} />
+                                    {/* {
                                         selectedGetToolMenu === 201 ? (
                                             "it is get tool 1 "
                                         ) : selectedGetToolMenu === 202 ? (
@@ -384,8 +616,20 @@ const Page = () => {
                                         ) : selectedGetToolMenu === 204 ? (
                                             "it is get tool 204 "
                                         ) : ""
+                                    } */}
+                                </div>
+                            ) : selectedMenu === 5 ? (
+                                <div>
+                                    {
+                                        selectedProductService === 501 ? (
+                                            <ProductDetails recallApi={recallApi} aiData={aiData} />
+                                        ) : selectedProductService === 502 ? (
+                                            "Item 2"
+                                        ) : ""
                                     }
                                 </div>
+                            ) : selectedMenu === 6 ? (
+                                <Objectionhandling />
                             ) : selectedMenu === 7 ? (
                                 <FrameWorkAndTec recallApi={recallApi} aiData={aiData} />
                             ) : selectedMenu === 8 ? (
@@ -402,7 +646,7 @@ const Page = () => {
                                 </div>
                             ) : selectedMenu === 9 ? (
                                 <div>
-                                    {
+                                    {/* {
                                         selectedGetProfessionalMenuMenu === 201 ? (
                                             "it is selectedGetProfessionalMenu 201"
                                         ) : selectedGetProfessionalMenuMenu === 202 ? (
@@ -414,7 +658,7 @@ const Page = () => {
                                         ) : selectedGetProfessionalMenuMenu === 205 ? (
                                             <IntractionExamples aiData={aiData} recallApi={recallApi} />
                                         ) : ""
-                                    }
+                                    } */}
                                 </div>
                             ) : ""
                         }
