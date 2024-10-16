@@ -63,6 +63,18 @@ const Apis = {
     AddIntractions: `${BasePath}api/ai/addIntraction`,
     DeleteIntractions: `${BasePath}api/ai/deleteUserBelief`,
     UpdateIntractions: `${BasePath}api/ai/updateUserBelief`,
+    AddPhilosophy: `${BasePath}api/ai/addUserPhilosophy`,
+    DeletePhilosophy: `${BasePath}api/ai/deleteUserPhilosophy`,
+    UpdatePhilosophy: `${BasePath}api/ai/updateUserPhilosophy`,
+    AddDonot: `${BasePath}api/ai/addDonotDiscuss`,
+    UpdateDonot: `${BasePath}api/ai/updateDonotDiscuss`,
+    DeleteDonot: `${BasePath}api/ai/deleteDonotDiscuss`,
+    AddPhrase: `${BasePath}api/ai/addPhraseAndQuote`,
+    DeletePhrase: `${BasePath}api/ai/deletePhraseAndQuote`,
+    UpdatePhrase: `${BasePath}api/ai/updatePhraseAndQuote`,
+    AddCommunicationInst: `${BasePath}api/ai/addCommunicationInstruction`,
+    DeleteCommunicationInst: `${BasePath}api/ai/deleteCommunicationInstruction`,
+    UpdateCommunicationInst: `${BasePath}api/ai/updateCommunicationInstruction`
 
 
 }

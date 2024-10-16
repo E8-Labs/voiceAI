@@ -40,7 +40,7 @@ const Objectionhandling = () => {
             <div>
                 {
                     objectionDetails.map((item) => (
-                        <div className='flex flex-row items-center justify-between p-4 border rounded-lg mt-6'>
+                        <div key={item.id} className='flex flex-row items-center justify-between p-4 border rounded-lg mt-6'>
                             <div>
                                 {item.detail}
                             </div>

@@ -597,7 +597,7 @@ const Page = () => {
                                         ) : selectedCommunication === 302 ? (
                                             <IntractionExamples recallApi={recallApi} aiData={aiData} />
                                         ) : selectedCommunication === 303 ? (
-                                            <PhrasesandQuotes />
+                                            <PhrasesandQuotes recallApi={recallApi} aiData={aiData} />
                                         ) : selectedCommunication === 304 ? (
                                             <FAQ />
                                         ) : ""
