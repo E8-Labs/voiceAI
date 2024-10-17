@@ -2,7 +2,7 @@ import { Alert, Box, CircularProgress, Fade, Modal, Popover, Snackbar } from '@m
 import { DotsThree } from '@phosphor-icons/react'
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
-import Apis from '../apis/Apis';
+import Apis from '@/components/apis/Apis';
 import axios from 'axios';
 import CommunicationSetting from './CommunicationSetting';
 

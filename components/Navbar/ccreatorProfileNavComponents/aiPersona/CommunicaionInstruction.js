@@ -2,47 +2,53 @@ import { Alert, Box, CircularProgress, Fade, Modal, Popover, Snackbar } from '@m
 import { DotsThree } from '@phosphor-icons/react'
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
-import Apis from '../apis/Apis';
+import Apis from '@/components/apis/Apis';
 import axios from 'axios';
 
-const PhrasesandQuotes = ({ recallApi, aiData }) => {
+const CommunicaionInstruction = ({ recallApi, aiData }) => {
 
-
-    const [phrasesData, setPhrasesData] = useState([]);
-
-    const [phrasesAnchorel, setPhrasesAnchorel] = useState(null);
-    const phrasesPopoverId = phrasesAnchorel ? 'simple-popover' : undefined;
-    const [phrasesLoader, setPhrasesLoader] = useState(false);
-    const [selectedPhrase, setSelectedPhrase] = useState(null);
+    const [communicationInstructionData, setCommunicationInstructionData] = useState([]);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const id = anchorEl ? 'simple-popover' : undefined;
+    const [communicationInstructionLoader, setCommunicationInstructionLoader] = useState(false);
     const [resultSnack, setResultSnack] = useState(null);
-    //add new Phrase or Quote
-    const [addNewModal, setAddNewModal] = useState(false);
-    const [addNewPhrase, setAddNewPhrase] = useState("");
-    //Update Phrase or Quote
+    const [selectedInstruction, setSelectedInstruction] = useState(null);
+    //add new commmunicationInstruction
+    const [adddComunicationInstModal, setAdddComunicationInstModal] = useState(false);
+    const [commmunicationInstructionDescription, setCommmunicationInstructionDescription] = useState("");
+    const [addCommunicationTitle, setAddCommunicationTitle] = useState("");
+    //code for update modal
     const [updateModal, setUpdateModal] = useState(false);
-    const [updatePhrase, setUpdatePhrase] = useState("");
+    const [updateDescription, setUpdateDescription] = useState("");
+    const [updateTitle, setUpdateTitle] = useState("");
+
+
 
     useEffect(() => {
-        if (aiData?.PhrasesAndQuotes) {
-            setPhrasesData(aiData.PhrasesAndQuotes);
+        if (aiData?.CommunicationInstructions
+        ) {
+            setCommunicationInstructionData(aiData.CommunicationInstructions
+            );
         }
     }, [recallApi]);
 
-    const handePhrasesMoreClick = (event, item) => {
-        setPhrasesAnchorel(event.currentTarget);
-        setSelectedPhrase(item);
-        setUpdatePhrase(item.description);
-    };
 
     const handleClose = () => {
-        setPhrasesAnchorel(null);
+        setAnchorEl(null);
     };
 
-    //add new phrase
-    const handleaddNewPhrase = async () => {
+    const handleClick = (event, item) => {
+        setAnchorEl(event.currentTarget);
+        setSelectedInstruction(item);
+        setUpdateDescription(item.description);
+        setUpdateTitle(item.title);
+    };
+
+    //code to add Communication Inst
+    const handleAddCommunicationInst = async () => {
         try {
-            setPhrasesLoader(true);
-            const ApiPath = Apis.AddPhrase;
+            setCommunicationInstructionLoader(true);
+            const ApiPath = Apis.AddCommunicationInst;
             const localData = localStorage.getItem('User');
             const Data = JSON.parse(localData);
             const AuthToken = Data.data.token;
@@ -50,7 +56,8 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
             console.log("Apipath is", ApiPath);
 
             const ApiData = {
-                description: addNewPhrase
+                description: commmunicationInstructionDescription,
+                title: addCommunicationTitle
             }
 
             console.log("Data sendgin in api is", ApiData);
@@ -62,11 +69,11 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
                 }
             });
             if (response) {
-                console.log("Response of add phrase api is", response.data);
+                console.log("Response of add commmunicationInstruction api is", response.data);
                 if (response.data.status === true) {
-                    setAddNewModal(false);
-                    setPhrasesAnchorel(null);
-                    setAddNewPhrase("");
+                    setAdddComunicationInstModal(false);
+                    setCommmunicationInstructionDescription("");
+                    setAnchorEl(null);
                     recallApi();
                 } else {
                     console.log("Error occured")
@@ -75,17 +82,17 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
             }
 
         } catch (error) {
-            console.error("ERR occured in add phrase api is", error);
+            console.error("ERR occured in add commmunicationInstruction api is", error);
         } finally {
-            setPhrasesLoader(false);
+            setCommunicationInstructionLoader(false);
         }
     }
 
-    //Update phrase
-    const handleUpdatePhrase = async () => {
+    //code to add Communication Inst
+    const handleUpdateCommunicationInst = async () => {
         try {
-            setPhrasesLoader(true);
-            const ApiPath = Apis.UpdatePhrase;
+            setCommunicationInstructionLoader(true);
+            const ApiPath = Apis.UpdateCommunicationInst;
             const localData = localStorage.getItem('User');
             const Data = JSON.parse(localData);
             const AuthToken = Data.data.token;
@@ -93,8 +100,9 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
             console.log("Apipath is", ApiPath);
 
             const ApiData = {
-                id: selectedPhrase.id,
-                description: updatePhrase
+                id: selectedInstruction.id,
+                description: updateDescription,
+                title: updateTitle
             }
 
             console.log("Data sendgin in api is", ApiData);
@@ -106,11 +114,10 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
                 }
             });
             if (response) {
-                console.log("Response of update phrase api is", response.data);
+                console.log("Response of update commmunicationInstruction api is", response.data);
                 if (response.data.status === true) {
                     setUpdateModal(false);
-                    setPhrasesAnchorel(null);
-                    setUpdatePhrase("");
+                    setAnchorEl(null);
                     recallApi();
                 } else {
                     console.log("Error occured")
@@ -119,17 +126,17 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
             }
 
         } catch (error) {
-            console.error("ERR occured in update phrase api is", error);
+            console.error("ERR occured in update commmunicationInstruction api is", error);
         } finally {
-            setPhrasesLoader(false);
+            setCommunicationInstructionLoader(false);
         }
     }
 
-    //Delete phrase
-    const handleDeletetePhrase = async () => {
+    //code to add Communication Inst
+    const handleDeleteCommunication = async () => {
         try {
-            setPhrasesLoader(true);
-            const ApiPath = Apis.DeletePhrase;
+            setCommunicationInstructionLoader(true);
+            const ApiPath = Apis.DeleteCommunicationInst;
             const localData = localStorage.getItem('User');
             const Data = JSON.parse(localData);
             const AuthToken = Data.data.token;
@@ -137,7 +144,7 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
             console.log("Apipath is", ApiPath);
 
             const ApiData = {
-                id: selectedPhrase.id,
+                id: selectedInstruction.id,
             }
 
             console.log("Data sendgin in api is", ApiData);
@@ -149,10 +156,9 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
                 }
             });
             if (response) {
-                console.log("Response of delete phrase api is", response.data);
+                console.log("Response of delete commmunicationInstruction api is", response.data);
                 if (response.data.status === true) {
-                    setPhrasesAnchorel(null);
-                    setUpdatePhrase("");
+                    setAnchorEl(null);
                     recallApi();
                 } else {
                     console.log("Error occured")
@@ -161,9 +167,9 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
             }
 
         } catch (error) {
-            console.error("ERR occured in delete phrase api is", error);
+            console.error("ERR occured in delete commmunicationInstruction api is", error);
         } finally {
-            setPhrasesLoader(false);
+            setCommunicationInstructionLoader(false);
         }
     }
 
@@ -182,74 +188,75 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
         }
     }
 
-
     return (
         <div>
-            <div className='flex flex-row items-center justify-between'>
-                <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter", color: '#00000060' }}>
-                    Communication | <span style={{ fontWeight: "500", fontFamily: "inter", color: '#000000' }}>Key Quotes</span>
+            <div className='flex flex-row items-center justify-between' style={{ fontWeight: "500", fontFamily: "inter", fontSize: 15 }}>
+                <div>
+                    Communication
                 </div>
-                <button className='text-purple underline' onClick={() => { setAddNewModal(true) }}>
-                    Add New
+                <button className='text-purple underline' onClick={() => { setAdddComunicationInstModal(true) }}>
+                    View Examples
                 </button>
             </div>
-            {
-                phrasesData.map((item, index) => (
-                    <div key={item.id} className='flex flex-row items-start p-4 border border-[#00000010] mt-8 justify-between'>
-                        <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
-                            {item.description}
-                        </div>
-                        <div>
-                            <button className='-mt-2' aria-describedby={phrasesPopoverId} variant="contained" color="primary" onClick={(event) => { handePhrasesMoreClick(event, item) }}>
-                                <DotsThree size={32} weight="bold" />
-                            </button>
-                            <Popover
-                                id={phrasesPopoverId}
-                                open={Boolean(phrasesAnchorel)}
-                                anchorEl={phrasesAnchorel}
-                                onClose={handleClose}
-                                anchorOrigin={{
-                                    vertical: 'bottom',
-                                    horizontal: 'center',
-                                }}
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'center',
-                                }}
-                            >
-                                <div className='p-2 flex flex-col justify-start items-start w-[100px]'>
-                                    <button className='text-purple' style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter" }}
-                                        onClick={() => { setUpdateModal(true) }}
-                                    >
-                                        Edit
-                                    </button>
-                                    {
-                                        phrasesLoader ?
-                                            <CircularProgress style={{ marginTop: 8 }} size={15} /> :
-                                            <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }}
-                                                onClick={handleDeletetePhrase}
-                                            >
-                                                Delete
-                                            </button>
-                                    }
+
+            <div className='max-h-[55vh] overflow-auto scrollbar scrollbar-track-transparent scrollbar-thumb-purple scrollbat-thin'>
+                {
+                    communicationInstructionData.map((item) => (
+                        <div key={item.id} className='p-3 border-2 rounded-lg mt-8'>
+                            <div className='flex flex-row items-center justify-between'>
+                                <div style={{ fontWeight: "700", fontFamily: "inter", fontSize: 13 }}>
+                                    {item.title}
                                 </div>
-                            </Popover>
+                                <div>
+                                    <button aria-describedby={id} variant="contained" color="primary" onClick={(event) => { handleClick(event, item) }}>
+                                        <DotsThree size={32} weight="bold" />
+                                    </button>
+                                    <Popover
+                                        id={id}
+                                        open={Boolean(anchorEl)}
+                                        anchorEl={anchorEl}
+                                        onClose={handleClose}
+                                        anchorOrigin={{
+                                            vertical: 'bottom',
+                                            horizontal: 'center',
+                                        }}
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'center',
+                                        }}
+                                    >
+                                        <div className='p-2 flex flex-col justify-start items-start w-[100px]'>
+                                            <button
+                                                onClick={() => { setUpdateModal(true) }}
+                                                className='text-purple' style={{
+                                                    fontSize: 13, fontWeight: "500",
+                                                    fontFamily: "inter"
+                                                }}>
+                                                Edit
+                                            </button>
+                                            {
+                                                communicationInstructionLoader ?
+                                                    <CircularProgress size={15} /> :
+                                                    <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }} onClick={handleDeleteCommunication}>
+                                                        Delete
+                                                    </button>
+                                            }
+                                        </div>
+                                    </Popover>
+                                </div>
+                            </div>
+                            <div style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13 }}>
+                                {item.description}
+                            </div>
                         </div>
-                    </div>
-                ))
-            }
-
-            <div>
-                <button className='text-purple underline mt-4' style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
-                    Advance Settings
-                </button>
+                    ))
+                }
             </div>
 
-
-            {/* Modal to add Phrase & Quote */}
+            {/* Modal to add Communication Instruction */}
             <Modal
-                open={addNewModal}
-                onClose={() => setAddNewModal(false)}
+                open={adddComunicationInstModal}
+                onClose={() => setAdddComunicationInstModal(false)}
                 closeAfterTransition
                 BackdropProps={{
                     timeout: 1000,
@@ -273,36 +280,36 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
                             <div style={{ backgroundColor: "#ffffff", borderRadius: 7, padding: 10 }}>
                                 <div className='flex flex-row items-center justify-between p-2' style={{ fontWeight: '500', fontFamily: "inter", fontSize: 20 }}>
                                     <p />
-                                    <p>Add Phrase</p>
-                                    <button onClick={() => { setAddNewModal(false) }}>
+                                    <p>Add Communication Instruction</p>
+                                    <button onClick={() => { setAdddComunicationInstModal(false) }}>
                                         <Image src="/assets/crossBtn.png" height={15} width={15} alt='*' />
                                     </button>
                                 </div>
                                 <div className='mt-4 w-full'>
-                                    {/* <div>
+                                    <div>
                                         <input className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
-                                            // value={UpdateValues}
-                                            // onChange={(e) => setUpdateValues(e.target.value)}
+                                            value={addCommunicationTitle}
+                                            onChange={(e) => setAddCommunicationTitle(e.target.value)}
                                             placeholder='Title'
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13 }}
                                         />
-                                    </div> */}
+                                    </div>
                                     <div className='mt-8'>
                                         <textarea className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
-                                            value={addNewPhrase}
-                                            onChange={(e) => setAddNewPhrase(e.target.value)}
+                                            value={commmunicationInstructionDescription}
+                                            onChange={(e) => setCommmunicationInstructionDescription(e.target.value)}
                                             placeholder='Description'
                                             rows={4}
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13, resize: "none" }}
                                         />
                                     </div>
                                     {
-                                        phrasesLoader ?
+                                        communicationInstructionLoader ?
                                             <div className='w-full flex flex-row justify-center' style={{ marginTop: 15 }}>
                                                 <CircularProgress size={25} />
                                             </div> :
                                             <button className='w-full py-2 text-white bg-purple ' style={{ borderRadius: "50px", marginTop: 15 }}
-                                                onClick={handleaddNewPhrase}
+                                                onClick={handleAddCommunicationInst}
                                             >
                                                 Add
                                             </button>
@@ -314,8 +321,7 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
                 </Box>
             </Modal>
 
-
-            {/* Modal to add Phrase & Quote */}
+            {/* Modal to add Communication Instruction */}
             <Modal
                 open={updateModal}
                 onClose={() => setUpdateModal(false)}
@@ -342,38 +348,38 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
                             <div style={{ backgroundColor: "#ffffff", borderRadius: 7, padding: 10 }}>
                                 <div className='flex flex-row items-center justify-between p-2' style={{ fontWeight: '500', fontFamily: "inter", fontSize: 20 }}>
                                     <p />
-                                    <p>Update Phrase</p>
+                                    <p>Update Communication Instruction</p>
                                     <button onClick={() => { setUpdateModal(false) }}>
                                         <Image src="/assets/crossBtn.png" height={15} width={15} alt='*' />
                                     </button>
                                 </div>
                                 <div className='mt-4 w-full'>
-                                    {/* <div>
+                                    <div>
                                         <input className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
-                                            // value={UpdateValues}
-                                            // onChange={(e) => setUpdateValues(e.target.value)}
+                                            value={updateTitle}
+                                            onChange={(e) => setUpdateTitle(e.target.value)}
                                             placeholder='Title'
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13 }}
                                         />
-                                    </div> */}
+                                    </div>
                                     <div className='mt-8'>
                                         <textarea className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
-                                            value={updatePhrase}
-                                            onChange={(e) => setUpdatePhrase(e.target.value)}
+                                            value={updateDescription}
+                                            onChange={(e) => setUpdateDescription(e.target.value)}
                                             placeholder='Description'
                                             rows={4}
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13, resize: "none" }}
                                         />
                                     </div>
                                     {
-                                        phrasesLoader ?
+                                        communicationInstructionLoader ?
                                             <div className='w-full flex flex-row justify-center' style={{ marginTop: 15 }}>
                                                 <CircularProgress size={25} />
                                             </div> :
                                             <button className='w-full py-2 text-white bg-purple ' style={{ borderRadius: "50px", marginTop: 15 }}
-                                                onClick={handleUpdatePhrase}
+                                                onClick={handleUpdateCommunicationInst}
                                             >
-                                                Save
+                                                Add
                                             </button>
                                     }
                                 </div>
@@ -382,7 +388,6 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
                     </div>
                 </Box>
             </Modal>
-
 
             <div>
                 <Snackbar
@@ -411,10 +416,8 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
                 </Snackbar>
             </div>
 
-
-
         </div>
     )
 }
 
-export default PhrasesandQuotes
+export default CommunicaionInstruction

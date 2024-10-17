@@ -44,7 +44,7 @@ const BasicInformation = ({ recallApi, aiData }) => {
     return (
         <div>
             <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
-                <span style={{ color: "#00000060" }}>AI Characteristics</span> Basic Information
+                <span style={{ color: "#00000060" }}>AI Characteristics |</span> Basic Information
             </div>
 
             <div className='mt-6' style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
@@ -53,7 +53,7 @@ const BasicInformation = ({ recallApi, aiData }) => {
 
             <div className='flex flex-row items-start w-full justify-between border rounded-lg p-4 mt-6'>
                 <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
-                    Info details
+                    {aiData.ai.greeting}
                 </div>
                 <button aria-describedby={greetCallersPopoverId} variant="contained" color="primary" onClick={(event) => { handeGreetCallersMoreClick(event) }}>
                     <DotsThree size={32} weight="bold" />
@@ -93,7 +93,7 @@ const BasicInformation = ({ recallApi, aiData }) => {
 
             <div className='flex flex-row items-start w-full justify-between border rounded-lg p-4 mt-6'>
                 <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
-                    Question details
+                    {aiData.ai.possibleUserQuery}
                 </div>
                 <button aria-describedby={callersQueryPopoverId} variant="contained" color="primary" onClick={(event) => { handeCallersQueryMoreClick(event) }}>
                     <DotsThree size={32} weight="bold" />

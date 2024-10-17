@@ -1,11 +1,11 @@
-import { Box, CircularProgress, Modal, Popover } from '@mui/material';
+import { Alert, Box, CircularProgress, Fade, Modal, Popover, Snackbar } from '@mui/material';
 import { DotsThree } from '@phosphor-icons/react'
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
-import Apis from '../apis/Apis';
+import Apis from '@/components/apis/Apis';
 import axios from 'axios';
 
-const ValuesandBeliefs = ({ aiData, recallApi }) => {
+const Philosophy = ({ aiData, recallApi }) => {
 
     //get values
     const [valuesData, setValuesData] = useState([]);
@@ -25,33 +25,33 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
     const valuedPopoverId = valueAnchorEl ? 'simple-popover' : undefined;
     const [selecteddItem, setSelectedItem] = useState("");
 
-    //get beliefs
-    const [beliefsData, setBeliefsData] = useState([]);
-    //add belief
-    const [addBeliefModal, setAddBeliefModal] = useState(false);
-    const [addBelief, setAddBelief] = useState("");
-    const [beliefDescription, setBeliefDescription] = useState("");
-    //update belief
-    const [updateBeliefModal, setUpdateBeliefModal] = useState(false);
-    const [updateBelief, setUpdateBelief] = useState("");
-    const [updateBeliefDescription, setUpdateBeliefDescription] = useState("");
-    const [beliefData, setBeliefData] = useState(null);
-
+    //get philosophy
+    const [philosophyData, setPhilosophyData] = useState([]);
+    //add philosophy
+    const [addPhilosophyModal, setAddPhilosophyModal] = useState(false);
+    const [addPhilosophy, setAddPhilosophy] = useState("");
+    const [philosophyDescription, setPhilosophyDescription] = useState("");
+    //update philosophy
+    const [updatePhilosophyModal, setUpdatePhilosophyModal] = useState(false);
+    const [updatePhilosophy, setUpdatePhilosophy] = useState("");
+    const [updatephilosophyDescription, setUpdatephilosophyDescription] = useState("");
+    const [selectedPhilosophyDetails, setSelectedPhilosophyDetails] = useState(null);
+    const [resultSnack, setResultSnack] = useState(null);
 
     useEffect(() => {
         if (aiData?.values) {
             setValuesData(aiData.values);
         }
-        if (aiData?.beliefs) {
-            setBeliefsData(aiData.beliefs);
+        if (aiData?.Philosophies) {
+            setPhilosophyData(aiData.Philosophies);
         }
     }, [recallApi])
 
     const handleClick = (event, item) => {
         setAnchorEl(event.currentTarget);
-        setBeliefData(item);
-        setUpdateBelief(item.title);
-        setUpdateBeliefDescription(item.description);
+        setSelectedPhilosophyDetails(item);
+        setUpdatePhilosophy(item.title);
+        setUpdatephilosophyDescription(item.description);
     };
 
     const handleClose = () => {
@@ -67,7 +67,7 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
     }
 
 
-    //ode to add Value&Beliefs
+    //ode to add Views& Philosophies
     const handleAddValue = async () => {
         try {
             setAddValuesLoader(true);
@@ -196,11 +196,11 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
         }
     }
 
-    //code to add belief
-    const handleAddBelief = async () => {
+    //code to add philosophy
+    const handleaddPhilosophy = async () => {
         try {
             setAddValuesLoader(true);
-            const ApiPath = Apis.AddBeliefs;
+            const ApiPath = Apis.AddPhilosophy;
             const localData = localStorage.getItem('User');
             const Data = JSON.parse(localData);
             const AuthToken = Data.data.token;
@@ -208,8 +208,8 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
             console.log("Apipath is", ApiPath);
 
             const ApiData = {
-                title: addBelief,
-                description: beliefDescription
+                // title: addPhilosophy,
+                description: philosophyDescription
             }
 
             console.log("Data sendgin in api is", ApiData);
@@ -221,29 +221,30 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                 }
             });
             if (response) {
-                console.log("Response of add belief api is", response.data);
+                console.log("Response of add philosophy api is", response.data);
                 if (response.data.status === true) {
-                    setAddBeliefModal(false);
-                    setAddBelief("");
-                    setBeliefDescription("");
+                    setAddPhilosophyModal(false);
+                    setAddPhilosophy("");
+                    setPhilosophyDescription("");
                     recallApi();
                 } else {
                     console.log("Error occured")
                 }
+                setResultSnack(response.data.message);
             }
 
         } catch (error) {
-            console.error("ERR occured in add belief api is", error);
+            console.error("ERR occured in add philosophy api is", error);
         } finally {
             setAddValuesLoader(false);
         }
     }
 
-    //code to add belief
-    const handleUpdateBelief = async () => {
+    //code to add philosophy
+    const handleupdatePhilosophy = async () => {
         try {
             setAddValuesLoader(true);
-            const ApiPath = Apis.UpdateBeliefs;
+            const ApiPath = Apis.UpdatePhilosophy;
             const localData = localStorage.getItem('User');
             const Data = JSON.parse(localData);
             const AuthToken = Data.data.token;
@@ -251,9 +252,9 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
             console.log("Apipath is", ApiPath);
 
             const ApiData = {
-                id: beliefData.id,
-                title: updateBelief,
-                description: updateBeliefDescription
+                id: selectedPhilosophyDetails.id,
+                title: updatePhilosophy,
+                description: updatephilosophyDescription
             }
 
             console.log("Data sendgin in api is", ApiData);
@@ -265,31 +266,32 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                 }
             });
             if (response) {
-                console.log("Response of update belief api is", response.data);
+                console.log("Response of update philosophy api is", response.data);
                 if (response.data.status === true) {
-                    setUpdateBeliefModal(false);
-                    setUpdateBelief("");
-                    setUpdateBeliefDescription("");
+                    setUpdatePhilosophyModal(false);
+                    setUpdatePhilosophy("");
+                    setUpdatephilosophyDescription("");
                     setAnchorEl(null);
                     recallApi();
                 } else {
                     console.log("Error occured")
                 }
+                setResultSnack(response.data.message);
             }
 
         } catch (error) {
-            console.error("ERR occured in add belief api is", error);
+            console.error("ERR occured in add philosophy api is", error);
         } finally {
             setAddValuesLoader(false);
         }
     }
 
 
-    //code to del belief
-    const handleDeleteBelief = async () => {
+    //code to del philosophy
+    const handleDeletephilosophy = async () => {
         try {
             setAddValuesLoader(true);
-            const ApiPath = Apis.DeleteBeliefs;
+            const ApiPath = Apis.DeletePhilosophy;
             const localData = localStorage.getItem('User');
             const Data = JSON.parse(localData);
             const AuthToken = Data.data.token;
@@ -297,7 +299,7 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
             console.log("Apipath is", ApiPath);
 
             const ApiData = {
-                id: beliefData.id,
+                id: selectedPhilosophyDetails.id,
             }
 
             console.log("Data sendgin in api is", ApiData);
@@ -309,19 +311,20 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                 }
             });
             if (response) {
-                console.log("Response of update belief api is", response.data);
+                console.log("Response of delete philosophy api is", response.data);
                 if (response.data.status === true) {
                     setAnchorEl(null);
-                    setBeliefsData(prevData =>
-                        prevData.filter(Belief => Belief.id !== beliefData.id)
-                    )
+                    setPhilosophyData(prevData =>
+                        prevData.filter(Philosophy => Philosophy.id !== selectedPhilosophyDetails.id)
+                    );
                 } else {
                     console.log("Error occured")
                 }
+                setResultSnack(response.data.message);
             }
 
         } catch (error) {
-            console.error("ERR occured in add belief api is", error);
+            console.error("ERR occured in delete  philosophy api is", error);
         } finally {
             setAddValuesLoader(false);
         }
@@ -345,23 +348,23 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
 
 
     return (
-        <div className='w-10/12 max-h-[65vh] overflow-auto scrollbar scrollbar-track-transparent scrollbar-thumb-purple scrollbar-thin'>
+        <div className='w-10/12 max-h-[52%] overflow-auto scrollbar scrollbar-track-transparent scrollbar-thumb-purple scrollbar-thin'>
             <div className='flex flex-row items-center w-full justify-between'>
                 <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
-                    Beliefs
+                    Philosophies
                 </div>
                 <button
                     className='text-purple underline'
-                    onClick={() => { setAddBeliefModal(true) }}
+                    onClick={() => { setAddPhilosophyModal(true) }}
                 >
                     Add New
                 </button>
             </div>
             {
-                beliefsData ?
+                philosophyData && philosophyData.length > 0 ?
                     <div>
                         {
-                            beliefsData.map((item) => (
+                            philosophyData.map((item) => (
                                 <div key={item.id} className='flex flex-row items-center p-4 border border-[#00000010] mt-8 justify-between'>
                                     <div>
                                         {item.description}
@@ -391,14 +394,14 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                                                         fontFamily: "inter"
                                                     }}
                                                     onClick={() => {
-                                                        setUpdateBeliefModal(true);
+                                                        setUpdatePhilosophyModal(true);
                                                     }}>
                                                     Edit
                                                 </button>
                                                 {
                                                     valuesLoader ?
                                                         <CircularProgress size={15} /> :
-                                                        <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }} onClick={handleDeleteBelief}>
+                                                        <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }} onClick={handleDeletephilosophy}>
                                                             Delete
                                                         </button>
                                                 }
@@ -409,15 +412,15 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                             ))
                         }
                     </div> :
-                    <div className='text-center w-full mt-8'  style={{ fontWeight: "bold", fontSize: 18, fontFamily: "inter" }}>
-                        No Beliefs Added
+                    <div className='text-center w-full mt-8' style={{ fontWeight: "bold", fontSize: 18, fontFamily: "inter" }}>
+                        No Philosophy Added
                     </div>
             }
 
             {/* code for values */}
             <div className='flex flex-row items-center w-full justify-between mt-12'>
                 <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
-                    Values
+                    Views
                 </div>
                 <button
                     className='text-purple underline'
@@ -618,10 +621,10 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
             </Modal>
 
 
-            {/* Modal to add new belief */}
+            {/* Modal to add new philosophy */}
             <Modal
-                open={addBeliefModal}
-                onClose={() => setAddBeliefModal(false)}
+                open={addPhilosophyModal}
+                onClose={() => setAddPhilosophyModal(false)}
                 closeAfterTransition
                 BackdropProps={{
                     timeout: 1000,
@@ -645,24 +648,24 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                             <div style={{ backgroundColor: "#ffffff", borderRadius: 7, padding: 10 }}>
                                 <div className='flex flex-row items-center justify-between p-2' style={{ fontWeight: '500', fontFamily: "inter", fontSize: 20 }}>
                                     <p />
-                                    <p>Add Beliefs</p>
-                                    <button onClick={() => { setAddBeliefModal(false) }}>
+                                    <p>Add philosophies</p>
+                                    <button onClick={() => { setAddPhilosophyModal(false) }}>
                                         <Image src="/assets/crossBtn.png" height={15} width={15} alt='*' />
                                     </button>
                                 </div>
                                 <div className='mt-4 w-full'>
-                                    <div>
+                                    {/* <div>
                                         <input className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
-                                            value={addBelief}
-                                            onChange={(e) => setAddBelief(e.target.value)}
+                                            value={addPhilosophy}
+                                            onChange={(e) => setAddPhilosophy(e.target.value)}
                                             placeholder='Title'
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13 }}
                                         />
-                                    </div>
+                                    </div> */}
                                     <div className='mt-8'>
                                         <textarea className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
-                                            value={beliefDescription}
-                                            onChange={(e) => setBeliefDescription(e.target.value)}
+                                            value={philosophyDescription}
+                                            onChange={(e) => setPhilosophyDescription(e.target.value)}
                                             placeholder='Description'
                                             rows={4}
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13, resize: "none" }}
@@ -674,8 +677,8 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                                                 <CircularProgress size={25} />
                                             </div> :
                                             <button className='w-full py-2 text-white bg-purple ' style={{ borderRadius: "50px", marginTop: 15 }}
-                                                onClick={handleAddBelief}>
-                                                Save
+                                                onClick={handleaddPhilosophy}>
+                                                Add
                                             </button>
                                     }
                                 </div>
@@ -687,8 +690,8 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
 
             {/* Modal to update beiefs */}
             <Modal
-                open={updateBeliefModal}
-                onClose={() => setUpdateBeliefModal(false)}
+                open={updatePhilosophyModal}
+                onClose={() => setUpdatePhilosophyModal(false)}
                 closeAfterTransition
                 BackdropProps={{
                     timeout: 1000,
@@ -712,24 +715,24 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                             <div style={{ backgroundColor: "#ffffff", borderRadius: 7, padding: 10 }}>
                                 <div className='flex flex-row items-center justify-between p-2' style={{ fontWeight: '500', fontFamily: "inter", fontSize: 20 }}>
                                     <p />
-                                    <p>Add Beliefs</p>
-                                    <button onClick={() => { setUpdateBeliefModal(false) }}>
+                                    <p>Update philosophies</p>
+                                    <button onClick={() => { setUpdatePhilosophyModal(false) }}>
                                         <Image src="/assets/crossBtn.png" height={15} width={15} alt='*' />
                                     </button>
                                 </div>
                                 <div className='mt-4 w-full'>
-                                    <div>
+                                    {/* <div>
                                         <input className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
-                                            value={updateBelief}
-                                            onChange={(e) => setUpdateBelief(e.target.value)}
+                                            value={updatePhilosophy}
+                                            onChange={(e) => setUpdatePhilosophy(e.target.value)}
                                             placeholder='Title'
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13 }}
                                         />
-                                    </div>
+                                    </div> */}
                                     <div className='mt-8'>
                                         <textarea className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
-                                            value={updateBeliefDescription}
-                                            onChange={(e) => setUpdateBeliefDescription(e.target.value)}
+                                            value={updatephilosophyDescription}
+                                            onChange={(e) => setUpdatephilosophyDescription(e.target.value)}
                                             placeholder='Description'
                                             rows={4}
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13, resize: "none" }}
@@ -741,8 +744,8 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                                                 <CircularProgress size={25} />
                                             </div> :
                                             <button className='w-full py-2 text-white bg-purple ' style={{ borderRadius: "50px", marginTop: 15 }}
-                                                onClick={handleUpdateBelief}>
-                                                Add
+                                                onClick={handleupdatePhilosophy}>
+                                                Save
                                             </button>
                                     }
                                 </div>
@@ -752,9 +755,36 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                 </Box>
             </Modal>
 
+            <div>
+                <Snackbar
+                    open={resultSnack}
+                    autoHideDuration={3000}
+                    onClose={() => {
+                        setResultSnack(null);
+                    }}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center'
+                    }}
+                    TransitionComponent={Fade}
+                    TransitionProps={{
+                        direction: 'center'
+                    }}
+                >
+                    <Alert
+                        onClose={() => {
+                            setResultSnack(null)
+                        }} severity="none"
+                        className='bg-purple rounded-lg text-white'
+                        sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}>
+                        {resultSnack}
+                    </Alert>
+                </Snackbar>
+            </div>
+
 
         </div>
     )
 }
 
-export default ValuesandBeliefs
+export default Philosophy

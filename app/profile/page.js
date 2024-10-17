@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Dashboard from '@/components/Navbar/profilenavbarcomponents/MyCreatorX/Dashboard';
 import { AiDetails } from '@/components/Navbar/profilenavbarcomponents/MyCreatorX/AiDetails';
 import { SocialKB } from '@/components/Navbar/profilenavbarcomponents/MyCreatorX/Social&KB';
-import Calls from '@/components/Navbar/profilenavbarcomponents/MyCreatorX/Calls';
+import Calls from '@/components/Navbar/ccreatorProfileNavComponents/calls/Calls';
 import SocialOAuth from '@/components/creatorOnboarding/SocialOAuth';
 import { Box, FormControl, MenuItem, Modal, Select } from '@mui/material';
 import Image from 'next/image';

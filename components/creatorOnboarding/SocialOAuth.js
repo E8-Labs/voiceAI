@@ -95,6 +95,13 @@ function SocialOAuth() {
         fontFamily: 'inter'
     }
 
+    const commingSoonButtonStyle = {
+        borderRadius: '50px',
+        fontWeight: '500',
+        fontSize: 15,
+        fontFamily: 'inter'
+    }
+
     const SocialIconsName = {
         fontWeight: '400',
         fontSize: 15,
@@ -166,43 +173,25 @@ function SocialOAuth() {
                     className="mt-2"
                     style={{
                         fontSize: 15,
-                        fontWeight: "700",
+                        fontWeight: "500",
                         fontFamily: "inter",
                     }}
                 >
                     Social Accounts
                 </div>
 
-                <div className='text-gray-400 text-sm mt-3 mb-10 mb-5 w-11/12'>
+                {/* <div className='text-gray-400 text-sm mt-3 mb-10 mb-5 w-11/12'>
                     This is used as your knowledge base to train your ai model.
-                </div>
-                <div className='flex flex-row w-full   justify-between mb-4 items-center'>
-                    <div className='flex flex-row items-center gap-6'>
-                        {/* <Image style={styles.image}
-                            src={'/assets/instagram.png'} alt='web'
-                            height={30} width={30} /> */}
-                            <InstagramLogo size={25} />
-                        <div style={SocialIconsName}>
-                            Instagram
-                        </div>
-                    </div>
-                    {
-                        instaLoading ?
-                            <CircularProgress size={20} /> :
-                            <button className='bg-purple text-white px-2 py-1' style={connectButtonStyle}
-                                onClick={handleInstagramLogin}>
-                                Connect
-                            </button>
-                    }
-                </div>
+                </div> */}
 
-                <div className='flex flex-row w-full   mb-4 justify-between items-center'>
+                {/* Youtube connection */}
+                <div className='flex flex-row w-full mt-4  mb-8 justify-between items-center'>
                     <div className='flex flex-row items-center gap-6'>
                         {/* <Image style={styles.image}
                             src={'/assets/youtubeIcon.png'} alt='Youtube'
                             height={30} width={30} /> */}
                         <YoutubeLogo size={25} />
-                        <div style={SocialIconsName}>
+                        <div style={{ ...SocialIconsName, fontWeight: "500" }}>
                             Youtube
                         </div>
                     </div>
@@ -216,10 +205,11 @@ function SocialOAuth() {
                     ) : (
                         <div>
                             <button
-                                onClick={handleSignout}
+                                // onClick={handleSignout}
                                 className='bg-transparent text-purple px-2 py-1' style={connectButtonStyle}>
-                                Signout
+                                Connected
                             </button>
+                            {/* Storing data in session */}
                             {/* <p>Welcome, {session.user.name}!</p>
                             <button onClick={() => signOut()}>Sign out</button>
 
@@ -228,7 +218,34 @@ function SocialOAuth() {
                     )}
                 </div>
 
-                <div className='flex flex-row items-center justify-between w-full   mb-4'>
+
+                {/* Instagram connection */}
+                <div className='flex flex-row w-full   justify-between mb-8 items-center'>
+                    <div className='flex flex-row items-center gap-6'>
+                        {/* <Image style={styles.image}
+                            src={'/assets/instagram.png'} alt='web'
+                            height={30} width={30} /> */}
+                        <InstagramLogo size={25} />
+                        <div style={SocialIconsName}>
+                            Instagram
+                        </div>
+                    </div>
+                    {/* {
+                        instaLoading ?
+                            <CircularProgress size={20} /> :
+                            <button className='bg-purple text-white px-2 py-1' style={connectButtonStyle}
+                                onClick={handleInstagramLogin}>
+                                Connect
+                            </button>
+                    } */}
+                    <button className='bg-white text-black px-2 py-1' style={commingSoonButtonStyle}>
+                        Coming Soon
+                    </button>
+                </div>
+
+
+                {/* Twitter connection */}
+                <div className='flex flex-row items-center justify-between w-full   mb-8'>
                     <div className='flex flex-row gap-6 items-center'>
                         {/* <Image style={styles.image}
                             src={'/assets/twiterIcon.png'} alt='twiter'
@@ -238,12 +255,13 @@ function SocialOAuth() {
                             X(Formerly Twitter)
                         </div>
                     </div>
-                    <button className='bg-purple text-white px-2 py-1' style={connectButtonStyle}>
-                        Connect
+                    <button className='bg-white text-black px-2 py-1' style={commingSoonButtonStyle}>
+                        Coming Soon
                     </button>
                 </div>
 
-                <div className='flex flex-row w-full   mb-4 justify-between'>
+                {/* Applepodcast connection */}
+                <div className='flex flex-row w-full   mb-8 justify-between'>
                     <div className='flex flex-row gap-6 items-center'>
                         {/* <Image style={styles.image}
                             src={'/assets/appleProducts.png'} alt='Icon'
@@ -253,12 +271,13 @@ function SocialOAuth() {
                             Apple Podcast
                         </div>
                     </div>
-                    <button className='bg-purple text-white px-2 py-1' style={connectButtonStyle}>
-                        Connect
+                    <button className='bg-white text-black px-2 py-1' style={commingSoonButtonStyle}>
+                        Coming Soon
                     </button>
                 </div>
 
-                <div className='flex flex-row w-full   mb-4 justify-between'>
+                {/* Spotify connection */}
+                <div className='flex flex-row w-full   mb-8 justify-between'>
                     <div className='flex flex-row gap-6 items-center'>
                         {/* <Image style={styles.image}
                             src={'/assets/spotify.png'} alt='tiktok'
@@ -268,12 +287,13 @@ function SocialOAuth() {
                             Spotify Podcast
                         </div>
                     </div>
-                    <button className='bg-purple text-white px-2 py-1' style={connectButtonStyle}>
-                        Connect
+                    <button className='bg-white text-black px-2 py-1' style={commingSoonButtonStyle}>
+                        Coming Soon
                     </button>
                 </div>
 
-                <div className='flex flex-row w-full   mb-4 justify-between'>
+                {/* Facebook connection */}
+                <div className='flex flex-row w-full   mb-8 justify-between'>
                     <div className='flex flex-row gap-6 items-center'>
                         {/* <Image style={styles.image}
                             src={'/assets/fbIcon.png'} alt='facebook'
@@ -283,8 +303,8 @@ function SocialOAuth() {
                             Facebook
                         </div>
                     </div>
-                    <button className='bg-purple text-white px-2 py-1' style={connectButtonStyle}>
-                        Connect
+                    <button className='bg-white text-black px-2 py-1' style={commingSoonButtonStyle}>
+                        Coming Soon
                     </button>
                 </div>
                 {/* <div>

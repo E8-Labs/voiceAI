@@ -1,6 +1,6 @@
 import { Alert, Box, CircularProgress, Fade, Modal, Popover, Slider, Snackbar } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import Apis from '../apis/Apis';
+import Apis from '@/components/apis/Apis';
 import axios from 'axios';
 import { ArrowRight, DotsThree } from '@phosphor-icons/react';
 import Image from 'next/image';

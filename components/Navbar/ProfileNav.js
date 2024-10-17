@@ -27,35 +27,35 @@ const ProfileNav = () => {
             id: 2,
             name: 'Ai Persona',
             href: '/profile/aiPersona',
-            image: '/assets/creatorProfileNavIcons/focusAiPersona.png',
-            unSelectedImg: '/assets/creatorProfileNavIcons/aiPersoneUnFocus.png'
+            image: '/assets/creatorXWhite.png',
+            unSelectedImg: '/assets/creatorXBlack.png'
         },
         {
             id: 3,
             name: 'Social',
-            href: '/profile/plans',
+            href: '/profile/socials',
             image: '/assets/creatorProfileNavIcons/focusSocial.png',
             unSelectedImg: '/assets/creatorProfileNavIcons/socialUnfocus.png'
         },
         {
             id: 4,
             name: 'Knowledge Base',
-            href: '',
-            image: '/assets/selectedfeedbackIcon.png',
+            href: '/profile/knowledgebase',
+            image: '/assets/creatorProfileNavIcons/selectedKb.png',
             unSelectedImg: '/assets/creatorProfileNavIcons/kbUnfocus.png'
         },
         {
             id: 5,
             name: 'Calls',
-            href: '',
-            image: '/assets/selectedtermsIcon.png',
+            href: '/profile/calls',
+            image: '/assets/creatorProfileNavIcons/callFocus.png',
             unSelectedImg: '/assets/creatorProfileNavIcons/callUnfous.png'
         },
         {
             id: 6,
-            name: 'Conversations',
-            href: '',
-            image: '/assets/selectedtermsIcon.png',
+            name: 'Products & Services',
+            href: '/profile/services',
+            image: '/assets/creatorProfileNavIcons/productsFcous.png',
             unSelectedImg: '/assets/creatorProfileNavIcons/conversationsUnfocus.png'
         }
     ]

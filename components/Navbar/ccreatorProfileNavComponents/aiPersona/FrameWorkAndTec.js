@@ -1,7 +1,7 @@
 import { Box, CircularProgress, Modal, Popover } from '@mui/material'
 import { DotsThree } from '@phosphor-icons/react'
 import React, { useEffect, useState } from 'react'
-import Apis from '../apis/Apis';
+import Apis from '@/components/apis/Apis';
 import axios from 'axios';
 import Image from 'next/image';
 

@@ -60,7 +60,7 @@ const Apis = {
     AddFrameWork: `${BasePath}api/ai/addFramework`,
     UpdateFramWork: `${BasePath}api/ai/updateFramework`,
     DeleteFrameWork: `${BasePath}api/ai/deleteFramework`,
-    AddIntractions: `${BasePath}api/ai/addIntraction`,
+    AddIntractions: `${BasePath}api/ai/addIntractionExample`,
     DeleteIntractions: `${BasePath}api/ai/deleteUserBelief`,
     UpdateIntractions: `${BasePath}api/ai/updateUserBelief`,
     AddPhilosophy: `${BasePath}api/ai/addUserPhilosophy`,
