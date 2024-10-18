@@ -572,6 +572,7 @@ const Creator = () => {
 
       //code to check if the trial mode is on
       if (asistantLocalData.assitant.allowTrial === true) {
+        modelId = asistantLocalData.id;
         setSnackMessage(true);
         console.log("Allow trial is true");
       } else {
