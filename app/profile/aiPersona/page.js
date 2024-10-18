@@ -37,6 +37,7 @@ const Page = () => {
     const [selectedCommunication, setSelectedCommunication] = useState(301);
     const [selectedProductService, setSelectedProductService] = useState(501);
     const [selectedIntegrations, setSelectedIntegrations] = useState(701);
+    const [loader, setLoader] = useState(false);
 
 
 
@@ -125,6 +126,7 @@ const Page = () => {
 
     const getAiApi = async () => {
         try {
+            setLoader(true);
             console.log("Trying....")
             const ApiPath = Apis.MyAiapi;
             const localData = localStorage.getItem('User');
@@ -139,6 +141,7 @@ const Page = () => {
                     "Authorization": "Bearer " + AuthToken
                 }
             });
+            // return
             if (response) {
                 console.log("Response of getai on parent screen api", response.data.data);
                 if (response.data) {
@@ -148,7 +151,7 @@ const Page = () => {
         } catch (error) {
             console.error("ERR occured in get ai api is", error);
         } finally {
-            // setLoadTraitsLoader(false);
+            setLoader(false);
         }
     }
 
@@ -578,7 +581,7 @@ const Page = () => {
                     <div className='w-full flex flex-col w-7/12 ps-4'>
                         {
                             selectedMenu === 1 ? (
-                                <Objectives />
+                                <Objectives recallApi={recallApi} aiData={aiData} loader={loader} />
                             ) : selectedMenu === 2 ? (
                                 <div>
                                     {

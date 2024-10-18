@@ -31,7 +31,7 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
         if (aiData?.DoNots) {
             setDonotDiscussData(aiData.DoNots);
         }
-    }, [recallApi]);
+    }, []);
 
     const handeDonotDiscussMoreClick = (event, item) => {
         setUpdateDonotDescriptionDescription(item.description);
@@ -75,7 +75,8 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
                 if (response.data.status === true) {
                     setOpenModal(false);
                     setaddNewDonotDescriptionDescription("");
-                    recallApi();
+                    // recallApi();
+                    setDonotDiscussData(response.data.data.DoNots);
                 } else {
                     console.log("Error occured")
                 }
@@ -118,7 +119,8 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
                 if (response.data.status === true) {
                     setOpenUpdateModal(false);
                     setDonotDiscussAnchorel(null);
-                    recallApi();
+                    // recallApi();
+                    setDonotDiscussData(response.data.data.DoNots);
                 } else {
                     console.log("Error occured")
                 }
@@ -160,7 +162,7 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
                 console.log("Response of delete donot api is", response.data);
                 if (response.data.status === true) {
                     setDonotDiscussAnchorel(null);
-                    recallApi();
+                    setDonotDiscussData(response.data.data.DoNots);
                 } else {
                     console.log("Error occured")
                 }

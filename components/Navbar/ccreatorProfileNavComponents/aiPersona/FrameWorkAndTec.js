@@ -24,8 +24,10 @@ const FrameWorkAndTec = ({ recallApi, aiData }) => {
 
 
   useEffect(() => {
-    setFrameWorkData(aiData.frameworks);
-  }, [recallApi]);
+    if (aiData) {
+      setFrameWorkData(aiData.frameworks);
+    }
+  }, []);
 
   const handleClose = () => {
     setFrameworkanchorel(null);
@@ -68,7 +70,7 @@ const FrameWorkAndTec = ({ recallApi, aiData }) => {
           setAddFrameWorkModal(false);
           setAddFrameWorkDescription("");
           setAddFrameWorkTitle("");
-          recallApi();
+          setFrameWorkData(response.data.data.frameworks);
         } else {
           console.log("Error occured")
         }
@@ -108,9 +110,10 @@ const FrameWorkAndTec = ({ recallApi, aiData }) => {
         console.log("Response of del framwork and tec api is", response.data);
         if (response.data.status === true) {
           setFrameworkanchorel(null);
-          setFrameWorkData(frameWorks =>
-            frameWorks.filter(preFrameWork => preFrameWork.id !== selectedItem.id)
-          )
+          setFrameWorkData(response.data.data.frameworks);
+          // setFrameWorkData(frameWorks =>
+          //   frameWorks.filter(preFrameWork => preFrameWork.id !== selectedItem.id)
+          // )
         } else {
           console.log("Error occured")
         }
@@ -155,7 +158,7 @@ const FrameWorkAndTec = ({ recallApi, aiData }) => {
           setUpdateFrameWorkDescription("");
           setUpdateFrameWorkTitle("");
           setFrameworkanchorel(null);
-          recallApi();
+          setFrameWorkData(response.data.data.frameworks);
         } else {
           console.log("Error occured")
         }
@@ -197,58 +200,64 @@ const FrameWorkAndTec = ({ recallApi, aiData }) => {
         </button>
       </div>
 
-      <div className='max-h-[50vh] overflow-auto scrollbar scrollbar-track-transparent scrollbar-thumb-purple scrollbar-thin'>
-        {
-          frameWorkData.map((item) => (
-            <div key={item.id} className='flex flex-row items-start p-4 border border-[#00000010] mt-8 justify-between'>
-              <div>
-                <div>
-                  {item.title}
-                </div>
-                <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
-                  {item.description}
-                </div>
-              </div>
-              <div>
-                <button className='-mt-2' aria-describedby={FrameworkPopoverId} variant="contained" color="primary" onClick={(event) => { handeFramerworkMoreClick(event, item) }}>
-                  <DotsThree size={32} weight="bold" />
-                </button>
-                <Popover
-                  id={FrameworkPopoverId}
-                  open={Boolean(frameworkanchorel)}
-                  anchorEl={frameworkanchorel}
-                  onClose={handleClose}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center',
-                  }}
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'center',
-                  }}
-                >
-                  <div className='p-2 flex flex-col justify-start items-start w-[100px]'>
-                    <button className='text-purple' style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter" }}
-                      onClick={() => { setUpdateFrameWorkModal(true) }}
-                    >
-                      Edit
-                    </button>
-                    {
-                      frameWorkLoader ?
-                        <CircularProgress style={{ marginTop: 8 }} size={15} /> :
-                        <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }}
-                          onClick={handleDeleteteFrameWork}
-                        >
-                          Delete
-                        </button>
-                    }
+      {
+        frameWorkData.length > 0 ?
+          <div className='max-h-[50vh] overflow-auto scrollbar scrollbar-track-transparent scrollbar-thumb-purple scrollbar-thin'>
+            {
+              frameWorkData.map((item) => (
+                <div key={item.id} className='flex flex-row items-start p-4 border border-[#00000010] mt-8 justify-between'>
+                  <div>
+                    <div>
+                      {item.title}
+                    </div>
+                    <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
+                      {item.description}
+                    </div>
                   </div>
-                </Popover>
-              </div>
-            </div>
-          ))
-        }
-      </div>
+                  <div>
+                    <button className='-mt-2' aria-describedby={FrameworkPopoverId} variant="contained" color="primary" onClick={(event) => { handeFramerworkMoreClick(event, item) }}>
+                      <DotsThree size={32} weight="bold" />
+                    </button>
+                    <Popover
+                      id={FrameworkPopoverId}
+                      open={Boolean(frameworkanchorel)}
+                      anchorEl={frameworkanchorel}
+                      onClose={handleClose}
+                      anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'center',
+                      }}
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center',
+                      }}
+                    >
+                      <div className='p-2 flex flex-col justify-start items-start w-[100px]'>
+                        <button className='text-purple' style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter" }}
+                          onClick={() => { setUpdateFrameWorkModal(true) }}
+                        >
+                          Edit
+                        </button>
+                        {
+                          frameWorkLoader ?
+                            <CircularProgress style={{ marginTop: 8 }} size={15} /> :
+                            <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }}
+                              onClick={handleDeleteteFrameWork}
+                            >
+                              Delete
+                            </button>
+                        }
+                      </div>
+                    </Popover>
+                  </div>
+                </div>
+              ))
+            }
+          </div> :
+          <div className='text-xl font-bold text-center mt-8'>
+            No Framework Added
+          </div>
+      }
 
 
       {/* Modal to add values */}

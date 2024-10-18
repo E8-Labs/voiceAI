@@ -27,10 +27,9 @@ const CommunicaionInstruction = ({ recallApi, aiData }) => {
     useEffect(() => {
         if (aiData?.CommunicationInstructions
         ) {
-            setCommunicationInstructionData(aiData.CommunicationInstructions
-            );
+            setCommunicationInstructionData(aiData.CommunicationInstructions);
         }
-    }, [recallApi]);
+    }, []);
 
 
     const handleClose = () => {
@@ -73,8 +72,9 @@ const CommunicaionInstruction = ({ recallApi, aiData }) => {
                 if (response.data.status === true) {
                     setAdddComunicationInstModal(false);
                     setCommmunicationInstructionDescription("");
+                    setAddCommunicationTitle("");
                     setAnchorEl(null);
-                    recallApi();
+                    setCommunicationInstructionData(response.data.data.CommunicationInstructions);
                 } else {
                     console.log("Error occured")
                 }
@@ -118,7 +118,7 @@ const CommunicaionInstruction = ({ recallApi, aiData }) => {
                 if (response.data.status === true) {
                     setUpdateModal(false);
                     setAnchorEl(null);
-                    recallApi();
+                    setCommunicationInstructionData(response.data.data.CommunicationInstructions);
                 } else {
                     console.log("Error occured")
                 }
@@ -159,7 +159,7 @@ const CommunicaionInstruction = ({ recallApi, aiData }) => {
                 console.log("Response of delete commmunicationInstruction api is", response.data);
                 if (response.data.status === true) {
                     setAnchorEl(null);
-                    recallApi();
+                    setCommunicationInstructionData(response.data.data.CommunicationInstructions);
                 } else {
                     console.log("Error occured")
                 }
@@ -199,59 +199,65 @@ const CommunicaionInstruction = ({ recallApi, aiData }) => {
                 </button>
             </div>
 
-            <div className='max-h-[55vh] overflow-auto scrollbar scrollbar-track-transparent scrollbar-thumb-purple scrollbat-thin'>
-                {
-                    communicationInstructionData.map((item) => (
-                        <div key={item.id} className='p-3 border-2 rounded-lg mt-8'>
-                            <div className='flex flex-row items-center justify-between'>
-                                <div style={{ fontWeight: "700", fontFamily: "inter", fontSize: 13 }}>
-                                    {item.title}
-                                </div>
-                                <div>
-                                    <button aria-describedby={id} variant="contained" color="primary" onClick={(event) => { handleClick(event, item) }}>
-                                        <DotsThree size={32} weight="bold" />
-                                    </button>
-                                    <Popover
-                                        id={id}
-                                        open={Boolean(anchorEl)}
-                                        anchorEl={anchorEl}
-                                        onClose={handleClose}
-                                        anchorOrigin={{
-                                            vertical: 'bottom',
-                                            horizontal: 'center',
-                                        }}
-                                        transformOrigin={{
-                                            vertical: 'top',
-                                            horizontal: 'center',
-                                        }}
-                                    >
-                                        <div className='p-2 flex flex-col justify-start items-start w-[100px]'>
-                                            <button
-                                                onClick={() => { setUpdateModal(true) }}
-                                                className='text-purple' style={{
-                                                    fontSize: 13, fontWeight: "500",
-                                                    fontFamily: "inter"
-                                                }}>
-                                                Edit
-                                            </button>
-                                            {
-                                                communicationInstructionLoader ?
-                                                    <CircularProgress size={15} /> :
-                                                    <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }} onClick={handleDeleteCommunication}>
-                                                        Delete
-                                                    </button>
-                                            }
+            {
+                communicationInstructionData && communicationInstructionData.length > 0 ?
+                    <div className='max-h-[55vh] overflow-auto scrollbar scrollbar-track-transparent scrollbar-thumb-purple scrollbat-thin'>
+                        {
+                            communicationInstructionData.map((item) => (
+                                <div key={item.id} className='p-3 border-2 rounded-lg mt-8'>
+                                    <div className='flex flex-row items-center justify-between'>
+                                        <div style={{ fontWeight: "700", fontFamily: "inter", fontSize: 13 }}>
+                                            {item.title}
                                         </div>
-                                    </Popover>
+                                        <div>
+                                            <button aria-describedby={id} variant="contained" color="primary" onClick={(event) => { handleClick(event, item) }}>
+                                                <DotsThree size={32} weight="bold" />
+                                            </button>
+                                            <Popover
+                                                id={id}
+                                                open={Boolean(anchorEl)}
+                                                anchorEl={anchorEl}
+                                                onClose={handleClose}
+                                                anchorOrigin={{
+                                                    vertical: 'bottom',
+                                                    horizontal: 'center',
+                                                }}
+                                                transformOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'center',
+                                                }}
+                                            >
+                                                <div className='p-2 flex flex-col justify-start items-start w-[100px]'>
+                                                    <button
+                                                        onClick={() => { setUpdateModal(true) }}
+                                                        className='text-purple' style={{
+                                                            fontSize: 13, fontWeight: "500",
+                                                            fontFamily: "inter"
+                                                        }}>
+                                                        Edit
+                                                    </button>
+                                                    {
+                                                        communicationInstructionLoader ?
+                                                            <CircularProgress size={15} /> :
+                                                            <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }} onClick={handleDeleteCommunication}>
+                                                                Delete
+                                                            </button>
+                                                    }
+                                                </div>
+                                            </Popover>
+                                        </div>
+                                    </div>
+                                    <div style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13 }}>
+                                        {item.description}
+                                    </div>
                                 </div>
-                            </div>
-                            <div style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13 }}>
-                                {item.description}
-                            </div>
-                        </div>
-                    ))
-                }
-            </div>
+                            ))
+                        }
+                    </div> :
+                    <div className='text-xl font-bold text-center mt-8'>
+                        No Communication Instruction Added
+                    </div>
+            }
 
             {/* Modal to add Communication Instruction */}
             <Modal

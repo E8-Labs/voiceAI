@@ -1,6 +1,8 @@
-import { CircularProgress, Popover } from '@mui/material'
+import Apis from '@/components/apis/Apis';
+import { Alert, CircularProgress, Fade, Popover, Snackbar } from '@mui/material'
 import { DotsThree } from '@phosphor-icons/react'
-import React, { useState } from 'react'
+import axios from 'axios';
+import React, { useEffect, useRef, useState } from 'react'
 
 const Profession = ({ recallApi, aiData }) => {
 
@@ -23,6 +25,27 @@ const Profession = ({ recallApi, aiData }) => {
     const [professionLoader, setProfessionLoader] = useState(false);
 
 
+    const [updateLoader, setUpdateLoader] = useState(false);
+    const [resultSnack, setResultSnack] = useState(false);
+    //code for tagline
+    const taglineRef = useRef(null);
+    const [tagline, setTagline] = useState("");
+    const [showTaglineBtn, setShowTaglineBtn] = useState(false);
+
+    //code for action
+    const actionRef = useRef();
+    const [actionValue, setActionValue] = useState("");
+    const [showActionBtn, setShowActionBtn] = useState(false);
+
+
+    useEffect(() => {
+        if (aiData) {
+            setTagline(aiData.ai.tagline);
+            setActionValue(aiData.ai.action);
+        }
+    }, [recallApi]);
+
+
     const handeProfessionMoreClick = (event) => {
         setProfessionAnchorel(event.currentTarget);
     }
@@ -30,6 +53,50 @@ const Profession = ({ recallApi, aiData }) => {
     const handleClose = () => {
         setProfessionAnchorel(null);
     };
+
+
+    //code to update ai
+    const handleUpdateAi = async () => {
+        const localData = localStorage.getItem('User');
+        try {
+            setUpdateLoader(true);
+            if (localData) {
+                const Data = JSON.parse(localData);
+                const AuthToken = Data.data.token;
+                console.log("Auth token is", AuthToken);
+                const ApiPath = Apis.UpdateBuilAI;
+                console.log("Api path is", ApiPath);
+                const formData = new FormData();
+                if (tagline) {
+                    formData.append('tagline', tagline)
+                }
+                if (actionValue) {
+                    formData.append('possibleUserQuery', actionValue)
+                }
+
+                console.log("Form data is")
+                formData.forEach((value, key) => {
+                    console.log(`${key}: ${value}`);
+                });
+                const response = await axios.post(ApiPath, formData, {
+                    headers: {
+                        'Authorization': 'Bearer ' + AuthToken
+                    }
+                });
+                if (response) {
+                    console.log("Response of update ai is", response.data);
+                    setResultSnack(response.data.message);
+                    if (response.data.status === true) {
+                        taglineRef.current.blur();
+                    }
+                }
+            }
+        } catch (error) {
+            console.error("Error occured in api is", error);
+        } finally {
+            setUpdateLoader(false);
+        }
+    }
 
 
     return (
@@ -42,15 +109,55 @@ const Profession = ({ recallApi, aiData }) => {
             </div>
 
             <div className='flex flex-row items-start p-4 border border-[#00000010] mt-8 justify-between'>
-                <div>
+                <div className='w-full'>
                     <div style={{ fontWeight: "bold", fontSize: 13, fontFamily: "inter" }}>
-                        Describe what {aiData.ai.name.charAt(0).toUpperCase() + aiData.ai.name.slice(+1)} does as a creator?
+                        Describe what {aiData?.ai?.name?.charAt(0).toUpperCase() + aiData?.ai?.name?.slice(+1)} does as a creator?
                     </div>
-                    <div className='mt-4' style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
-                        {aiData.ai.tagline}
+                    <div className='mt-4 w-full' style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
+                        {/* {aiData.ai.tagline} */}
+                        <input
+                            className='w-[90%] outline-none border-none'
+                            ref={taglineRef}
+                            value={tagline}
+                            onChange={(e) => { setTagline(e.target.value) }}
+                            onFocus={() => { setShowTaglineBtn(true) }}
+                            onBlur={() => { setShowTaglineBtn(false) }}
+                            placeholder='I talk about dating, business, fitness.. '
+                        />
                     </div>
                 </div>
-                <div>
+
+                {
+                    showTaglineBtn ?
+                        <div>
+                            {
+                                updateLoader ?
+                                    <CircularProgress size={15} /> :
+                                    <button
+                                        className='text-purple underline'
+                                        style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}
+                                        onMouseDown={(e) => {
+                                            e.preventDefault()
+                                        }}
+                                        onClick={handleUpdateAi}
+                                    >
+                                        Save
+                                    </button>
+                            }
+                        </div> :
+                        <button
+                            className='text-purple underline'
+                            style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}
+                            onClick={() => {
+                                taglineRef.current.focus()
+                            }}
+                        >
+                            Edit
+                        </button>
+                }
+
+
+                {/* <div>
                     <button className='-mt-2' aria-describedby={ProfessionPopoverId} variant="contained" color="primary" onClick={(event) => { handeProfessionMoreClick(event) }}>
                         <DotsThree size={32} weight="bold" />
                     </button>
@@ -85,19 +192,59 @@ const Profession = ({ recallApi, aiData }) => {
                             }
                         </div>
                     </Popover>
-                </div>
+                </div> */}
             </div>
 
             <div className='flex flex-row items-start p-4 border border-[#00000010] mt-8 justify-between'>
                 <div>
                     <div style={{ fontWeight: "bold", fontSize: 13, fontFamily: "inter" }}>
-                        What does {aiData.ai.name.charAt(0).toUpperCase() + aiData.ai.name.slice(+1)} help your community with?
+                        What does {aiData?.ai?.name?.charAt(0).toUpperCase() + aiData?.ai?.name?.slice(+1)} help your community with?
                     </div>
                     <div className='mt-4' style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
-                        {aiData.ai.action}
+                        {/* {aiData.ai.action} */}
+                        <input
+                            className='w-full border-none outline-none'
+                            ref={actionRef}
+                            value={actionValue}
+                            onChange={(e) => { setActionValue(e.target.value) }}
+                            onFocus={() => { setShowActionBtn(true) }}
+                            onBlur={() => { setShowActionBtn(false) }}
+                            placeholder='I help my community of followers with understanding their feelings for others, overcoming obstacles with their relationships, etc'
+                        />
                     </div>
                 </div>
-                <div>
+
+                {
+                    showActionBtn ?
+                        <div>
+                            {
+                                updateLoader ?
+                                    <CircularProgress size={15} /> :
+                                    <button
+                                        className='text-purple underline'
+                                        style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}
+                                        onMouseDown={(e) => {
+                                            e.preventDefault()
+                                        }}
+                                        onClick={handleUpdateAi}
+                                    >
+                                        Save
+                                    </button>
+                            }
+                        </div> :
+                        <button
+                            className='text-purple underline'
+                            style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}
+                            onClick={() => {
+                                actionRef.current.focus()
+                            }}
+                        >
+                            Edit
+                        </button>
+                }
+
+
+                {/* <div>
                     <button className='-mt-2' aria-describedby={ProfessionPopoverId} variant="contained" color="primary" onClick={(event) => { handeProfessionMoreClick(event) }}>
                         <DotsThree size={32} weight="bold" />
                     </button>
@@ -132,7 +279,34 @@ const Profession = ({ recallApi, aiData }) => {
                             }
                         </div>
                     </Popover>
-                </div>
+                </div> */}
+            </div>
+
+            <div>
+                <Snackbar
+                    open={resultSnack}
+                    autoHideDuration={3000}
+                    onClose={() => {
+                        setResultSnack(null);
+                    }}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center'
+                    }}
+                    TransitionComponent={Fade}
+                    TransitionProps={{
+                        direction: 'center'
+                    }}
+                >
+                    <Alert
+                        onClose={() => {
+                            setResultSnack(null)
+                        }} severity="none"
+                        className='bg-purple rounded-lg text-white'
+                        sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}>
+                        {resultSnack}
+                    </Alert>
+                </Snackbar>
             </div>
 
         </div>

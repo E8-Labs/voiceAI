@@ -16,11 +16,13 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
     const [selectedPhrase, setSelectedPhrase] = useState(null);
     const [resultSnack, setResultSnack] = useState(null);
     //add new Phrase or Quote
+    const [addPhraseValue, setAddPhraseValue] = useState("");
     const [addNewModal, setAddNewModal] = useState(false);
     const [addNewPhrase, setAddNewPhrase] = useState("");
     //Update Phrase or Quote
     const [updateModal, setUpdateModal] = useState(false);
     const [updatePhrase, setUpdatePhrase] = useState("");
+    const [updatePhraseValue, setUpdatePhraseValue] = useState("");
 
     useEffect(() => {
         if (aiData?.PhrasesAndQuotes) {
@@ -32,6 +34,7 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
         setPhrasesAnchorel(event.currentTarget);
         setSelectedPhrase(item);
         setUpdatePhrase(item.description);
+        setUpdatePhraseValue(item.title);
     };
 
     const handleClose = () => {
@@ -50,7 +53,8 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
             console.log("Apipath is", ApiPath);
 
             const ApiData = {
-                description: addNewPhrase
+                description: addNewPhrase,
+                title: addPhraseValue
             }
 
             console.log("Data sendgin in api is", ApiData);
@@ -67,7 +71,8 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
                     setAddNewModal(false);
                     setPhrasesAnchorel(null);
                     setAddNewPhrase("");
-                    recallApi();
+                    setAddPhraseValue("");
+                    setPhrasesData(response.data.data.PhrasesAndQuotes);
                 } else {
                     console.log("Error occured")
                 }
@@ -94,7 +99,8 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
 
             const ApiData = {
                 id: selectedPhrase.id,
-                description: updatePhrase
+                description: updatePhrase,
+                title: updatePhraseValue
             }
 
             console.log("Data sendgin in api is", ApiData);
@@ -111,7 +117,7 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
                     setUpdateModal(false);
                     setPhrasesAnchorel(null);
                     setUpdatePhrase("");
-                    recallApi();
+                    setPhrasesData(response.data.data.PhrasesAndQuotes);
                 } else {
                     console.log("Error occured")
                 }
@@ -153,7 +159,7 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
                 if (response.data.status === true) {
                     setPhrasesAnchorel(null);
                     setUpdatePhrase("");
-                    recallApi();
+                    setPhrasesData(response.data.data.PhrasesAndQuotes);
                 } else {
                     console.log("Error occured")
                 }
@@ -193,51 +199,67 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
                     Add New
                 </button>
             </div>
-            {
-                phrasesData.map((item, index) => (
-                    <div key={item.id} className='flex flex-row items-start p-4 border border-[#00000010] mt-8 justify-between'>
-                        <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
-                            {item.description}
-                        </div>
-                        <div>
-                            <button className='-mt-2' aria-describedby={phrasesPopoverId} variant="contained" color="primary" onClick={(event) => { handePhrasesMoreClick(event, item) }}>
-                                <DotsThree size={32} weight="bold" />
-                            </button>
-                            <Popover
-                                id={phrasesPopoverId}
-                                open={Boolean(phrasesAnchorel)}
-                                anchorEl={phrasesAnchorel}
-                                onClose={handleClose}
-                                anchorOrigin={{
-                                    vertical: 'bottom',
-                                    horizontal: 'center',
-                                }}
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'center',
-                                }}
-                            >
-                                <div className='p-2 flex flex-col justify-start items-start w-[100px]'>
-                                    <button className='text-purple' style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter" }}
-                                        onClick={() => { setUpdateModal(true) }}
-                                    >
-                                        Edit
-                                    </button>
-                                    {
-                                        phrasesLoader ?
-                                            <CircularProgress style={{ marginTop: 8 }} size={15} /> :
-                                            <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }}
-                                                onClick={handleDeletetePhrase}
-                                            >
-                                                Delete
+
+            <div>
+                {
+                    phrasesData && phrasesData.length > 0 ?
+                        <div className='overflow-auto max-h-[50vh] scrollbar scrollbar-track-transparent scrollbar-thin scrollbar-thumb-purple'>
+                            {
+                                phrasesData.map((item, index) => (
+                                    <div key={item.id} className='flex flex-row items-start p-4 border border-[#00000010] mt-8 justify-between'>
+                                        <div>
+                                            <div style={{ fontWeight: "600", fontSize: 12, fontFamily: "inter" }}>
+                                                {item.title}
+                                            </div>
+                                            <div style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter" }}>
+                                                {item.description}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <button className='-mt-2' aria-describedby={phrasesPopoverId} variant="contained" color="primary" onClick={(event) => { handePhrasesMoreClick(event, item) }}>
+                                                <DotsThree size={32} weight="bold" />
                                             </button>
-                                    }
-                                </div>
-                            </Popover>
+                                            <Popover
+                                                id={phrasesPopoverId}
+                                                open={Boolean(phrasesAnchorel)}
+                                                anchorEl={phrasesAnchorel}
+                                                onClose={handleClose}
+                                                anchorOrigin={{
+                                                    vertical: 'bottom',
+                                                    horizontal: 'center',
+                                                }}
+                                                transformOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'center',
+                                                }}
+                                            >
+                                                <div className='p-2 flex flex-col justify-start items-start w-[100px]'>
+                                                    <button className='text-purple' style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter" }}
+                                                        onClick={() => { setUpdateModal(true) }}
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                    {
+                                                        phrasesLoader ?
+                                                            <CircularProgress style={{ marginTop: 8 }} size={15} /> :
+                                                            <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }}
+                                                                onClick={handleDeletetePhrase}
+                                                            >
+                                                                Delete
+                                                            </button>
+                                                    }
+                                                </div>
+                                            </Popover>
+                                        </div>
+                                    </div>
+                                ))
+                            }
+                        </div> :
+                        <div className='font-bold text-xl text-center mt-8'>
+                            No Phrase Added
                         </div>
-                    </div>
-                ))
-            }
+                }
+            </div>
 
             <div>
                 <button className='text-purple underline mt-4' style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
@@ -279,14 +301,14 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
                                     </button>
                                 </div>
                                 <div className='mt-4 w-full'>
-                                    {/* <div>
+                                    <div>
                                         <input className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
-                                            // value={UpdateValues}
-                                            // onChange={(e) => setUpdateValues(e.target.value)}
+                                            value={addPhraseValue}
+                                            onChange={(e) => setAddPhraseValue(e.target.value)}
                                             placeholder='Title'
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13 }}
                                         />
-                                    </div> */}
+                                    </div>
                                     <div className='mt-8'>
                                         <textarea className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                                             value={addNewPhrase}
@@ -348,14 +370,14 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
                                     </button>
                                 </div>
                                 <div className='mt-4 w-full'>
-                                    {/* <div>
+                                    <div>
                                         <input className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
-                                            // value={UpdateValues}
-                                            // onChange={(e) => setUpdateValues(e.target.value)}
+                                            value={updatePhraseValue}
+                                            onChange={(e) => setUpdatePhraseValue(e.target.value)}
                                             placeholder='Title'
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13 }}
                                         />
-                                    </div> */}
+                                    </div>
                                     <div className='mt-8'>
                                         <textarea className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                                             value={updatePhrase}

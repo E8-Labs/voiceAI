@@ -97,7 +97,7 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                     setAddValueModal(false);
                     setAddValues("");
                     setValuesDescription("");
-                    recallApi();
+                    setValuesData(response.data.data.values);
                 } else {
                     console.log("Error occured")
                 }
@@ -140,7 +140,7 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                 console.log("Response of update values api is", response.data);
                 if (response.data.status === true) {
                     setValueAnchorEl(null);
-                    recallApi();
+                    setValuesData(response.data.data.values);
                     setUpdateValueModal(false);
                 } else {
                     console.log("Error occured")
@@ -181,9 +181,10 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                 console.log("Response of delete values api is", response.data);
                 if (response.data.status === true) {
                     setValueAnchorEl(null);
-                    setValuesData(prevData =>
-                        prevData.filter(delValue => delValue.id !== selecteddItem.id)
-                    )
+                    setValuesData(response.data.data.values);
+                    // setValuesData(prevData =>
+                    //     prevData.filter(delValue => delValue.id !== selecteddItem.id)
+                    // )
                 } else {
                     console.log("Error occured")
                 }
@@ -226,7 +227,8 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                     setAddBeliefModal(false);
                     setAddBelief("");
                     setBeliefDescription("");
-                    recallApi();
+                    // recallApi();
+                    setBeliefsData(response.data.data.beliefs);
                 } else {
                     console.log("Error occured")
                 }
@@ -271,7 +273,7 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                     setUpdateBelief("");
                     setUpdateBeliefDescription("");
                     setAnchorEl(null);
-                    recallApi();
+                    setBeliefsData(response.data.data.beliefs);
                 } else {
                     console.log("Error occured")
                 }
@@ -312,9 +314,10 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                 console.log("Response of update belief api is", response.data);
                 if (response.data.status === true) {
                     setAnchorEl(null);
-                    setBeliefsData(prevData =>
-                        prevData.filter(Belief => Belief.id !== beliefData.id)
-                    )
+                    setBeliefsData(response.data.data.beliefs);
+                    // setBeliefsData(prevData =>
+                    //     prevData.filter(Belief => Belief.id !== beliefData.id)
+                    // )
                 } else {
                     console.log("Error occured")
                 }
@@ -357,19 +360,19 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                     Add New
                 </button>
             </div>
-            <div className='max-h-[20vh] overflow-auto scrollbar scrollbar-track-transparent scrollbar-thumb-purple scrollbar-thin mt-8'>
+            <div className='max-h-[29vh] overflow-auto scrollbar scrollbar-track-transparent scrollbar-thumb-purple scrollbar-thin mt-4'>
                 {
-                    beliefsData ?
+                    beliefsData && beliefsData.length > 0 ?
                         <div>
                             {
                                 beliefsData.map((item) => (
-                                    <div key={item.id} className='flex flex-row items-start px-4 py-1 pt-3 border border-[#00000010] mb-8 justify-between'>
+                                    <div key={item.id} className='flex flex-row items-start p-[2vh] border border-[#00000010] mb-4 justify-between'>
                                         <div>
                                             {item.description}
                                         </div>
                                         <div>
                                             <button aria-describedby={id} variant="contained" color="primary" onClick={(event) => { handleClick(event, item) }}>
-                                                <DotsThree size={32} weight="bold" />
+                                                <DotsThree size={27} weight="bold" />
                                             </button>
                                             <Popover
                                                 id={id}
@@ -417,7 +420,7 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
             </div>
 
             {/* code for values */}
-            <div className='flex flex-row items-center w-full justify-between mt-12'>
+            <div className='flex flex-row items-center w-full justify-between mt-6'>
                 <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
                     Values
                 </div>
@@ -428,13 +431,13 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                     Add new
                 </button>
             </div>
-            <div className='max-h-[20vh] overflow-auto scrollbar scrollbar-track-transparent scrollbar-thumb-purple scrollbar-thin mt-8'>
+            <div className='max-h-[27vh] overflow-auto scrollbar scrollbar-track-transparent scrollbar-thumb-purple scrollbar-thin mt-4'>
                 {
-                    valuesData ?
+                    valuesData && valuesData.length > 0 ?
                         <div>
                             {
                                 valuesData.map((item) => (
-                                    <div key={item.id} className='flex flex-row items-start px-4 py-2 pt-4 border border-[#00000010] mb-8 justify-between'>
+                                    <div key={item.id} className='flex flex-row items-start p-[2vh] border border-[#00000010] mb-4 justify-between'>
                                         <div>
                                             {/* <div>
                                 {item.title}
@@ -445,7 +448,7 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                                         </div>
                                         <div>
                                             <button className='-mt-2' aria-describedby={valuedPopoverId} variant="contained" color="primary" onClick={(event) => { handleValuesEditClick(event, item) }}>
-                                                <DotsThree size={32} weight="bold" />
+                                                <DotsThree size={27} weight="bold" />
                                             </button>
                                             <Popover
                                                 id={valuedPopoverId}
@@ -482,7 +485,7 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                             }
                         </div> :
                         <div className='w-full text-center mt-8' style={{ fontWeight: "bold", fontSize: 18, fontFamily: "inter" }}>
-                            No Values
+                            No Values Added
                         </div>
                 }
             </div>

@@ -12,65 +12,14 @@ const Page = () => {
 
     const [aiData, setAiData] = useState(null);
     const [showKbPopup, setKbPopup] = useState(false);
+    const [documentData, setDocumentData] = useState([]);
+    const [webData, setWebData] = useState([]);
+    const [textData, setTextData] = useState([]);
+    const [urlDelLoader, setUrlDelLoader] = useState(false);
 
 
-    const DocmunetdData = [
-        {
-            id: 1,
-            document: "Document 1"
-        },
-        {
-            id: 2,
-            document: "Document 1"
-        },
-        {
-            id: 3,
-            document: "Document 1"
-        },
-        {
-            id: 4,
-            document: "Document 1"
-        },
-    ];
 
-    const webData = [
-        {
-            id: 1,
-            webLink: "webLink 1"
-        },
-        {
-            id: 2,
-            webLink: "webLink 1"
-        },
-        {
-            id: 3,
-            webLink: "webLink 1"
-        },
-        {
-            id: 4,
-            webLink: "webLink 1"
-        },
-    ];
-
-    const textData = [
-        {
-            id: 1,
-            text: "text 1"
-        },
-        {
-            id: 2,
-            text: "text 1"
-        },
-        {
-            id: 3,
-            text: "text 1"
-        },
-        {
-            id: 4,
-            text: "text 1"
-        },
-    ];
-
+    // console.log("Text data is", textData);
     const getAiApi = async () => {
         try {
             console.log("Trying....")
@@ -91,6 +40,19 @@ const Page = () => {
                 console.log("Response of getai on parent screen api", response.data.data);
                 if (response.data) {
                     setAiData(response.data.data);
+                    const responseData = response.data.data.kb;
+                    responseData.forEach(item => {
+                        if (item.type === "Text") {
+                            // Append to the existing textData array
+                            setTextData(prevData => [...prevData, item]);
+                        } else if (item.type === "Document") {
+                            // Append to the existing documentData array
+                            setDocumentData(prevData => [...prevData, item]);
+                        } else if (item.type === "Web URL") {
+                            // Append to the existing webData array
+                            setWebData(prevData => [...prevData, item]);
+                        }
+                    });
                 }
             }
         } catch (error) {
@@ -99,6 +61,9 @@ const Page = () => {
             // setLoadTraitsLoader(false);
         }
     }
+
+    //code to delete KB
+    
 
     useEffect(() => {
         getAiApi();
@@ -136,7 +101,7 @@ const Page = () => {
             outline: "none",
             // border: "2px solid green"
         }
-    }
+    };
 
 
     return (
@@ -210,51 +175,63 @@ const Page = () => {
                             </button>
                         </div>
 
-                        <div className='max-h-[18vh] overflow-auto'>
-                            {
-                                DocmunetdData.map((item) => (
-                                    <div key={item.id} className='border-2 bg-white rounded-lg p-4 mt-4'>
-                                        <div className='text-purple' style={styles.kbData}>
-                                            {item.document}
-                                        </div>
-                                    </div>
-                                ))
-                            }
-                        </div>
+                        {
+                            documentData && documentData.length > 0 ?
+                                <div className='max-h-[18vh] overflow-auto'>
+                                    {
+                                        documentData.map((item) => (
+                                            <div key={item.id} className='border-2 bg-white rounded-lg p-4 mt-4'>
+                                                <div className='text-purple' style={styles.kbData}>
+                                                    {item.documentUrl}
+                                                </div>
+                                            </div>
+                                        ))
+                                    }
+                                </div> : "No Document"
+                        }
 
                         {/* code for showing web links */}
                         <div style={styles.heading}>
                             Websites
                         </div>
 
-                        <div className='max-h-[18vh] overflow-auto'>
-                            {
-                                webData.map((item) => (
-                                    <div key={item.id} className='border-2 bg-white rounded-lg p-4 mt-4'>
-                                        <div className='text-black' style={styles.kbData}>
-                                            {item.webLink}
-                                        </div>
-                                    </div>
-                                ))
-                            }
-                        </div>
+                        {
+                            webData && webData.length > 0 ?
+                                <div className='max-h-[18vh] overflow-auto'>
+                                    {
+                                        webData.map((item) => (
+                                            <div key={item.id} className='border-2 bg-white rounded-lg p-4 mt-4 flex flex-row items-center justify-between'>
+                                                <div className='text-black' style={styles.kbData}>
+                                                    {item.content}
+                                                </div>
+                                                <button className='text-red'>
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        ))
+                                    }
+                                </div> : "No WebUrl"
+                        }
 
                         {/* code for showing Text */}
                         <div style={styles.heading}>
                             Text
                         </div>
 
-                        <div className='max-h-[18vh] overflow-auto pb-8'>
-                            {
-                                textData.map((item) => (
-                                    <div key={item.id} className='border-2 bg-white rounded-lg p-4 mt-4'>
-                                        <div className='text-black' style={styles.kbData}>
-                                            {item.text}
-                                        </div>
-                                    </div>
-                                ))
-                            }
-                        </div>
+                        {
+                            textData.length > 0 ?
+                                <div className='max-h-[18vh] overflow-auto pb-8'>
+                                    {
+                                        textData.map((item) => (
+                                            <div key={item.id} className='border-2 bg-white rounded-lg p-4 mt-4'>
+                                                <div className='text-black' style={styles.kbData}>
+                                                    {item.content}
+                                                </div>
+                                            </div>
+                                        ))
+                                    }
+                                </div> : "No Text Added"
+                        }
 
 
                     </div>

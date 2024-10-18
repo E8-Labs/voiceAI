@@ -97,7 +97,7 @@ const Philosophy = ({ aiData, recallApi }) => {
                     setAddValueModal(false);
                     setAddValues("");
                     setValuesDescription("");
-                    recallApi();
+                    setValuesData(response.data.data.values);
                 } else {
                     console.log("Error occured")
                 }
@@ -140,7 +140,7 @@ const Philosophy = ({ aiData, recallApi }) => {
                 console.log("Response of update values api is", response.data);
                 if (response.data.status === true) {
                     setValueAnchorEl(null);
-                    recallApi();
+                    setValuesData(response.data.data.values);
                     setUpdateValueModal(false);
                 } else {
                     console.log("Error occured")
@@ -181,9 +181,10 @@ const Philosophy = ({ aiData, recallApi }) => {
                 console.log("Response of delete values api is", response.data);
                 if (response.data.status === true) {
                     setValueAnchorEl(null);
-                    setValuesData(prevData =>
-                        prevData.filter(delValue => delValue.id !== selecteddItem.id)
-                    )
+                    setValuesData(response.data.data.values);
+                    // setValuesData(prevData =>
+                    //     prevData.filter(delValue => delValue.id !== selecteddItem.id)
+                    // )
                 } else {
                     console.log("Error occured")
                 }
@@ -226,7 +227,7 @@ const Philosophy = ({ aiData, recallApi }) => {
                     setAddPhilosophyModal(false);
                     setAddPhilosophy("");
                     setPhilosophyDescription("");
-                    recallApi();
+                    setPhilosophyData(response.data.data.Philosophies);
                 } else {
                     console.log("Error occured")
                 }
@@ -272,7 +273,7 @@ const Philosophy = ({ aiData, recallApi }) => {
                     setUpdatePhilosophy("");
                     setUpdatephilosophyDescription("");
                     setAnchorEl(null);
-                    recallApi();
+                    setPhilosophyData(response.data.data.Philosophies);
                 } else {
                     console.log("Error occured")
                 }
@@ -314,9 +315,11 @@ const Philosophy = ({ aiData, recallApi }) => {
                 console.log("Response of delete philosophy api is", response.data);
                 if (response.data.status === true) {
                     setAnchorEl(null);
-                    setPhilosophyData(prevData =>
-                        prevData.filter(Philosophy => Philosophy.id !== selectedPhilosophyDetails.id)
-                    );
+                    recallApi()
+                    // setPhilosophyData(response.data.data.Philosophies);
+                    // setPhilosophyData(prevData =>
+                    //     prevData.filter(Philosophy => Philosophy.id !== selectedPhilosophyDetails.id)
+                    // );
                 } else {
                     console.log("Error occured")
                 }
@@ -348,7 +351,7 @@ const Philosophy = ({ aiData, recallApi }) => {
 
 
     return (
-        <div className='w-10/12 max-h-[52%] overflow-auto scrollbar scrollbar-track-transparent scrollbar-thumb-purple scrollbar-thin'>
+        <div className='w-10/12'>
             <div className='flex flex-row items-center w-full justify-between'>
                 <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
                     Philosophies
@@ -360,65 +363,68 @@ const Philosophy = ({ aiData, recallApi }) => {
                     Add New
                 </button>
             </div>
-            {
-                philosophyData && philosophyData.length > 0 ?
-                    <div>
-                        {
-                            philosophyData.map((item) => (
-                                <div key={item.id} className='flex flex-row items-center p-4 border border-[#00000010] mt-8 justify-between'>
-                                    <div>
-                                        {item.description}
+            <div className='max-h-[27vh] overflow-auto scrollbar scrollbar-track-transparent scrollbar-thumb-purple scrollbar-thin'>
+                {
+                    philosophyData && philosophyData.length > 0 ?
+                        <div>
+                            {
+                                philosophyData.map((item) => (
+                                    <div key={item.id} className='flex flex-row items-center p-[1vh] border border-[#00000010] mt-4 justify-between'>
+                                        <div>
+                                            {item.description}
+                                        </div>
+                                        <div>
+                                            <button aria-describedby={id} variant="contained" color="primary" onClick={(event) => { handleClick(event, item) }}>
+                                                <DotsThree size={27} weight="bold" />
+                                            </button>
+                                            <Popover
+                                                id={id}
+                                                open={Boolean(anchorEl)}
+                                                anchorEl={anchorEl}
+                                                onClose={handleClose}
+                                                anchorOrigin={{
+                                                    vertical: 'bottom',
+                                                    horizontal: 'center',
+                                                }}
+                                                transformOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'center',
+                                                }}
+                                            >
+                                                <div className='p-2 flex flex-col justify-start items-start w-[100px]'>
+                                                    <button
+                                                        className='text-purple' style={{
+                                                            fontSize: 13, fontWeight: "500",
+                                                            fontFamily: "inter"
+                                                        }}
+                                                        onClick={() => {
+                                                            setUpdatePhilosophyModal(true);
+                                                        }}>
+                                                        Edit
+                                                    </button>
+                                                    {
+                                                        valuesLoader ?
+                                                            <CircularProgress size={15} /> :
+                                                            <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }} onClick={handleDeletephilosophy}>
+                                                                Delete
+                                                            </button>
+                                                    }
+                                                </div>
+                                            </Popover>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <button aria-describedby={id} variant="contained" color="primary" onClick={(event) => { handleClick(event, item) }}>
-                                            <DotsThree size={32} weight="bold" />
-                                        </button>
-                                        <Popover
-                                            id={id}
-                                            open={Boolean(anchorEl)}
-                                            anchorEl={anchorEl}
-                                            onClose={handleClose}
-                                            anchorOrigin={{
-                                                vertical: 'bottom',
-                                                horizontal: 'center',
-                                            }}
-                                            transformOrigin={{
-                                                vertical: 'top',
-                                                horizontal: 'center',
-                                            }}
-                                        >
-                                            <div className='p-2 flex flex-col justify-start items-start w-[100px]'>
-                                                <button
-                                                    className='text-purple' style={{
-                                                        fontSize: 13, fontWeight: "500",
-                                                        fontFamily: "inter"
-                                                    }}
-                                                    onClick={() => {
-                                                        setUpdatePhilosophyModal(true);
-                                                    }}>
-                                                    Edit
-                                                </button>
-                                                {
-                                                    valuesLoader ?
-                                                        <CircularProgress size={15} /> :
-                                                        <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }} onClick={handleDeletephilosophy}>
-                                                            Delete
-                                                        </button>
-                                                }
-                                            </div>
-                                        </Popover>
-                                    </div>
-                                </div>
-                            ))
-                        }
-                    </div> :
-                    <div className='text-center w-full mt-8' style={{ fontWeight: "bold", fontSize: 18, fontFamily: "inter" }}>
-                        No Philosophy Added
-                    </div>
-            }
+                                ))
+                            }
+                        </div> :
+                        <div className='text-center w-full mt-8' style={{ fontWeight: "bold", fontSize: 18, fontFamily: "inter" }}>
+                            No Philosophy Added
+                        </div>
+                }
+            </div>
+
 
             {/* code for values */}
-            <div className='flex flex-row items-center w-full justify-between mt-12'>
+            <div className='flex flex-row items-center w-full justify-between mt-6'>
                 <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
                     Views
                 </div>
@@ -429,62 +435,65 @@ const Philosophy = ({ aiData, recallApi }) => {
                     Add new
                 </button>
             </div>
-            {
-                valuesData ?
-                    <div>
-                        {
-                            valuesData.map((item) => (
-                                <div key={item.id} className='flex flex-row items-start p-4 border border-[#00000010] mt-8 justify-between'>
-                                    <div>
-                                        {/* <div>
+            <div className='max-h-[30vh] overflow-auto scrollbar scrollbar-track-transparent scrollbar-thumb-purple scrollbar-thin'>
+                {
+                    valuesData && valuesData.length > 0 ?
+                        <div>
+                            {
+                                valuesData.map((item) => (
+                                    <div key={item.id} className='flex flex-row items-start p-[2vh] border border-[#00000010] mt-4 justify-between'>
+                                        <div>
+                                            {/* <div>
                                 {item.title}
                             </div> */}
-                                        <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
-                                            {item.description}
+                                            <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
+                                                {item.description}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <button className='-mt-2' aria-describedby={valuedPopoverId} variant="contained" color="primary" onClick={(event) => { handleValuesEditClick(event, item) }}>
+                                                <DotsThree size={27} weight="bold" />
+                                            </button>
+                                            <Popover
+                                                id={valuedPopoverId}
+                                                open={Boolean(valueAnchorEl)}
+                                                anchorEl={valueAnchorEl}
+                                                onClose={handleClose}
+                                                anchorOrigin={{
+                                                    vertical: 'bottom',
+                                                    horizontal: 'center',
+                                                }}
+                                                transformOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'center',
+                                                }}
+                                            >
+                                                <div className='p-2 flex flex-col justify-start items-start w-[100px]'>
+                                                    <button className='text-purple' style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter" }}
+                                                        onClick={() => { setUpdateValueModal(true) }}>
+                                                        Edit
+                                                    </button>
+                                                    {
+                                                        valuesLoader ?
+                                                            <CircularProgress style={{ marginTop: 8 }} size={15} /> :
+                                                            <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }}
+                                                                onClick={handleDelValue}>
+                                                                Delete
+                                                            </button>
+                                                    }
+                                                </div>
+                                            </Popover>
                                         </div>
                                     </div>
-                                    <div>
-                                        <button className='-mt-2' aria-describedby={valuedPopoverId} variant="contained" color="primary" onClick={(event) => { handleValuesEditClick(event, item) }}>
-                                            <DotsThree size={32} weight="bold" />
-                                        </button>
-                                        <Popover
-                                            id={valuedPopoverId}
-                                            open={Boolean(valueAnchorEl)}
-                                            anchorEl={valueAnchorEl}
-                                            onClose={handleClose}
-                                            anchorOrigin={{
-                                                vertical: 'bottom',
-                                                horizontal: 'center',
-                                            }}
-                                            transformOrigin={{
-                                                vertical: 'top',
-                                                horizontal: 'center',
-                                            }}
-                                        >
-                                            <div className='p-2 flex flex-col justify-start items-start w-[100px]'>
-                                                <button className='text-purple' style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter" }}
-                                                    onClick={() => { setUpdateValueModal(true) }}>
-                                                    Edit
-                                                </button>
-                                                {
-                                                    valuesLoader ?
-                                                        <CircularProgress style={{ marginTop: 8 }} size={15} /> :
-                                                        <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }}
-                                                            onClick={handleDelValue}>
-                                                            Delete
-                                                        </button>
-                                                }
-                                            </div>
-                                        </Popover>
-                                    </div>
-                                </div>
-                            ))
-                        }
-                    </div> :
-                    <div className='w-full text-center mt-8' style={{ fontWeight: "bold", fontSize: 18, fontFamily: "inter" }}>
-                        No Values
-                    </div>
-            }
+                                ))
+                            }
+                        </div> :
+                        <div className='w-full text-center mt-8' style={{ fontWeight: "bold", fontSize: 18, fontFamily: "inter" }}>
+                            No Values
+                        </div>
+                }
+            </div>
+
 
             {/* Modal to add values */}
             <Modal

@@ -65,6 +65,9 @@ const Page = () => {
                         </button>
                     </div>
                 </div>
+                <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter", marginTop: 20 }}>
+                    Products
+                </div>
             </div>
         </div>
     )

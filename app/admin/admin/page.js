@@ -16,9 +16,7 @@ const Page = () => {
     const [inputWidth, setInputWidth] = useState(0);
     const [updateLoader, setUpdateLodaer] = useState(false);
     const [adminData, setAdminData] = useState(null);
-    const [successUpdate, setUpdateSuccess] = useState(false);
-    const [snackMessage, setSnackMessage] = useState(null);
-    const [messageType, setMessageType] = useState(null);
+    const [successUpdate, setUpdateSuccess] = useState(null);
 
 
     //getting creators
@@ -74,6 +72,7 @@ const Page = () => {
     }
 
     const handleUpdate = async () => {
+        console.log("Started.....");
         setUpdateLodaer(true);
         try {
             const LocalData = localStorage.getItem('User');
@@ -107,19 +106,19 @@ const Page = () => {
                 if (response) {
                     console.log("Response of api is", response);
                     if (response.data.status === true) {
-                        setUpdateSuccess(true);
-                        setSnackMessage(response.data.message);
-                        setMessageType("success");
-                        console.log("Response is", response.data.message);
+                        // const timer = setTimeout(() => {
+                        //     setUpdateSuccess(response.data.message);
+                        // }, 300);
+                        // return (() => clearTimeout(timer));
+                        setUpdateSuccess(response.data.message);
+                        console.log("data to show in snack is", response.data.message);
                     } else if (response.data.status === false) {
-                        setUpdateSuccess(true);
-                        setSnackMessage(response.data.message);
+                        setUpdateSuccess(response.data.message);
                         console.log("Response is", response.data.message);
                     }
                 }
             }
         } catch (error) {
-            setUpdateSuccess(true);
             console.error("Error occured in api is", error);
         } finally {
             setUpdateLodaer(false);
@@ -237,7 +236,7 @@ const Page = () => {
                                     {creatorDetails?.email}
                                 </div>
                             </div>
-                            <diiv>
+                            <div>
                                 <div style={headingStyle}>
                                     Description:
                                 </div>
@@ -256,7 +255,7 @@ const Page = () => {
                                     onChange={(e) => setDescription(e.target.value)}
                                     disabled={false}  // remove "disabled" to allow typing
                                 />
-                            </diiv>
+                            </div>
                             {/* Hidden span to measure text width */}
                             <span
                                 ref={spanRef}
@@ -289,39 +288,37 @@ const Page = () => {
                                 }
 
                             </div>
-                            <div>
-                                <Snackbar
-                                    open={successUpdate}
-                                    autoHideDuration={3000}
-                                    onClose={() => {
-                                        setUpdateSuccess(false);
-                                        setMessageType(null);
-                                    }}
-                                    anchorOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'center'
-                                    }}
-                                    // Remove TransitionProps and use Slide instead of Fade for better visibility
-                                    TransitionComponent={Slide} // Use Slide instead of Fade
-                                >
-                                    <Alert
-                                        onClose={() => {
-                                            setUpdateSuccess(false);
-                                            setMessageType(null);
-                                        }}
-                                        severity={messageType ? "success" : "error"} //"success"
-                                        sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}
-                                    >
-                                        {snackMessage}
-                                    </Alert>
-                                </Snackbar>
-
-                            </div>
                         </div> :
                         <div className='w-full flex flex-row justify-center mt-8'>
                             <CircularProgress />
                         </div>
                 }
+
+                <div>
+                    <Snackbar
+                        open={successUpdate}
+                        autoHideDuration={3000}
+                        onClose={() => {
+                            setUpdateSuccess(false);
+                        }}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'center'
+                        }}
+                        TransitionComponent={Fade}
+                    >
+                        <Alert
+                            onClose={() => {
+                                setUpdateSuccess(false);
+                            }} severity="none"
+                            className='bg-purple rounded-lg text-white'
+                            sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}
+                        >
+                            {successUpdate}
+                        </Alert>
+                    </Snackbar>
+
+                </div>
             </div>
         </div>
     )

@@ -6,7 +6,9 @@ const ProductDetails = ({ aiData, recallApi }) => {
     const [productsData, setProductsData] = useState([]);
 
     useEffect(() => {
-        setProductsData(aiData.products)
+        if (aiData) {
+            setProductsData(aiData.products);
+        }
     }, [recallApi])
 
     return (
@@ -19,26 +21,32 @@ const ProductDetails = ({ aiData, recallApi }) => {
                     Add New
                 </button>
             </div>
-            <div>
-                {
-                    productsData.map((item, index) => (
-                        <div key={item.id} className='w-full flex flex-row gap-1 mt-6 justify-between border p-4 rounded-lg'>
-                            <div>
-                                <div style={{ color: "#000000", fontSize: 15, fontWeight: "500" }}>{item.name}</div>
-                                <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter", color: "#00000060" }}>
-                                    {/* {item.createdAt} */}
-                                    {moment(item.createdAt).format("MM/DD/YYYY")}
+            {
+                productsData && productsData.length > 0 ?
+                    <div>
+                        {
+                            productsData.map((item, index) => (
+                                <div key={item.id} className='w-full flex flex-row gap-1 mt-6 justify-between border p-4 rounded-lg'>
+                                    <div>
+                                        <div style={{ color: "#000000", fontSize: 15, fontWeight: "500" }}>{item.name}</div>
+                                        <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter", color: "#00000060" }}>
+                                            {/* {item.createdAt} */}
+                                            {moment(item.createdAt).format("MM/DD/YYYY")}
+                                        </div>
+                                    </div>
+                                    <div className='flex flex-col items-end'>
+                                        <div style={{ color: "#000000", fontSize: 20, fontFamily: "inter", fontWeight: "500" }}>
+                                            ${Number(item.productPrice).toFixed(2)}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className='flex flex-col items-end'>
-                                <div style={{ color: "#000000", fontSize: 20, fontFamily: "inter", fontWeight: "500" }}>
-                                    ${Number(item.productPrice).toFixed(2)}
-                                </div>
-                            </div>
-                        </div>
-                    ))
-                }
-            </div>
+                            ))
+                        }
+                    </div> :
+                    <div className='text-xl font-bold text-center'>
+                        No Product Yet
+                    </div>
+            }
         </div>
     )
 }

@@ -1,32 +1,99 @@
-import { Box, CircularProgress, Modal, Popover } from '@mui/material'
+import { Alert, Box, CircularProgress, Fade, Modal, Popover, Snackbar } from '@mui/material'
 import { DotsThree } from '@phosphor-icons/react'
 import Image from 'next/image';
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import AiCharacteristicSeeting from './AiCharacteristicSeeting';
+import Apis from '@/components/apis/Apis';
+import axios from 'axios';
 
 const BasicInformation = ({ recallApi, aiData }) => {
 
-    const [greetCallersAnchorel, setgreetCallersAnchorel] = useState(null);
-    const greetCallersPopoverId = greetCallersAnchorel ? 'simple-popover' : undefined;
-    const [greetCallersLoader, setGreetCallersLoader] = useState(false);
+    // //stoping code starts from here
+    // const [greetCallersAnchorel, setgreetCallersAnchorel] = useState(null);
+    // const greetCallersPopoverId = greetCallersAnchorel ? 'simple-popover' : undefined;
+    // const [greetCallersLoader, setGreetCallersLoader] = useState(false);
 
-    const callersQueryPopoverId = greetCallersAnchorel ? 'simple-popover' : undefined;
-    const [callersQueryAnchorel, setcallersQueryAnchorel] = useState(null);
+    // const callersQueryPopoverId = greetCallersAnchorel ? 'simple-popover' : undefined;
+    // const [callersQueryAnchorel, setcallersQueryAnchorel] = useState(null);
+    // //code stoped  it was of popover
+
+
+    const querryRef = useRef(null);
+    const greetingRef = useRef(null);
+
     const [openAdvanceSettingPopup, setOpenAdvanceSettingPopup] = useState(false);
+    const [updateLoader, setUpdateLoader] = useState(false);
+    const [resultSnack, setResultSnack] = useState(null);
+    //code for greeting input
+    const [greetingValue, setGreetingValue] = useState("");
+    const [showGreetingSaveBtn, setShowGreetingSaveBtn] = useState(false);
 
+    //code for querry input
+    const [userQuerry, setUserQuerry] = useState("");
+    const [showQuerrySaveBtn, setShowQuerryBtn] = useState(false);
 
-    const handeGreetCallersMoreClick = (event) => {
-        setgreetCallersAnchorel(event.currentTarget);
+    useEffect(() => {
+        if (aiData) {
+            setGreetingValue(aiData.ai.greeting);
+            setUserQuerry(aiData.ai.possibleUserQuery);
+        }
+    }, [recallApi]);
+
+    const handleUpdateAi = async () => {
+        const localData = localStorage.getItem('User');
+        try {
+            setUpdateLoader(true);
+            if (localData) {
+                const Data = JSON.parse(localData);
+                const AuthToken = Data.data.token;
+                console.log("Auth token is", AuthToken);
+                const ApiPath = Apis.UpdateBuilAI;
+                console.log("Api path is", ApiPath);
+                const formData = new FormData();
+                if (greetingValue) {
+                    formData.append('greeting', greetingValue)
+                }
+                if (userQuerry) {
+                    formData.append('possibleUserQuery', userQuerry)
+                }
+
+                console.log("Form data is")
+                formData.forEach((value, key) => {
+                    console.log(`${key}: ${value}`);
+                });
+                const response = await axios.post(ApiPath, formData, {
+                    headers: {
+                        'Authorization': 'Bearer ' + AuthToken
+                    }
+                });
+                if (response) {
+                    console.log("Response of update ai is", response.data);
+                    setResultSnack(response.data.message);
+                    if (response.data.status === true) {
+                        greetingRef.current.blur();
+                    }
+                }
+            }
+        } catch (error) {
+            console.error("Error occured in api is", error);
+        } finally {
+            setUpdateLoader(false);
+        }
     }
 
-    const handleClose = () => {
-        setgreetCallersAnchorel(null);
-        setcallersQueryAnchorel(null);
-    };
 
-    const handeCallersQueryMoreClick = (event) => {
-        setcallersQueryAnchorel(event.currentTarget);
-    }
+    // const handeGreetCallersMoreClick = (event) => {
+    //     setgreetCallersAnchorel(event.currentTarget);
+    // }
+
+    // const handleClose = () => {
+    //     setgreetCallersAnchorel(null);
+    //     setcallersQueryAnchorel(null);
+    // };
+
+    // const handeCallersQueryMoreClick = (event) => {
+    //     setcallersQueryAnchorel(event.currentTarget);
+    // }
     const styleSettingPopup = {
         height: "auto",
         bgcolor: "transparent",
@@ -52,13 +119,43 @@ const BasicInformation = ({ recallApi, aiData }) => {
             </div>
 
             <div className='flex flex-row items-start w-full justify-between border rounded-lg p-4 mt-6'>
-                <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
-                    {aiData.ai.greeting}
+                <div className='w-[90%]' style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
+                    {/* {aiData.ai.greeting} */}
+                    <input
+                        ref={greetingRef}
+                        className='outline-none border-none w-[90%]'
+                        value={greetingValue}
+                        onFocus={() => { setShowGreetingSaveBtn(true) }}
+                        onBlur={() => { setShowGreetingSaveBtn(false) }}
+                        onChange={(e) => {
+                            setGreetingValue(e.target.value);
+                        }}
+                        placeholder='Hey this is James. Feel free to ask me anything about....' />
                 </div>
-                <button aria-describedby={greetCallersPopoverId} variant="contained" color="primary" onClick={(event) => { handeGreetCallersMoreClick(event) }}>
-                    <DotsThree size={32} weight="bold" />
-                </button>
-                <Popover
+                {
+                    showGreetingSaveBtn ?
+                        <div>
+                            {
+                                updateLoader ?
+                                    <CircularProgress size={17} /> :
+                                    <button
+                                        className='text-purple underline'
+                                        style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}
+                                        onMouseDown={(e) => e.preventDefault()}
+                                        onClick={handleUpdateAi}
+                                    >
+                                        Save
+                                    </button>
+                            }
+                        </div> :
+                        <button className='text-purple underline' style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}
+                            onClick={(e) => {
+                                greetingRef.current.focus();
+                            }}>
+                            Edit
+                        </button>
+                }
+                {/* <Popover
                     id={greetCallersPopoverId}
                     open={Boolean(greetCallersAnchorel)}
                     anchorEl={greetCallersAnchorel}
@@ -77,13 +174,12 @@ const BasicInformation = ({ recallApi, aiData }) => {
                         >
                             Edit
                         </button>
-                        {/* <CircularProgress style={{ marginTop: 8 }} size={15} /> */}
                         <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }}
                         >
                             Delete
                         </button>
                     </div>
-                </Popover>
+                </Popover> */}
             </div>
 
 
@@ -92,13 +188,44 @@ const BasicInformation = ({ recallApi, aiData }) => {
             </div>
 
             <div className='flex flex-row items-start w-full justify-between border rounded-lg p-4 mt-6'>
-                <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
-                    {aiData.ai.possibleUserQuery}
+                <div className='w-[90%]' style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
+                    {/* {aiData.ai.possibleUserQuery} */}
+                    <input
+                        className='outline-none border-none w-[90%]'
+                        value={userQuerry}
+                        ref={querryRef}
+                        onFocus={() => { setShowQuerryBtn(true) }}
+                        onBlur={() => { setShowQuerryBtn(false) }}
+                        onChange={(e) => {
+                            setUserQuerry(e.target.value);
+                        }}
+                        placeholder='How to scale my business, how to overcome a breakup, etc '
+                    /> :
                 </div>
-                <button aria-describedby={callersQueryPopoverId} variant="contained" color="primary" onClick={(event) => { handeCallersQueryMoreClick(event) }}>
-                    <DotsThree size={32} weight="bold" />
-                </button>
-                <Popover
+                {
+                    showQuerrySaveBtn ?
+                        <div>
+                            {
+                                updateLoader ?
+                                    <CircularProgress size={17} /> :
+                                    <button
+                                        className='text-purple underline'
+                                        style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}
+                                        onMouseDown={(e) => e.preventDefault()}
+                                        onClick={handleUpdateAi}
+                                    >
+                                        Save
+                                    </button>
+                            }
+                        </div> :
+                        <button className='text-purple underline' style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}
+                            onClick={(e) => {
+                                querryRef.current.focus();
+                            }}>
+                            Edit
+                        </button>
+                }
+                {/* <Popover
                     id={callersQueryPopoverId}
                     open={Boolean(callersQueryAnchorel)}
                     anchorEl={callersQueryAnchorel}
@@ -122,7 +249,7 @@ const BasicInformation = ({ recallApi, aiData }) => {
                             Delete
                         </button>
                     </div>
-                </Popover>
+                </Popover> */}
             </div>
 
             <div>
@@ -147,7 +274,7 @@ const BasicInformation = ({ recallApi, aiData }) => {
                     {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
                     <div className="flex flex-row justify-center w-full">
                         <div
-                            className="sm:w-11/12 w-full h-[80vh]"
+                            className="sm:w-11/12 w-full h-[85vh]"
                             style={{
                                 backgroundColor: "#ffffff63",
                                 padding: 20,
@@ -163,7 +290,7 @@ const BasicInformation = ({ recallApi, aiData }) => {
                                 <div style={{ fontWeight: "500", fontFamily: "inter", fontSize: 15, color: "#00000060" }}>
                                     Advance Settings
                                 </div>
-                                <div className='mt-8'>
+                                <div className='mt-2'>
                                     <AiCharacteristicSeeting recallApi={recallApi} aiData={aiData} />
                                 </div>
                             </div>
@@ -171,6 +298,33 @@ const BasicInformation = ({ recallApi, aiData }) => {
                     </div>
                 </Box>
             </Modal>
+
+            <div>
+                <Snackbar
+                    open={resultSnack}
+                    autoHideDuration={3000}
+                    onClose={() => {
+                        setResultSnack(null);
+                    }}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center'
+                    }}
+                    TransitionComponent={Fade}
+                    TransitionProps={{
+                        direction: 'center'
+                    }}
+                >
+                    <Alert
+                        onClose={() => {
+                            setResultSnack(null)
+                        }} severity="none"
+                        className='bg-purple rounded-lg text-white'
+                        sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}>
+                        {resultSnack}
+                    </Alert>
+                </Snackbar>
+            </div>
 
 
         </div>

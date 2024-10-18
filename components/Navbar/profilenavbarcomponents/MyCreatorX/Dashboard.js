@@ -591,7 +591,7 @@ const Dashboard = () => {
                                     style={{
                                         borderRadius: "50px", fontSize: 13, fontWeight: "400", fontFamily: 'inter'
                                     }}>
-                                    {showAllProducts ? "View All Products" : "View Less Products"}
+                                    {showAllProducts ? "View Less Products" : "View All Products"}
                                 </button>
                             )}
                     </div>

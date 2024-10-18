@@ -13,7 +13,7 @@ const PersonalityTraits = ({ aiData, recallApi }) => {
     const [openUpdateTraitPopup, setOpenUpdateTraitPopup] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const id = anchorEl ? 'simple-popover' : undefined;
-    const [newTraitSliderValue, setNewTraitSliderValue] = useState(1);
+    const [newTraitSliderValue, setNewTraitSliderValue] = useState("1");
     const [personalityTraits, setPersonalityTraits] = useState([]);
     const [loadTraitsLoader, setLoadTraitsLoader] = useState(false);
     const [addTraitsLoader, setAddTraitsLoader] = useState(false);
@@ -111,7 +111,7 @@ const PersonalityTraits = ({ aiData, recallApi }) => {
                     setNewTrait("");
                     setNewTraitSliderValue("");
                     setOpenManuallyTrait(false);
-                    recallApi();
+                    setPersonalityTraits(response.data.data.traits);
                 } else {
                     console.log("Error occured")
                 }
@@ -145,10 +145,20 @@ const PersonalityTraits = ({ aiData, recallApi }) => {
             console.log("Authtoken is", AuthToken);
             console.log("Apipath is", ApiPath);
 
-            // const ApiData = {
-            //     id: updateTraitId,
-            //     trait: updateTraitValue,
-            //     score: updateTraitSliderValue,
+            // let ApiData = null
+
+            // if (event === "updatetitle") {
+            //     ApiData = {
+            //         id: updateTraitId,
+            //         trait: updateTraitValue,
+            //         score: updateTraitSliderValue,
+            //     }
+            // } else {
+            //     ApiData = {
+            //         id: item.id,
+            //         // trait: updateTraitValue,
+            //         score: item.score,
+            //     }
             // }
 
             const ApiData = {
@@ -171,6 +181,65 @@ const PersonalityTraits = ({ aiData, recallApi }) => {
                 if (response.data.status === true) {
                     setAnchorEl(null);
                     setOpenUpdateTraitPopup(false);
+                    // setPersonalityTraits(response.data.data.traits);
+                    recallApi();
+                } else {
+                    console.log("Error occured")
+                }
+            }
+
+        } catch (error) {
+            console.error("ERR occured in add Trait api is", error);
+        } finally {
+            setUpdateTraitsLoader(false);
+            setShowSaveBtn(null);
+        }
+    }
+
+    //api call to update trait
+    const handleUpdateTrait2 = async () => {
+        try {
+            setUpdateTraitsLoader(true);
+            const ApiPath = Apis.UpdateTrait;
+            const localData = localStorage.getItem('User');
+            const Data = JSON.parse(localData);
+            const AuthToken = Data.data.token;
+            console.log("Authtoken is", AuthToken);
+            console.log("Apipath is", ApiPath);
+
+            // let ApiData = null
+
+            // if (event === "updatetitle") {
+
+            // } else {
+            //     ApiData = {
+            //         id: item.id,
+            //         // trait: updateTraitValue,
+            //         score: item.score,
+            //     }
+            // }
+
+            const ApiData = {
+                id: updateTraitId,
+                trait: updateTraitValue,
+                score: updateTraitSliderValue,
+            }
+
+            console.log("Data sendgin in api is", ApiData);
+
+            const response = await axios.post(ApiPath, ApiData, {
+                headers: {
+                    "Authorization": "Bearer " + AuthToken,
+                    "Content-Type": "application/json"
+                }
+            });
+            if (response) {
+                console.log("Response of update trait api is", response.data);
+                setUpdateSnackMsg(response.data.message);
+                if (response.data.status === true) {
+                    setAnchorEl(null);
+                    setOpenUpdateTraitPopup(false);
+                    // setPersonalityTraits(response.data.data.traits);
                     recallApi();
                 } else {
                     console.log("Error occured")
@@ -211,20 +280,22 @@ const PersonalityTraits = ({ aiData, recallApi }) => {
                 }
             });
             if (response) {
-                console.log("Response of add trait api is", response.data);
+                console.log("Response of delete trait api is", response.data);
                 if (response.data.status === true) {
                     setAnchorEl(null);
                     // getAiApi();
-                    setPersonalityTraits(prevTraits =>
-                        prevTraits.filter(trait => trait.id !== delTraitId)
-                    );
+                    setPersonalityTraits(response.data.data.traits);
+                    // setPersonalityTraits(prevTraits =>
+                    //     prevTraits.filter(trait => trait.id !== delTraitId)
+                    // );
                 } else {
-                    console.log("Error occured")
+                    console.log("Error occured", response)
                 }
+                setUpdateSnackMsg(response.data.message);
             }
 
         } catch (error) {
-            console.error("ERR occured in add Trait api is", error);
+            console.error("ERR occured in delete Trait api is", error);
         } finally {
             setAddTraitsLoader(false);
         }
@@ -274,7 +345,7 @@ const PersonalityTraits = ({ aiData, recallApi }) => {
                         {
                             personalityTraits && personalityTraits.length > 0 ?
                                 <div>
-                                    <div className='flex flex-row items-center justify-between mt-6'>
+                                    <div className='flex flex-row items-center justify-between'>
                                         <div style={{ fontFamily: 'inter', fontSize: 15, fontWeight: '700' }}>
                                             Personality Trait
                                         </div>
@@ -286,10 +357,10 @@ const PersonalityTraits = ({ aiData, recallApi }) => {
 
                                     <div>
 
-                                        <div>
+                                        <div className='max-h-[54vh] overflow-auto scrollbar scrollbar-thin scrollbar-track-transparent scrollbar-thumb-purple'>
                                             {
                                                 personalityTraits.map((item, index) => (
-                                                    <div key={index}>
+                                                    <div key={index} className='mt-4 px-2'>
                                                         <div className='flex flex-row items-center justify-between'>
                                                             <div className='mt-3' style={{ fontWeight: '400', fontFamily: 'inter', fontSize: 13 }}>
                                                                 {item.trait}
@@ -313,9 +384,9 @@ const PersonalityTraits = ({ aiData, recallApi }) => {
                                                                     }}
                                                                 >
                                                                     <div className='p-2 flex flex-col justify-start items-start w-[100px]'>
-                                                                        {/* <button className='text-purple' style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter" }} onClick={handleUpdateTraitPopupClick}>
+                                                                        <button className='text-purple' style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter" }} onClick={handleUpdateTraitPopupClick}>
                                                                             Edit
-                                                                        </button> */}
+                                                                        </button>
                                                                         {
                                                                             addTraitsLoader ?
                                                                                 <div>
@@ -382,21 +453,22 @@ const PersonalityTraits = ({ aiData, recallApi }) => {
                                                 ))
                                             }
 
-                                            {
-                                                showSaveBtn && (
-                                                    <div>
-                                                        {
-                                                            updateTraitsLoader ?
-                                                                <CircularProgress size={25} /> :
-                                                                <button className='text-white bg-purple p-4 py-2' style={{ borderRadius: "50px" }} onClick={() => { handleUpdateTrait(showSaveBtn) }}
-                                                                >
-                                                                    Save Changes
-                                                                </button>
-                                                        }
-                                                    </div>
-                                                )
-                                            }
                                         </div>
+
+                                        {
+                                            showSaveBtn && (
+                                                <div className='mt-4'>
+                                                    {
+                                                        updateTraitsLoader ?
+                                                            <CircularProgress size={25} /> :
+                                                            <button className='text-white bg-purple p-4 py-2' style={{ borderRadius: "50px" }} onClick={() => { handleUpdateTrait(showSaveBtn) }}
+                                                            >
+                                                                Save Changes
+                                                            </button>
+                                                    }
+                                                </div>
+                                            )
+                                        }
                                     </div>
                                 </div>
                                 :
@@ -694,11 +766,11 @@ const PersonalityTraits = ({ aiData, recallApi }) => {
 
                                     <div style={{ marginTop: 15 }}>
                                         {
-                                            addTraitsLoader ?
+                                            updateTraitsLoader ?
                                                 <div className='w-full flex flex-row justify-center'>
                                                     <CircularProgress size={25} />
                                                 </div> :
-                                                <button className='w-full py-2 text-white bg-purple ' style={{ borderRadius: "50px" }} onClick={handleUpdateTrait}>
+                                                <button className='w-full py-2 text-white bg-purple ' style={{ borderRadius: "50px" }} onClick={handleUpdateTrait2}>
                                                     Update
                                                 </button>
                                         }
@@ -729,7 +801,8 @@ const PersonalityTraits = ({ aiData, recallApi }) => {
                     <Alert
                         onClose={() => {
                             setUpdateSnackMsg(null);
-                        }} //severity="success"
+                        }} severity="none"
+                        className='bg-purple text-white'
                         sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}>
                         {updateSnackMsg}
                     </Alert>

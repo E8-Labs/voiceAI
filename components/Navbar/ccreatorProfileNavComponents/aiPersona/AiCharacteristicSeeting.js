@@ -32,7 +32,7 @@ const AiCharacteristicSeeting = ({ recallApi, aiData }) => {
                 {
                     advancedSeetings.map((item, index) => (
                         <div className='mt-6' style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter", color: selectedMenu === item.id ? "#552AFF" : "#000000" }}>
-                            <button onClick={() => { setSelectedMenu(item.id) }}>
+                            <button className='border-none outline-none' onClick={() => { setSelectedMenu(item.id) }}>
                                 {item.title}
                             </button>
                         </div>

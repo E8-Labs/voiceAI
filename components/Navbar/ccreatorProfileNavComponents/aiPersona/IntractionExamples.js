@@ -24,7 +24,9 @@ const IntractionExamples = ({ recallApi, aiData }) => {
 
 
     useEffect(() => {
-        setIntractionsData(aiData.frameworks);
+        if (aiData) {
+            setIntractionsData(aiData.intractions);
+        }
     }, [recallApi]);
 
     const handleClose = () => {
@@ -34,8 +36,8 @@ const IntractionExamples = ({ recallApi, aiData }) => {
     const handeFramerworkMoreClick = (event, item) => {
         setintractionanchorel(event.currentTarget);
         setSelectedItem(item);
-        setUpdateIntractionDescription(item.description);
-        setUpdateIntractionTitle(item.title);
+        setUpdateIntractionDescription(item.answer);
+        setUpdateIntractionTitle(item.question);
     }
 
     //update intraction
@@ -50,8 +52,8 @@ const IntractionExamples = ({ recallApi, aiData }) => {
             console.log("Apipath is", ApiPath);
 
             const ApiData = {
-                title: addIntractionTitle,
-                description: addIntractionDescription
+                question: addIntractionTitle,
+                answer: addIntractionDescription
             }
 
             console.log("Data sendgin in api is", ApiData);
@@ -68,7 +70,7 @@ const IntractionExamples = ({ recallApi, aiData }) => {
                     setAddIntractionModal(false);
                     setAddIntractionDescription("");
                     setAddIntractionTitle("");
-                    recallApi();
+                    setIntractionsData(response.data.data.intractions);
                 } else {
                     console.log("Error occured")
                 }
@@ -85,7 +87,7 @@ const IntractionExamples = ({ recallApi, aiData }) => {
     const handleDeleteteIntraction = async () => {
         try {
             setIntractionLoader(true);
-            const ApiPath = Apis.DeleteFrameWork;
+            const ApiPath = Apis.DeleteIntractions;
             const localData = localStorage.getItem('User');
             const Data = JSON.parse(localData);
             const AuthToken = Data.data.token;
@@ -105,19 +107,20 @@ const IntractionExamples = ({ recallApi, aiData }) => {
                 }
             });
             if (response) {
-                console.log("Response of del framwork and tec api is", response.data);
+                console.log("Response of del intraction api is", response.data);
                 if (response.data.status === true) {
                     setintractionanchorel(null);
-                    setIntractionsData(intractions =>
-                        intractions.filter(preIntraction => preIntraction.id !== selectedItem.id)
-                    )
+                    setIntractionsData(response.data.data.intractions);
+                    // setIntractionsData(intractions =>
+                    //     intractions.filter(preIntraction => preIntraction.id !== selectedItem.id)
+                    // )
                 } else {
                     console.log("Error occured")
                 }
             }
 
         } catch (error) {
-            console.error("ERR occured in del framwork api is", error);
+            console.error("ERR occured in del intraction api is", error);
         } finally {
             setIntractionLoader(false);
         }
@@ -127,7 +130,7 @@ const IntractionExamples = ({ recallApi, aiData }) => {
     const handleUpdateIntraction = async () => {
         try {
             setIntractionLoader(true);
-            const ApiPath = Apis.UpdateFramWork;
+            const ApiPath = Apis.UpdateIntractions;
             const localData = localStorage.getItem('User');
             const Data = JSON.parse(localData);
             const AuthToken = Data.data.token;
@@ -136,8 +139,8 @@ const IntractionExamples = ({ recallApi, aiData }) => {
 
             const ApiData = {
                 id: selectedItem.id,
-                title: updateIntractionTitle,
-                description: updateIntractionDescription
+                question: updateIntractionTitle,
+                answer: updateIntractionDescription
             }
 
             console.log("Data sendgin in api is", ApiData);
@@ -149,20 +152,20 @@ const IntractionExamples = ({ recallApi, aiData }) => {
                 }
             });
             if (response) {
-                console.log("Response of update framwork and tec api is", response.data);
+                console.log("Response of update intraction api is", response.data);
                 if (response.data.status === true) {
                     setUpdateIntractionModal(false);
                     setUpdateIntractionDescription("");
                     setUpdateIntractionTitle("");
                     setintractionanchorel(null);
-                    recallApi();
+                    setIntractionsData(response.data.data.intractions);
                 } else {
                     console.log("Error occured")
                 }
             }
 
         } catch (error) {
-            console.error("ERR occured in update framwork api is", error);
+            console.error("ERR occured in update intraction api is", error);
         } finally {
             setIntractionLoader(false);
         }
@@ -200,58 +203,64 @@ const IntractionExamples = ({ recallApi, aiData }) => {
                 </button>
             </div>
 
-            <div className='max-h-[50vh] overflow-auto scrollbar scrollbar-track-transparent scrollbar-thumb-purple scrollbar-thin'>
-                {
-                    intractionsData.map((item) => (
-                        <div key={item.id} className='flex flex-row items-start p-4 border border-[#00000010] mt-8 justify-between'>
-                            <div>
-                                <div>
-                                    {item.title}
-                                </div>
-                                <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
-                                    {item.description}
-                                </div>
-                            </div>
-                            <div>
-                                <button className='-mt-2' aria-describedby={IntractionPopoverId} variant="contained" color="primary" onClick={(event) => { handeFramerworkMoreClick(event, item) }}>
-                                    <DotsThree size={32} weight="bold" />
-                                </button>
-                                <Popover
-                                    id={IntractionPopoverId}
-                                    open={Boolean(intractionanchorel)}
-                                    anchorEl={intractionanchorel}
-                                    onClose={handleClose}
-                                    anchorOrigin={{
-                                        vertical: 'bottom',
-                                        horizontal: 'center',
-                                    }}
-                                    transformOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'center',
-                                    }}
-                                >
-                                    <div className='p-2 flex flex-col justify-start items-start w-[100px]'>
-                                        <button className='text-purple' style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter" }}
-                                            onClick={() => { setUpdateIntractionModal(true) }}
-                                        >
-                                            Edit
-                                        </button>
-                                        {
-                                            intractionLoader ?
-                                                <CircularProgress style={{ marginTop: 8 }} size={15} /> :
-                                                <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }}
-                                                    onClick={handleDeleteteIntraction}
-                                                >
-                                                    Delete
-                                                </button>
-                                        }
+            {
+                intractionsData && intractionsData.length > 0 ?
+                    <div className='max-h-[50vh] overflow-auto scrollbar scrollbar-track-transparent scrollbar-thumb-purple scrollbar-thin'>
+                        {
+                            intractionsData.map((item) => (
+                                <div key={item.id} className='flex flex-row items-start p-4 border border-[#00000010] mt-8 justify-between'>
+                                    <div>
+                                        <div>
+                                            {item.question}
+                                        </div>
+                                        <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
+                                            {item.answer}
+                                        </div>
                                     </div>
-                                </Popover>
-                            </div>
-                        </div>
-                    ))
-                }
-            </div>
+                                    <div>
+                                        <button className='-mt-2' aria-describedby={IntractionPopoverId} variant="contained" color="primary" onClick={(event) => { handeFramerworkMoreClick(event, item) }}>
+                                            <DotsThree size={32} weight="bold" />
+                                        </button>
+                                        <Popover
+                                            id={IntractionPopoverId}
+                                            open={Boolean(intractionanchorel)}
+                                            anchorEl={intractionanchorel}
+                                            onClose={handleClose}
+                                            anchorOrigin={{
+                                                vertical: 'bottom',
+                                                horizontal: 'center',
+                                            }}
+                                            transformOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'center',
+                                            }}
+                                        >
+                                            <div className='p-2 flex flex-col justify-start items-start w-[100px]'>
+                                                <button className='text-purple' style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter" }}
+                                                    onClick={() => { setUpdateIntractionModal(true) }}
+                                                >
+                                                    Edit
+                                                </button>
+                                                {
+                                                    intractionLoader ?
+                                                        <CircularProgress style={{ marginTop: 8 }} size={15} /> :
+                                                        <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }}
+                                                            onClick={handleDeleteteIntraction}
+                                                        >
+                                                            Delete
+                                                        </button>
+                                                }
+                                            </div>
+                                        </Popover>
+                                    </div>
+                                </div>
+                            ))
+                        }
+                    </div> :
+                    <div className='text-xl font-bold text-center mt-8'>
+                        No Intraction Added
+                    </div>
+            }
 
 
             {/* Modal to add values */}
