@@ -563,25 +563,32 @@ const Creator = () => {
     // if(localProfile){
     const localProfileData = JSON.parse(localProfile);
     // }
-    console.log("data of payment status", D);
-    if (D && D.data.user.payment_added === true) {
-      console.log("User has added the payment source");
-      setSnackMessage(true);
-    } else {
-      setCallErr(true);
-      return;
-    }
     // console.log("Id to send is", getAssistantData);
     const localAssistanData = localStorage.getItem("assistantData");
     let modelId = null;
     if (localAssistanData) {
       const asistantLocalData = JSON.parse(localAssistanData);
       console.log("Assistant data retrived", asistantLocalData);
-      modelId = asistantLocalData.id;
+
+      //code to check if the trial mode is on
+      if (asistantLocalData.assitant.allowTrial === true) {
+        setSnackMessage(true);
+        console.log("Allow trial is true");
+      } else {
+        //code to check if user added payment source
+        console.log("data of payment status", D);
+        if (D && D.data.user.payment_added === true) {
+          console.log("User has added the payment source");
+          modelId = asistantLocalData.id;
+          setSnackMessage(true);
+        } else {
+          setCallErrMsg("We were unable to process your payment method, please update to start a call.");
+          return;
+        }
+      }
+
     }
     console.log("id to send", modelId);
-
-    // setSnackMessage(true);
 
     // return
     try {
@@ -925,7 +932,7 @@ const Creator = () => {
                               }}
                             >
                               {getAssistantData &&
-                              getAssistantData.profile_image ? (
+                                getAssistantData.profile_image ? (
                                 <Image
                                   src={getAssistantData.profile_image}
                                   alt="profilephoto" //height={50} width={50}
@@ -941,7 +948,7 @@ const Creator = () => {
                                     objectPosition: "center",
                                     // backgroundColor: 'red'
                                   }}
-                                  //style={{ padding: 4, borderRadius: "50%" }}
+                                //style={{ padding: 4, borderRadius: "50%" }}
                                 />
                               ) : (
                                 <Image
@@ -954,7 +961,7 @@ const Creator = () => {
                               )}
                             </div>
                             {getAssistantData &&
-                            getAssistantData.assitant.claimed ? (
+                              getAssistantData.assitant.claimed ? (
                               ""
                             ) : (
                               <div
@@ -1034,10 +1041,10 @@ const Creator = () => {
                         </div>
                         <div
                           className="flex flex-row gap-4 pe-4"
-                          // style={{ marginTop: 10 }}
+                        // style={{ marginTop: 10 }}
                         >
                           {getAssistantData &&
-                          getAssistantData?.ai?.instaUrl ? (
+                            getAssistantData?.ai?.instaUrl ? (
                             <button onClick={handleInstaClick}>
                               <InstagramLogo size={25} />
                               {/*<Image
@@ -1048,7 +1055,7 @@ const Creator = () => {
                             ""
                           )}
                           {getAssistantData &&
-                          getAssistantData?.ai?.youtubeUrl ? (
+                            getAssistantData?.ai?.youtubeUrl ? (
                             <button onClick={handleYoutubeClick}>
                               <YoutubeLogo size={25} />
                               {/* <Image
@@ -1059,7 +1066,7 @@ const Creator = () => {
                             ""
                           )}
                           {getAssistantData &&
-                          getAssistantData?.ai?.twitterUrl ? (
+                            getAssistantData?.ai?.twitterUrl ? (
                             <button onClick={handleTwitterClick}>
                               <TwitterLogo size={25} />
                               {/*<Image
@@ -1221,7 +1228,7 @@ const Creator = () => {
                                   }}
                                 >
                                   {getAssistantData &&
-                                  getAssistantData.profile_image ? (
+                                    getAssistantData.profile_image ? (
                                     <Image
                                       src={getAssistantData.profile_image}
                                       alt="profilephoto" //height={50} width={50}
@@ -1237,7 +1244,7 @@ const Creator = () => {
                                         objectPosition: "center",
                                         // backgroundColor: 'red'
                                       }}
-                                      //style={{ padding: 4, borderRadius: "50%" }}
+                                    //style={{ padding: 4, borderRadius: "50%" }}
                                     />
                                   ) : (
                                     <Image
@@ -1253,7 +1260,7 @@ const Creator = () => {
                                   )}
                                 </div>
                                 {getAssistantData &&
-                                getAssistantData.assitant.claimed ? (
+                                  getAssistantData.assitant.claimed ? (
                                   ""
                                 ) : (
                                   <div
@@ -1336,7 +1343,7 @@ const Creator = () => {
                             className="flex flex-row gap-4" //style={{ marginTop: 10 }}
                           >
                             {getAssistantData &&
-                            getAssistantData.ai.instaUrl ? (
+                              getAssistantData.ai.instaUrl ? (
                               <button onClick={handleInstaClick}>
                                 <InstagramLogo size={25} />
                                 {/* <Image
@@ -1347,7 +1354,7 @@ const Creator = () => {
                               ""
                             )}
                             {getAssistantData &&
-                            getAssistantData.ai.youtubeUrl ? (
+                              getAssistantData.ai.youtubeUrl ? (
                               <button onClick={handleYoutubeClick}>
                                 <YoutubeLogo size={25} />
                                 {/* <Image
@@ -1892,7 +1899,7 @@ const Creator = () => {
                     <ClaimAccountPopup
                       getAssistantData={getAssistantData}
                       handleClosePopup={handleClosePopup}
-                      // onClick={(() => setOpenClaimPopup(false))}
+                    // onClick={(() => setOpenClaimPopup(false))}
                     />
                   </div>
                 </div>
@@ -1999,9 +2006,9 @@ const Creator = () => {
                 </div> */}
 
             <Snackbar
-              open={callErr}
+              open={callErrMsg}
               autoHideDuration={5000}
-              onClose={() => setCallErr(false)}
+              onClose={() => setCallErrMsg(false)}
               anchorOrigin={{
                 vertical: "top",
                 horizontal: "center",
@@ -2042,9 +2049,9 @@ const Creator = () => {
                     Error
                   </div>
                   <div>
-                    {/* {callErrMsg} */}
-                    We were unable to process your payment method, please update
-                    to start a call.
+                    {callErrMsg}
+                    {/*We were unable to process your payment method, please update
+                    to start a call.*/}
                   </div>
                 </div>
               </Alert>
