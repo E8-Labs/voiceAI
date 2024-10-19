@@ -23,7 +23,7 @@ import axios from "axios";
 import Apis from "./apis/Apis";
 import CycleArray from "./animation/CycleArray";
 import AnimatedButton from "./testcomponents/Dropdown";
-import MetaTags from "./Metatags/MetaTags";
+
 import {
   Globe,
   InstagramLogo,
@@ -33,6 +33,7 @@ import {
   XLogo,
 } from "@phosphor-icons/react";
 import ClaimAccountPopup from "./verfiyIdentityflow/ClaimAccountPopup";
+import MetaTags from "./Metatags/MetaTags";
 
 const backgroundImage = {
   backgroundImage: 'url("/creatorProfileBg.png")', // Ensure the correct path
@@ -744,15 +745,15 @@ const Creator = () => {
 
   return (
     <>
-      {/* {
-                getAssistantData && (
-                    <MetaTags
-                        title={`Creator: ${getAssistantData ? getAssistantData.assitant.name : ""}`}
-                        description={`Explore amazing content from ${getAssistantData ? getAssistantData.assitant.name : ""} on CreatorX!`}
-                        image={getAssistantData ? getAssistantData.full_profile_image : ""} // URL fetched from your API
-                    />
-                )
-            } */}
+      {
+        getAssistantData && (
+          <MetaTags
+            title={`Creator: ${getAssistantData ? getAssistantData.assitant.name : ""}`}
+            description={`Explore amazing content from ${getAssistantData ? getAssistantData.assitant.name : ""} on CreatorX!`}
+            image={getAssistantData ? getAssistantData.full_profile_image : ""} // URL fetched from your API
+          />
+        )
+      }
       <div className="  overflow-hidden">
         {assistantDataErr ? (
           <div style={backgroundImage} className="  overflow-hidden">
