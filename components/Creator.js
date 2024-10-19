@@ -1718,10 +1718,14 @@ const Creator = () => {
             >
               <div className="flex flex-col gap-8 justify-between w-full items-start">
                 <div className="w-full flex flex-row justify-center">
-                  <CycleArray
-                    data={getRecentCallData}
-                    assistantData={getAssistantData}
-                  />
+                  {
+                    callErrMsg ?
+                      "" :
+                      <CycleArray
+                        data={getRecentCallData}
+                        assistantData={getAssistantData}
+                      />
+                  }
                 </div>
 
                 <div className="flex items-center justify-between w-full">
