@@ -1528,7 +1528,7 @@ const Creator = () => {
                   <div
                     style={{
                       position: "absolute",
-                      bottom: "-10px",
+                      bottom: "-15px",
                       left: "50%",
                       transform: "translateX(-50%)",
                       width: 0,
