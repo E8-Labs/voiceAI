@@ -264,12 +264,12 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
                 if (textData) {
                     formData.append("content", textData);
                 } else if (documentName) {
-                    formData.append("content", documentName)
+                    formData.append("name", documentName);
+                    formData.append("description", documentDescription);
                 }
             if (selectedDocument) {
                 formData.append("media", selectedDocument);
                 console.log("Selected doc is", selectedDocument);
-                formData.append("description", documentDescription);
             }
             // return
             const response = await axios.post(ApiPath, formData, {
@@ -361,7 +361,7 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
                             </MenuItem>
                             <MenuItem value="Document">Document</MenuItem>
                             <MenuItem value="Text">Plain Text</MenuItem>
-                            <MenuItem value="Web URL">Web URL</MenuItem>
+                            <MenuItem value="Url">Web URL</MenuItem>
                         </Select>
                     </FormControl>
 
