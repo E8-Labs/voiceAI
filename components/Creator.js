@@ -30,6 +30,7 @@ import {
   YoutubeLogo,
   TwitterLogo,
   FacebookLogo,
+  XLogo,
 } from "@phosphor-icons/react";
 import ClaimAccountPopup from "./verfiyIdentityflow/ClaimAccountPopup";
 
@@ -106,6 +107,7 @@ const Creator = () => {
   //         setProfileData(Data.data.user);
   //     }
   // }, []);
+  const [socialLinks, setSocialLinks] = useState([]);
 
   const claimpopUpClick = () => {
     if (getAssistantData.assitant.claimed === true) {
@@ -114,6 +116,44 @@ const Creator = () => {
       setOpenClaimPopup(true);
     }
   };
+
+  useEffect(() => {
+    if (getAssistantData) {
+      setSocialLinks([
+        {
+          id: 1,
+          link: getAssistantData.ai.instaUrl,
+          icon: <InstagramLogo size={25} />
+        },
+        {
+          id: 2,
+          link: getAssistantData.ai.youtubeUrl,
+          icon: <YoutubeLogo size={25} />
+        },
+        {
+          id: 3,
+          link: getAssistantData.ai.twitterUrl,
+          icon: <XLogo size={25} />
+        },
+        {
+          id: 4,
+          link: getAssistantData.ai.webUrl,
+          icon: <Globe size={25} />
+        },
+        {
+          id: 5,
+          link: getAssistantData.ai.fbUrl,
+          icon: <FacebookLogo size={25} />
+        },
+        // {
+        //   id: 6,
+        //   link: getAssistantData.ai.webUrl,
+        //   icon: <Globe size={25} />
+        // },
+      ])
+    }
+
+  }, [getAssistantData])
 
   //code for my profile dATA API
 
@@ -1048,9 +1088,6 @@ const Creator = () => {
                             getAssistantData?.ai?.instaUrl ? (
                             <button onClick={handleInstaClick}>
                               <InstagramLogo size={25} />
-                              {/*<Image
-                                                                        // layout='responsive'
-                                                        objectFit='contain' src={"/assets/instagram.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />*/}
                             </button>
                           ) : (
                             ""
@@ -1059,9 +1096,6 @@ const Creator = () => {
                             getAssistantData?.ai?.youtubeUrl ? (
                             <button onClick={handleYoutubeClick}>
                               <YoutubeLogo size={25} />
-                              {/* <Image
-                                                                        // layout='responsive'
-                                                        objectFit='contain' src={"/assets/youtubeIcon.png"} alt='social' height={25} width={25} style={{ resize: "cover", borderRadius: 3 }} />*/}
                             </button>
                           ) : (
                             ""
@@ -1070,10 +1104,6 @@ const Creator = () => {
                             getAssistantData?.ai?.twitterUrl ? (
                             <button onClick={handleTwitterClick}>
                               <TwitterLogo size={25} />
-                              {/*<Image
-                                                                        // layout='responsive'
-                                                                        objectFit='contain' src={"/assets/webIcon.png"} alt='social' height={25} width={25}
-                                                        style={{ resize: "cover", borderRadius: 3 }} />*/}
                             </button>
                           ) : (
                             ""
@@ -1081,9 +1111,6 @@ const Creator = () => {
                           {getAssistantData && getAssistantData?.ai?.webUrl ? (
                             <button onClick={handleWebClick}>
                               <Globe size={25} />
-                              {/* <Image
-                                                                        // layout='responsive'
-                                                        objectFit='contain' src={"/assets/youtubeIcon.png"} alt='social' height={25} width={25} style={{ resize: "cover", borderRadius: 3 }} />*/}
                             </button>
                           ) : (
                             ""
@@ -1091,91 +1118,14 @@ const Creator = () => {
                           {getAssistantData && getAssistantData?.ai?.fbUrl ? (
                             <button onClick={handleFbClick}>
                               <FacebookLogo size={25} />
-                              {/* <Image
-                                                                        // layout='responsive'
-                                                        objectFit='contain' src={"/assets/youtubeIcon.png"} alt='social' height={25} width={25} style={{ resize: "cover", borderRadius: 3 }} />*/}
                             </button>
                           ) : (
                             ""
                           )}
                         </div>
                       </div>
-                      {/* <div className='flex flex-row pe-4'>
-                                                    <div style={{ fontSize: 12, color: "#000000", fontWeight: "400", fontFamily: "inter" }}>
-                                                        Calls:
-                                                    </div>
-                                                    <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 12 }}>
-                                                        {
-                                                            getAssistantData &&
-                                                            <div>
-                                                                {getAssistantData.calls ?
-                                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
-                                                                        {getAssistantData.calls}
-                                                                    </div> :
-                                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
-                                                                        0
-                                                                    </div>
-                                                                }
-                                                            </div>
-                                                        }
-                                                    </div>
-                                                    <div className='ms-2' style={{ fontSize: 12, color: "#000000", fontWeight: "400", fontFamily: "inter" }}>
-                                                        Earned:
-                                                    </div>
-                                                    <div className='' style={{ fontWeight: "300", fontFamily: "inter", fontSize: 13 }}>
-                                                        {
-                                                            getAssistantData &&
-                                                            <div>
-                                                                {getAssistantData.earned ?
-                                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
-                                                                        ${Number(getAssistantData.earned).toFixed(2)}
-                                                                    </div> :
-                                                                    <div className='ms-1' style={{ fontWeight: "600", fontFamily: "inter", fontSize: 12 }}>
-                                                                        $ 0
-                                                                    </div>
-                                                                }
-                                                            </div>
-                                                        }
-                                                    </div>
-                                                </div> */}
                     </div>
                   </div>
-                  {/* code for socials */}
-                  {/* <div className='flex flex-row items-center justify-center pb-6 px-6' ref={buttonRef3}
-                                            style={{
-                                                border: "2px solid #ffffff", borderTop: "8px solid #e7f3fe",
-                                                borderBottomLeftRadius: 50,
-                                                borderBottomRightRadius: 50, marginTop: "-4px",
-                                                zIndex: 2, backgroundColor: "#ffffff20",
-                                            }}>
-                                            <div className='flex flex-col gap-4' style={{ marginTop: 10 }}>
-                                                {
-                                                    getAssistantData && getAssistantData.ai.instaUrl ?
-                                                        <button onClick={handleInstaClick}>
-                                                            <Image
-                                                                // layout='responsive'
-                                                                objectFit='contain' src={"/assets/instagram.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
-                                                        </button> : ''
-                                                }
-                                                {
-                                                    getAssistantData && getAssistantData.ai.youtubeUrl ?
-                                                        <button onClick={handleYoutubeClick}>
-                                                            <Image
-                                                                // layout='responsive'
-                                                                objectFit='contain' src={"/assets/youtubeIcon.png"} alt='social' height={25} width={25} style={{ resize: "cover", borderRadius: 3 }} />
-                                                        </button> : ''
-                                                }
-                                                {
-                                                    getAssistantData && getAssistantData.ai.webUrl ?
-                                                        <button onClick={handleWebClick}>
-                                                            <Image
-                                                                // layout='responsive'
-                                                                objectFit='contain' src={"/assets/webIcon.png"} alt='social' height={25} width={25}
-                                                                style={{ resize: "cover", borderRadius: 3 }} />
-                                                        </button> : ''
-                                                }
-                                            </div>
-                                        </div> */}
                 </div>
 
                 {showProfileIcon && (
@@ -1191,193 +1141,184 @@ const Creator = () => {
               </div>
 
               {/* Assistant Profile icon for small screens */}
-              <div className="sm:hidden flex items-start justify-between">
-                <div style={{ zIndex: 2 }}>
+              <div className="sm:hidden flex w-full items-start justify-between">
+                <div className="w-full" style={{ zIndex: 2 }}>
                   {showBorderProfile ? (
-                    <div className="flex flex-col items-start">
-                      <div
-                        className="px-2 py-2 flex gap-4 flex-row items-center"
-                        ref={buttonRef4}
-                        style={{
-                          border: "2px solid #ffffff",
-                          // borderTopLeftRadius: 50, borderTopRightRadius: 50,
-                          // borderBottomRightRadius: 50,
-                          // borderRadiusTopright: 50,
-                          // borderRadiusTopright : 50,
-                          // borderTopLeftRadius: 50,
-                          // borderBottomRightRadius: 50,
-                          // borderTopRightRadius: 50,
-                          borderRadius: 50,
-                          backgroundColor: "#ffffff20",
-                          zIndex: 1,
-                        }}
-                      >
-                        <div className="flex flex-col items-center">
-                          <div className="relative">
-                            <div className="flex flex-row items-center">
-                              <button
-                                onClick={() => {
-                                  // console.log("Sary gama pada na ri sa");
-                                  claimpopUpClick();
-                                }}
-                                style={{ position: "relative" }}
-                              >
-                                <div
-                                  style={{
-                                    border: "2px solid black",
-                                    borderRadius: "50%",
+                    <div className="w-full flex flex-row items-center justify-between">
+                      <div className="flex flex-col items-start">
+                        <div
+                          className="px-2 py-1 flex gap-4 flex-row items-center"
+                          ref={buttonRef4}
+                          style={{
+                            border: "2px solid #ffffff",
+                            // borderTopLeftRadius: 50, borderTopRightRadius: 50,
+                            // borderBottomRightRadius: 50,
+                            // borderRadiusTopright: 50,
+                            // borderRadiusTopright : 50,
+                            // borderTopLeftRadius: 50,
+                            // borderBottomRightRadius: 50,
+                            // borderTopRightRadius: 50,
+                            borderRadius: 50,
+                            backgroundColor: "#ffffff20",
+                            zIndex: 1,
+                          }}
+                        >
+                          <div className="flex flex-col items-center">
+                            <div className="relative">
+                              <div className="flex flex-row items-center">
+                                <button
+                                  onClick={() => {
+                                    // console.log("Sary gama pada na ri sa");
+                                    claimpopUpClick();
                                   }}
+                                  style={{ position: "relative" }}
                                 >
-                                  {getAssistantData &&
-                                    getAssistantData.profile_image ? (
-                                    <Image
-                                      src={getAssistantData.profile_image}
-                                      alt="profilephoto" //height={50} width={50}
-                                      height={50}
-                                      width={50}
-                                      style={{
-                                        width: "50px",
-                                        height: "50px",
-                                        backgroundColor: "",
-                                        borderRadius: "50%",
-                                        border: "3px solid white",
-                                        objectFit: "cover",
-                                        objectPosition: "center",
-                                        // backgroundColor: 'red'
-                                      }}
-                                    //style={{ padding: 4, borderRadius: "50%" }}
-                                    />
-                                  ) : (
-                                    <Image
-                                      src={"/assets/placeholderImg.jpg"}
-                                      alt="profilephoto"
-                                      height={50}
-                                      width={50}
-                                      style={{
-                                        padding: 4,
-                                        borderRadius: "50%",
-                                      }}
-                                    />
-                                  )}
-                                </div>
-                                {getAssistantData &&
-                                  getAssistantData.assitant.claimed ? (
-                                  ""
-                                ) : (
                                   <div
-                                    className="absolute top-0 -left-2"
-                                    style={{ backgroundColor: "transparent" }}
+                                    style={{
+                                      border: "2px solid black",
+                                      borderRadius: "50%",
+                                    }}
                                   >
-                                    <div
-                                      style={{
-                                        height: "30px",
-                                        width: "30px",
-                                        backgroundColor: "transparent",
-                                      }}
-                                    >
+                                    {getAssistantData &&
+                                      getAssistantData.profile_image ? (
                                       <Image
-                                        onClick={() => {
-                                          // console.log("Sary gama pada na ri sa");
-                                          claimpopUpClick();
-                                        }}
-                                        src="/assets/claimLogo.png"
-                                        alt="claimbtn"
-                                        height={40}
-                                        width={40}
+                                        src={getAssistantData.profile_image}
+                                        alt="profilephoto" //height={50} width={50}
+                                        height={50}
+                                        width={50}
                                         style={{
-                                          cursor: "pointer",
-                                          backgroundColor: "transparent",
+                                          width: "50px",
+                                          height: "50px",
+                                          backgroundColor: "",
+                                          borderRadius: "50%",
+                                          border: "3px solid white",
+                                          objectFit: "cover",
+                                          objectPosition: "center",
+                                          // backgroundColor: 'red'
+                                        }}
+                                      //style={{ padding: 4, borderRadius: "50%" }}
+                                      />
+                                    ) : (
+                                      <Image
+                                        src={"/assets/placeholderImg.jpg"}
+                                        alt="profilephoto"
+                                        height={50}
+                                        width={50}
+                                        style={{
+                                          padding: 4,
+                                          borderRadius: "50%",
                                         }}
                                       />
-                                    </div>
+                                    )}
                                   </div>
-                                )}
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="flex flex-row gap-2">
-                          {/* code for assistant name and calls */}
-                          <div className="flex flex-row items-center gap-8">
-                            <div
-                              style={{
-                                fontSize: 16,
-                                fontWeight: "400",
-                                fontFamily: "inter",
-                              }}
-                            >
-                              {getAssistantData && (
-                                <div
-                                  style={{
-                                    fontSize: 16,
-                                    fontWeight: "400",
-                                    fontFamily: "inter",
-                                  }}
-                                >
-                                  {getAssistantData.name ? (
-                                    <div
-                                      style={{
-                                        fontSize: 16,
-                                        fontWeight: "400",
-                                        fontFamily: "inter",
-                                      }}
-                                    >
-                                      {getAssistantData.name}
-                                    </div>
+                                  {getAssistantData &&
+                                    getAssistantData.assitant.claimed ? (
+                                    ""
                                   ) : (
                                     <div
-                                      style={{
-                                        fontSize: 16,
-                                        fontWeight: "400",
-                                        fontFamily: "inter",
-                                      }}
+                                      className="absolute top-0 -left-2"
+                                      style={{ backgroundColor: "transparent" }}
                                     >
-                                      {getAssistantData.assitant.name}
+                                      <div
+                                        style={{
+                                          height: "30px",
+                                          width: "30px",
+                                          backgroundColor: "transparent",
+                                        }}
+                                      >
+                                        <Image
+                                          onClick={() => {
+                                            // console.log("Sary gama pada na ri sa");
+                                            claimpopUpClick();
+                                          }}
+                                          src="/assets/claimLogo.png"
+                                          alt="claimbtn"
+                                          height={40}
+                                          width={40}
+                                          style={{
+                                            cursor: "pointer",
+                                            backgroundColor: "transparent",
+                                          }}
+                                        />
+                                      </div>
                                     </div>
                                   )}
-                                </div>
-                              )}
+                                </button>
+                              </div>
                             </div>
                           </div>
-                          <div
-                            className="flex flex-row gap-4" //style={{ marginTop: 10 }}
-                          >
-                            {getAssistantData &&
-                              getAssistantData.ai.instaUrl ? (
-                              <button onClick={handleInstaClick}>
-                                <InstagramLogo size={25} />
-                                {/* <Image
-                                                                    // layout='responsive'
-                                                                    objectFit='contain' src={"/assets/instagram.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} /> */}
-                              </button>
-                            ) : (
-                              ""
-                            )}
-                            {getAssistantData &&
-                              getAssistantData.ai.youtubeUrl ? (
-                              <button onClick={handleYoutubeClick}>
-                                <YoutubeLogo size={25} />
-                                {/* <Image
-                                                                                // layout='responsive'
-                                                                                objectFit='contain' src={"/assets/youtubeIcon.png"} alt='social' height={25} width={25} style={{ resize: "cover", borderRadius: 3 }} /> */}
-                              </button>
-                            ) : (
-                              ""
-                            )}
-                            {getAssistantData && getAssistantData.ai.webUrl ? (
-                              <button onClick={handleWebClick}>
-                                <Globe size={25} />
-                                {/* <Image
-                                                                                // layout='responsive'
-                                                                                objectFit='contain' src={"/assets/webIcon.png"} alt='social' height={25} width={25}
-                                                                                style={{ resize: "cover", borderRadius: 3 }} /> */}
-                              </button>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                          {/* <div className='flex flex-row pe-4'>
+
+                          <div className="flex flex-row gap-2">
+                            {/* code for assistant name and calls */}
+                            <div className="flex flex-row items-center gap-8">
+                              <div
+                                style={{
+                                  fontSize: 16,
+                                  fontWeight: "400",
+                                  fontFamily: "inter",
+                                }}
+                              >
+                                {getAssistantData && (
+                                  <div
+                                    style={{
+                                      fontSize: 16,
+                                      fontWeight: "400",
+                                      fontFamily: "inter",
+                                    }}
+                                  >
+                                    {getAssistantData.name ? (
+                                      <div
+                                        style={{
+                                          fontSize: 16,
+                                          fontWeight: "400",
+                                          fontFamily: "inter",
+                                        }}
+                                      >
+                                        {getAssistantData.name}
+                                      </div>
+                                    ) : (
+                                      <div
+                                        style={{
+                                          fontSize: 16,
+                                          fontWeight: "400",
+                                          fontFamily: "inter",
+                                        }}
+                                      >
+                                        {getAssistantData.assitant.name}
+                                      </div>
+                                    )}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* code for new social icons */}
+
+                            <div className="flex flex-row gap-4">
+                              {
+                                socialLinks
+                                  .filter(item => item.link)
+                                  .slice(0, 3)
+                                  .map((item) => (
+                                    <button key={item.id} onClick={() => window.open(item.link, '_blank')}>
+                                      {item.icon}
+                                    </button>
+                                  ))
+                              }
+                              {
+                                socialLinks.filter(item => item.link).length > 3 && (
+                                  <button onClick={() => {/* Handle click for showing extra links */ }}>
+                                    +{socialLinks.filter(item => item.link).length - 3}
+                                  </button>
+                                )
+                              }
+                            </div>
+
+
+
+
+
+                            {/* <div className='flex flex-row pe-4'>
                                                                 <div style={{ fontSize: 12, color: "#000000", fontWeight: "400", fontFamily: "inter" }}>
                                                                     Calls:
                                                                 </div>
@@ -1415,37 +1356,18 @@ const Creator = () => {
                                                                     }
                                                                 </div>
                                                             </div> */}
+                          </div>
                         </div>
                       </div>
-                      {/* code for socials */}
-                      {/* <div className='flex flex-row items-center justify-center pb-6 px-6' ref={buttonRef3}
-                                                        style={{
-                                                            border: "2px solid #ffffff", borderTop: "8px solid #e7f3fe",
-                                                            borderBottomLeftRadius: 50,
-                                                            borderBottomRightRadius: 50, marginTop: "-4px",
-                                                            zIndex: 2, backgroundColor: "#ffffff20",
-                                                        }}>
-                                                        <div className='flex flex-col gap-4' style={{ marginTop: 10 }}>
-                                                            <button onClick={handleInstaClick}>
-                                                                <InstagramLogo size={25} />
-                                                                <Image
-                                                                    // layout='responsive'
-                                                                    objectFit='contain' src={"/assets/instagram.png"} alt='social' height={25} width={25} style={{ resize: "cover" }} />
-                                                            </button>
-                                                            <button onClick={handleYoutubeClick}>
-                                                                <YoutubeLogo size={25} />
-                                                                <Image
-                                                                    // layout='responsive'
-                                                                    objectFit='contain' src={"/assets/youtubeIcon.png"} alt='social' height={25} width={25} style={{ resize: "cover", borderRadius: 3 }} />
-                                                            </button>
-                                                            <button onClick={handleWebClick}>
-                                                                <Globe size={25} />
-                                                                <Image
-                                                                    // layout='responsive'
-                                                                    objectFit='contain' src={"/assets/webIcon.png"} alt='social' height={25} width={25} style={{ resize: "cover", borderRadius: 3 }} />
-                                                            </button>
-                                                        </div>
-                                                    </div> */}
+                      {showProfileIcon && (
+                        <div className="-me-12">
+                          <AnimatedButton
+                            snackMessage={snackMessage}
+                            wideScreen={isWideScreen}
+                            profileData={profileData}
+                          />
+                        </div>
+                      )}
                     </div>
                   ) : (
                     <ProfileAnimation
@@ -1833,7 +1755,8 @@ const Creator = () => {
                                         <Image src={"/assets/stars.png"} alt='phone' height={15} width={15} /> */}
                     </button>
                   </div>
-                  {showProfileIcon && (
+                  {/* Profile image shifted to the top */}
+                  {/* {showProfileIcon && (
                     <div className="pe-2">
                       <AnimatedButton
                         snackMessage={snackMessage}
@@ -1841,7 +1764,7 @@ const Creator = () => {
                         profileData={profileData}
                       />
                     </div>
-                  )}
+                  )} */}
                 </div>
               </div>
             </div>

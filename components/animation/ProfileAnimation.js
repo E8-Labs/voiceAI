@@ -8,7 +8,7 @@ import axios from 'axios';
 
 const ProfileAnimation = ({ creator, openClaimPopup, showBorderedProfile }) => {
 
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(true);
     const [getAssistantData, setGetAssistantData] = useState(null);
     // console.log("Creator on profile animation  is", creator);
 
