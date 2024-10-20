@@ -134,7 +134,7 @@ const Creator = () => {
         },
         {
           id: 3,
-          link: getAssistantData.ai.instaUrl, //twitterUrl,
+          link: getAssistantData.ai.twitterUrl, //twitterUrl,
           icon: <XLogo size={25} />
         },
         {
@@ -144,7 +144,7 @@ const Creator = () => {
         },
         {
           id: 5,
-          link: getAssistantData.ai.instaUrl, //fbUrl,
+          link: getAssistantData.ai.fbUrl, //fbUrl,
           icon: <FacebookLogo size={25} />
         },
         // {
