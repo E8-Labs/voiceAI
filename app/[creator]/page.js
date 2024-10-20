@@ -15,7 +15,7 @@ export async function generateMetadata({ params }) {
     const assistantData = response.data.data;
 
     if (assistantData) {
-      title = `Creator: ${assistantData.assitant.name}`;
+      title = `Creator: ${username}`;
       description = `Explore amazing content from ${assistantData.assitant.name} on CreatorX!`;
       imageUrl = assistantData.profile_image || imageUrl;
     }
