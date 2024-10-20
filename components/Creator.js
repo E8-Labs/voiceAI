@@ -746,16 +746,28 @@ const Creator = () => {
 
   return (
     <>
-      {
+      {/* <MetaTags
+        // title={`Creator: ${getAssistantData ? getAssistantData.assitant.name : ""}`}
+        // description={`Explore amazing content from ${getAssistantData ? getAssistantData.assitant.name : ""} on CreatorX!`}
+        // image={getAssistantData ? getAssistantData.profile_image : "/meself.jpeg"} // URL fetched from your API
+        // image="" // URL fetched from your API
+        title={`Creator: Andrew tate.ai : ""}`}
+        description={`Explore amazing content from AndrewTate.ai : ""} on CreatorX!`}
+        image="https://www.blindcircle.com/voiceapp/uploads/images/thumbnail_1727247585368.jpeg"
+      /> */}
+      {/* {
         getAssistantData && (
           <MetaTags
-            title={`Creator: ${getAssistantData ? getAssistantData.assitant.name : ""}`}
-            description={`Explore amazing content from ${getAssistantData ? getAssistantData.assitant.name : ""} on CreatorX!`}
-            image={getAssistantData ? getAssistantData.profile_image : "/meself.jpeg"} // URL fetched from your API
-          // image="" // URL fetched from your API
+            // title={`Creator: ${getAssistantData ? getAssistantData.assitant.name : ""}`}
+            // description={`Explore amazing content from ${getAssistantData ? getAssistantData.assitant.name : ""} on CreatorX!`}
+            // image={getAssistantData ? getAssistantData.profile_image : "/meself.jpeg"} // URL fetched from your API
+            // image="" // URL fetched from your API
+            title={`Creator: Andrew tate.ai : ""}`}
+            description={`Explore amazing content from AndrewTate.ai : ""} on CreatorX!`}
+            image="https://www.blindcircle.com/voiceapp/uploads/images/thumbnail_1727247585368.jpeg"
           />
         )
-      }
+      } */}
       <div className="  overflow-hidden">
         {assistantDataErr ? (
           <div style={backgroundImage} className="  overflow-hidden">
