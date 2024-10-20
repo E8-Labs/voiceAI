@@ -109,6 +109,7 @@ const Creator = () => {
   //     }
   // }, []);
   const [socialLinks, setSocialLinks] = useState([]);
+  const [showAllLinks, setShowAllLinks] = useState(false);
 
   const claimpopUpClick = () => {
     if (getAssistantData.assitant.claimed === true) {
@@ -133,7 +134,7 @@ const Creator = () => {
         },
         {
           id: 3,
-          link: getAssistantData.ai.twitterUrl,
+          link: getAssistantData.ai.instaUrl, //twitterUrl,
           icon: <XLogo size={25} />
         },
         {
@@ -143,7 +144,7 @@ const Creator = () => {
         },
         {
           id: 5,
-          link: getAssistantData.ai.fbUrl,
+          link: getAssistantData.ai.instaUrl, //fbUrl,
           icon: <FacebookLogo size={25} />
         },
         // {
@@ -751,7 +752,7 @@ const Creator = () => {
             title={`Creator: ${getAssistantData ? getAssistantData.assitant.name : ""}`}
             description={`Explore amazing content from ${getAssistantData ? getAssistantData.assitant.name : ""} on CreatorX!`}
             image={getAssistantData ? getAssistantData.profile_image : "/meself.jpeg"} // URL fetched from your API
-            // image="" // URL fetched from your API
+          // image="" // URL fetched from your API
           />
         )
       }
@@ -1296,25 +1297,39 @@ const Creator = () => {
 
                             {/* code for new social icons */}
 
-                            <div className="flex flex-row gap-4">
-                              {
-                                socialLinks
-                                  .filter(item => item.link)
-                                  .slice(0, 3)
-                                  .map((item) => (
-                                    <button key={item.id} onClick={() => window.open(item.link, '_blank')}>
-                                      {item.icon}
-                                    </button>
-                                  ))
-                              }
-                              {
-                                socialLinks.filter(item => item.link).length > 3 && (
-                                  <button onClick={() => {/* Handle click for showing extra links */ }}>
-                                    +{socialLinks.filter(item => item.link).length - 3}
-                                  </button>
-                                )
-                              }
-                            </div>
+                            {
+                              showAllLinks ?
+                                <div className="flex flex-row gap-4 max-w-[18vh] overflow-auto scrollbar scrollbar-thumb-purple scrollbar-track-transparent scrollbar-thin">
+                                  {
+                                    socialLinks.map((item) => (
+                                      <button key={item.id} onClick={() => window.open(item.link, '_blank')}>
+                                        {item.icon}
+                                      </button>
+                                    ))
+                                  }
+                                </div> :
+                                <div className="flex flex-row gap-4">
+                                  {
+                                    socialLinks
+                                      .filter(item => item.link)
+                                      .slice(0, 3)
+                                      .map((item) => (
+                                        <button key={item.id} onClick={() => window.open(item.link, '_blank')}>
+                                          {item.icon}
+                                        </button>
+                                      ))
+                                  }
+                                  {
+                                    socialLinks.filter(item => item.link).length > 3 && (
+                                      <button onClick={() => { setShowAllLinks(true) }}>
+                                        +{socialLinks.filter(item => item.link).length - 3}
+                                      </button>
+                                    )
+                                  }
+                                </div>
+                            }
+
+
 
 
 
