@@ -4,13 +4,12 @@ import Apis from '@/components/apis/Apis';
 
 // Dynamically generate metadata for Open Graph and Twitter
 export async function generateMetadata({ params }) {
-  const username = params.creator; // Get the dynamic username from the URL
+  const username = params.creator;
   let title = `Creator: ${username}`;
   let description = `Explore amazing content from ${username} on CreatorX!`;
   let imageUrl = 'https://www.blindcircle.com/voiceapp/uploads/images/thumbnail_1727247585368.jpeg';
 
   try {
-    // Fetch data from the API based on the username
     const response = await axios.get(`${Apis.GetAssistantData}?username=${username}`);
     const assistantData = response.data.data;
 
@@ -23,10 +22,7 @@ export async function generateMetadata({ params }) {
     console.error('Error fetching assistant data:', error);
   }
 
-  // This metadata will be used for sharing the link (Open Graph, Twitter, etc.)
   return {
-    title,
-    description,
     openGraph: {
       title,
       description,
@@ -47,11 +43,11 @@ export async function generateMetadata({ params }) {
 
 // The page component itself
 const Page = async ({ params }) => {
-  const { username } = params; // Get the username from the URL
+  const { username } = params;
 
   return (
     <div className='w-full'>
-      <Creator username={username} /> {/* Pass the username to the Creator component */}
+      <Creator username={username} />
     </div>
   );
 };
