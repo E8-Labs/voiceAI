@@ -5,9 +5,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import Apis from '@/components/apis/Apis';
 import { Alert, CircularProgress, Fade, Slide, Snackbar } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import loginFunction from '@/components/loginFunction';
 
 const Page = () => {
 
+    loginFunction();
     const router = useRouter();
     const [creators, setCreators] = useState([]);
     const [creatorDetails, setCreatorDetails] = useState();

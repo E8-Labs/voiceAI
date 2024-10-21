@@ -15,46 +15,46 @@ const ProfileNav = () => {
     const [getAssistantData, setGetAssistantData] = useState(null);
     const [userDetails, setUserDetails] = useState(null);
 
-    const links = [
+    const navLinks = [
         {
             id: 1,
             name: 'Dashboard',
-            href: '/profile',
+            href: '/creator/profile',
             image: '/assets/creatorProfileNavIcons/dashboardFocus.png',
             unSelectedImg: '/assets/creatorProfileNavIcons/unFocusDashboard.png'
         },
         {
             id: 2,
             name: 'Ai Persona',
-            href: '/profile/aiPersona',
+            href: '/creator/profile/aiPersona',
             image: '/assets/creatorXWhite.png',
             unSelectedImg: '/assets/creatorXBlack.png'
         },
         {
             id: 3,
             name: 'Social',
-            href: '/profile/socials',
+            href: '/creator/profile/socials',
             image: '/assets/creatorProfileNavIcons/focusSocial.png',
             unSelectedImg: '/assets/creatorProfileNavIcons/socialUnfocus.png'
         },
         {
             id: 4,
             name: 'Knowledge Base',
-            href: '/profile/knowledgebase',
+            href: '/creator/profile/knowledgebase',
             image: '/assets/creatorProfileNavIcons/selectedKb.png',
             unSelectedImg: '/assets/creatorProfileNavIcons/kbUnfocus.png'
         },
         {
             id: 5,
             name: 'Calls',
-            href: '/profile/calls',
+            href: '/creator/profile/calls',
             image: '/assets/creatorProfileNavIcons/callFocus.png',
             unSelectedImg: '/assets/creatorProfileNavIcons/callUnfous.png'
         },
         {
             id: 6,
             name: 'Products & Services',
-            href: '/profile/services',
+            href: '/creator/profile/services',
             image: '/assets/creatorProfileNavIcons/productsFcous.png',
             unSelectedImg: '/assets/creatorProfileNavIcons/conversationsUnfocus.png'
         }
@@ -94,8 +94,11 @@ const ProfileNav = () => {
             }
         }
         const A = localStorage.getItem('User');
-        const B = JSON.parse(A);
-        const name = B.data.user.name;
+        let name = null;
+        if (A) {
+            const B = JSON.parse(A);
+            name = B.data.user.name;
+        }
         // setProfileData(B);
         if (name) {
             setformattedName(formatName(name));
@@ -120,8 +123,11 @@ const ProfileNav = () => {
             }
         }
         const A = localStorage.getItem('User');
-        const B = JSON.parse(A);
-        const email = B.data.user.email;
+        let email = null;
+        if (A) {
+            const B = JSON.parse(A);
+            email = B.data.user.email;
+        }
         // setProfileData(B);
         if (email) {
             setformattedEmail(formatEmail(email));
@@ -134,9 +140,11 @@ const ProfileNav = () => {
     //showing user profile data
     useEffect(() => {
         const localData = localStorage.getItem('User');
-        const data = JSON.parse(localData);
-        console.log("Get user details", data.data.user);
-        setUserDetails(data.data.user);
+        if (localData) {
+            const data = JSON.parse(localData);
+            console.log("Get user details", data.data.user);
+            setUserDetails(data.data.user);
+        }
     }, []);
 
     //code to make triangle
@@ -205,7 +213,7 @@ const ProfileNav = () => {
 
                         <div>
                             {
-                                links.map((link) => {
+                                navLinks.map((link) => {
                                     return (
                                         <div key={link.id} className='mt-3'>
                                             <Link className='flex flex-row gap-4 items-center py-2' sx={{ textDecoration: 'none', cursor: "pointer", color: "black" }}

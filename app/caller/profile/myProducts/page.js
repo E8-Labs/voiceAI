@@ -698,7 +698,7 @@ const Page = () => {
                                             onClick={() => {
                                                 // handleBuyProduct(openBuyProductDrawer.id);
                                                 router.push({
-                                                    pathname: `/callerProfile/myProducts/${openBuyProductDrawer.id}`,
+                                                    pathname: `/caller/profile/myProducts/${openBuyProductDrawer.id}`,
                                                     details: { openBuyProductDrawer }
                                                 });
                                                 console.log("product id is", openBuyProductDrawer.id);

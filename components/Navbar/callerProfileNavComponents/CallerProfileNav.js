@@ -5,9 +5,25 @@ import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image';
 import { Alert, Fade, Link, Snackbar } from '@mui/material';
 import CallerMenu from '../CallerMenu';
+import loginFunction from '@/components/loginFunction';
 
 const CallerProfileNav = ({ handleCloseMenu }) => {
     const router = useRouter();
+
+    loginFunction();
+    // useEffect(() => {
+    //     console.log("Check 1");
+    //     const localData = localStorage.getItem("User");
+    //     if (localData) {
+    //         console.log("Check 2");
+    //         const Data = JSON.parse(localData)
+    //     } else {
+    //         router.push("/tristan.ai");
+    //         // window.open('https://www.youtube.com/watch?v=YINxH2VLP-A&list=RDMM&index=5', "_blank")
+    //         console.log("Check 3");
+    //     }
+    // }, []);
+
     const pathName = usePathname();
     const [formattedName, setformattedName] = useState('');
     const [formattedEmail, setformattedEmail] = useState('');
@@ -21,29 +37,28 @@ const CallerProfileNav = ({ handleCloseMenu }) => {
         {
             id: 1,
             name: 'My Account',
-            href: '/callerProfile',
-            // href: '/callerProfile',
+            href: '/caller/profile',
             image: '/assets/about.png',
             unSelectedImg: '/profileIcon.png'
         },
         {
             id: 2,
             name: 'Calls',
-            href: '/callerProfile/calls',
+            href: '/caller/profile/calls',
             image: '/assets/selectedCallIcon.png',
             unSelectedImg: '/assets/unselectedCallIcon.png'
         },
         {
             id: 3,
             name: 'Products',
-            href: '/callerProfile/myProducts',
+            href: '/caller/profile/myProducts',
             image: '/assets/selectedCreatorIcon.png',
             unSelectedImg: '/assets/unselectedCreatorIcon.png'
         },
         {
             id: 4,
             name: 'Payment Method',
-            href: '/callerProfile/plans',
+            href: '/caller/profile/plans',
             image: '/assets/selectedPlansIcon.png',
             unSelectedImg: '/assets/plansI.png'
         },
@@ -57,14 +72,14 @@ const CallerProfileNav = ({ handleCloseMenu }) => {
         {
             id: 6,
             name: 'Terms & Condition',
-            href: '/callerProfile/termsandconditions',
+            href: '/caller/profile/termsandconditions',
             image: '/assets/selectedTermsIcon.png',
             unSelectedImg: '/assets/terms.png'
         },
         {
             id: 7,
             name: 'Privay Policy',
-            href: '/callerProfile/privacypolicy',
+            href: '/caller/profile/privacypolicy',
             image: '/assets/selectedTermsIcon.png',
             unSelectedImg: '/assets/terms.png'
         }
@@ -72,9 +87,11 @@ const CallerProfileNav = ({ handleCloseMenu }) => {
 
     useEffect(() => {
         const localData = localStorage.getItem('User');
-        const data = JSON.parse(localData);
-        console.log("Get user details", data.data.user);
-        setUserDetails(data.data.user);
+        if (localData) {
+            const data = JSON.parse(localData);
+            console.log("Get user details", data.data.user);
+            setUserDetails(data.data.user);
+        }
 
         //code for recieving event listener
         const handleEvent = (event) => {
@@ -105,8 +122,11 @@ const CallerProfileNav = ({ handleCloseMenu }) => {
             }
         }
         const A = localStorage.getItem('User');
-        const B = JSON.parse(A);
-        const name = B.data.user.name;
+        let name = null;
+        if (A) {
+            const B = JSON.parse(A);
+            name = B.data.user.name;
+        }
         // setProfileData(B);
         if (name) {
             setformattedName(formatName(name));
@@ -131,10 +151,13 @@ const CallerProfileNav = ({ handleCloseMenu }) => {
             }
         }
         const A = localStorage.getItem('User');
-        const B = JSON.parse(A);
-        const email = B.data.user.email;
-        console.log("Local value is", B);
-        console.log("Email value is", email);
+        let email = null;
+        if (A) {
+            const B = JSON.parse(A);
+            email = B.data.user.email;
+            console.log("Local value is", B);
+            console.log("Email value is", email);
+        }
         // return
         // setProfileData(B);
         if (email) {

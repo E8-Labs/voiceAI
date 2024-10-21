@@ -145,10 +145,11 @@ const Page = () => {
                 Test Your AI
               </button>
             </div> */}
-            
+
 
             <div className='w-full flex flex-col'>
-              {
+              <Dashboard />
+              {/* {
                 selectedMenu === 1 ? (
                   <Dashboard />
                 ) : selectedMenu === 2 ? (
@@ -159,7 +160,7 @@ const Page = () => {
                 ) : selectedMenu === 4 ? (
                   <Calls />
                 ) : ""
-              }
+              } */}
             </div>
           </div>
         </div>

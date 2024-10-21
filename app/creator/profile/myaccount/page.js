@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import BasicInfo from '@/components/Navbar/profilenavbarcomponents/myaccount/Basicinfo';
-import MyAi from '../../../components/Navbar/profilenavbarcomponents/myaccount/MyAi';
+import MyAi from '@/components/Navbar/profilenavbarcomponents/myaccount/MyAi';
 
 const Page = () => {
 

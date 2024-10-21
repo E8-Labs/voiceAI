@@ -1,4 +1,4 @@
-const BasePath = 'https://www.blindcircle.com/voice/' // Link for live or git //'https://www.blindcircle.com:444/voice/'
+const BasePath = 'https://www.blindcircle.com/voicetest/' // Link for live or git //'https://www.blindcircle.com:444/voice/'
 
 const Apis = {
     //user flow apis

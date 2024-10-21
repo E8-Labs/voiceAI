@@ -31,11 +31,9 @@ export default function AnimatedButton({ snackMessage, error = false, profileDat
             const Data = JSON.parse(localData);
             console.log("Data recieved is", Data);
             if (Data.data.user.role === "caller") {
-                // router.push('/callerProfile')
-                window.open('/callerProfile', '_blank');
+                window.open('/caller/profile', '_blank');
             } else {
-                // router.push('/profile');
-                window.open('/profile', '_blank');
+                window.open('/creator/profile', '_blank');
             }
         }
         // return

@@ -77,23 +77,28 @@ const Dashboard = () => {
         setCallersLoader(true);
         try {
             const localData = localStorage.getItem('User');
-            const Data = JSON.parse(localData);
-            const AuthToken = Data.data.token;
-            const ApiPath = Apis.DashBoardApi;
-            const result = await axios.get(ApiPath, {
-                headers: {
-                    "Authorization": "Bearer " + AuthToken,
-                    "Content-Type": "application/json"
+            if (localData) {
+                const Data = JSON.parse(localData);
+                const AuthToken = Data.data.token;
+                const ApiPath = Apis.DashBoardApi;
+                const result = await axios.get(ApiPath, {
+                    headers: {
+                        "Authorization": "Bearer " + AuthToken,
+                        "Content-Type": "application/json"
+                    }
+                });
+                if (result && result.data.data) {
+                    console.log("Result of get dashboard :::", result);
+                    localStorage.setItem('DashboardData', JSON.stringify(result.data.data));
+                    setDashboardDetails(result.data.data['24_hours']);
+                    setDashBoardData(result.data.data['24_hours']);
+                    setTopeCallersDetails(result.data.data['24_hours'].topTenCallers);
+                    setProducts(result.data.data.products);
+                    // setProducts(result.data.data.products);
                 }
-            });
-            if (result && result.data.data) {
-                console.log("Result of get dashboard :::", result);
-                localStorage.setItem('DashboardData', JSON.stringify(result.data.data));
-                setDashboardDetails(result.data.data['24_hours']);
-                setDashBoardData(result.data.data['24_hours']);
-                setTopeCallersDetails(result.data.data['24_hours'].topTenCallers);
-                setProducts(result.data.data.products);
-                // setProducts(result.data.data.products);
+            } else {
+                router.push("/tristan")
+                return
             }
         } catch (error) {
             console.log('Dashboard API error:', error);
@@ -104,7 +109,7 @@ const Dashboard = () => {
 
     const handleSelectTime = (event) => {
         event.preventDefault();
-        setAnalyticsDuration(event.target.value); // This will trigger the useEffect to update the data based on duration
+        setAnalyticsDuration(event.target.value);
     };
 
 

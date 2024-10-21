@@ -7,11 +7,28 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import imageCompression from 'browser-image-compression';
 import { Alert, CircularProgress, Fade, Snackbar } from '@mui/material';
+import loginFunction from '@/components/loginFunction';
 
 const Page = () => {
 
-    const fileInputRef = useRef(null);
+
     const router = useRouter();
+
+    loginFunction();
+    // useEffect(() => {
+    //     console.log("Check 1");
+    //     const localData = localStorage.getItem("User");
+    //     if (localData) {
+    //         console.log("Check 2");
+    //         const Data = JSON.parse(localData)
+    //     } else {
+    //         router.push("/tristan.ai");
+    //         // window.open('https://www.youtube.com/watch?v=YINxH2VLP-A&list=RDMM&index=5', "_blank")
+    //         console.log("Check 3");
+    //     }
+    // }, []);
+
+    const fileInputRef = useRef(null);
     const [accessDenied, setAccessDenied] = useState("not allowed");
     const [userDetails, setUserDetails] = useState(null);
     const [userName, setUserName] = useState("");
@@ -283,7 +300,7 @@ const Page = () => {
 
     const handleGoback = () => {
         // router.push(`/${assistantData && assistantData.assitant.name}.ai`);
-        if(window.opener){
+        if (window.opener) {
             window.opener.focus();
             window.close();
         }
