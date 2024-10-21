@@ -4,7 +4,7 @@ import Apis from '@/components/apis/Apis';
 
 // Dynamically generate metadata for Open Graph and Twitter
 export async function generateMetadata({ params }) {
-  const username = params.username; // Get the dynamic username from the URL
+  const username = params.creator; // Get the dynamic username from the URL
   let title = `Creator: ${username}`;
   let description = `Explore amazing content from ${username} on CreatorX!`;
   let imageUrl = 'https://www.blindcircle.com/voiceapp/uploads/images/thumbnail_1727247585368.jpeg';
