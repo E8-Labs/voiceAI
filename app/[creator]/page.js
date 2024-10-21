@@ -2,7 +2,7 @@ import Creator from '@/components/Creator';
 import axios from 'axios';
 import Apis from '@/components/apis/Apis';
 
-// Dynamically generate metadata for Open Graph and Twitter
+// Dynamically generate the metadata based on the username from the URL
 export async function generateMetadata({ params }) {
   const username = params.creator; // Get the dynamic username from the URL
   let title = `Creator: ${username}`;
@@ -15,7 +15,7 @@ export async function generateMetadata({ params }) {
     const assistantData = response.data.data;
 
     if (assistantData) {
-      title = `Creator: ${assistantData.assitant.name}`;
+      title = `Creator: ${username}`;
       description = `Explore amazing content from ${assistantData.assitant.name} on CreatorX!`;
       imageUrl = assistantData.profile_image || imageUrl;
     }
@@ -23,10 +23,12 @@ export async function generateMetadata({ params }) {
     console.error('Error fetching assistant data:', error);
   }
 
-  // This metadata will be used for sharing the link (Open Graph, Twitter, etc.)
   return {
     title,
     description,
+    icons: {
+      icon: imageUrl,
+    },
     openGraph: {
       title,
       description,
