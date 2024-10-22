@@ -346,7 +346,7 @@ const VerifyPhoneNumber = ({
                 router.push(`/admin/admin`);
               } else if (response.data.data.user.role == "creator") {
                 localStorage.setItem("User", JSON.stringify(response.data));
-                window.open('/caller/profile', '_blank');
+                window.open('/creator/profile', '_blank');
               } else if (fromBuyStatus) {
                 const Data = JSON.parse(fromBuyStatus);
                 window.open(`/buyproduct/${Data.id}`);
