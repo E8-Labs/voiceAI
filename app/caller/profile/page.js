@@ -176,7 +176,8 @@ const Page = () => {
 
         // return
         localStorage.removeItem('User');
-        router.push(`/${LocalData}`);
+        // router.push(`/${LocalData}`);
+        router.push('https://www.mycreatorx.com/');
         // window.open(`/${LocalData}`, '_blank')
     }
 

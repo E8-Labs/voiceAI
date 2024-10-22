@@ -37,6 +37,7 @@ import { getMessaging, getToken } from "firebase/messaging";
 // import { messaging } from "../firebase";
 // import { messaging } from "../../public/firebase-messaging-sw";
 import { requestToken } from "../firebase";
+import loginFunction from "../loginFunction";
 
 const boxVariants = {
   enter: (direction) => ({
@@ -54,12 +55,15 @@ const boxVariants = {
 };
 
 export default function ScriptAnimation2({ onChangeIndex }) {
+
   let stripePublickKey =
     process.env.NEXT_PUBLIC_REACT_APP_ENVIRONMENT === "Production"
       ? process.env.NEXT_PUBLIC_REACT_APP_STRIPE_PUBLISHABLE_KEY_LIVE
       : process.env.NEXT_PUBLIC_REACT_APP_STRIPE_PUBLISHABLE_KEY;
   console.log("Public key is ", stripePublickKey);
   const stripePromise = loadStripe(stripePublickKey);
+
+  loginFunction();
 
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(2);
@@ -87,6 +91,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
   const [otherUrl, setOtherUrl] = useState("");
   const [otherGoal, setOtherGoal] = useState("");
   const [selected, setSlected] = useState("");
+  const [selectedProducts, setSelectedProducts] = useState([]);
   const [buildScriptErr, setBuildScriptErr] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
   const [buildScriptLoader, setBuildScriptLoader] = useState(false);
@@ -126,6 +131,12 @@ export default function ScriptAnimation2({ onChangeIndex }) {
     );
     setAllQuestionsFilled(allQuestionFilled);
   }, [inputs]);
+
+  //multiple products selection
+  const handleProductChange = (event) => {
+    const value = event.target.value;
+    setSelectedProducts(value);
+  };
 
   //code for callingipt api
   const handleBuildScript = async (setPriceData) => {
@@ -177,11 +188,19 @@ export default function ScriptAnimation2({ onChangeIndex }) {
       }
 
       //checking the goal sending
-      if (selected) {
-        formData.append("productToSell", selected);
-      } else if (webinarUrl) {
+      // if (selected) {
+      //   formData.append("productToSell", selected);
+      // } 
+      if (selectedProducts) {
+        selectedProducts.forEach((product, index) => {
+          formData.append(`products[${index}][productName]`, product);
+          formData.append(`products[${index}][isSelling]`, true);
+        });
+      }
+      if (webinarUrl) {
         formData.append("webinarUrl", webinarUrl);
-      } else if (otherUrl) {
+      }
+      if (otherUrl) {
         formData.append("goalUrl", otherUrl);
       }
       if (otherGoal) {
@@ -213,7 +232,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
       });
 
       if (response) {
-        //console.log("Response is", response.data);
+        console.log("Response of api is", response.data);
         if (response.data.status === true) {
           console.log("Response of buildscript api is", response);
           handleContinue();
@@ -1081,6 +1100,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                 pattern="[0-9]*"
                                 value={row.productAmount}
                                 autoFocus={true}
+                                placeholder="Price"
                                 // onChange={(e) => handleInputChange2(index, 'productAmount', e)}
                                 onInput={(e) => {
                                   // Remove any non-numeric characters
@@ -1235,10 +1255,10 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                       fontFamily: "inter",
                     }}
                   >
-                    what do you want your AI to offer during a call?
+                    What do you want your AI to offer during a call?
                   </div>
                   <div
-                    className="w-full sm:w-11/12  flex flex-col justify-center items-center overflow-y-auto scrollbar scrollbar-thumb-purple scrollbar-thin scrollbar-track-transparent"
+                    className="w-full sm:w-10/12  flex flex-col justify-center items-center overflow-y-auto scrollbar scrollbar-thumb-purple scrollbar-thin scrollbar-track-transparent"
                     //overflow-y-auto scrollbar scrollbar-thumb-purple scrollbar-track-transparent scrollbar-thin
                     style={{
                       // overflow: 'auto',
@@ -1255,20 +1275,25 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
                       <div className="flex flex-col mt-8">
                         <div>
-                          <div
+                          <button
                             className="w-full flex flex-row w-11/12 items-center justify-between "
                             style={goalsStyles.button}
+                            onClick={() => {
+                              setSellProduct(!sellProduct);
+                              // setInviteWebinar(false);
+                              // setSetSomethingElse(false);
+                            }}
                           >
                             <div style={{ fontSize: 12, fontWeight: "normal" }}>
                               Sell a Product / Service
                             </div>
                             <Image
                               style={{ cursor: "pointer" }}
-                              onClick={() => {
-                                setSellProduct(!sellProduct);
-                                // setInviteWebinar(false);
-                                // setSetSomethingElse(false);
-                              }}
+                              // onClick={() => {
+                              //   setSellProduct(!sellProduct);
+                              //   // setInviteWebinar(false);
+                              //   // setSetSomethingElse(false);
+                              // }}
                               src={
                                 sellProduct
                                   ? "/assets/selected.png"
@@ -1278,13 +1303,13 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                               height={30}
                               width={30}
                             />
-                          </div>
+                          </button>
                         </div>
                       </div>
 
                       {sellProduct && (
                         <div className="w-full flex flex-col mt-8">
-                          <FormControl className="w-full mt-4">
+                          {/* <FormControl className="w-full mt-4">
                             <Select
                               className=" border-none rounded-md"
                               displayEmpty
@@ -1324,26 +1349,73 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                 </MenuItem>
                               ))}
                             </Select>
+                          </FormControl> */}
+                          <FormControl className="w-full mt-4">
+                            <Select
+                              className="border-none rounded-md"
+                              multiple // Enable multiple selections
+                              displayEmpty
+                              value={selectedProducts}
+                              onChange={handleProductChange}
+                              renderValue={(selected) => {
+                                if (selected.length === 0) {
+                                  return <span style={{ textDecoration: "none" }}>Select</span>;
+                                }
+                                return selected.join(", "); // Show selected items
+                              }}
+                              sx={{
+                                backgroundColor: "#EDEDED80",
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                  border: "none",
+                                },
+                              }}
+                              MenuProps={{
+                                PaperProps: {
+                                  sx: { backgroundColor: "#ffffff" },
+                                },
+                              }}
+                            >
+                              <MenuItem value="">
+                                <span>Select</span>
+                              </MenuItem>
+                              {inputRows.map((item) => (
+                                <MenuItem
+                                  key={item.productName}
+                                  value={item.productName}
+                                  sx={{
+                                    backgroundColor:
+                                      selectedProducts.includes(item.productName) ? "red" : "",
+                                  }}
+                                >
+                                  {item.productName}
+                                </MenuItem>
+                              ))}
+                            </Select>
                           </FormControl>
                         </div>
                       )}
 
                       <div className="w-full flex flex-col mt-8">
                         <div>
-                          <div
+                          <button
                             className="flex flex-row w-full items-center justify-between "
                             style={goalsStyles.button}
+                            onClick={() => {
+                              setInviteWebinar(!inviteWebinar);
+                              // setSellProduct(false);
+                              // setSetSomethingElse(false);
+                            }}
                           >
                             <div style={{ fontSize: 12, fontWeight: "normal" }}>
                               Invite to a webinar
                             </div>
                             <Image
                               style={{ cursor: "pointer" }}
-                              onClick={() => {
-                                setInviteWebinar(!inviteWebinar);
-                                // setSellProduct(false);
-                                // setSetSomethingElse(false);
-                              }}
+                              // onClick={() => {
+                              //   setInviteWebinar(!inviteWebinar);
+                              //   // setSellProduct(false);
+                              //   // setSetSomethingElse(false);
+                              // }}
                               src={
                                 inviteWebinar
                                   ? "/assets/selected.png"
@@ -1353,7 +1425,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                               height={30}
                               width={30}
                             />
-                          </div>
+                          </button>
                         </div>
 
                         {inviteWebinar && (
@@ -1391,7 +1463,12 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
                       <div className="w-full flex flex-col mt-8">
                         <div>
-                          <div
+                          <button
+                            onClick={() => {
+                              setSetSomethingElse(!somethingElse);
+                              // setSellProduct(false);
+                              // setInviteWebinar(false);
+                            }}
                             className="flex flex-row w-full items-center justify-between "
                             style={goalsStyles.button}
                           >
@@ -1400,11 +1477,11 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             </div>
                             <Image
                               style={{ cursor: "pointer" }}
-                              onClick={() => {
-                                setSetSomethingElse(!somethingElse);
-                                // setSellProduct(false);
-                                // setInviteWebinar(false);
-                              }}
+                              // onClick={() => {
+                              //   setSetSomethingElse(!somethingElse);
+                              //   // setSellProduct(false);
+                              //   // setInviteWebinar(false);
+                              // }}
                               src={
                                 somethingElse
                                   ? "/assets/selected.png"
@@ -1414,7 +1491,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                               height={30}
                               width={30}
                             />
-                          </div>
+                          </button>
                           {somethingElse && (
                             <div>
                               <div className="w-full mt-8" style={{}}>
@@ -1468,8 +1545,8 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                     </div>
                   </div>
 
-                  {webinarUrl || otherUrl || otherGoal || selected ? (
-                    <div className="w-full sm:w-10/12">
+                  {webinarUrl || otherUrl || otherGoal || selectedProducts ? (
+                    <div className="w-full sm:w-9/12">
                       <button
                         onClick={handleContinue}
                         className="bg-purple hover:bg-purple text-white w-full mt-4"
@@ -1656,13 +1733,14 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                     >
                       Subscribe
                     </div>
-                    <div
+                    <button
                       className="flex flex-row items-center w-8/12 px-6 rounded-xl justify-between"
                       style={{
                         height: "70px",
                         border: "1px solid #EFEFEF",
                         marginTop: 30,
                       }}
+                      onClick={() => handlePlanSelect(0)}
                     >
                       <div
                         style={{
@@ -1673,7 +1751,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                       >
                         $97/ mo
                       </div>
-                      <button onClick={() => handlePlanSelect(0)}>
+                      <div>
                         {selectedPlan === 0 ? (
                           <Image
                             alt="selected"
@@ -1691,12 +1769,13 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             width={27}
                           />
                         )}
-                      </button>
-                    </div>
-                    <div
+                      </div>
+                    </button>
+                    <button
+                      onClick={() => handlePlanSelect(1)}
                       className="items-center w-8/12 px-6 rounded-xl justify-between"
                       style={{
-                        height: "70px",
+                        height: "auto",
                         border: "1px solid #EFEFEF",
                         marginTop: 50,
                       }}
@@ -1713,7 +1792,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                           Recommended
                         </div>
                       </div>
-                      <div className="flex flex-row items-center w-full rounded-xl justify-between">
+                      <div className="flex flex-row items-center w-full rounded-xl justify-between pb-2">
                         <div
                           style={{
                             fontWeight: "500",
@@ -1741,7 +1820,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                           </div>
                         </div>
                         <div className="flex flex-row gap-2 items-center">
-                          <button onClick={() => handlePlanSelect(1)}>
+                          <div>
                             {selectedPlan === 1 ? (
                               <Image
                                 alt="selected"
@@ -1759,10 +1838,10 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                                 width={27}
                               />
                             )}
-                          </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </button>
                     <div
                       className="w-8/12 flex justify-center"
                       style={{ marginTop: 30 }}
@@ -1863,7 +1942,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                         marginTop: 30,
                       }}
                     >
-                      You will not be charged right now!
+                      You will not be charged to this!
                     </div>
                     <div
                       className="text-lightWhite w-8/12"

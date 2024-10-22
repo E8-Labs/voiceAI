@@ -26,7 +26,7 @@ function AiSocialLinks({ handleBuildAI, aiName, buildAiLoader }) {
     const [validFacebookLinkErr, setValidFacebookLinkErr] = useState(false);
     const [validWebLinkErr, setValidWebLinkErr] = useState(false);
     const [validLinkedInLinkErr, setValidLinkedInLinkErr] = useState(false);
-    const [addScoialsPopup, setAddSocialsPopup] = useState(false);
+    const [addSocialsPopup, setAddSocialsPopup] = useState(false);
     //show the more socials icons
     const [showLinked, setShowLinkedIn] = useState(false);
     const [showWeb, setShowWeb] = useState(false);
@@ -34,6 +34,13 @@ function AiSocialLinks({ handleBuildAI, aiName, buildAiLoader }) {
     const [showFb, setShowFb] = useState(false);
     const [showSpotify, setShowSpotify] = useState(false);
     const [aiLoader, setAiLoader] = useState(buildAiLoader);
+    //code for showing the new social links
+    const [socials, setSocials] = useState(['instagram', 'youtube', 'twitter']);
+
+    const handleAddSocial = (social) => {
+        setSocials((prevSocials) => [...prevSocials, social]);
+        setAddSocialsPopup(false); // Close modal after adding
+    };
 
     useEffect(() => {
         const localData = localStorage.getItem('User');
@@ -151,7 +158,8 @@ function AiSocialLinks({ handleBuildAI, aiName, buildAiLoader }) {
     return (
         <div className='w-full flex flex-col justify-center items-center' //style={{ height: '100%', overflow: 'auto' }} 
         >
-            <div className='w-full' style={{ maxHeight: '65vh', overflow: 'auto', scrollbarWidth: 'none' }}>
+            {/* remove scroll from here */}
+            <div className='w-full'>
 
                 <div className="mt-12 flex flex-row items-center gap-2">
                     <div className='flex flex-row items-center'>
@@ -233,295 +241,290 @@ function AiSocialLinks({ handleBuildAI, aiName, buildAiLoader }) {
                     {/* This is used as your knowledge base to train your ai model. */}
                     Add your social media pages
                 </div>
-                <div className='flex flex-row gap-3 items-center'>
-                    {/* <Image style={styles.image}
-                        src={'/assets/instagram.png'} alt='web'
-                        height={30} width={30} /> */}
-                    <InstagramLogo size={30} />
-                    <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
-                        <input style={styles.urlsInput}
-                            value={instaUrl}
-                            autoFocus={true}
-                            onChange={(e) => {
-                                setInstaurl(e.target.value);
-                                const url = e.target.value;
+                <div className='overflow-auto max-h-[40vh] scrollbar scrollbar-track-transparent scrollbar-thin scrollbar-thumb-purple'>
+                    {socials.map((social) => {
+                        switch (social) {
+                            case 'instagram':
+                                return (
+                                    <div key="instagram">
+                                        <div className='flex flex-row gap-3 items-center'>
+                                            <InstagramLogo size={30} />
+                                            <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
+                                                <input style={styles.urlsInput}
+                                                    value={instaUrl}
+                                                    onChange={(e) => {
+                                                        setInstaurl(e.target.value);
+                                                        const url = e.target.value;
 
-                                if (instaUrl) {
-                                    if (validateUrl(url)) {
-                                        console.log("Valid URL");
-                                        setValidLinkErr(false);
-                                    } else {
-                                        console.log("Invalid URL");
-                                        setValidLinkErr(true);
-                                    }
-                                }
-                            }}
-                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
-                        />
-                    </div>
-                </div>
-                <div className='mt-1 mb-1' style={linkErrStyle}>
-                    {
-                        instaUrl && validLinkErr && "Invalid link" //: 'valid'
-                    }
-                </div>
-
-                <div className='flex flex-row gap-3 items-center'>
-                    {/* <Image style={styles.image}
-                        src={'/assets/youtubeIcon.png'} alt='Youtube'
-                        height={30} width={30} /> */}
-                    <YoutubeLogo size={30} />
-                    <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
-                        <input style={styles.urlsInput}
-                            value={youtubeUrl}
-                            onChange={(e) => {
-                                setYoutubeurl(e.target.value);
-                                const url = e.target.value;
-
-                                if (youtubeUrl) {
-                                    if (validateUrl(url)) {
-                                        console.log("Valid URL");
-                                        setValidYoutubeLinkErr(false);
-                                    } else {
-                                        console.log("Invalid URL");
-                                        setValidYoutubeLinkErr(true);
-                                    }
-                                }
-                            }}
-                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
-                        />
-                    </div>
-                </div>
-                <div className='mt-1 mb-2' style={linkErrStyle}>
-                    {
-                        youtubeUrl && validYoutubeLinkErr && "Invalid link"
-                    }
-                </div>
-
-                <div className='flex flex-row gap-3 items-center'>
-                    {/* <Image style={styles.image}
-                        src={'/assets/twiterIcon.png'} alt='twiter'
-                        height={30} width={30} /> */}
-                    {/* <TwitterLogo size={30} /> */}
-                    <XLogo size={30} />
-                    <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
-                        <input style={styles.urlsInput}
-                            value={twitterUrl}
-                            onChange={(e) => {
-                                setTwitterurl(e.target.value);
-                                const url = e.target.value;
-
-                                if (twitterUrl) {
-                                    if (validateUrl(url)) {
-                                        console.log("Valid URL");
-                                        setValidTwitterLinkErr(false);
-                                    } else {
-                                        console.log("Invalid URL");
-                                        setValidTwitterLinkErr(true);
-                                    }
-                                }
-                            }}
-                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
-                        />
-
-                    </div>
-                </div>
-                <div className='mt-1 mb-2' style={linkErrStyle}>
-                    {
-                        twitterUrl && validTwitterLinkErr && "Invalid link"
-                    }
-                </div>
-                {
-                    showLinked ?
-                        <div>
-                            <div className='flex flex-row gap-3 items-center'>
-                                <LinkedinLogo size={30} />
-                                {/* <Image style={styles.image}
-                        src={'/assets/webIcon.png'} alt='web'
-                        height={30} width={30} /> */}
-                                <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
-                                    <input style={styles.urlsInput}
-                                        value={linkedInUrl}
-                                        autoFocus={true}
-                                        onChange={(e) => {
-                                            setLinkedInurl(e.target.value);
-                                            const url = e.target.value;
-
-                                            if (linkedInUrl) {
-                                                if (validateUrl(url)) {
-                                                    console.log("Valid URL");
-                                                    // setValidLinkErr(false);
-                                                    setValidLinkedInLinkErr(false);
-                                                } else {
-                                                    console.log("Invalid URL");
-                                                    setValidLinkedInLinkErr(true);
-                                                }
+                                                        if (instaUrl) {
+                                                            if (validateUrl(url)) {
+                                                                console.log("Valid URL");
+                                                                setValidLinkErr(false);
+                                                            } else {
+                                                                console.log("Invalid URL");
+                                                                setValidLinkErr(true);
+                                                            }
+                                                        }
+                                                    }}
+                                                    className='w-full bg-transparent outline-none border-none px-2'
+                                                    type='text' placeholder='Paste Instagram URL'
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className='mt-1 mb-1' style={linkErrStyle}>
+                                            {
+                                                instaUrl && validLinkErr && "Invalid link" //: 'valid'
                                             }
-                                        }}
-                                        className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
-                                    />
-                                </div>
-                            </div>
-                            <div className='mt-1 mb-2' style={linkErrStyle}>
-                                {
-                                    linkedInUrl && validLinkedInLinkErr && "Invalid link"
-                                }
-                            </div>
-                        </div> : ""
-                }
-                {
-                    showWeb ?
-                        <div>
-                            <div className='flex flex-row gap-3 items-center'>
-                                <Globe size={30} />
-                                {/* <Image style={styles.image}
-                        src={'/assets/webIcon.png'} alt='web'
-                        height={30} width={30} /> */}
-                                <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
-                                    <input style={styles.urlsInput}
-                                        value={webUrl}
-                                        autoFocus={true}
-                                        onChange={(e) => {
-                                            setWeburl(e.target.value);
-                                            const url = e.target.value;
+                                        </div>
+                                    </div>
+                                );
+                            case 'youtube':
+                                return (
+                                    <div key="youtube">
+                                        <div className='flex flex-row gap-3 items-center'>
+                                            <YoutubeLogo size={30} />
+                                            <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
+                                                <input style={styles.urlsInput}
+                                                    value={youtubeUrl}
+                                                    onChange={(e) => {
+                                                        setYoutubeurl(e.target.value);
+                                                        const url = e.target.value;
 
-                                            if (webUrl) {
-                                                if (validateUrl(url)) {
-                                                    console.log("Valid URL");
-                                                    // setValidLinkErr(false);
-                                                    setValidWebLinkErr(false);
-                                                } else {
-                                                    console.log("Invalid URL");
-                                                    setValidWebLinkErr(true);
-                                                }
+                                                        if (youtubeUrl) {
+                                                            if (validateUrl(url)) {
+                                                                console.log("Valid URL");
+                                                                setValidYoutubeLinkErr(false);
+                                                            } else {
+                                                                console.log("Invalid URL");
+                                                                setValidYoutubeLinkErr(true);
+                                                            }
+                                                        }
+                                                    }}
+                                                    className='w-full bg-transparent outline-none border-none px-2'
+                                                    type='text' placeholder='Paste YouTube URL'
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className='mt-1 mb-2' style={linkErrStyle}>
+                                            {
+                                                youtubeUrl && validYoutubeLinkErr && "Invalid link"
                                             }
-                                        }}
-                                        className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
-                                    />
-                                </div>
-                            </div>
-                            <div className='mt-1 mb-2' style={linkErrStyle}>
-                                {
-                                    webUrl && validWebLinkErr && "Invalid link"
-                                }
-                            </div>
-                        </div> : ""
-                }
-                {
-                    showFb ?
-                        <div>
-                            <div className='flex flex-row gap-3 items-center'>
-                                {/* <Image style={styles.image}
-                                    src={'/assets/fbIcon.png'} alt='facebook'
-                                    height={30} width={30} /> */}
-                                <FacebookLogo size={30} />
-                                <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
-                                    {/* <input style={styles.urlsInput}
-                            className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
-                        /> */}
-                                    <input style={styles.urlsInput}
-                                        value={fbUrl}
-                                        onChange={(e) => {
-                                            setFburl(e.target.value);
-                                            const url = e.target.value;
+                                        </div>
+                                    </div>
+                                );
+                            case 'twitter':
+                                return (
+                                    <div key="twitter">
+                                        <div className='flex flex-row gap-3 items-center mt-4'>
+                                            <XLogo size={30} />
+                                            <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
+                                                <input style={styles.urlsInput}
+                                                    value={twitterUrl}
+                                                    onChange={(e) => {
+                                                        setTwitterurl(e.target.value);
+                                                        const url = e.target.value;
 
-                                            if (fbUrl) {
-                                                if (validateUrl(url)) {
-                                                    console.log("Valid URL");
-                                                    setValidFacebookLinkErr(false);
-                                                } else {
-                                                    console.log("Invalid URL");
-                                                    setValidFacebookLinkErr(true);
-                                                }
+                                                        if (twitterUrl) {
+                                                            if (validateUrl(url)) {
+                                                                console.log("Valid URL");
+                                                                setValidTwitterLinkErr(false);
+                                                            } else {
+                                                                console.log("Invalid URL");
+                                                                setValidTwitterLinkErr(true);
+                                                            }
+                                                        }
+                                                    }}
+                                                    className='w-full bg-transparent outline-none border-none px-2'
+                                                    type='text' placeholder='Paste Twitter URL'
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className='mt-1 mb-2' style={linkErrStyle}>
+                                            {
+                                                twitterUrl && validTwitterLinkErr && "Invalid link"
                                             }
-                                        }}
-                                        className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
-                                    />
-                                </div>
-                            </div>
-                            <div className='mt-1 mb-2' style={linkErrStyle}>
-                                {
-                                    fbUrl && validFacebookLinkErr && "Invalid link"
-                                }
-                            </div>
-                        </div> : ""
-                }
+                                        </div>
+                                    </div>
+                                );
+                            case 'facebook':
+                                return (
+                                    <div key="facebook">
+                                        <div className='flex flex-row gap-3 items-center mt-4'>
+                                            <FacebookLogo size={30} />
+                                            <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
+                                                <input style={styles.urlsInput}
+                                                    value={fbUrl}
+                                                    onChange={(e) => {
+                                                        setFburl(e.target.value);
+                                                        const url = e.target.value;
 
-                {
-                    showApplePodCast ?
-                        <div>
-                            <div className='flex flex-row gap-3 items-center'>
-                                {/* <Image style={styles.image}
-                                    src={'/assets/appleProducts.png'} alt='Icon'
-                                    height={30} width={30} /> */}
-                                <ApplePodcastsLogo size={30} />
-                                <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
-                                    <input style={styles.urlsInput}
-                                        value={appleProducts}
-                                        onChange={(e) => {
-                                            setAppleProducts(e.target.value);
-                                            const url = e.target.value;
-
-                                            if (appleProducts) {
-                                                if (validateUrl(url)) {
-                                                    console.log("Valid URL");
-                                                    setValidApplePodcastLinkErr(false);
-                                                } else {
-                                                    console.log("Invalid URL");
-                                                    setValidApplePodcastLinkErr(true);
-                                                }
+                                                        if (fbUrl) {
+                                                            if (validateUrl(url)) {
+                                                                console.log("Valid URL");
+                                                                setValidFacebookLinkErr(false);
+                                                            } else {
+                                                                console.log("Invalid URL");
+                                                                setValidFacebookLinkErr(true);
+                                                            }
+                                                        }
+                                                    }}
+                                                    className='w-full bg-transparent outline-none border-none px-2'
+                                                    type='text' placeholder='Paste Facebook URL'
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className='mt-1 mb-2' style={linkErrStyle}>
+                                            {
+                                                fbUrl && validFacebookLinkErr && "Invalid link"
                                             }
-                                        }}
-                                        className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
-                                    />
+                                        </div>
+                                    </div>
+                                );
+                            case 'linkedin':
+                                return (
+                                    <div key="linkedin">
+                                        <div className='flex flex-row gap-3 items-center mt-4'>
+                                            <LinkedinLogo size={30} />
+                                            <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
+                                                <input style={styles.urlsInput}
+                                                    value={linkedInUrl}
+                                                    onChange={(e) => {
+                                                        setLinkedInurl(e.target.value);
+                                                        const url = e.target.value;
 
-                                </div>
-                            </div>
-                            <div className='mt-1 mb-2' style={linkErrStyle}>
-                                {
-                                    appleProducts && validApplePodcastLinkErr && "Invalid link"
-                                }
-                            </div>
-                        </div> : ""
-                }
+                                                        if (linkedInUrl) {
+                                                            if (validateUrl(url)) {
+                                                                console.log("Valid URL");
+                                                                // setValidLinkErr(false);
+                                                                setValidLinkedInLinkErr(false);
+                                                            } else {
+                                                                console.log("Invalid URL");
+                                                                setValidLinkedInLinkErr(true);
+                                                            }
+                                                        }
+                                                    }}
+                                                    className='w-full bg-transparent outline-none border-none px-2'
+                                                    type='text' placeholder='Paste LinkedIn URL'
+                                                />
+                                            </div>
+                                        </div>
 
-                {showSpotify ?
-                    <div>
-                        <div className='flex flex-row gap-3 items-center'>
-                            {/* <Image style={styles.image}
-                                src={'/assets/spotify.png'} alt='tiktok'
-                                height={30} width={30} /> */}
-                            <SpotifyLogo size={30} />
-                            <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
-                                <input style={styles.urlsInput}
-                                    value={spotifyurl}
-                                    onChange={(e) => {
-                                        setSpotifyurl(e.target.value);
-                                        const url = e.target.value;
-
-                                        if (spotifyurl) {
-                                            if (validateUrl(url)) {
-                                                console.log("Valid URL");
-                                                setValidSpotifyLinkErr(false);
-                                            } else {
-                                                console.log("Invalid URL");
-                                                setValidSpotifyLinkErr(true);
+                                        <div className='mt-1 mb-2' style={linkErrStyle}>
+                                            {
+                                                linkedInUrl && validLinkedInLinkErr && "Invalid link"
                                             }
-                                        }
-                                    }}
-                                    className='w-full bg-transparent outline-none border-none px-2' type='text' placeholder='Paste URL'
-                                />
+                                        </div>
+                                    </div>
+                                );
+                            case 'web':
+                                return (
+                                    <div key="web">
+                                        <div className='flex flex-row gap-3 items-center mt-4'>
+                                            <Globe size={30} />
+                                            <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
+                                                <input style={styles.urlsInput}
+                                                    value={webUrl}
+                                                    onChange={(e) => {
+                                                        setWeburl(e.target.value);
+                                                        const url = e.target.value;
 
-                            </div>
-                        </div>
-                        <div className='mt-1 mb-2' style={linkErrStyle}>
-                            {
-                                spotifyurl && validSpotifyLinkErr && "Invalid link"
-                            }
-                        </div>
-                    </div> :
-                    ""
-                }
+                                                        if (webUrl) {
+                                                            if (validateUrl(url)) {
+                                                                console.log("Valid URL");
+                                                                // setValidLinkErr(false);
+                                                                setValidWebLinkErr(false);
+                                                            } else {
+                                                                console.log("Invalid URL");
+                                                                setValidWebLinkErr(true);
+                                                            }
+                                                        }
+                                                    }}
+                                                    className='w-full bg-transparent outline-none border-none px-2'
+                                                    type='text' placeholder='Paste Website URL'
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className='mt-1 mb-2' style={linkErrStyle}>
+                                            {
+                                                webUrl && validWebLinkErr && "Invalid link"
+                                            }
+                                        </div>
+                                    </div>
+                                );
+                            case 'applepodcast':
+                                return (
+                                    <div key="applepodcast">
+                                        <div className='flex flex-row gap-3 items-center mt-4'>
+                                            <ApplePodcastsLogo size={30} />
+                                            <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
+                                                <input style={styles.urlsInput}
+                                                    value={appleProducts}
+                                                    onChange={(e) => {
+                                                        setAppleProducts(e.target.value);
+                                                        const url = e.target.value;
+
+                                                        if (appleProducts) {
+                                                            if (validateUrl(url)) {
+                                                                console.log("Valid URL");
+                                                                setValidApplePodcastLinkErr(false);
+                                                            } else {
+                                                                console.log("Invalid URL");
+                                                                setValidApplePodcastLinkErr(true);
+                                                            }
+                                                        }
+                                                    }}
+                                                    className='w-full bg-transparent outline-none border-none px-2'
+                                                    type='text' placeholder='Paste Apple Podcast URL'
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className='mt-1 mb-2' style={linkErrStyle}>
+                                            {
+                                                appleProducts && validApplePodcastLinkErr && "Invalid link"
+                                            }
+                                        </div>
+                                    </div>
+                                );
+                            case 'spotify':
+                                return (
+                                    <div key="spotify">
+                                        <div className='flex flex-row gap-3 items-center mt-4'>
+                                            <SpotifyLogo size={30} />
+                                            <div className='bg-grayBg w-full sm:w-8/12' style={styles.button}>
+                                                <input style={styles.urlsInput}
+                                                    value={spotifyurl}
+                                                    onChange={(e) => {
+                                                        setSpotifyurl(e.target.value);
+                                                        const url = e.target.value;
+
+                                                        if (spotifyurl) {
+                                                            if (validateUrl(url)) {
+                                                                console.log("Valid URL");
+                                                                setValidSpotifyLinkErr(false);
+                                                            } else {
+                                                                console.log("Invalid URL");
+                                                                setValidSpotifyLinkErr(true);
+                                                            }
+                                                        }
+                                                    }}
+                                                    className='w-full bg-transparent outline-none border-none px-2'
+                                                    type='text' placeholder='Paste Spotify URL'
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className='mt-1 mb-2' style={linkErrStyle}>
+                                            {
+                                                spotifyurl && validSpotifyLinkErr && "Invalid link"
+                                            }
+                                        </div>
+                                    </div>
+                                );
+                            default:
+                                return null;
+                        }
+                    })}
+                </div>
             </div>
             <div className='w-full justify-start'>
                 <button onClick={() => { setAddSocialsPopup(true) }}
@@ -555,9 +558,12 @@ function AiSocialLinks({ handleBuildAI, aiName, buildAiLoader }) {
                         </button>
                 }
             </div>
+
+
+            {/* Modal to add more social links */}
             <Modal
-                open={addScoialsPopup}
-                onClose={(() => setAddSocialsPopup(false))}
+                open={addSocialsPopup}
+                onClose={() => setAddSocialsPopup(false)}
                 closeAfterTransition
                 BackdropProps={{
                     timeout: 1000,
@@ -567,64 +573,40 @@ function AiSocialLinks({ handleBuildAI, aiName, buildAiLoader }) {
                     },
                 }}
             >
-                <Box className="lg:w-5/12 sm:w-7/12 w-full"
-                    sx={styleLoginModal}
-                >
-                    {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
-                    <div className='flex flex-row justify-center w-full'>
-                        <div className='sm:w-7/12 w-full' style={{ backgroundColor: "#ffffff23", padding: 20, borderRadius: 10 }}>
-                            {/* <AddCard handleBack={handleBack} closeForm={closeForm} /> */}
-                            <div style={{ backgroundColor: '#D3D3D360', padding: 18, borderRadius: 10 }}>
-                                {/* <AddCard handleBack={handleBack} closeForm={closeForm} /> */}
-                                <div style={{ fontWeight: '700', fontFamily: 'inter', fontSize: 16 }}>
-                                    Add More Socials
-                                </div>
-                                <div className='flex flex-row items-center gap-4 mt-4'>
-                                    {
-                                        showLinked ? "" :
-                                            <button onClick={() => {
-                                                setShowLinkedIn(true);
-                                                setAddSocialsPopup(false);
-                                            }}>
-                                                <LinkedinLogo size={30} />
-                                            </button>
-                                    }
-                                    {showWeb ? "" : <button onClick={() => {
-                                        setShowWeb(true);
-                                        setAddSocialsPopup(false);
-                                    }}>
-                                        <Globe size={30} />
-                                    </button>}
-                                    {showFb ? "" : <button onClick={() => {
-                                        setShowFb(true);
-                                        setAddSocialsPopup(false);
-                                    }}>
-                                        <FacebookLogo size={30} />
-                                    </button>}
-                                    {showApplePodCast ? "" : <button onClick={() => {
-                                        setShowApplePodcast(true);
-                                        setAddSocialsPopup(false);
-                                    }}>
-                                        <ApplePodcastsLogo size={30} />
-                                    </button>}
-                                    {showSpotify ? "" : <button onClick={() => {
-                                        setShowSpotify(true);
-                                        setAddSocialsPopup(false);
-                                    }}>
-                                        <SpotifyLogo size={30} />
-                                    </button>}
-                                    {/* <div>
-                                        <YoutubeLogo size={30} />
-                                    </div>
-                                    <div>
-                                        <InstagramLogo size={30} />
-                                    </div> */}
-                                </div>
-                            </div>
+                <Box className="lg:w-5/12 sm:w-7/12 w-full" sx={styleLoginModal}>
+                    <div style={{ backgroundColor: '#D3D3D360', padding: 18, borderRadius: 10 }}>
+                        <div style={{ fontWeight: '700', fontFamily: 'inter', fontSize: 16 }}>Add More Socials</div>
+                        <div className='flex flex-row items-center gap-4 mt-4'>
+                            {!socials.includes('linkedin') && (
+                                <button onClick={() => handleAddSocial('linkedin')}>
+                                    <LinkedinLogo size={30} />
+                                </button>
+                            )}
+                            {!socials.includes('web') && (
+                                <button onClick={() => handleAddSocial('web')}>
+                                    <Globe size={30} />
+                                </button>
+                            )}
+                            {!socials.includes('facebook') && (
+                                <button onClick={() => handleAddSocial('facebook')}>
+                                    <FacebookLogo size={30} />
+                                </button>
+                            )}
+                            {!socials.includes('applepodcast') && (
+                                <button onClick={() => handleAddSocial('applepodcast')}>
+                                    <ApplePodcastsLogo size={30} />
+                                </button>
+                            )}
+                            {!socials.includes('spotify') && (
+                                <button onClick={() => handleAddSocial('spotify')}>
+                                    <SpotifyLogo size={30} />
+                                </button>
+                            )}
                         </div>
                     </div>
                 </Box>
             </Modal>
+
         </div>
     )
 }

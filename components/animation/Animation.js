@@ -141,6 +141,13 @@ export default function Animation({ onChangeIndex }) {
 
   const emailInputRefs = useRef([]);
 
+  const handleKeyDown = (e) => {
+    if (e.key === ' ') {
+      e.preventDefault(); // Prevent the default space action
+      setUserName(userName + '_'); // Add hyphen instead of space
+    }
+  };
+
   // Auto-focus the first input field on component mount
   useEffect(() => {
     if (currentIndex === 4) {
@@ -293,11 +300,13 @@ export default function Animation({ onChangeIndex }) {
           /\D/g,
           ""
         )}`;
+        console.log("Check post 1");
         const confirmation = await signInWithPhoneNumber(
           auth,
           formattedPhoneNumber,
           window.recaptchaVerifier
         );
+        console.log("Check post 2");
 
         setVerificationId(confirmation.verificationId);
         console.log("OTP sent successfully");
@@ -1796,16 +1805,7 @@ export default function Animation({ onChangeIndex }) {
                       setUserName(e.target.value);
                       setCheckUserNameData(null);
                     }}
-                    // onKeyDown={(e) => {
-                    //     setTimeout(() => {
-                    //         if (e.key === 'Enter') {
-                    //             handleCreatorClick();
-                    //         }
-                    //         console.log('Hamza is here');
-                    //     }, 1000);
-                    //     // return (() => clearTimeout(timer));
-                    // }}
-                    // label="Name"
+                    onKeyDown={handleKeyDown}
                     variant="outlined"
                     placeholder="Name your AI"
                     sx={MuiFieldStyle}
@@ -2386,9 +2386,9 @@ export default function Animation({ onChangeIndex }) {
                     </div>
                     <div className="mt-12 w-full sm:w-full lg:w-8/12">
                       <PhoneNumberInput
-                      phonenumber={userNumber}
-                      formatErr={getNumberFormat}
-                    />
+                        phonenumber={userNumber}
+                        formatErr={getNumberFormat}
+                      />
                     </div>
                     <div style={{ height: 15 }}>
                       {formatError ? (

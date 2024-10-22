@@ -205,7 +205,8 @@ const Page = () => {
                 <div>
                     <button onClick={() => {
                         localStorage.removeItem('User');
-                        router.push('/tate.ai');
+                        // router.push('/tate.ai');
+                        router.push('https://www.mycreatorx.com/');
                     }}
                         className='px-2 py-1 mt-4'
                         style={{

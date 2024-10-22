@@ -1,5 +1,6 @@
 "use client"
 import SocialOAuth from '@/components/creatorOnboarding/SocialOAuth';
+import loginFunction from '@/components/loginFunction';
 import { ApplePodcastsLogo, FacebookLogo, InstagramLogo, SpotifyLogo, XLogo, YoutubeLogo } from '@phosphor-icons/react';
 import axios from 'axios';
 import Image from 'next/image';
@@ -8,6 +9,7 @@ import { CircularProgressbar, CircularProgressbarWithChildren } from 'react-circ
 
 const Page = () => {
 
+    loginFunction();
     const [userDetails, setUserDetails] = useState(null);
     const value = 0.12;
     const [fbUrl, setFbUrl] = useState(null);

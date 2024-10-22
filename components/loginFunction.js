@@ -13,7 +13,7 @@ const loginFunction = () => {
             return
         }else{
             console.log("User is not logged in");
-            router.push("/tristan.ai");
+            router.push("/");
             console.log("User redirected")
             return;
         }

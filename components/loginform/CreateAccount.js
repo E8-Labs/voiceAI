@@ -53,10 +53,10 @@ const CreateAccount = ({ handleContinue, handleBack, creator, modalData, closeFo
     useEffect(() => {
         console.log("In check Captcha")
         if (!auth) {
-            console.log('No Auth Object')
+            console.log('No Auth Object');
             return
         }
-        console.log("Init recaptcha")
+        console.log("Init recaptcha");
         // Initialize RecaptchaVerifier when 'auth' changes
         window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
             'size': 'invisible',

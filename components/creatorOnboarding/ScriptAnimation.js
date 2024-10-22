@@ -21,6 +21,7 @@ import Apis from "../apis/Apis";
 import axios from "axios";
 import AiSocialLinks from "./AiSocialLinks";
 import { useRouter } from "next/navigation";
+import loginFunction from "../loginFunction";
 
 const boxVariants = {
   enter: (direction) => ({
@@ -39,21 +40,26 @@ const boxVariants = {
 
 export default function ScriptAnimation({ onChangeIndex }) {
 
+  loginFunction();
   useEffect(() => {
     const Data = localStorage.getItem('BuildaiIndex');
     if (Data) {
       const localdata = JSON.parse(Data);
-      setCurrentIndex(localdata);
-      setDirection(localdata);
+      if (localdata) {
+        setCurrentIndex(localdata);
+        setDirection(localdata);
+      } else {
+        loginFunction();
+      }
     }
     // else{
     //   setCurrentIndex(0);
     //   setDirection(0);
     // }
-  })
+  }, [])
   const router = useRouter();
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(3);
+  const [direction, setDirection] = useState(3);
 
   //code for getting value of input fields
   const [aiName, setAiName] = useState("");
@@ -76,43 +82,46 @@ export default function ScriptAnimation({ onChangeIndex }) {
   const fileInputRef = useRef(null);
   const [uploadLoader, setUploadLoader] = useState(false);
 
+
   const getAiData = async () => {
     const localData = localStorage.getItem('User');
-    const Data = JSON.parse(localData);
-    // setAiLoader(true);
-    // console.log("Data from local for nowledge", Data);
-    const AuthToken = Data.data.token;
-    console.log("Auth token is", AuthToken);
-    try {
-      const response = await axios.get(Apis.MyAiapi, {
-        headers: {
-          'Authorization': 'Bearer ' + AuthToken,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (response) {
-        console.log("Response of kb api is", response.data.data);
-        if (response.data.status === true) {
-          setKnowledgeData(response.data.data.kb)
-          if (response.data.data.kb.length > 0) {
-            setkbData(false);
-          } else {
-            setkbData(true);
+    if (localData) {
+      const Data = JSON.parse(localData);
+      // setAiLoader(true);
+      // console.log("Data from local for nowledge", Data);
+      const AuthToken = Data.data.token;
+      console.log("Auth token is", AuthToken);
+      try {
+        const response = await axios.get(Apis.MyAiapi, {
+          headers: {
+            'Authorization': 'Bearer ' + AuthToken,
+            'Content-Type': 'application/json'
           }
-          // setAiData(response.data.data.kb);
-          // setUserSelectedData(response.data.data.kb);
-          // getknowledgeData(response.data.data.kb);
-          // closeModal(false);
-          // localStorage('KnowledgeBase', JSON.stringify(response.data.data.kb));
-        } else {
-          console.error("Status of kb api", response.data.message);
+        });
+
+        if (response) {
+          console.log("Response of kb api is", response.data.data);
+          if (response.data.status === true) {
+            setKnowledgeData(response.data.data.kb)
+            if (response.data.data.kb.length > 0) {
+              setkbData(false);
+            } else {
+              setkbData(true);
+            }
+            // setAiData(response.data.data.kb);
+            // setUserSelectedData(response.data.data.kb);
+            // getknowledgeData(response.data.data.kb);
+            // closeModal(false);
+            // localStorage('KnowledgeBase', JSON.stringify(response.data.data.kb));
+          } else {
+            console.error("Status of kb api", response.data.message);
+          }
         }
+      } catch (error) {
+        console.error("Error occured in kb", error);
+      } finally {
+        // setAiLoader(false);
       }
-    } catch (error) {
-      console.error("Error occured in kb", error);
-    } finally {
-      // setAiLoader(false);
     }
 
   }
@@ -564,9 +573,14 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     autoFocus={true}
                     variant="filled"
                     multiline
-                    rows={3}
+                    // rows={rowCount}
+                    minRows={3}
+                    maxRows={6}
                     value={talkAbout}
                     onChange={(e) => setTalkAbout(e.target.value)}
+                    inputProps={{
+                      maxLength: 500
+                    }}
                     placeholder=" talk about dating, business, fitness ..."
                     InputProps={{
                       disableUnderline: true, // Disable underline to clean up the style
@@ -602,6 +616,15 @@ export default function ScriptAnimation({ onChangeIndex }) {
                       },
                     }}
                   />
+                  <div className="w-full sm:w-9/12 flex flex-row justify-end mt-1" style={{ fontWeight: "500", fontSize: 14, fontFamily: "inter" }}>
+                    {
+                      talkAbout && (
+                        <div>
+                          {talkAbout.length} / 500
+                        </div>
+                      )
+                    }
+                  </div>
 
 
                   <div className="w-full sm:w-9/12 pb-4">
@@ -685,10 +708,14 @@ export default function ScriptAnimation({ onChangeIndex }) {
                       variant="filled"
                       multiline
                       autoFocus={true}
-                      rows={3}
+                      minRows={3}
+                      maxRows={6}
                       value={helpTagline}
                       onChange={(e) => setHelpTagline(e.target.value)}
                       placeholder="I help my community of followers with understanding their feelings for others, overcoming obstacles with their relationships, etc"
+                      inputProps={{
+                        maxLength: 500
+                      }}
                       InputProps={{
                         disableUnderline: true, // Disable underline to clean up the style
                       }}
@@ -718,6 +745,16 @@ export default function ScriptAnimation({ onChangeIndex }) {
                         },
                       }}
                     />
+                    <div className="w-full sm:w-9/12 flex flex-row justify-end mt-1" style={{ fontWeight: "500", fontSize: 14, fontFamily: "inter" }}>
+                      {
+                        helpTagline && (
+                          <div>
+                            {helpTagline.length} / 500
+                          </div>
+                        )
+                      }
+                    </div>
+
 
                   </div>
 
@@ -792,15 +829,19 @@ export default function ScriptAnimation({ onChangeIndex }) {
                         width={16}
                       />
                     </button>
-                    <button
-                      onClick={(event) => { handleBuildAI(event) }}
-                      style={{
-                        fontWeight: '400',
-                        fontFamily: 'inter',
-                        fontSize: 15
-                      }}>
-                      Skip
-                    </button>
+                    {
+                      skipLoader ?
+                        <CircularProgress size={25} /> :
+                        <button
+                          onClick={(event) => { handleBuildAI(event) }}
+                          style={{
+                            fontWeight: '400',
+                            fontFamily: 'inter',
+                            fontSize: 15
+                          }}>
+                          Skip
+                        </button>
+                    }
                   </div>
 
                   <div>

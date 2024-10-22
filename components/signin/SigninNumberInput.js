@@ -19,7 +19,7 @@ const SigninNumberInput = ({ fromSignIn, formatErr, phonenumber, autoFocus }) =>
             const Data = JSON.parse(localData);
             setPhone(Data.phonenumber);
         }
-        console.log("Getting number");
+        console.log("Getting number check 1");
         const timer = setTimeout(() => {
             const SigninNumber = localStorage.getItem('SigninNumber');
             if (!localData) {

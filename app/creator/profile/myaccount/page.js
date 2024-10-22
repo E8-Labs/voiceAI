@@ -2,9 +2,11 @@
 import React, { useState } from 'react';
 import BasicInfo from '@/components/Navbar/profilenavbarcomponents/myaccount/Basicinfo';
 import MyAi from '@/components/Navbar/profilenavbarcomponents/myaccount/MyAi';
+import loginFunction from '@/components/loginFunction';
 
 const Page = () => {
 
+    loginFunction();
     const [actInfo, setActInfo] = useState(true)
     const [actAi, setActAi] = useState(false)
 

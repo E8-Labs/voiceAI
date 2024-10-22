@@ -1,6 +1,7 @@
 "use client"
 import Apis from '@/components/apis/Apis';
 import Knowledgebase from '@/components/buildai/Knowledgebase';
+import loginFunction from '@/components/loginFunction';
 import { Box, CircularProgress, Modal } from '@mui/material';
 import axios from 'axios';
 import Image from 'next/image';
@@ -8,6 +9,9 @@ import React, { useEffect, useState } from 'react';
 import { CircularProgressbar, CircularProgressbarWithChildren } from 'react-circular-progressbar';
 
 const Page = () => {
+
+    loginFunction();
+
     const value = 0.5;
 
     const [aiData, setAiData] = useState(null);

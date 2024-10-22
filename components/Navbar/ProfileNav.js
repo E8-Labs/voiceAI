@@ -70,7 +70,8 @@ const ProfileNav = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('User');
-        router.push("/tate.ai")
+        // router.push("/tate.ai")
+        router.push('https://www.mycreatorx.com/');
     }
 
     const handleSideBtnsClick = (e, link) => {

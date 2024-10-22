@@ -13,9 +13,11 @@ import 'react-circular-progressbar/dist/styles.css';
 
 import { color } from 'framer-motion';
 import { ArrowDown, ArrowRight, ArrowUp } from '@phosphor-icons/react';
+import loginFunction from '@/components/loginFunction';
 
 const Page = () => {
 
+  loginFunction();
   const [selectedMenu, setSelectedMenu] = useState(1);
   const [testAIPopup, setTestAIPopup] = useState(false);
   const [analyticsDuration, setAnalyticsDuration] = useState('24hrs');

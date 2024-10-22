@@ -19,9 +19,11 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { CircularProgressbar, CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import loginFunction from '@/components/loginFunction';
 
 const Page = () => {
 
+    loginFunction();
     const value = 0.66;
     const [selectedMenu, setSelectedMenu] = useState(1);
     const [dropdownOpen, setDropdownOpen] = useState(null);

@@ -165,24 +165,27 @@ function SetPrice({ handleContinue, buildScriptLoader }) {
                     }
                 </div>
 
-                <div className='mt-8 w-10/12 flex flex-row justify-between'>
-                    <div className='' style={styles.text2}>
-                        Your price per minute
-                    </div>
+                {
+                    !toogleActive && (
+                        <div>
+                            <div className='mt-8 w-10/12 flex flex-row justify-between'>
+                                <div className='' style={styles.text2}>
+                                    Your price per minute
+                                </div>
 
-                    <div className='' style={styles.text2}>
-                        ${callPrice}
-                    </div>
+                                <div className='' style={styles.text2}>
+                                    ${callPrice}
+                                </div>
 
-                </div>
+                            </div>
 
 
-                <div className='mt-8 w-10/12 flex flex-row  justify-between'>
-                    <div className='w-9/12 flex flex-row pe-12'>
-                        <div style={styles.text2}>
-                            Our fee - 20% to run our engine.
-                        </div>
-                        {/* <button aria-describedby={id}
+                            <div className='mt-8 w-10/12 flex flex-row  justify-between'>
+                                <div className='w-9/12 flex flex-row pe-12'>
+                                    <div style={styles.text2}>
+                                        Our fee - 20% to run our engine.
+                                    </div>
+                                    {/* <button aria-describedby={id}
                             onMouseEnter={(e) => { setAnchorel(e.currentTarget) }}
                         // onMouseLeave={(e) => { setAnchorel(null) }}
                         >
@@ -190,64 +193,67 @@ function SetPrice({ handleContinue, buildScriptLoader }) {
                                 style={{ alignSelf: 'center', height: 15, width: 15 }} />
                         </button> */}
 
-                        <div className='ms-1'>
+                                    <div className='ms-1'>
 
-                            <Typography
-                                aria-owns={open ? 'mouse-over-popover' : undefined}
-                                aria-haspopup="true"
-                                onMouseEnter={(e) => {
-                                    setAnchorel(e.currentTarget)
-                                }}
-                                onMouseLeave={(e) => {
-                                    setAnchorel(null)
-                                }}
-                            >
-                                <img src={'/assets/questionImage.png'}
-                                    style={{ alignSelf: 'center', height: 15, width: 15 }} />
-                            </Typography>
-                            <Popover
-                                id="mouse-over-popover"
-                                sx={{
-                                    pointerEvents: 'none',
-                                }}
-                                PaperProps={{
-                                    sx: {
-                                        borderRadius: '10px', // Add borderRadius here
-                                        padding: "2px"
-                                    },
-                                }}
-                                open={open}
-                                anchorEl={anchorel}
-                                anchorOrigin={{
-                                    vertical: 'bottom',
-                                    horizontal: 'left',
-                                }}
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'left',
-                                }}
-                                onClose={() => {
-                                    setAnchorel(null)
-                                }}
-                                disableRestoreFocus
-                            >
-                                <Typography sx={{ p: 1, fontSize: 13, padding: 1 }}>We share this with our creators. We pay<br /> OpenAI, twilio, 11labs, Amazon Web<br /> Services, Stripe, 3rd Party Providers,<br />and not to mention…our expensive<br /> developers at E8 Labs.</Typography>
-                            </Popover>
+                                        <Typography
+                                            aria-owns={open ? 'mouse-over-popover' : undefined}
+                                            aria-haspopup="true"
+                                            onMouseEnter={(e) => {
+                                                setAnchorel(e.currentTarget)
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                setAnchorel(null)
+                                            }}
+                                        >
+                                            <img src={'/assets/questionImage.png'}
+                                                style={{ alignSelf: 'center', height: 15, width: 15 }} />
+                                        </Typography>
+                                        <Popover
+                                            id="mouse-over-popover"
+                                            sx={{
+                                                pointerEvents: 'none',
+                                            }}
+                                            PaperProps={{
+                                                sx: {
+                                                    borderRadius: '10px', // Add borderRadius here
+                                                    padding: "2px"
+                                                },
+                                            }}
+                                            open={open}
+                                            anchorEl={anchorel}
+                                            anchorOrigin={{
+                                                vertical: 'bottom',
+                                                horizontal: 'left',
+                                            }}
+                                            transformOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'left',
+                                            }}
+                                            onClose={() => {
+                                                setAnchorel(null)
+                                            }}
+                                            disableRestoreFocus
+                                        >
+                                            <Typography sx={{ p: 1, fontSize: 13, padding: 1 }}>We share this with our creators. We pay<br /> OpenAI, twilio, 11labs, Amazon Web<br /> Services, Stripe, 3rd Party Providers,<br />and not to mention…our expensive<br /> developers at E8 Labs.</Typography>
+                                        </Popover>
+                                    </div>
+
+
+                                </div>
+                                <div className='' style={styles.text2}>
+                                    ${((20 / 100) * callPrice).toFixed(2)}
+                                </div>
+
+                            </div>
+                            <div style={styles.text2}>You keep the rest.</div>
+
+                            <div className='flex flex-row justify-between w-10/12 mt-6'>
+                                <div className='' style={styles.text2}>Profit (straight to the bank)</div>
+                                <div style={styles.text2}>${((80 / 100) * callPrice).toFixed(2)}</div>
+                            </div>
                         </div>
-
-
-                    </div>
-                    <div className='' style={styles.text2}>
-                        ${(20 / 100) * callPrice}
-                    </div>
-
-                </div>
-                <div style={styles.text2}>You keep the rest.</div>
-
-                <div className='flex flex-row justify-between w-10/12 mt-6'>
-                    <div className='' style={styles.text2}>Profit (straight to the bank)</div>
-                    <div style={styles.text2}>${(80 / 100) * callPrice}</div>
-                </div>
+                    )
+                }
 
 
                 {/* <div className = 'w-12/12 flex flex-col items-end mt-2' style = {{}}>

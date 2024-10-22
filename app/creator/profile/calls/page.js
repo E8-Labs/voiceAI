@@ -1,4 +1,5 @@
 "use client"
+import loginFunction from '@/components/loginFunction';
 import Calls from '@/components/Navbar/ccreatorProfileNavComponents/calls/Calls';
 import axios from 'axios';
 import Image from 'next/image';
@@ -6,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { CircularProgressbar, CircularProgressbarWithChildren } from 'react-circular-progressbar';
 
 const Page = () => {
+    loginFunction();
     const value = 0.65
     return (
         <div className='w-full h-screen' style={{ overflow: 'hidden', backgroundColor: "#ffffff40" }}>

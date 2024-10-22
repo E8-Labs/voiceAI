@@ -76,17 +76,17 @@ const AnimationBox2 = () => {
                     <motion.div
                         style={{
                             transformOrigin: "center center",
-                            border: "2px solid white",
+                            border: "none",
                             paddingInline: 10,
                             paddingTop: 10,
-                            backgroundColor: "#FFFFFF80",
-                            width: '350px'
+                            backgroundColor: "transparent",
+                            width: '350px',
                         }}
                         animate={{ opacity: [0, 1, 0], height: ["30px", "160px", "30px"] }}
                         transition={{ duration: 10, ease: "easeInOut" }}
                         onAnimationComplete={() => handleAnimationComplete(2)} // Start next animation after this one ends
                     >
-                        <div className="flex flex-col items-start gap-2">
+                        <div className="flex flex-col items-start gap-2 border-2 border-white p-3 rounded-lg" style={{ boxShadow: "15px 15px 15px rgba(0, 0, 0, 0.01), -15px 15px 15px rgba(0, 0, 0, 0.01)" }}>
                             <Image
                                 src="/assets/jay.png"
                                 alt="123"
@@ -113,17 +113,17 @@ const AnimationBox2 = () => {
                     <motion.div
                         style={{
                             transformOrigin: "center center",
-                            border: "2px solid white",
+                            border: "none",
                             paddingInline: 10,
                             borderRadius: 15,
-                            backgroundColor: "#FFFFFF80",
+                            backgroundColor: "transparent",
                             width: '350px'
                         }}
                         animate={{ opacity: [0, 1, 0], height: ["30px", "160px", "30px"] }}
                         transition={{ duration: 10, ease: "easeInOut" }}
                         onAnimationComplete={() => handleAnimationComplete(3)} // Start next animation after this one ends
                     >
-                        <div className="flex flex-col items-start justify-start gap-2">
+                        <div className="flex flex-col items-start justify-start gap-2 border-2 border-white p-3 rounded-lg" style={{ boxShadow: "15px 15px 15px rgba(0, 0, 0, 0.01), -15px 15px 15px rgba(0, 0, 0, 0.01)" }}>
                             <Image
                                 src="/mkbhd.png"
                                 alt="123"
@@ -152,10 +152,10 @@ const AnimationBox2 = () => {
                     <motion.div
                         style={{
                             transformOrigin: "center center",
-                            border: "2px solid white",
+                            border: "none",
                             paddingInline: 10,
                             borderRadius: 15,
-                            backgroundColor: "#FFFFFF80",
+                            backgroundColor: "transparent",
                             width: '350px'
                             // paddingTop: 20
                         }}
@@ -163,7 +163,7 @@ const AnimationBox2 = () => {
                         transition={{ duration: 10, ease: "easeInOut" }}
                         onAnimationComplete={() => handleAnimationComplete(4)} // Start next animation after this one ends
                     >
-                        <div className="flex flex-col items-start gap-2 pt-2">
+                        <div className="flex flex-col items-start gap-2 pt-2 border-2 border-white p-3 rounded-lg" style={{ boxShadow: "15px 15px 15px rgba(0, 0, 0, 0.01), -15px 15px 15px rgba(0, 0, 0, 0.01)" }}>
                             <Image
                                 src="/alex.png"
                                 alt="123"
@@ -192,17 +192,17 @@ const AnimationBox2 = () => {
                     <motion.div
                         style={{
                             transformOrigin: "center center",
-                            border: "2px solid white",
+                            border: "none",
                             paddingInline: 10,
                             borderRadius: 15,
-                            backgroundColor: "#FFFFFF80",
+                            backgroundColor: "transparent",
                             width: '350px'
                         }}
                         animate={{ opacity: [0, 1, 0], height: ["30px", "160px", "30px"] }}
                         transition={{ duration: 10, ease: "easeInOut" }}
                         onAnimationComplete={() => handleAnimationComplete(1)} // Loop back to the first animation
                     >
-                        <div className="flex flex-col items-start gap-2">
+                        <div className="flex flex-col items-start gap-2 border-2 border-white p-3 rounded-lg" style={{ boxShadow: "15px 15px 15px rgba(0, 0, 0, 0.01), -15px 15px 15px rgba(0, 0, 0, 0.01)" }}>
                             <Image
                                 src="/andrew.png"
                                 alt="123"
