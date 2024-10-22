@@ -1,7 +1,7 @@
 "use client"
 import Apis from '@/components/apis/Apis';
 import Knowledgebase from '@/components/buildai/Knowledgebase';
-import { Box, Modal } from '@mui/material';
+import { Box, CircularProgress, Modal } from '@mui/material';
 import axios from 'axios';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
@@ -16,12 +16,15 @@ const Page = () => {
     const [webData, setWebData] = useState([]);
     const [textData, setTextData] = useState([]);
     const [urlDelLoader, setUrlDelLoader] = useState(false);
+    const [delKbLoader, setDelKBLoader] = useState(null);
+    const [loader, setLoader] = useState(false);
 
 
 
     // console.log("Text data is", textData);
     const getAiApi = async () => {
         try {
+            setLoader(true);
             console.log("Trying....")
             const ApiPath = Apis.MyAiapi;
             const localData = localStorage.getItem('User');
@@ -48,7 +51,7 @@ const Page = () => {
                         } else if (item.type === "Document") {
                             // Append to the existing documentData array
                             setDocumentData(prevData => [...prevData, item]);
-                        } else if (item.type === "Web URL") {
+                        } else if (item.type === "Url") {
                             // Append to the existing webData array
                             setWebData(prevData => [...prevData, item]);
                         }
@@ -58,12 +61,48 @@ const Page = () => {
         } catch (error) {
             console.error("ERR occured in get ai api is", error);
         } finally {
-            // setLoadTraitsLoader(false);
+            setLoader(false);
         }
     }
 
     //code to delete KB
-    
+    const handleDeleteKb = async (itemId) => {
+        const localData = localStorage.getItem('User');
+        if (localData) {
+            setDelKBLoader(itemId);
+            const Data = JSON.parse(localData);
+            const AuthToken = Data.data.token;
+            const ApiPath = Apis.DelKnowledgeBase;
+            console.log("Authtoken", ApiPath, AuthToken);
+            const apiData = {
+                kbId: itemId
+            }
+            console.log("Kb id sending in api", apiData);
+            try {
+                const response = await axios.post(ApiPath, apiData, {
+                    headers: {
+                        'Authorization': 'Bearer ' + AuthToken,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (response) {
+                    console.log("Response of api is", response.data);
+                    if (response.data.status === true) {
+                        console.log("Response of api is", response.data);
+                        // getAiApi();
+                    } else {
+                        console.log("Response of api is", response.data.message);
+                    }
+                }
+            } catch (error) {
+                console.error("Error occured in api", error);
+            } finally {
+                setDelKBLoader(null);
+                // setKnowledgeData(knowledgeData.filter(knowledgeData => knowledgeData.id !== itemId));
+            }
+
+        }
+    }
 
     useEffect(() => {
         getAiApi();
@@ -74,7 +113,7 @@ const Page = () => {
     }
 
     const getknowledgeData = (data) => {
-        getAiApi();
+        // getAiApi();
     }
 
     const styles = {
@@ -163,79 +202,89 @@ const Page = () => {
                     </div>
                 </div>
 
-                <div className='bg-white mt-3 w-full bg-white rounded-2xl flex flex-col items-center'>
-                    <div className='w-11/12'>
-                        {/* Code for showing documents */}
-                        <div className='flex flex-row items-center justify-between'>
-                            <div style={styles.heading}>
-                                Documents
+                {
+                    loader ?
+                        <div className='w-full flex flex-row justify-center mt-12'>
+                            <CircularProgress size={35} />
+                        </div> :
+                        <div className='bg-white mt-3 w-full bg-white rounded-2xl flex flex-col items-center'>
+                            <div className='w-11/12'>
+                                {/* Code for showing documents */}
+                                <div className='flex flex-row items-center justify-between'>
+                                    <div style={styles.heading}>
+                                        Documents
+                                    </div>
+                                    <button className='text-purple underline' onClick={() => { setKbPopup(true) }}>
+                                        Add Knowledge base
+                                    </button>
+                                </div>
+
+                                {
+                                    documentData && documentData.length > 0 ?
+                                        <div className='max-h-[18vh] overflow-auto'>
+                                            {
+                                                documentData.map((item) => (
+                                                    <div key={item.id} className='border-2 bg-white rounded-lg p-4 mt-4'>
+                                                        <div className='text-purple' style={styles.kbData}>
+                                                            {item.documentUrl}
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            }
+                                        </div> : "No Document"
+                                }
+
+                                {/* code for showing web links */}
+                                <div style={styles.heading}>
+                                    Websites
+                                </div>
+
+                                {
+                                    webData && webData.length > 0 ?
+                                        <div className='max-h-[18vh] overflow-auto'>
+                                            {
+                                                webData.map((item) => (
+                                                    <div key={item.id} className='border-2 bg-white rounded-lg p-4 mt-4 flex flex-row items-center justify-between'>
+                                                        <div className='text-black' style={styles.kbData}>
+                                                            {item.content}
+                                                        </div>
+                                                        {
+                                                            delKbLoader ?
+                                                                <CircularProgress size={25} /> :
+                                                                <button className='text-red' onClick={() => { handleDeleteKb(item.id) }}>
+                                                                    Delete
+                                                                </button>
+                                                        }
+                                                    </div>
+                                                ))
+                                            }
+                                        </div> : "No WebUrl"
+                                }
+
+                                {/* code for showing Text */}
+                                <div style={styles.heading}>
+                                    Text
+                                </div>
+
+                                {
+                                    textData.length > 0 ?
+                                        <div className='max-h-[18vh] overflow-auto pb-8'>
+                                            {
+                                                textData.map((item) => (
+                                                    <div key={item.id} className='border-2 bg-white rounded-lg p-4 mt-4'>
+                                                        <div className='text-black' style={styles.kbData}>
+                                                            {item.content}
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            }
+                                        </div> : "No Text Added"
+                                }
+
+
                             </div>
-                            <button className='text-purple underline' onClick={() => { setKbPopup(true) }}>
-                                Add Knowledge base
-                            </button>
                         </div>
-
-                        {
-                            documentData && documentData.length > 0 ?
-                                <div className='max-h-[18vh] overflow-auto'>
-                                    {
-                                        documentData.map((item) => (
-                                            <div key={item.id} className='border-2 bg-white rounded-lg p-4 mt-4'>
-                                                <div className='text-purple' style={styles.kbData}>
-                                                    {item.documentUrl}
-                                                </div>
-                                            </div>
-                                        ))
-                                    }
-                                </div> : "No Document"
-                        }
-
-                        {/* code for showing web links */}
-                        <div style={styles.heading}>
-                            Websites
-                        </div>
-
-                        {
-                            webData && webData.length > 0 ?
-                                <div className='max-h-[18vh] overflow-auto'>
-                                    {
-                                        webData.map((item) => (
-                                            <div key={item.id} className='border-2 bg-white rounded-lg p-4 mt-4 flex flex-row items-center justify-between'>
-                                                <div className='text-black' style={styles.kbData}>
-                                                    {item.content}
-                                                </div>
-                                                <button className='text-red'>
-                                                    Delete
-                                                </button>
-                                            </div>
-                                        ))
-                                    }
-                                </div> : "No WebUrl"
-                        }
-
-                        {/* code for showing Text */}
-                        <div style={styles.heading}>
-                            Text
-                        </div>
-
-                        {
-                            textData.length > 0 ?
-                                <div className='max-h-[18vh] overflow-auto pb-8'>
-                                    {
-                                        textData.map((item) => (
-                                            <div key={item.id} className='border-2 bg-white rounded-lg p-4 mt-4'>
-                                                <div className='text-black' style={styles.kbData}>
-                                                    {item.content}
-                                                </div>
-                                            </div>
-                                        ))
-                                    }
-                                </div> : "No Text Added"
-                        }
-
-
-                    </div>
-                </div>
+                }
 
                 {/* code for adding social and kkb */}
                 <div>
@@ -255,7 +304,7 @@ const Page = () => {
                             sx={styles.kbPopupStyle}
                         >
                             <div className='flex flex-row justify-center'>
-                                <Knowledgebase closeModal={handleCloseModal} getknowledgeData={getknowledgeData} />
+                                <Knowledgebase closeModal={handleCloseModal} recallApi={getAiApi} />
                             </div>
                         </Box>
                     </Modal>
@@ -263,7 +312,7 @@ const Page = () => {
 
 
             </div>
-        </div>
+        </div >
     )
 }
 

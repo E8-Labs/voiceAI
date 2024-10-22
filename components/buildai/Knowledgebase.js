@@ -1,11 +1,11 @@
-import { Button, CircularProgress, Fade, FormControl, FormHelperText, InputLabel, MenuItem, Select, Snackbar, TextField } from '@mui/material';
+import { Alert, Button, CircularProgress, Fade, FormControl, FormHelperText, InputLabel, MenuItem, Select, Snackbar, TextField } from '@mui/material';
 import axios from 'axios';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
 import Apis from '../apis/Apis';
 import JSZip from 'jszip';
 
-const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
+const Knowledgebase = ({ handleContinue, closeModal, recallApi }) => {
 
     const [questionType, setQuestionType] = useState('');
     const [showDocument, setShowDocument] = useState(false);
@@ -27,45 +27,46 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
     const [aiData, setAiData] = useState([]);
     const [aiLoader, setAiLoader] = useState(false);
     const [validLinkErr, setValidLinkErr] = useState(false);
+    const [addKBSnack, setAddKBSnack] = useState(null);
 
     //code for list
     const [userSelectedData, setUserSelectedData] = useState([]);
 
     //ai data
-    const getAiData = async () => {
-        const localData = localStorage.getItem('User');
-        const Data = JSON.parse(localData);
-        setAiLoader(true);
-        // console.log("Data from local for nowledge", Data);
-        const AuthToken = Data.data.token;
-        console.log("Auth token is", AuthToken);
-        try {
-            const response = await axios.get(Apis.MyAiapi, {
-                headers: {
-                    'Authorization': 'Bearer ' + AuthToken,
-                    'Content-Type': 'application/json'
-                }
-            });
+    // const getAiData = async () => {
+    //     const localData = localStorage.getItem('User');
+    //     const Data = JSON.parse(localData);
+    //     setAiLoader(true);
+    //     // console.log("Data from local for nowledge", Data);
+    //     const AuthToken = Data.data.token;
+    //     console.log("Auth token is", AuthToken);
+    //     try {
+    //         const response = await axios.get(Apis.MyAiapi, {
+    //             headers: {
+    //                 'Authorization': 'Bearer ' + AuthToken,
+    //                 'Content-Type': 'application/json'
+    //             }
+    //         });
 
-            if (response) {
-                console.log("Response of myai api is", response.data.data);
-                if (response.data.status === true) {
-                    // setAiData(response.data.data.kb);
-                    setUserSelectedData(response.data.data.kb);
-                    getknowledgeData(response.data.data.kb);
-                    closeModal(false);
-                    // localStorage('KnowledgeBase', JSON.stringify(response.data.data.kb));
-                } else {
-                    console.error("Status of kb api", response.data.message);
-                }
-            }
-        } catch (error) {
-            console.error("Error occured in kb", error);
-        } finally {
-            setAiLoader(false);
-        }
+    //         if (response) {
+    //             console.log("Response of myai api is", response.data.data);
+    //             if (response.data.status === true) {
+    //                 // setAiData(response.data.data.kb);
+    //                 setUserSelectedData(response.data.data.kb);
+    //                 // getknowledgeData(response.data.data.kb);
+    //                 closeModal(false);
+    //                 // localStorage('KnowledgeBase', JSON.stringify(response.data.data.kb));
+    //             } else {
+    //                 console.error("Status of kb api", response.data.message);
+    //             }
+    //         }
+    //     } catch (error) {
+    //         console.error("Error occured in kb", error);
+    //     } finally {
+    //         setAiLoader(false);
+    //     }
 
-    }
+    // }
 
     // useEffect(() => {
     //     setQuestionType("Document")
@@ -84,12 +85,13 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
         } else if (selectedFileName) {
             content = selectedFileName;
         }
-        const newData = {
-            id: userSelectedData.length + 1,
-            title: questionType,
-            content: content
-        };
-        setUserSelectedData([...userSelectedData, newData]);
+        // const newData = {
+        //     id: userSelectedData.length + 1,
+        //     title: questionType,
+        //     content: content
+        // };
+        // setUserSelectedData([...userSelectedData, newData]);
+        // setUserSelectedData(newData);
         getAiData();
         // const dataTostore = [...userSelectedData, newData];
         // localStorage.setItem('knowledgebase')
@@ -198,7 +200,7 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
             setText(true);
             setShowDocument(false);
             setWebUrl(false);
-        } else if (e.target.value === "Web URL") {
+        } else if (e.target.value === "Url") {
             setWebUrl(true);
             setShowDocument(false);
             setText(false);
@@ -246,7 +248,7 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
 
 
     //api call of knowledge base questions
-    const handleKnowledgeClick = async () => {
+    const handleAddKnowledgeClick = async () => {
         setLoader(true);
         try {
             const ApiPath = Apis.KnowledgeBaseApi;
@@ -260,13 +262,12 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
             if (urlData) {
                 formData.append("content", urlData);
                 formData.append("subject", subjectData);
-            } else
-                if (textData) {
-                    formData.append("content", textData);
-                } else if (documentName) {
-                    formData.append("name", documentName);
-                    formData.append("description", documentDescription);
-                }
+            } else if (textData) {
+                formData.append("content", textData);
+            } else if (documentName) {
+                formData.append("name", documentName);
+                formData.append("description", documentDescription);
+            }
             if (selectedDocument) {
                 formData.append("media", selectedDocument);
                 console.log("Selected doc is", selectedDocument);
@@ -280,10 +281,15 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
             });
 
             if (response) {
-                console.log("Response of knowledge api is", response.data.data);
+                console.log("Response of add KB api is", response.data);
+                setAddKBSnack(response.data.message);
                 if (response.data.status === true) {
                     // handleContinue()
-                    listdata();
+                    return
+                    // listdata();
+                    // getAiData();
+                    closeModal(false);
+                    recallApi();
                     setTextData("");
                     setDocumentName("");
                     setDocumentDescription("");
@@ -558,7 +564,7 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
                             <CircularProgress size={25} />
                         </div> :
                         <div className='w-full flex flex-row justify-center mt-4'>
-                            <button className='w-full text-white bg-purple py-2' onClick={handleKnowledgeClick} style={{
+                            <button className='w-full text-white bg-purple py-2' onClick={handleAddKnowledgeClick} style={{
                                 fontWeight: "400", fontSize: 13, fontFamily: "inter", textAlign: "center",
                                 borderRadius: '50px'
                             }}>
@@ -602,15 +608,14 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
                     </div>
             } */}
 
-                {/* Error snack message */}
+                {/* Api result snack message */}
 
-                {
-                    showError &&
+                <div>
                     <Snackbar
-                        open={credentialsErr}
+                        open={addKBSnack}
                         autoHideDuration={3000}
                         onClose={() => {
-                            setShowError(false)
+                            setAddKBSnack(null);
                         }}
                         anchorOrigin={{
                             vertical: 'top',
@@ -623,13 +628,14 @@ const Knowledgebase = ({ handleContinue, closeModal, getknowledgeData }) => {
                     >
                         <Alert
                             onClose={() => {
-                                setShowError(false)
-                            }} severity="error"
+                                setAddKBSnack(null)
+                            }} severity="none"
+                            className='bg-purple rounded-lg text-white'
                             sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}>
-
+                            {addKBSnack}
                         </Alert>
                     </Snackbar>
-                }
+                </div>
 
 
             </div>

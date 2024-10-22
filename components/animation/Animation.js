@@ -2385,10 +2385,10 @@ export default function Animation({ onChangeIndex }) {
                       We use this to share important updates with you
                     </div>
                     <div className="mt-12 w-full sm:w-full lg:w-8/12">
-                      {/* <PhoneNumberInput
+                      <PhoneNumberInput
                       phonenumber={userNumber}
                       formatErr={getNumberFormat}
-                    /> */}
+                    />
                     </div>
                     <div style={{ height: 15 }}>
                       {formatError ? (
