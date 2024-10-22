@@ -285,7 +285,7 @@ const Knowledgebase = ({ handleContinue, closeModal, recallApi }) => {
                 setAddKBSnack(response.data.message);
                 if (response.data.status === true) {
                     // handleContinue()
-                    return
+                    // return
                     // listdata();
                     // getAiData();
                     closeModal(false);

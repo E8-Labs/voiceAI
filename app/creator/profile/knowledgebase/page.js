@@ -43,21 +43,24 @@ const Page = () => {
                 console.log("Response of getai on parent screen api", response.data.data);
                 if (response.data) {
                     setAiData(response.data.data);
+
+                    // Filter the items based on their type and update the respective arrays
                     const responseData = response.data.data.kb;
-                    responseData.forEach(item => {
-                        if (item.type === "Text") {
-                            // Append to the existing textData array
-                            setTextData(prevData => [...prevData, item]);
-                        } else if (item.type === "Document") {
-                            // Append to the existing documentData array
-                            setDocumentData(prevData => [...prevData, item]);
-                        } else if (item.type === "Url") {
-                            // Append to the existing webData array
-                            setWebData(prevData => [...prevData, item]);
-                        }
-                    });
+
+                    const textItems = responseData.filter(item => item.type === "Text");
+                    const documentItems = responseData.filter(item => item.type === "Document");
+                    const urlItems = responseData.filter(item => item.type === "Url");
+
+                    // Set the state for each type
+                    // setTextData(prevData => [...prevData, ...textItems]);
+                    // setDocumentData(prevData => [...prevData, ...documentItems]);
+                    // setWebData(prevData => [...prevData, ...urlItems]);
+                    setTextData(textItems);
+                    setDocumentData(documentItems);
+                    setWebData(urlItems);
                 }
             }
+
         } catch (error) {
             console.error("ERR occured in get ai api is", error);
         } finally {
@@ -89,7 +92,7 @@ const Page = () => {
                     console.log("Response of api is", response.data);
                     if (response.data.status === true) {
                         console.log("Response of api is", response.data);
-                        // getAiApi();
+                        getAiApi();
                     } else {
                         console.log("Response of api is", response.data.message);
                     }
@@ -224,10 +227,17 @@ const Page = () => {
                                         <div className='max-h-[18vh] overflow-auto'>
                                             {
                                                 documentData.map((item) => (
-                                                    <div key={item.id} className='border-2 bg-white rounded-lg p-4 mt-4'>
+                                                    <div key={item.id} className='border-2 bg-white rounded-lg p-4 mt-4 flex flex-row items-center justify-between'>
                                                         <div className='text-purple' style={styles.kbData}>
                                                             {item.documentUrl}
                                                         </div>
+                                                        {
+                                                            item.id === delKbLoader ?
+                                                                <CircularProgress size={25} /> :
+                                                                <button className='text-red' onClick={() => { handleDeleteKb(item.id) }}>
+                                                                    Delete
+                                                                </button>
+                                                        }
                                                     </div>
                                                 ))
                                             }
@@ -249,7 +259,7 @@ const Page = () => {
                                                             {item.content}
                                                         </div>
                                                         {
-                                                            delKbLoader ?
+                                                            item.id === delKbLoader ?
                                                                 <CircularProgress size={25} /> :
                                                                 <button className='text-red' onClick={() => { handleDeleteKb(item.id) }}>
                                                                     Delete
@@ -267,14 +277,21 @@ const Page = () => {
                                 </div>
 
                                 {
-                                    textData.length > 0 ?
+                                    textData && textData.length > 0 ?
                                         <div className='max-h-[18vh] overflow-auto pb-8'>
                                             {
                                                 textData.map((item) => (
-                                                    <div key={item.id} className='border-2 bg-white rounded-lg p-4 mt-4'>
+                                                    <div key={item.id} className='border-2 bg-white rounded-lg p-4 mt-4 flex flex-row items-center justify-between'>
                                                         <div className='text-black' style={styles.kbData}>
                                                             {item.content}
                                                         </div>
+                                                        {
+                                                            item.id === delKbLoader ?
+                                                                <CircularProgress size={25} /> :
+                                                                <button className='text-red' onClick={() => { handleDeleteKb(item.id) }}>
+                                                                    Delete
+                                                                </button>
+                                                        }
                                                     </div>
                                                 ))
                                             }
