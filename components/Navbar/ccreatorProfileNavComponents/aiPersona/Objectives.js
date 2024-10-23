@@ -91,7 +91,103 @@ const Objectives = ({ recallApi, aiData, loader }) => {
                     </div>
                     :
                     <div>
-                        {
+                        <div className='flex flex-row items-center justify-between w-11/12 border-[2px] border-[#00000010] p-4 rounded mt-4'>
+                            <div className='w-full'>
+                                <input
+                                    className='w-[90%] outline-none border-none'
+                                    ref={aiObjectiveRef}
+                                    value={aiObjective}
+                                    onChange={(e) => { setAiObjective(e.target.value) }}
+                                    onFocus={() => { setShowSaveBtn(true) }}
+                                    onBlur={() => { setShowSaveBtn(false) }}
+                                    placeholder='Ai Objective'
+                                />
+                            </div>
+                            <div>
+                                {
+                                    showSaveBtn ?
+                                        <div>
+                                            {
+                                                updateLoader ?
+                                                    <CircularProgress size={15} /> :
+                                                    <button
+                                                        className='text-purple underline'
+                                                        style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}
+                                                        onMouseDown={(e) => { e.preventDefault() }}
+                                                        onClick={handleUpdateAi}
+                                                    >
+                                                        Save
+                                                    </button>
+                                            }
+                                        </div> :
+                                        <button
+                                            onClick={() => { aiObjectiveRef.current.focus() }}
+                                            className='text-purple underline'
+                                            style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}
+                                        >
+                                            Edit
+                                        </button>
+                                }
+                            </div>
+                            {/* <div>
+                    <button aria-describedby={id} variant="contained" color="primary" onClick={handleClick}>
+                        <DotsThree size={32} weight="bold" />
+                    </button>
+                    <Popover
+                        id={id}
+                        open={Boolean(anchorEl)}
+                        anchorEl={anchorEl}
+                        onClose={handleClose}
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'center',
+                        }}
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'center',
+                        }}
+                    >
+                        <div className='p-2 flex flex-col justify-start items-start w-[100px]'>
+                            <button className='text-purple' style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter" }}>
+                                Edit
+                            </button>
+                            <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }}>
+                                Delete
+                            </button>
+                        </div>
+                    </Popover>
+                </div> */}
+
+                            <div>
+                                <Snackbar
+                                    open={resultSnack}
+                                    autoHideDuration={3000}
+                                    onClose={() => {
+                                        setResultSnack(null);
+                                    }}
+                                    anchorOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'center'
+                                    }}
+                                    TransitionComponent={Fade}
+                                    TransitionProps={{
+                                        direction: 'center'
+                                    }}
+                                >
+                                    <Alert
+                                        onClose={() => {
+                                            setResultSnack(null)
+                                        }} severity="none"
+                                        className='bg-purple rounded-lg text-white'
+                                        sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}>
+                                        {resultSnack}
+                                    </Alert>
+                                </Snackbar>
+                            </div>
+
+
+                        </div>
+                        {/* {
                             aiObjective ?
                                 <div className='flex flex-row items-center justify-between w-11/12 border-[2px] border-[#00000010] p-4 rounded mt-4'>
                                     <div className='w-full'>
@@ -131,35 +227,6 @@ const Objectives = ({ recallApi, aiData, loader }) => {
                                                 </button>
                                         }
                                     </div>
-                                    {/* <div>
-                    <button aria-describedby={id} variant="contained" color="primary" onClick={handleClick}>
-                        <DotsThree size={32} weight="bold" />
-                    </button>
-                    <Popover
-                        id={id}
-                        open={Boolean(anchorEl)}
-                        anchorEl={anchorEl}
-                        onClose={handleClose}
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'center',
-                        }}
-                        transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'center',
-                        }}
-                    >
-                        <div className='p-2 flex flex-col justify-start items-start w-[100px]'>
-                            <button className='text-purple' style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter" }}>
-                                Edit
-                            </button>
-                            <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }}>
-                                Delete
-                            </button>
-                        </div>
-                    </Popover>
-                </div> */}
-
                                     <div>
                                         <Snackbar
                                             open={resultSnack}
@@ -196,7 +263,7 @@ const Objectives = ({ recallApi, aiData, loader }) => {
                                     </div>
 
                                 </div>
-                        }
+                        } */}
                     </div>
             }
 
