@@ -1,6 +1,7 @@
 "use client"
 import SocialOAuth from '@/components/creatorOnboarding/SocialOAuth';
 import loginFunction from '@/components/loginFunction';
+import { CircularProgress } from '@mui/material';
 import { ApplePodcastsLogo, FacebookLogo, InstagramLogo, SpotifyLogo, XLogo, YoutubeLogo } from '@phosphor-icons/react';
 import axios from 'axios';
 import Image from 'next/image';
@@ -18,35 +19,93 @@ const Page = () => {
     const [applePodcastUrl, setApplePodcastUrl] = useState(null);
     const [spotifyUrl, setSpotifyUrl] = useState(null);
     const [instaUrl, setInstaUrl] = useState(null);
+    const [loader, setLoader] = useState(false);
 
+    const getAiApi = async () => {
+        try {
+            setLoader(true);
+            console.log("Trying....")
+            const ApiPath = Apis.MyAiapi;
+            const localData = localStorage.getItem('User');
+            const Data = JSON.parse(localData);
+            const AuthToken = Data.data.token;
+            console.log("Authtoken is", AuthToken);
+            console.log("Apipath is", ApiPath);
 
+            const response = await axios.get(ApiPath, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": "Bearer " + AuthToken
+                }
+            });
+            // return
+            if (response) {
+                console.log("Response of getai on socials mein screen api", response.data.data);
+                if (response.data) {
+                    // setAiData(response.data.data);
+                    if (response.data.status === true) {
+                        let linkData = response.data.data
+                        console.log("Data of user is", Data.data.user);
+                        if (Data?.data?.user?.ai?.fbUrl) {
+                            setFbUrl(Data.data.user.ai.fbUrl)
+                        }
+                        if (linkData?.ai?.youtubeUrl) {
+                            setYoutubeUrl(linkData?.ai?.youtubeUrl)
+                        }
+                        if (linkData?.ai?.twitterUrl) {
+                            setTwitterUrl(linkData?.ai?.twitterUrl)
+                        }
+                        // if (linkData?.ai?.fbUrl) {
+                        //     setApplePodcastUrl(linkData?.ai?.fbUrl)
+                        // }
+                        if (linkData?.ai?.spotify_url) {
+                            setSpotifyUrl(linkData?.ai?.spotify_url)
+                        }
+                        if (linkData?.ai?.instaUrl) {
+                            setInstaUrl(linkData?.ai?.instaUrl)
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.error("ERR occured in get ai api is", error);
+        } finally {
+            setLoader(false);
+        }
+    }
 
     useEffect(() => {
-        const localData = localStorage.getItem('User');
-        if (localData) {
-            const Data = JSON.parse(localData);
-            console.log("Data of user is", Data.data.user);
-            setUserDetails(Data.data.user);
-            if (Data?.data?.user?.ai?.fbUrl) {
-                setFbUrl(Data.data.user.ai.fbUrl)
-            }
-            if (Data?.data?.user?.ai?.youtubeUrl) {
-                setYoutubeUrl(Data?.data?.user?.ai?.youtubeUrl)
-            }
-            if (Data?.data?.user?.ai?.twitterUrl) {
-                setTwitterUrl(Data?.data?.user?.ai?.twitterUrl)
-            }
-            // if (Data?.data?.user?.ai?.fbUrl) {
-            //     setApplePodcastUrl(Data?.data?.user?.ai?.fbUrl)
-            // }
-            if (Data?.data?.user?.ai?.spotify_url) {
-                setSpotifyUrl(Data?.data?.user?.ai?.spotify_url)
-            }
-            if (Data?.data?.user?.ai?.instaUrl) {
-                setInstaUrl(Data?.data?.user?.ai?.instaUrl)
-            }
-        }
-    }, [])
+        getAiApi();
+    }, []);
+
+
+
+    // useEffect(() => {
+    //     const localData = localStorage.getItem('User');
+    //     if (localData) {
+    //         const Data = JSON.parse(localData);
+    //         console.log("Data of user is", Data.data.user);
+    //         setUserDetails(Data.data.user);
+    //         if (Data?.data?.user?.ai?.fbUrl) {
+    //             setFbUrl(Data.data.user.ai.fbUrl)
+    //         }
+    //         if (Data?.data?.user?.ai?.youtubeUrl) {
+    //             setYoutubeUrl(Data?.data?.user?.ai?.youtubeUrl)
+    //         }
+    //         if (Data?.data?.user?.ai?.twitterUrl) {
+    //             setTwitterUrl(Data?.data?.user?.ai?.twitterUrl)
+    //         }
+    //         // if (Data?.data?.user?.ai?.fbUrl) {
+    //         //     setApplePodcastUrl(Data?.data?.user?.ai?.fbUrl)
+    //         // }
+    //         if (Data?.data?.user?.ai?.spotify_url) {
+    //             setSpotifyUrl(Data?.data?.user?.ai?.spotify_url)
+    //         }
+    //         if (Data?.data?.user?.ai?.instaUrl) {
+    //             setInstaUrl(Data?.data?.user?.ai?.instaUrl)
+    //         }
+    //     }
+    // }, [])
 
     const styles = {
         button: {
@@ -119,104 +178,110 @@ const Page = () => {
                 </div>
 
                 <div className='w-11/12 flex flex-row items-start gap-4 mt-4'>
-                    <div className='w-6/12 px-8 py-4 rounded-2xl' style={{ backgroundColor: "#ffffff70" }}>
-                        <div className='mt-1' style={{ fontSize: 15, fontWeight: 500, fontFamily: "inter" }}>
-                            URL Links
-                        </div>
+                    {
+                        loader ?
+                            <div className='w-6/12 flex flex-row justify-center mt-12'>
+                                <CircularProgress size={35} />
+                            </div> :
+                            <div className='w-6/12 px-8 py-4 rounded-2xl' style={{ backgroundColor: "#ffffff70" }}>
+                                <div className='mt-1' style={{ fontSize: 15, fontWeight: 500, fontFamily: "inter" }}>
+                                    URL Links
+                                </div>
 
-                        {/* User social URL Links */}
-                        <div className='flex flex-col gap-6'>
-                            <div className='flex flex-row gap-4 mt-7 items-center'>
-                                <FacebookLogo size={25} />
-                                <div className='bg-transparent w-full flex flex-row justify-between gap-2'
-                                    style={styles.button}
-                                >
-                                    <div className='w-full'>
-                                        <input className='w-full bg-transparent outline-none border-none' style={styles.input}
-                                            value={fbUrl}
-                                            onChange={(e) => setFbUrl(e.target.value)}
-                                            placeholder='URL' />
+                                {/* User social URL Links */}
+                                <div className='flex flex-col gap-6'>
+                                    <div className='flex flex-row gap-4 mt-7 items-center'>
+                                        <FacebookLogo size={25} />
+                                        <div className='bg-transparent w-full flex flex-row justify-between gap-2'
+                                            style={styles.button}
+                                        >
+                                            <div className='w-full'>
+                                                <input className='w-full bg-transparent outline-none border-none' style={styles.input}
+                                                    value={fbUrl}
+                                                    onChange={(e) => setFbUrl(e.target.value)}
+                                                    placeholder='URL' />
+                                            </div>
+
+                                        </div>
                                     </div>
 
-                                </div>
-                            </div>
+                                    <div className='flex flex-row gap-4 items-center'>
+                                        <YoutubeLogo size={25} />
+                                        <div className='bg-transparent w-full flex flex-row justify-between gap-2'
+                                            style={styles.button}
+                                        >
+                                            <div className='w-full'>
+                                                <input className='w-full bg-transparent outline-none border-none' style={styles.input}
+                                                    value={youtubeUrl}
+                                                    onChange={(e) => setYoutubeUrl(e.target.value)}
+                                                    placeholder='URL' />
+                                            </div>
 
-                            <div className='flex flex-row gap-4 items-center'>
-                                <YoutubeLogo size={25} />
-                                <div className='bg-transparent w-full flex flex-row justify-between gap-2'
-                                    style={styles.button}
-                                >
-                                    <div className='w-full'>
-                                        <input className='w-full bg-transparent outline-none border-none' style={styles.input}
-                                            value={youtubeUrl}
-                                            onChange={(e) => setYoutubeUrl(e.target.value)}
-                                            placeholder='URL' />
+                                        </div>
                                     </div>
 
-                                </div>
-                            </div>
+                                    <div className='flex flex-row gap-4 items-center'>
+                                        <XLogo size={25} />
+                                        <div className='bg-transparent w-full flex flex-row justify-between gap-2'
+                                            style={styles.button}
+                                        >
+                                            <div className='w-full'>
+                                                <input className='w-full bg-transparent outline-none border-none' style={styles.input}
+                                                    value={twitterUrl}
+                                                    onChange={(e) => setTwitterUrl(e.target.value)}
+                                                    placeholder='URL' />
+                                            </div>
 
-                            <div className='flex flex-row gap-4 items-center'>
-                                <XLogo size={25} />
-                                <div className='bg-transparent w-full flex flex-row justify-between gap-2'
-                                    style={styles.button}
-                                >
-                                    <div className='w-full'>
-                                        <input className='w-full bg-transparent outline-none border-none' style={styles.input}
-                                            value={twitterUrl}
-                                            onChange={(e) => setTwitterUrl(e.target.value)}
-                                            placeholder='URL' />
+                                        </div>
                                     </div>
 
-                                </div>
-                            </div>
+                                    <div className='flex flex-row gap-4 items-center'>
+                                        <ApplePodcastsLogo size={25} />
+                                        <div className='bg-transparent w-full flex flex-row justify-between gap-2'
+                                            style={styles.button}
+                                        >
+                                            <div className='w-full'>
+                                                <input className='w-full bg-transparent outline-none border-none' style={styles.input}
+                                                    value={applePodcastUrl}
+                                                    onChange={(e) => setApplePodcastUrl(e.target.value)}
+                                                    placeholder='URL' />
+                                            </div>
 
-                            <div className='flex flex-row gap-4 items-center'>
-                                <ApplePodcastsLogo size={25} />
-                                <div className='bg-transparent w-full flex flex-row justify-between gap-2'
-                                    style={styles.button}
-                                >
-                                    <div className='w-full'>
-                                        <input className='w-full bg-transparent outline-none border-none' style={styles.input}
-                                            value={applePodcastUrl}
-                                            onChange={(e) => setApplePodcastUrl(e.target.value)}
-                                            placeholder='URL' />
+                                        </div>
                                     </div>
 
-                                </div>
-                            </div>
+                                    <div className='flex flex-row items-center gap-4'>
+                                        <SpotifyLogo size={25} />
+                                        <div className='bg-transparent w-full flex flex-row justify-between gap-2'
+                                            style={styles.button}
+                                        >
+                                            <div className='w-full'>
+                                                <input className='w-full bg-transparent outline-none border-none' style={styles.input}
+                                                    value={spotifyUrl}
+                                                    onChange={(e) => setSpotifyUrl(e.target.value)}
+                                                    placeholder='URL' />
+                                            </div>
 
-                            <div className='flex flex-row items-center gap-4'>
-                                <SpotifyLogo size={25} />
-                                <div className='bg-transparent w-full flex flex-row justify-between gap-2'
-                                    style={styles.button}
-                                >
-                                    <div className='w-full'>
-                                        <input className='w-full bg-transparent outline-none border-none' style={styles.input}
-                                            value={spotifyUrl}
-                                            onChange={(e) => setSpotifyUrl(e.target.value)}
-                                            placeholder='URL' />
+                                        </div>
                                     </div>
 
-                                </div>
-                            </div>
+                                    <div className='flex flex-row gap-4 mb-5 items-center'>
+                                        <InstagramLogo size={25} />
+                                        <div className='bg-transparent w-full flex flex-row justify-between gap-2'
+                                            style={styles.button}
+                                        >
+                                            <div className='w-full'>
+                                                <input className='w-full bg-transparent outline-none border-none' style={styles.input}
+                                                    value={instaUrl}
+                                                    onChange={(e) => setInstaUrl(e.target.value)}
+                                                    placeholder='URL' />
+                                            </div>
 
-                            <div className='flex flex-row gap-4 mb-5 items-center'>
-                                <InstagramLogo size={25} />
-                                <div className='bg-transparent w-full flex flex-row justify-between gap-2'
-                                    style={styles.button}
-                                >
-                                    <div className='w-full'>
-                                        <input className='w-full bg-transparent outline-none border-none' style={styles.input}
-                                            value={instaUrl}
-                                            onChange={(e) => setInstaUrl(e.target.value)}
-                                            placeholder='URL' />
+                                        </div>
                                     </div>
-
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                    }
                     <div className='w-6/12 px-8 py-4 rounded-2xl' style={{ backgroundColor: "#ffffff70" }}>
                         <SocialOAuth />
                     </div>

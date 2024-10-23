@@ -192,7 +192,7 @@ const CommunicaionInstruction = ({ recallApi, aiData }) => {
         <div>
             <div className='flex flex-row items-center justify-between' style={{ fontWeight: "500", fontFamily: "inter", fontSize: 15 }}>
                 <div>
-                    Communication
+                    Communication Instructions
                 </div>
                 <button className='text-purple underline' onClick={() => { setAdddComunicationInstModal(true) }}>
                     View Examples
