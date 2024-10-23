@@ -481,7 +481,7 @@ const Page = () => {
                     <p style={{ fontSize: 28, fontWeight: "500", fontFamily: "inter" }}>
                         AI Persona
                     </p>
-                    <Image
+                    {/* <Image
                         src="/assets/placeholderImg.jpg"
                         alt='profile'
                         height={70}
@@ -496,7 +496,7 @@ const Page = () => {
                             objectPosition: 'center',
                             // backgroundColor: 'red'
                         }}
-                    />
+                    /> */}
                 </div>
                 <div className='w-11/12 flex flex-row items-center justify-between mt-4 bg-white px-6 py-4 rounded-2xl'>
                     <div className='flex flex-row items-center gap-2'>
@@ -629,7 +629,9 @@ const Page = () => {
                                         selectedProductService === 501 ? (
                                             <ProductDetails recallApi={recallApi} aiData={aiData} />
                                         ) : selectedProductService === 502 ? (
-                                            "Item 2"
+                                            <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
+                                                <span style={{ color: "#00000060" }}>Products & Services |</span> Conversation Goals
+                                            </div>
                                         ) : ""
                                     }
                                 </div>

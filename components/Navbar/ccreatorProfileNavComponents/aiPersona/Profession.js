@@ -102,7 +102,7 @@ const Profession = ({ recallApi, aiData }) => {
     return (
         <div>
             <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
-                AI Characteristics
+                <span style={{ color: "#00000060" }}>AI Characteristics |</span> Profession
             </div>
             <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter", marginTop: 35 }}>
                 Profession

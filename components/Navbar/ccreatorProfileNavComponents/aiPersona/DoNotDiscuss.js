@@ -207,7 +207,7 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
     return (
         <div>
             <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
-                Communication
+                <span style={{ color: "#00000060" }}>Communication |</span> Donot Discuss
             </div>
             <div className='flex flex-row items-center justify-between'>
                 <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter", marginTop: 35 }}>

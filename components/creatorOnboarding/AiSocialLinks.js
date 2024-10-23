@@ -256,7 +256,7 @@ function AiSocialLinks({ handleBuildAI, aiName, buildAiLoader }) {
                                                         setInstaurl(e.target.value);
                                                         const url = e.target.value;
 
-                                                        if (instaUrl) {
+                                                        if (url && url.trim().length > 0) {
                                                             if (validateUrl(url)) {
                                                                 console.log("Valid URL");
                                                                 setValidLinkErr(false);
@@ -264,6 +264,9 @@ function AiSocialLinks({ handleBuildAI, aiName, buildAiLoader }) {
                                                                 console.log("Invalid URL");
                                                                 setValidLinkErr(true);
                                                             }
+                                                        } else {
+                                                            // Optionally reset the error when input is cleared
+                                                            setValidLinkErr(false);
                                                         }
                                                     }}
                                                     className='w-full bg-transparent outline-none border-none px-2'
@@ -290,7 +293,7 @@ function AiSocialLinks({ handleBuildAI, aiName, buildAiLoader }) {
                                                         setYoutubeurl(e.target.value);
                                                         const url = e.target.value;
 
-                                                        if (youtubeUrl) {
+                                                        if (url && url.trim().length > 0) {
                                                             if (validateUrl(url)) {
                                                                 console.log("Valid URL");
                                                                 setValidYoutubeLinkErr(false);
@@ -298,6 +301,9 @@ function AiSocialLinks({ handleBuildAI, aiName, buildAiLoader }) {
                                                                 console.log("Invalid URL");
                                                                 setValidYoutubeLinkErr(true);
                                                             }
+                                                        } else {
+                                                            // Optionally reset the error when input is cleared
+                                                            setValidYoutubeLinkErr(false);
                                                         }
                                                     }}
                                                     className='w-full bg-transparent outline-none border-none px-2'
@@ -324,7 +330,7 @@ function AiSocialLinks({ handleBuildAI, aiName, buildAiLoader }) {
                                                         setTwitterurl(e.target.value);
                                                         const url = e.target.value;
 
-                                                        if (twitterUrl) {
+                                                        if (url && url.trim().length > 0) {
                                                             if (validateUrl(url)) {
                                                                 console.log("Valid URL");
                                                                 setValidTwitterLinkErr(false);
@@ -332,6 +338,9 @@ function AiSocialLinks({ handleBuildAI, aiName, buildAiLoader }) {
                                                                 console.log("Invalid URL");
                                                                 setValidTwitterLinkErr(true);
                                                             }
+                                                        } else {
+                                                            // Optionally reset the error when input is cleared
+                                                            setValidTwitterLinkErr(false);
                                                         }
                                                     }}
                                                     className='w-full bg-transparent outline-none border-none px-2'
@@ -359,7 +368,7 @@ function AiSocialLinks({ handleBuildAI, aiName, buildAiLoader }) {
                                                         setFburl(e.target.value);
                                                         const url = e.target.value;
 
-                                                        if (fbUrl) {
+                                                        if (url && url.trim().length > 0) {
                                                             if (validateUrl(url)) {
                                                                 console.log("Valid URL");
                                                                 setValidFacebookLinkErr(false);
@@ -367,7 +376,20 @@ function AiSocialLinks({ handleBuildAI, aiName, buildAiLoader }) {
                                                                 console.log("Invalid URL");
                                                                 setValidFacebookLinkErr(true);
                                                             }
+                                                        } else {
+                                                            // Optionally reset the error when input is cleared
+                                                            setValidFacebookLinkErr(false);
                                                         }
+
+                                                        // if (fbUrl) {
+                                                        //     if (validateUrl(url)) {
+                                                        //         console.log("Valid URL");
+                                                        //         setValidFacebookLinkErr(false);
+                                                        //     } else {
+                                                        //         console.log("Invalid URL");
+                                                        //         setValidFacebookLinkErr(true);
+                                                        //     }
+                                                        // }
                                                     }}
                                                     className='w-full bg-transparent outline-none border-none px-2'
                                                     type='text' placeholder='Paste Facebook URL'
@@ -393,15 +415,17 @@ function AiSocialLinks({ handleBuildAI, aiName, buildAiLoader }) {
                                                         setLinkedInurl(e.target.value);
                                                         const url = e.target.value;
 
-                                                        if (linkedInUrl) {
+                                                        if (url && url.trim().length > 0) {
                                                             if (validateUrl(url)) {
                                                                 console.log("Valid URL");
-                                                                // setValidLinkErr(false);
                                                                 setValidLinkedInLinkErr(false);
                                                             } else {
                                                                 console.log("Invalid URL");
                                                                 setValidLinkedInLinkErr(true);
                                                             }
+                                                        } else {
+                                                            // Optionally reset the error when input is cleared
+                                                            setValidLinkedInLinkErr(false);
                                                         }
                                                     }}
                                                     className='w-full bg-transparent outline-none border-none px-2'
@@ -429,15 +453,17 @@ function AiSocialLinks({ handleBuildAI, aiName, buildAiLoader }) {
                                                         setWeburl(e.target.value);
                                                         const url = e.target.value;
 
-                                                        if (webUrl) {
+                                                        if (url && url.trim().length > 0) {
                                                             if (validateUrl(url)) {
                                                                 console.log("Valid URL");
-                                                                // setValidLinkErr(false);
                                                                 setValidWebLinkErr(false);
                                                             } else {
                                                                 console.log("Invalid URL");
                                                                 setValidWebLinkErr(true);
                                                             }
+                                                        } else {
+                                                            // Optionally reset the error when input is cleared
+                                                            setValidWebLinkErr(false);
                                                         }
                                                     }}
                                                     className='w-full bg-transparent outline-none border-none px-2'
@@ -464,7 +490,7 @@ function AiSocialLinks({ handleBuildAI, aiName, buildAiLoader }) {
                                                         setAppleProducts(e.target.value);
                                                         const url = e.target.value;
 
-                                                        if (appleProducts) {
+                                                        if (url && url.trim().length > 0) {
                                                             if (validateUrl(url)) {
                                                                 console.log("Valid URL");
                                                                 setValidApplePodcastLinkErr(false);
@@ -472,6 +498,9 @@ function AiSocialLinks({ handleBuildAI, aiName, buildAiLoader }) {
                                                                 console.log("Invalid URL");
                                                                 setValidApplePodcastLinkErr(true);
                                                             }
+                                                        } else {
+                                                            // Optionally reset the error when input is cleared
+                                                            setValidApplePodcastLinkErr(false);
                                                         }
                                                     }}
                                                     className='w-full bg-transparent outline-none border-none px-2'
@@ -498,7 +527,7 @@ function AiSocialLinks({ handleBuildAI, aiName, buildAiLoader }) {
                                                         setSpotifyurl(e.target.value);
                                                         const url = e.target.value;
 
-                                                        if (spotifyurl) {
+                                                        if (url && url.trim().length > 0) {
                                                             if (validateUrl(url)) {
                                                                 console.log("Valid URL");
                                                                 setValidSpotifyLinkErr(false);
@@ -506,6 +535,9 @@ function AiSocialLinks({ handleBuildAI, aiName, buildAiLoader }) {
                                                                 console.log("Invalid URL");
                                                                 setValidSpotifyLinkErr(true);
                                                             }
+                                                        } else {
+                                                            // Optionally reset the error when input is cleared
+                                                            setValidSpotifyLinkErr(false);
                                                         }
                                                     }}
                                                     className='w-full bg-transparent outline-none border-none px-2'

@@ -35,7 +35,7 @@ const FAQ = () => {
     return (
         <div>
             <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
-                Communication
+                <span style={{ color: "#00000060" }}>Communication |</span> FAQ
             </div>
             <div className='flex flex-row justify-between items-center mt-8'>
                 <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>

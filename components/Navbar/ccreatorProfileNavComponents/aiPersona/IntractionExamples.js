@@ -189,7 +189,7 @@ const IntractionExamples = ({ recallApi, aiData }) => {
     return (
         <div>
             <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
-                Communication
+                <span style={{ color: "#00000060" }}>Communication |</span> Intraction Exaples
             </div>
             <div className='flex flex-row items-center w-full justify-between mt-12'>
                 <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>

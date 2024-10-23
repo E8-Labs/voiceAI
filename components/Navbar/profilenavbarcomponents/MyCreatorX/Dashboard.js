@@ -296,7 +296,7 @@ const Dashboard = () => {
                 </div>
             </div> */}
 
-            <div className='w-11/12 flex flex-row justify-end'>
+            {/* <div className='w-11/12 flex flex-row justify-end'>
                 <Image
                     src="/assets/placeholderImg.jpg"
                     alt='profile'
@@ -313,7 +313,7 @@ const Dashboard = () => {
                         // backgroundColor: 'red'
                     }}
                 />
-            </div>
+            </div> */}
 
             <div className='w-11/12 flex flex-row items-center justify-between mt-4 bg-white px-6 py-4 rounded-2xl'>
                 <div className='flex flex-row items-center gap-2'>
@@ -437,7 +437,12 @@ const Dashboard = () => {
                                 Callers
                             </div>
                             <div className='flex flex-row items-center gap-1'>
-                                <p style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>87</p>
+                                <p style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
+                                    {dashBoardData?.totalCalls ?
+                                        <div>
+                                            {dashBoardData.totalCalls}
+                                        </div> : "0"}
+                                </p>
                                 <div className='flex flex-row items-center'>
                                     {/* <Image src="/assets/creatorProfileNavIcons/greenUp.png" alt='up' height={13} width={10} /> */}
                                     <ArrowUp className='mb-1' size={15} weight="bold" color='#00FF57' />
@@ -480,7 +485,12 @@ const Dashboard = () => {
                                 Minutes
                             </div>
                             <div className='flex flex-row items-center gap-1'>
-                                <p style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>87</p>
+                                <p style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
+                                    {dashBoardData?.totalDurationMinutes ?
+                                        <div>
+                                            {dashBoardData.totalDurationMinutes}
+                                        </div> : "0"}
+                                </p>
                                 <div className='flex flex-row items-center'>
                                     {/* <Image src="/assets/creatorProfileNavIcons/greenUp.png" alt='up' height={13} width={10} /> */}
                                     <ArrowUp className='mb-1' size={15} weight="bold" color='#00FF57' />
@@ -566,7 +576,11 @@ const Dashboard = () => {
                                 Product Rev
                             </div>
                             <div className='flex flex-row items-center gap-1'>
-                                <p style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>$87</p>
+                                <p style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
+                                    ${dashBoardData?.totalEarnings ?
+                                        <div>
+                                            {dashBoardData.totalEarnings.toFixed(2)}
+                                        </div> : "0"}</p>
                                 <div className='flex flex-row items-center'>
                                     {/* <Image src="/assets/creatorProfileNavIcons/greenUp.png" alt='up' height={13} width={10} /> */}
                                     <ArrowRight className='mb-1' size={15} weight="bold" color='white' />

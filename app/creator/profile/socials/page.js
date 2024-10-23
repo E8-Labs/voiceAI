@@ -27,23 +27,23 @@ const Page = () => {
             const Data = JSON.parse(localData);
             console.log("Data of user is", Data.data.user);
             setUserDetails(Data.data.user);
-            if (Data.data.user.ai.fbUrl) {
+            if (Data?.data?.user?.ai?.fbUrl) {
                 setFbUrl(Data.data.user.ai.fbUrl)
             }
-            if (Data.data.user.ai.youtubeUrl) {
-                setYoutubeUrl(Data.data.user.ai.youtubeUrl)
+            if (Data?.data?.user?.ai?.youtubeUrl) {
+                setYoutubeUrl(Data?.data?.user?.ai?.youtubeUrl)
             }
-            if (Data.data.user.ai.twitterUrl) {
-                setTwitterUrl(Data.data.user.ai.twitterUrl)
+            if (Data?.data?.user?.ai?.twitterUrl) {
+                setTwitterUrl(Data?.data?.user?.ai?.twitterUrl)
             }
-            // if (Data.data.user.ai.fbUrl) {
-            //     setApplePodcastUrl(Data.data.user.ai.fbUrl)
+            // if (Data?.data?.user?.ai?.fbUrl) {
+            //     setApplePodcastUrl(Data?.data?.user?.ai?.fbUrl)
             // }
-            if (Data.data.user.ai.spotify_url) {
-                setSpotifyUrl(Data.data.user.ai.spotify_url)
+            if (Data?.data?.user?.ai?.spotify_url) {
+                setSpotifyUrl(Data?.data?.user?.ai?.spotify_url)
             }
-            if (Data.data.user.ai.instaUrl) {
-                setInstaUrl(Data.data.user.ai.instaUrl)
+            if (Data?.data?.user?.ai?.instaUrl) {
+                setInstaUrl(Data?.data?.user?.ai?.instaUrl)
             }
         }
     }, [])

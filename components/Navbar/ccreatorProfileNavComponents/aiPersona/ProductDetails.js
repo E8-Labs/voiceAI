@@ -15,7 +15,7 @@ const ProductDetails = ({ aiData, recallApi }) => {
         <div>
             <div className='flex flex-row items-center justify-between'>
                 <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
-                    Products & Services
+                    <span style={{ color: "#00000060" }}>Products & Services |</span> Product Details 
                 </div>
                 <button className='underline text-purple'>
                     Add New
