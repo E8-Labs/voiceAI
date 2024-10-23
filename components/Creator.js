@@ -1116,7 +1116,7 @@ const Creator = () => {
                           {getAssistantData &&
                             getAssistantData?.ai?.twitterUrl ? (
                             <button onClick={handleTwitterClick}>
-                              <TwitterLogo size={25} />
+                              <XLogo size={25} />
                             </button>
                           ) : (
                             ""

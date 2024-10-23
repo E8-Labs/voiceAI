@@ -25,10 +25,16 @@ const CommunicaionInstruction = ({ recallApi, aiData }) => {
 
 
     useEffect(() => {
-        if (aiData?.CommunicationInstructions
-        ) {
-            setCommunicationInstructionData(aiData.CommunicationInstructions);
+        const localAiPersonaDetails = localStorage.getItem("aiPersonaDetails");
+        if (localAiPersonaDetails) {
+            const AiDetails = JSON.parse(localAiPersonaDetails);
+            setCommunicationInstructionData(AiDetails.CommunicationInstructions);
+            console.log("Aidetails recieved from local storage are", AiDetails);
         }
+        // if (aiData?.CommunicationInstructions
+        // ) {
+        //     setCommunicationInstructionData(aiData.CommunicationInstructions);
+        // }
     }, []);
 
 
@@ -75,6 +81,7 @@ const CommunicaionInstruction = ({ recallApi, aiData }) => {
                     setAddCommunicationTitle("");
                     setAnchorEl(null);
                     setCommunicationInstructionData(response.data.data.CommunicationInstructions);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                 } else {
                     console.log("Error occured")
                 }
@@ -119,6 +126,7 @@ const CommunicaionInstruction = ({ recallApi, aiData }) => {
                     setUpdateModal(false);
                     setAnchorEl(null);
                     setCommunicationInstructionData(response.data.data.CommunicationInstructions);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                 } else {
                     console.log("Error occured")
                 }
@@ -160,6 +168,7 @@ const CommunicaionInstruction = ({ recallApi, aiData }) => {
                 if (response.data.status === true) {
                     setAnchorEl(null);
                     setCommunicationInstructionData(response.data.data.CommunicationInstructions);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                 } else {
                     console.log("Error occured")
                 }

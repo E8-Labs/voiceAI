@@ -148,6 +148,7 @@ const Page = () => {
                 console.log("Response of getai on parent screen api", response.data.data);
                 if (response.data) {
                     setAiData(response.data.data);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                 }
             }
         } catch (error) {

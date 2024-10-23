@@ -24,9 +24,15 @@ const FrameWorkAndTec = ({ recallApi, aiData }) => {
 
 
   useEffect(() => {
-    if (aiData) {
-      setFrameWorkData(aiData.frameworks);
+    const localAiPersonaDetails = localStorage.getItem("aiPersonaDetails");
+    if (localAiPersonaDetails) {
+      const AiDetails = JSON.parse(localAiPersonaDetails);
+      setFrameWorkData(AiDetails.frameworks);
+      console.log("Aidetails recieved from local storage are", AiDetails);
     }
+    // if (aiData) {
+    //   setFrameWorkData(aiData.frameworks);
+    // }
   }, []);
 
   const handleClose = () => {
@@ -71,6 +77,7 @@ const FrameWorkAndTec = ({ recallApi, aiData }) => {
           setAddFrameWorkDescription("");
           setAddFrameWorkTitle("");
           setFrameWorkData(response.data.data.frameworks);
+          localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
         } else {
           console.log("Error occured")
         }
@@ -111,6 +118,7 @@ const FrameWorkAndTec = ({ recallApi, aiData }) => {
         if (response.data.status === true) {
           setFrameworkanchorel(null);
           setFrameWorkData(response.data.data.frameworks);
+          localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
           // setFrameWorkData(frameWorks =>
           //   frameWorks.filter(preFrameWork => preFrameWork.id !== selectedItem.id)
           // )
@@ -159,6 +167,7 @@ const FrameWorkAndTec = ({ recallApi, aiData }) => {
           setUpdateFrameWorkTitle("");
           setFrameworkanchorel(null);
           setFrameWorkData(response.data.data.frameworks);
+          localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
         } else {
           console.log("Error occured")
         }

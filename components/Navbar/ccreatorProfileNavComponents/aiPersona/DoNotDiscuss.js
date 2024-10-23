@@ -28,9 +28,15 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
     const [openAdvanceSettingPopup, setOpenAdvanceSettingPopup] = useState(false);
 
     useEffect(() => {
-        if (aiData?.DoNots) {
-            setDonotDiscussData(aiData.DoNots);
+        const loalAiPersonaDetails = localStorage.getItem("aiPersonaDetails");
+        if (loalAiPersonaDetails) {
+            const AiDetails = JSON.parse(loalAiPersonaDetails);
+            setDonotDiscussData(AiDetails.DoNots);
+            console.log("Aidetails recieved from local storage are", AiDetails);
         }
+        // if (aiData?.DoNots) {
+        //     setDonotDiscussData(aiData.DoNots);
+        // }
     }, []);
 
     const handeDonotDiscussMoreClick = (event, item) => {
@@ -50,11 +56,13 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
     //add new donot
     const handleaddNewDonotDescription = async () => {
         try {
-            setDonotDisturbLoader(true);
+            // setDonotDisturbLoader(true);
             const ApiPath = Apis.AddDonot;
             const localData = localStorage.getItem('User');
             const Data = JSON.parse(localData);
             const AuthToken = Data.data.token;
+            console.log("Loggedin user id is", Data.data.user.id);
+            // return
             console.log("Authtoken is", AuthToken);
             console.log("Apipath is", ApiPath);
 
@@ -71,12 +79,13 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
                 }
             });
             if (response) {
-                console.log("Response of add donot api is", response.data);
+                console.log("Response of add donot api is", response.data.data);
                 if (response.data.status === true) {
                     setOpenModal(false);
                     setaddNewDonotDescriptionDescription("");
                     // recallApi();
                     setDonotDiscussData(response.data.data.DoNots);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                 } else {
                     console.log("Error occured")
                 }
@@ -121,6 +130,7 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
                     setDonotDiscussAnchorel(null);
                     // recallApi();
                     setDonotDiscussData(response.data.data.DoNots);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                 } else {
                     console.log("Error occured")
                 }
@@ -163,6 +173,7 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
                 if (response.data.status === true) {
                     setDonotDiscussAnchorel(null);
                     setDonotDiscussData(response.data.data.DoNots);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                 } else {
                     console.log("Error occured")
                 }

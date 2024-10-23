@@ -33,10 +33,17 @@ const BasicInformation = ({ recallApi, aiData }) => {
     const [showQuerrySaveBtn, setShowQuerryBtn] = useState(false);
 
     useEffect(() => {
-        if (aiData) {
-            setGreetingValue(aiData.ai.greeting);
-            setUserQuerry(aiData.ai.possibleUserQuery);
+        const localAiPersonaDetails = localStorage.getItem("aiPersonaDetails");
+        if (localAiPersonaDetails) {
+            const AiDetails = JSON.parse(localAiPersonaDetails);
+            setGreetingValue(AiDetails.ai.greeting);
+            setUserQuerry(AiDetails.ai.possibleUserQuery);
+            console.log("Aidetails recieved from local storage are", AiDetails);
         }
+        // if (aiData) {
+        //     setGreetingValue(aiData.ai.greeting);
+        //     setUserQuerry(aiData.ai.possibleUserQuery);
+        // }
     }, [recallApi]);
 
     const handleUpdateAi = async () => {
@@ -71,6 +78,8 @@ const BasicInformation = ({ recallApi, aiData }) => {
                     setResultSnack(response.data.message);
                     if (response.data.status === true) {
                         greetingRef.current.blur();
+                        recallApi();
+                        // localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                     }
                 }
             }

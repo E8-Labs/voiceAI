@@ -24,9 +24,15 @@ const IntractionExamples = ({ recallApi, aiData }) => {
 
 
     useEffect(() => {
-        if (aiData) {
-            setIntractionsData(aiData.intractions);
+        const localAiPersonaDetails = localStorage.getItem("aiPersonaDetails");
+        if (localAiPersonaDetails) {
+            const AiDetails = JSON.parse(localAiPersonaDetails);
+            setIntractionsData(AiDetails.intractions);
+            console.log("Aidetails recieved from local storage are", AiDetails);
         }
+        // if (aiData) {
+        //     setIntractionsData(aiData.intractions);
+        // }
     }, [recallApi]);
 
     const handleClose = () => {
@@ -71,6 +77,7 @@ const IntractionExamples = ({ recallApi, aiData }) => {
                     setAddIntractionDescription("");
                     setAddIntractionTitle("");
                     setIntractionsData(response.data.data.intractions);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                 } else {
                     console.log("Error occured")
                 }
@@ -111,6 +118,7 @@ const IntractionExamples = ({ recallApi, aiData }) => {
                 if (response.data.status === true) {
                     setintractionanchorel(null);
                     setIntractionsData(response.data.data.intractions);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                     // setIntractionsData(intractions =>
                     //     intractions.filter(preIntraction => preIntraction.id !== selectedItem.id)
                     // )
@@ -159,6 +167,7 @@ const IntractionExamples = ({ recallApi, aiData }) => {
                     setUpdateIntractionTitle("");
                     setintractionanchorel(null);
                     setIntractionsData(response.data.data.intractions);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                 } else {
                     console.log("Error occured")
                 }

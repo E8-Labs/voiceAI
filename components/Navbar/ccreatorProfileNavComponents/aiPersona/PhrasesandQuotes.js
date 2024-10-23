@@ -25,9 +25,16 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
     const [updatePhraseValue, setUpdatePhraseValue] = useState("");
 
     useEffect(() => {
-        if (aiData?.PhrasesAndQuotes) {
-            setPhrasesData(aiData.PhrasesAndQuotes);
+        const localAiPersonaDetails = localStorage.getItem("aiPersonaDetails");
+        if (localAiPersonaDetails) {
+            const AiDetails = JSON.parse(localAiPersonaDetails);
+            // setIntractionsData(AiDetails.intractions);
+            setPhrasesData(AiDetails.PhrasesAndQuotes);
+            console.log("Aidetails recieved from local storage are", AiDetails);
         }
+        // if (aiData?.PhrasesAndQuotes) {
+        //     setPhrasesData(aiData.PhrasesAndQuotes);
+        // }
     }, [recallApi]);
 
     const handePhrasesMoreClick = (event, item) => {
@@ -73,6 +80,7 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
                     setAddNewPhrase("");
                     setAddPhraseValue("");
                     setPhrasesData(response.data.data.PhrasesAndQuotes);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                 } else {
                     console.log("Error occured")
                 }
@@ -118,6 +126,7 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
                     setPhrasesAnchorel(null);
                     setUpdatePhrase("");
                     setPhrasesData(response.data.data.PhrasesAndQuotes);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                 } else {
                     console.log("Error occured")
                 }
@@ -160,6 +169,7 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
                     setPhrasesAnchorel(null);
                     setUpdatePhrase("");
                     setPhrasesData(response.data.data.PhrasesAndQuotes);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                 } else {
                     console.log("Error occured")
                 }

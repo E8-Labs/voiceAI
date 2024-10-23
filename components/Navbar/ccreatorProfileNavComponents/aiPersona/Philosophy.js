@@ -39,12 +39,19 @@ const Philosophy = ({ aiData, recallApi }) => {
     const [resultSnack, setResultSnack] = useState(null);
 
     useEffect(() => {
-        if (aiData?.values) {
-            setValuesData(aiData.values);
+        const localAiPersonaDetails = localStorage.getItem("aiPersonaDetails");
+        if (localAiPersonaDetails) {
+            const AiDetails = JSON.parse(localAiPersonaDetails);
+            setPhilosophyData(AiDetails.Philosophies);
+            setValuesData(AiDetails.values);
+            console.log("Aidetails recieved from local storage are", AiDetails);
         }
-        if (aiData?.Philosophies) {
-            setPhilosophyData(aiData.Philosophies);
-        }
+        // if (aiData?.values) {
+        //     setValuesData(aiData.values);
+        // }
+        // if (aiData?.Philosophies) {
+        //     setPhilosophyData(aiData.Philosophies);
+        // }
     }, [recallApi])
 
     const handleClick = (event, item) => {
@@ -98,6 +105,7 @@ const Philosophy = ({ aiData, recallApi }) => {
                     setAddValues("");
                     setValuesDescription("");
                     setValuesData(response.data.data.values);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                 } else {
                     console.log("Error occured")
                 }
@@ -142,6 +150,7 @@ const Philosophy = ({ aiData, recallApi }) => {
                     setValueAnchorEl(null);
                     setValuesData(response.data.data.values);
                     setUpdateValueModal(false);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                 } else {
                     console.log("Error occured")
                 }
@@ -182,6 +191,7 @@ const Philosophy = ({ aiData, recallApi }) => {
                 if (response.data.status === true) {
                     setValueAnchorEl(null);
                     setValuesData(response.data.data.values);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                     // setValuesData(prevData =>
                     //     prevData.filter(delValue => delValue.id !== selecteddItem.id)
                     // )
@@ -228,6 +238,7 @@ const Philosophy = ({ aiData, recallApi }) => {
                     setAddPhilosophy("");
                     setPhilosophyDescription("");
                     setPhilosophyData(response.data.data.Philosophies);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                 } else {
                     console.log("Error occured")
                 }
@@ -274,6 +285,7 @@ const Philosophy = ({ aiData, recallApi }) => {
                     setUpdatephilosophyDescription("");
                     setAnchorEl(null);
                     setPhilosophyData(response.data.data.Philosophies);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                 } else {
                     console.log("Error occured")
                 }
@@ -315,7 +327,8 @@ const Philosophy = ({ aiData, recallApi }) => {
                 console.log("Response of delete philosophy api is", response.data);
                 if (response.data.status === true) {
                     setAnchorEl(null);
-                    recallApi()
+                    recallApi();
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                     // setPhilosophyData(response.data.data.Philosophies);
                     // setPhilosophyData(prevData =>
                     //     prevData.filter(Philosophy => Philosophy.id !== selectedPhilosophyDetails.id)
@@ -489,7 +502,7 @@ const Philosophy = ({ aiData, recallApi }) => {
                             }
                         </div> :
                         <div className='w-full text-center mt-8' style={{ fontWeight: "bold", fontSize: 18, fontFamily: "inter" }}>
-                            No Values
+                            No Views
                         </div>
                 }
             </div>

@@ -71,8 +71,14 @@ const PersonalityTraits = ({ aiData, recallApi }) => {
         // getAiApi();
         try {
             setLoadTraitsLoader(true);
-            console.log("Data recieved is", aiData);
-            setPersonalityTraits(aiData.traits);
+            // console.log("Data recieved is", aiData);
+            // setPersonalityTraits(aiData.traits);
+            const localAiPersonaDetails = localStorage.getItem("aiPersonaDetails");
+            if (localAiPersonaDetails) {
+                const AiDetails = JSON.parse(localAiPersonaDetails);
+                setPersonalityTraits(AiDetails.traits);
+                console.log("Aidetails recieved from local storage are", AiDetails);
+            }
         } catch (error) {
             console.error("ERror occured");
         } finally {
@@ -112,6 +118,7 @@ const PersonalityTraits = ({ aiData, recallApi }) => {
                     setNewTraitSliderValue("");
                     setOpenManuallyTrait(false);
                     setPersonalityTraits(response.data.data.traits);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                 } else {
                     console.log("Error occured")
                 }
@@ -183,6 +190,7 @@ const PersonalityTraits = ({ aiData, recallApi }) => {
                     setOpenUpdateTraitPopup(false);
                     // setPersonalityTraits(response.data.data.traits);
                     recallApi();
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                 } else {
                     console.log("Error occured")
                 }
@@ -241,6 +249,7 @@ const PersonalityTraits = ({ aiData, recallApi }) => {
                     setOpenUpdateTraitPopup(false);
                     // setPersonalityTraits(response.data.data.traits);
                     recallApi();
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                 } else {
                     console.log("Error occured")
                 }
@@ -285,6 +294,7 @@ const PersonalityTraits = ({ aiData, recallApi }) => {
                     setAnchorEl(null);
                     // getAiApi();
                     setPersonalityTraits(response.data.data.traits);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                     // setPersonalityTraits(prevTraits =>
                     //     prevTraits.filter(trait => trait.id !== delTraitId)
                     // );

@@ -39,12 +39,24 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
 
 
     useEffect(() => {
-        if (aiData?.values) {
-            setValuesData(aiData.values);
+        const localAiPersonaDetails = localStorage.getItem("aiPersonaDetails");
+        if (localAiPersonaDetails) {
+            const AiDetails = JSON.parse(localAiPersonaDetails);
+            // setFrameWorkData(AiDetails.frameworks);
+            if (AiDetails?.values) {
+                setValuesData(AiDetails.values);
+            }
+            if (AiDetails?.beliefs) {
+                setBeliefsData(AiDetails.beliefs);
+            }
+            console.log("Aidetails recieved from local storage are", AiDetails);
         }
-        if (aiData?.beliefs) {
-            setBeliefsData(aiData.beliefs);
-        }
+        // if (aiData?.values) {
+        //     setValuesData(aiData.values);
+        // }
+        // if (aiData?.beliefs) {
+        //     setBeliefsData(aiData.beliefs);
+        // }
     }, [recallApi])
 
     const handleClick = (event, item) => {
@@ -98,6 +110,7 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                     setAddValues("");
                     setValuesDescription("");
                     setValuesData(response.data.data.values);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                 } else {
                     console.log("Error occured")
                 }
@@ -142,6 +155,7 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                     setValueAnchorEl(null);
                     setValuesData(response.data.data.values);
                     setUpdateValueModal(false);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                 } else {
                     console.log("Error occured")
                 }
@@ -182,6 +196,7 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                 if (response.data.status === true) {
                     setValueAnchorEl(null);
                     setValuesData(response.data.data.values);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                     // setValuesData(prevData =>
                     //     prevData.filter(delValue => delValue.id !== selecteddItem.id)
                     // )
@@ -229,6 +244,7 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                     setBeliefDescription("");
                     // recallApi();
                     setBeliefsData(response.data.data.beliefs);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                 } else {
                     console.log("Error occured")
                 }
@@ -274,6 +290,7 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                     setUpdateBeliefDescription("");
                     setAnchorEl(null);
                     setBeliefsData(response.data.data.beliefs);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                 } else {
                     console.log("Error occured")
                 }
@@ -315,6 +332,7 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                 if (response.data.status === true) {
                     setAnchorEl(null);
                     setBeliefsData(response.data.data.beliefs);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                     // setBeliefsData(prevData =>
                     //     prevData.filter(Belief => Belief.id !== beliefData.id)
                     // )

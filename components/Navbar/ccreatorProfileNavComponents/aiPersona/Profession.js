@@ -88,6 +88,7 @@ const Profession = ({ recallApi, aiData }) => {
                     setResultSnack(response.data.message);
                     if (response.data.status === true) {
                         taglineRef.current.blur();
+                        recallApi();
                     }
                 }
             }
@@ -196,11 +197,11 @@ const Profession = ({ recallApi, aiData }) => {
             </div>
 
             <div className='flex flex-row items-start p-4 border border-[#00000010] mt-8 justify-between'>
-                <div>
+                <div className='w-full'>
                     <div style={{ fontWeight: "bold", fontSize: 13, fontFamily: "inter" }}>
                         What does {aiData?.ai?.name?.charAt(0).toUpperCase() + aiData?.ai?.name?.slice(+1)} help your community with?
                     </div>
-                    <div className='mt-4' style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
+                    <div className='mt-4 w-full' style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
                         {/* {aiData.ai.action} */}
                         <input
                             className='w-full border-none outline-none'
