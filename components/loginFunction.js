@@ -13,7 +13,7 @@ const loginFunction = () => {
             return
         }else{
             console.log("User is not logged in");
-            router.push("/");
+            router.push("https://www.mycreatorx.com/");
             console.log("User redirected")
             return;
         }
