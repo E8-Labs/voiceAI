@@ -13,7 +13,7 @@ import Objectionhandling from '@/components/Navbar/ccreatorProfileNavComponents/
 import PhrasesandQuotes from '@/components/Navbar/ccreatorProfileNavComponents/aiPersona/PhrasesandQuotes';
 import ProductDetails from '@/components/Navbar/ccreatorProfileNavComponents/aiPersona/ProductDetails';
 import Profession from '@/components/Navbar/ccreatorProfileNavComponents/aiPersona/Profession';
-import { CaretDown } from '@phosphor-icons/react';
+import { CaretDown, CaretUp } from '@phosphor-icons/react';
 import axios from 'axios';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
@@ -560,15 +560,14 @@ const Page = () => {
                                             <div>{item.menu}</div>
                                             <Image src={item.id === selectedMenu ? "/assets/claimLogo2.png" : "/assets/TickIcon.png"} alt='icon' height={10} width={10} />
                                         </div>
-                                        {/* {
-                                            [4, 6, 8, 9].includes(item.id) &&
-                                            <CaretDown size={22} weight="light" />
-                                        } */}
-
                                         {
                                             [2, 3, 5, 7, 8].includes(item.id) &&
-                                            <div className='pe-8'>
-                                                <CaretDown size={22} weight="light" />
+                                            <div className=''>
+                                                {
+                                                    item.id === dropdownOpen ?
+                                                        <CaretUp size={22} weight="light" /> :
+                                                        <CaretDown size={22} weight="light" />
+                                                }
                                             </div>
                                         }
                                     </button>
