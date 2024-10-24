@@ -616,7 +616,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                       },
                     }}
                   />
-                  <div className="w-full sm:w-9/12 flex flex-row justify-end mt-1" style={{ fontWeight: "500", fontSize: 14, fontFamily: "inter" }}>
+                  <div className="w-full sm:w-9/12 flex flex-row justify-end mt-1" style={{ fontWeight: "500", fontSize: 14, fontFamily: "inter", height: 15 }}>
                     {
                       talkAbout && (
                         <div>
@@ -745,7 +745,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                         },
                       }}
                     />
-                    <div className="w-full sm:w-9/12 flex flex-row justify-end mt-1" style={{ fontWeight: "500", fontSize: 14, fontFamily: "inter" }}>
+                    <div className="w-full sm:w-9/12 flex flex-row justify-end mt-1" style={{ fontWeight: "500", fontSize: 14, fontFamily: "inter", height: 15 }}>
                       {
                         helpTagline && (
                           <div>
