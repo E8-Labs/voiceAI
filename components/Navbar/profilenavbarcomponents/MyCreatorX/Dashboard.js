@@ -356,7 +356,7 @@ const Dashboard = () => {
                 <div className='w-full items-center justify-between flex flex-row'>
                     <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter", color: "#ffffff60" }}>
                         Good to see you back <span className='text-white'>
-                            {creatorName}
+                            {creatorName.charAt(0).toUpperCase() + creatorName.slice(1)}
                         </span>
                     </div>
                     <div>
