@@ -575,8 +575,15 @@ function AiSocialLinks({ handleBuildAI, aiName, buildAiLoader }) {
                                         <CircularProgress size={20} />
                                     </div> :
                                     <button onClick={handleContinueSocial}
-                                        className='bg-purple hover:bg-purple text-white px-4 mt-2 w-full sm:w-9/12 py-2'
-                                        style={{ fontSize: 15, fontWeight: "400", borderRadius: "50px" }}>
+                                        className='bg-purple hover:bg-purple text-white px-4 mt-2 w-full sm:w-9/12 outline-none border-none'
+                                        // style={{ fontSize: 15, fontWeight: "400", borderRadius: "50px" }}
+                                        style={{
+                                            fontSize: 15,
+                                            fontWeight: "400",
+                                            height: "52px",
+                                            borderRadius: "50px",
+                                        }}
+                                    >
                                         Continue
                                     </button>
                             }
@@ -584,8 +591,15 @@ function AiSocialLinks({ handleBuildAI, aiName, buildAiLoader }) {
                         <button
                             disabled
                             // onClick={handleContinueSocial}
-                            className='bg-purple2 hover:bg-purple2 text-white px-4 mt-2 w-full sm:w-9/12 py-2'
-                            style={{ fontSize: 15, fontWeight: "400", borderRadius: "50px", color: "white" }}>
+                            className='bg-purple2 hover:bg-purple2 text-white px-4 mt-2 w-full sm:w-9/12'
+                            style={{
+                                fontSize: 15,
+                                fontWeight: "400",
+                                height: "52px",
+                                borderRadius: "50px",
+                            }}
+                        // style={{ fontSize: 15, fontWeight: "400", borderRadius: "50px", color: "white" }}
+                        >
                             Continue
                         </button>
                 }
