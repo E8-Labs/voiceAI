@@ -581,7 +581,7 @@ export default function ScriptAnimation({ onChangeIndex }) {
                     inputProps={{
                       maxLength: 500
                     }}
-                    placeholder=" talk about dating, business, fitness ..."
+                    placeholder="I talk about dating, business, fitness ..."
                     InputProps={{
                       disableUnderline: true, // Disable underline to clean up the style
                     }}

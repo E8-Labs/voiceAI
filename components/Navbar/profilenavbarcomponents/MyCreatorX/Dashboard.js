@@ -30,6 +30,7 @@ const Dashboard = () => {
     const [dashBoardData, setDashBoardData] = useState(null);
     const [analyticsDuration, setAnalyticsDuration] = useState('24hrs');
     const [callersLoader, setCallersLoader] = useState(false);
+    const [creatorName, setCreatorName] = useState("");
 
 
     const callDetails = [
@@ -80,6 +81,7 @@ const Dashboard = () => {
             if (localData) {
                 const Data = JSON.parse(localData);
                 const AuthToken = Data.data.token;
+                setCreatorName(Data.data.user.name);
                 const ApiPath = Apis.DashBoardApi;
                 const result = await axios.get(ApiPath, {
                     headers: {
