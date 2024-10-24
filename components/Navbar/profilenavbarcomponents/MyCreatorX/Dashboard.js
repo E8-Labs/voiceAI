@@ -355,7 +355,9 @@ const Dashboard = () => {
             <div className='bg-purple rounded-2xl bg-purple px-4 py-4 text-white w-11/12 mt-4'>
                 <div className='w-full items-center justify-between flex flex-row'>
                     <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter", color: "#ffffff60" }}>
-                        Good to see you back <span className='text-white'>Salman</span>
+                        Good to see you back <span className='text-white'>
+                            {creatorName}
+                        </span>
                     </div>
                     <div>
                         {/* {
