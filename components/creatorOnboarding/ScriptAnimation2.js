@@ -1546,7 +1546,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                   </div>
 
                   {webinarUrl || otherUrl || otherGoal || selectedProducts ? (
-                    <div className="w-full sm:w-9/12">
+                    <div className="w-full sm:w-10/12">
                       <button
                         onClick={handleContinue}
                         className="bg-purple hover:bg-purple text-white w-full mt-4"

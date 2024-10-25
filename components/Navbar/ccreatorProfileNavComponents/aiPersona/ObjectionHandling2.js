@@ -1,28 +1,15 @@
 import Apis from '@/components/apis/Apis';
 import { Box, CircularProgress, Modal, Popover } from '@mui/material';
-import { DotsThree, Plus } from '@phosphor-icons/react'
+import { DotsThree, Plus } from '@phosphor-icons/react';
 import axios from 'axios';
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 
-const CallInstructions = () => {
+const ObjectionHandling2 = () => {
 
     const [openExamplesPopup, setOpenExamplesPopup] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
-    const [callInstructionData, setCallInstructionData] = useState([
-        {
-            id: 1,
-            heading: "Greet callers"
-        },
-        {
-            id: 2,
-            heading: "Greet callers"
-        },
-        {
-            id: 3,
-            heading: "Greet callers"
-        },
-    ]);
+    const [callInstructionData, setCallInstructionData] = useState([]);
     const [strategyLoader, setStrategyLoader] = useState(false);
     //add strategy
     const [addStrategyModal, setAddStrategyModal] = useState(false);
@@ -54,7 +41,7 @@ const CallInstructions = () => {
         const localAiPersonaDetails = localStorage.getItem("aiPersonaDetails");
         if (localAiPersonaDetails) {
             const AiDetails = JSON.parse(localAiPersonaDetails);
-            setCallInstructionData(AiDetails.callStrategy);
+            setCallInstructionData(AiDetails.objectionHandling);
             console.log("Aidetails recieved from local storage are", AiDetails);
         }
     }, []);
@@ -64,7 +51,7 @@ const CallInstructions = () => {
     const handleAddStrategy = async () => {
         try {
             setStrategyLoader(true);
-            const ApiPath = Apis.AddCallStrategy;
+            const ApiPath = Apis.AddObjection;
             const localData = localStorage.getItem('User');
             const Data = JSON.parse(localData);
             const AuthToken = Data.data.token;
@@ -72,8 +59,8 @@ const CallInstructions = () => {
             console.log("Apipath is", ApiPath);
 
             const ApiData = {
-                title: addStrategyTitle,
-                description: addStrategyDescription
+                objectionType: addStrategyTitle,
+                prompt: addStrategyDescription
             }
 
             console.log("Data sendgin in api is", ApiData);
@@ -92,7 +79,7 @@ const CallInstructions = () => {
                     setAddStrategyTitle("");
                     //addconcerned data here
                     localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
-                    setCallInstructionData(response.data.data.callStrategy);
+                    setCallInstructionData(response.data.data.objectionHandling);
                 } else {
                     console.log("Error occured")
                 }
@@ -109,7 +96,7 @@ const CallInstructions = () => {
     const handleUpdateStrategy = async () => {
         try {
             setStrategyLoader(true);
-            const ApiPath = Apis.UpdateCallStrategy;
+            const ApiPath = Apis.UpdateObjection;
             const localData = localStorage.getItem('User');
             const Data = JSON.parse(localData);
             const AuthToken = Data.data.token;
@@ -118,8 +105,8 @@ const CallInstructions = () => {
 
             const ApiData = {
                 id: selectedItem.id,
-                title: updateStrategyTitle,
-                description: updateStrategyDescription
+                objectionType: updateStrategyTitle,
+                prompt: updateStrategyDescription
             }
 
             console.log("Data sendgin in api is", ApiData);
@@ -137,7 +124,7 @@ const CallInstructions = () => {
                     //addconcerned data here
                     setAnchorEl(null);
                     localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
-                    setCallInstructionData(response.data.data.callStrategy);
+                    setCallInstructionData(response.data.data.objectionHandling);
                 } else {
                     console.log("Error occured")
                 }
@@ -154,7 +141,7 @@ const CallInstructions = () => {
     const handleDeleteteStrategy = async () => {
         try {
             setStrategyLoader(true);
-            const ApiPath = Apis.DelCallStrategy;
+            const ApiPath = Apis.DelObjection;
             const localData = localStorage.getItem('User');
             const Data = JSON.parse(localData);
             const AuthToken = Data.data.token;
@@ -179,7 +166,7 @@ const CallInstructions = () => {
                     //set data to show
                     setAnchorEl(null);
                     localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
-                    setCallInstructionData(response.data.data.callStrategy);
+                    setCallInstructionData(response.data.data.objectionHandling);
                 } else {
                     console.log("Error occured")
                 }
@@ -239,11 +226,12 @@ const CallInstructions = () => {
         },
     ]
 
+
     return (
         <div className='w-full'>
             <div className='flex flex-row items-center w-full justify-between'>
                 <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
-                    Call Strategy
+                    Objection Handling
                 </div>
                 <button
                     className='underline text-purple'
@@ -262,7 +250,8 @@ const CallInstructions = () => {
                                         {index + 1}
                                     </div>
                                     <div style={styles.text1}>
-                                        {item.description}
+                                        {/* {item.objectionType} */}
+                                        {item.prompt}
                                     </div>
                                 </div>
                                 <div>
@@ -408,7 +397,7 @@ const CallInstructions = () => {
                             <div style={{ backgroundColor: "#ffffff", borderRadius: 7, padding: 10 }}>
                                 <div className='flex flex-row items-center justify-between p-2' style={{ fontWeight: '500', fontFamily: "inter", fontSize: 18 }}>
                                     <p />
-                                    <p>Add Call Strategy</p>
+                                    <p>Add Objection</p>
                                     <button onClick={() => { setAddStrategyModal(false) }}>
                                         <Image src="/assets/crossBtn.png" height={15} width={15} alt='*' />
                                     </button>
@@ -475,7 +464,7 @@ const CallInstructions = () => {
                             <div style={{ backgroundColor: "#ffffff", borderRadius: 7, padding: 10 }}>
                                 <div className='flex flex-row items-center justify-between p-2' style={{ fontWeight: '500', fontFamily: "inter", fontSize: 18 }}>
                                     <p />
-                                    <p>Update Call Strategy</p>
+                                    <p>Update Objection</p>
                                     <button onClick={() => { setUpdateStrategyModal(false) }}>
                                         <Image src="/assets/crossBtn.png" height={15} width={15} alt='*' />
                                     </button>
@@ -519,4 +508,4 @@ const CallInstructions = () => {
     )
 }
 
-export default CallInstructions
+export default ObjectionHandling2

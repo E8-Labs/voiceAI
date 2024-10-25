@@ -62,10 +62,10 @@ export default function Home() {
                 >
                     <div //style={{ backgroundColor: 'red' }}
                         // className='sm:w-10/12 w-full h-screen flex flex-col justify-between'
-                        className={`w-full h-screen flex flex-col justify-between ${currentIndex === 6 ? "sm:w-11/12" : "sm:w-10/12"}`}
+                        className={`w-full h-screen flex flex-col items-center justify-between ${currentIndex === 6 ? "sm:w-11/12" : "sm:w-10/12"}`}
                     >
                         <div
-                            className='justify-between pt-8 sm:pt-8 md:pt-10 md:w-full w-10/12'
+                            className='justify-between pt-8 sm:pt-8 md:pt-10 sm:w-full w-11/12'
                         // className='mt-12 sm:mt-24'
                         >
                             <Image src={'/creatorXlogo.png'}

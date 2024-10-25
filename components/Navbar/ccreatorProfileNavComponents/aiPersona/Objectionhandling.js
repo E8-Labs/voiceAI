@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 
 const Objectionhandling = () => {
 
+    const [selectedObjection, setSelectedObjection] = useState(null);
+
     const objectionDetails = [
         {
             id: 1,
@@ -25,7 +27,6 @@ const Objectionhandling = () => {
         },
     ];
 
-    const [selectedObjection, setSelectedObjection] = useState(null);
 
     const toggleSelectObjection = (id) => {
         setSelectedObjection(id);
@@ -59,6 +60,15 @@ const Objectionhandling = () => {
                             </div>
                         </div>
                     ))
+                }
+            </div>
+            <div>
+                {
+                    selectedObjection && (
+                        <button className='bg-purple py-1 rounded-full px-6 mt-6 text-white'>
+                            Save
+                        </button>
+                    )
                 }
             </div>
 

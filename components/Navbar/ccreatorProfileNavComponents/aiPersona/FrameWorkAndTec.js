@@ -46,7 +46,7 @@ const FrameWorkAndTec = ({ recallApi, aiData }) => {
     setUpdateFrameWorkTitle(item.title);
   }
 
-  //update Framework
+  //add Framework
   const handleAddFramWork = async () => {
     try {
       setFrameWorkLoader(true);
@@ -134,7 +134,7 @@ const FrameWorkAndTec = ({ recallApi, aiData }) => {
     }
   }
 
-  //add Framework
+  //update Framework
   const handleUpdateFrameWork = async () => {
     try {
       setFrameWorkLoader(true);

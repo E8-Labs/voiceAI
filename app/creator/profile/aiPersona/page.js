@@ -20,6 +20,7 @@ import React, { useEffect, useState } from 'react';
 import { CircularProgressbar, CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import loginFunction from '@/components/loginFunction';
+import ObjectionHandling2 from '@/components/Navbar/ccreatorProfileNavComponents/aiPersona/ObjectionHandling2';
 
 const Page = () => {
 
@@ -30,7 +31,7 @@ const Page = () => {
     const [selectedGetToolMenu, setSelectedGetToolMenu] = useState(201);
     const [selectedGetProfessionalMenuMenu, setSelectedGetProfessionalMenuMenu] = useState(201);
     const [aiData, setAiData] = useState(null);
-    const [selectedCommunicationlMenu, setSelectedCommunicationlMenu] = useState(901);
+    const [selectedCallStrategy, setSelectedCallStrategy] = useState(901);
 
 
 
@@ -240,7 +241,7 @@ const Page = () => {
     const communications = [
         {
             id: 901,
-            title: "Intraction examples"
+            title: "Call Strategy"
         },
         {
             id: 902,
@@ -429,13 +430,13 @@ const Page = () => {
                                     <div key={item.id} className='mb-4 flex flex-row items-center gap-2'>
                                         <button className='text-start outline-noe border-none'
                                             onClick={() => {
-                                                setSelectedCommunicationlMenu(item.id);
+                                                setSelectedCallStrategy(item.id);
                                             }}
-                                            style={{ color: selectedCommunicationlMenu === item.id ? "#620FEB" : "black" }}
+                                            style={{ color: selectedCallStrategy === item.id ? "#620FEB" : "black" }}
                                         >
                                             {item.title}
                                         </button>
-                                        <Image src={item.id === selectedCommunicationlMenu ? "/assets/claimLogo2.png" : "/assets/TickIcon.png"} alt='icon' height={10} width={10} />
+                                        <Image src={item.id === selectedCallStrategy ? "/assets/claimLogo2.png" : "/assets/TickIcon.png"} alt='icon' height={10} width={10} />
                                     </div>
                                 ))
                             }
@@ -636,17 +637,19 @@ const Page = () => {
                                     }
                                 </div>
                             ) : selectedMenu === 6 ? (
-                                <Objectionhandling />
+                                // <Objectionhandling />
+                                <ObjectionHandling2 />
                             ) : selectedMenu === 7 ? (
                                 <FrameWorkAndTec recallApi={recallApi} aiData={aiData} />
                             ) : selectedMenu === 8 ? (
                                 <div>
                                     {
-                                        selectedCommunicationlMenu === 901 ? (
-                                            <IntractionExamples recallApi={recallApi} aiData={aiData} />
-                                        ) : selectedCommunicationlMenu === 902 ? (
+                                        selectedCallStrategy === 901 ? (
+                                            // <IntractionExamples recallApi={recallApi} aiData={aiData} />
+                                            <CallInstructions recallApi={recallApi} aiData={aiData} />
+                                        ) : selectedCallStrategy === 902 ? (
                                             "Item 2"
-                                        ) : selectedCommunicationlMenu === 903 ? (
+                                        ) : selectedCallStrategy === 903 ? (
                                             "Item 3"
                                         ) : ""
                                     }

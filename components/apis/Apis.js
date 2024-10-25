@@ -74,7 +74,13 @@ const Apis = {
     UpdatePhrase: `${BasePath}api/ai/updatePhraseAndQuote`,
     AddCommunicationInst: `${BasePath}api/ai/addCommunicationInstruction`,
     DeleteCommunicationInst: `${BasePath}api/ai/deleteCommunicationInstruction`,
-    UpdateCommunicationInst: `${BasePath}api/ai/updateCommunicationInstruction`
+    UpdateCommunicationInst: `${BasePath}api/ai/updateCommunicationInstruction`,
+    AddCallStrategy: `${BasePath}api/ai/addCallStrategy`,
+    DelCallStrategy: `${BasePath}api/ai/deleteCallStrategy`,
+    UpdateCallStrategy: `${BasePath}/api/ai/updateCallStrategy`,
+    AddObjection: `${BasePath}api/ai/addObjectionHandling`,
+    DelObjection: `${BasePath}api/ai/deleteObjectionHandling`,
+    UpdateObjection: `${BasePath}api/ai/updateObjectionhandling`
 
 
 }
