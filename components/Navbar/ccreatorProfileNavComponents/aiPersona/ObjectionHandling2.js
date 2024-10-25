@@ -26,8 +26,8 @@ const ObjectionHandling2 = () => {
         setAnchorEl(event.currentTarget);
         setSelectedItem(item);
         console.log("Selected item is", item);
-        setUpdateStrategyTitle(item.title);
-        setUpdateStrategyDescription(item.description);
+        setUpdateStrategyTitle(item.objectionType);
+        setUpdateStrategyDescription(item.prompt);
     };
 
     const handleClose = () => {
