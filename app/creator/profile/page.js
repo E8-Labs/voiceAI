@@ -118,7 +118,7 @@ const Page = () => {
 
   return (
     <div className={navbarComponent}>
-      <div className='w-full flex flex-row justify-between pl-5 pt-10 pr-5 h-screen' style={{ overflow: 'hidden', backgroundColor: "#ffffff40" }}>
+      <div className='w-full flex flex-row justify-between pl-5 pt-2 pr-5 h-screen' style={{ overflow: 'hidden', backgroundColor: "#ffffff40" }}>
         <div className='w-full'>
           <div className='w-full flex flex-col'>
             {/* <div className='flex flex-row justify-between items-center w-10/12'>

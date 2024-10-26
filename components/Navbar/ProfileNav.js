@@ -98,7 +98,7 @@ const ProfileNav = () => {
         let name = null;
         if (A) {
             const B = JSON.parse(A);
-            name = B.data.user.name;
+            name = B.data.user.username;
         }
         // setProfileData(B);
         if (name) {
@@ -165,8 +165,10 @@ const ProfileNav = () => {
             <div className='w-full'>
 
                 <div style={{ marginTop: 20 }}>
-                    <div className='px-4 flex gap-4 flex-row items-center py-1'
-                        style={{ borderRadius: 50, backgroundColor: "#ffffff30", width: "fit-content" }}>
+                    <button className='px-4 flex gap-4 flex-row items-center py-1'
+                        style={{ borderRadius: 50, backgroundColor: "#ffffff30", width: "fit-content" }}
+                        onClick={() => { window.open('https://www.youtube.com/watch?v=ETr1X8hXWoo', "_blank") }}
+                    >
                         <div className='flex flex-row items-center'>
                             <div style={{ border: "2px solid black", borderRadius: "50%" }}>
                                 {
@@ -183,7 +185,7 @@ const ProfileNav = () => {
                                 {
                                     userDetails && userDetails.name ?
                                         <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
-                                            {formattedName}
+                                            {formattedName.charAt(0).toUpperCase() + formattedName.slice(1)}
                                         </div> :
                                         <div style={{ fontSize: 16, fontWeight: "400", fontFamily: "inter" }}>
                                             {userDetails &&
@@ -206,7 +208,7 @@ const ProfileNav = () => {
                                 </button>
                             </div> */}
                         </div>
-                    </div>
+                    </button>
                 </div>
 
                 <div className='flex flex-col items-start w-full items-center' style={{ marginTop: 10 }}>
@@ -224,7 +226,7 @@ const ProfileNav = () => {
                                                 style={{
                                                     fontWeight: '400', fontSize: 13, fontFamily: 'inter',
                                                     color: pathName === link.href ? 'white' : '#00000070',
-                                                    backgroundColor: pathName === link.href ? 'blue' : '',
+                                                    backgroundColor: pathName === link.href ? '#552AFF' : '',
                                                     // padding: pathName === link.href ? 6 : "", 
                                                     borderRadius: "50px",
                                                     paddingInline: 10
@@ -236,7 +238,7 @@ const ProfileNav = () => {
                                                     style={{
                                                         fontWeight: '400', fontSize: 13, fontFamily: 'inter',
                                                         color: pathName === link.href ? 'white' : '#00000070',
-                                                        backgroundColor: pathName === link.href ? 'blue' : '',
+                                                        backgroundColor: pathName === link.href ? '#552AFF' : '',
                                                         // padding: pathName === link.href ? 6 : "",
                                                         borderRadius: "50px",
                                                         // paddingInline: pathName === link.href ? 20 : ""

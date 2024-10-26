@@ -81,7 +81,7 @@ const Objectives = ({ recallApi, aiData, loader }) => {
     return (
         <div className='w-full'>
             <div style={{ fontWeight: "medium", fontSize: 20, fontFamily: "inter" }}>
-                Objectives
+                Objective
             </div>
 
             {

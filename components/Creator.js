@@ -1034,7 +1034,7 @@ const Creator = () => {
                                       // console.log("Sary gama pada na ri sa");
                                       claimpopUpClick();
                                     }}
-                                    src="/assets/claimLogo.png"
+                                    src="/assets/claimIcon.png"
                                     alt="claimbtn"
                                     height={40}
                                     width={40}
@@ -1043,6 +1043,7 @@ const Creator = () => {
                                       backgroundColor: "transparent",
                                     }}
                                   />
+                                  {/* <Image src="/assets/claimIcon.png" alt='claimimg' height={38} width={38} /> */}
                                 </div>
                               </div>
                             )}
@@ -1244,7 +1245,7 @@ const Creator = () => {
                                             // console.log("Sary gama pada na ri sa");
                                             claimpopUpClick();
                                           }}
-                                          src="/assets/claimLogo.png"
+                                          src="/assets/claimIcon.png"
                                           alt="claimbtn"
                                           height={40}
                                           width={40}

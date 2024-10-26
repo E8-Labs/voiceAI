@@ -72,6 +72,7 @@ const Dashboard = () => {
     useEffect(() => {
         console.log("Api call check 1 ----------")
         getDashboardData();
+        getProfile();
     }, []);
 
     const getDashboardData = async () => {
@@ -81,7 +82,8 @@ const Dashboard = () => {
             if (localData) {
                 const Data = JSON.parse(localData);
                 const AuthToken = Data.data.token;
-                setCreatorName(Data.data.user.name);
+                console.log("Loggedin user details are", Data.data);
+                setCreatorName(Data.data.user.username);
                 const ApiPath = Apis.DashBoardApi;
                 const result = await axios.get(ApiPath, {
                     headers: {
@@ -108,6 +110,29 @@ const Dashboard = () => {
             setCallersLoader(false);
         }
     };
+
+    const getProfile = async () => {
+        const localData = localStorage.getItem('User');
+        if (localData) {
+            try {
+                const Data = JSON.parse(localData);
+                const AuthToken = Data.data.token;
+                const ApiPath = Apis.MyAiapi;
+                // const ApiPath = Apis.MyProfile;
+                const response = await axios.get(ApiPath, {
+                    headers: {
+                        "Authorization": "Bearer " + AuthToken,
+                        "Content-Type": "application/json"
+                    }
+                });
+                if (response) {
+                    console.log("Response of get .my ai Api is", response.data.data)
+                }
+            } catch (error) {
+                console.error("Error occured is");
+            }
+        }
+    }
 
     const handleSelectTime = (event) => {
         event.preventDefault();
@@ -238,8 +263,8 @@ const Dashboard = () => {
 
     return (
         <div
-            className='w-full flex flex-col p-15 pl-5'
-            style={{ height: '90vh', overflow: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none', marginTop: 20 }}
+            className='w-full flex flex-col pl-5 overflow-none'
+            style={{ height: '90vh' }}
         >
             {/* <div className='flex flex-row w-full items-center gap-6'>
                 <div className='w-4/12 py-5 px-6' style={{ backgroundColor: "#ffffff50", borderRadius: "15px" }}>
@@ -352,273 +377,279 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            <div className='bg-purple rounded-2xl bg-purple px-4 py-4 text-white w-11/12 mt-4'>
-                <div className='w-full items-center justify-between flex flex-row'>
-                    <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter", color: "#ffffff60" }}>
-                        Good to see you back <span className='text-white'>
-                            {creatorName.charAt(0).toUpperCase() + creatorName.slice(1)}
-                        </span>
-                    </div>
-                    <div>
-                        {/* {
-                    callersLoader ? */}
-                        {/* < size={20} /> : */}
+            <div className='w-11/12'>
+                <div className='bg-[#552AFF] rounded-2xl px-4 pt-2 text-white w-full mt-4'>
+                    <div className='w-full items-center justify-between flex flex-row'>
+                        <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter", color: "#ffffff60" }}>
+                            Good to see you back <span className='text-white'>
+                                {creatorName.charAt(0).toUpperCase() + creatorName.slice(1)}
+                            </span>
+                        </div>
                         <div>
-                            <FormControl>
-                                {/* <InputLabel id="demo-simple-select-label">Age</InputLabel> */}
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    value={analyticsDuration}
-                                    // label="Age"
-                                    onChange={handleSelectTime}
-                                    IconComponent={CaretDown}
-                                    sx={{
-                                        backgroundColor: 'transparent',
-                                        color: "white",
-                                        '& .MuiOutlinedInput-notchedOutline': {
-                                            borderColor: 'transparent',
-                                        },
-                                        '&:hover .MuiOutlinedInput-notchedOutline': {
-                                            borderColor: 'transparent',
-                                        },
-                                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                            borderColor: 'transparent',
-                                        },
-                                        '& .MuiSelect-select': {
-                                            paddingTop: 1,
-                                            paddingBottom: 1,
-                                        },
-                                        '& .MuiSelect-icon': {
-                                            color: 'white',  // Arrow color
-                                        },
-                                    }}
-                                >
-                                    <MenuItem value={"24hrs"}>Last 24 hrs</MenuItem>
-                                    <MenuItem value={"7days"}>Last 7 days</MenuItem>
-                                    <MenuItem value={"30days"}>Last 30 days</MenuItem>
-                                </Select>
-                            </FormControl>
+                            {/* {
+                    callersLoader ? */}
+                            {/* < size={20} /> : */}
+                            <div>
+                                <FormControl>
+                                    {/* <InputLabel id="demo-simple-select-label">Age</InputLabel> */}
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={analyticsDuration}
+                                        // label="Age"
+                                        onChange={handleSelectTime}
+                                        IconComponent={CaretDown}
+                                        sx={{
+                                            backgroundColor: 'transparent',
+                                            color: "white",
+                                            '& .MuiOutlinedInput-notchedOutline': {
+                                                borderColor: 'transparent',
+                                            },
+                                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                                                borderColor: 'transparent',
+                                            },
+                                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                                borderColor: 'transparent',
+                                            },
+                                            '& .MuiSelect-select': {
+                                                paddingTop: 1,
+                                                paddingBottom: 1,
+                                            },
+                                            '& .MuiSelect-icon': {
+                                                color: 'white',  // Arrow color
+                                            },
+                                        }}
+                                    >
+                                        <MenuItem value={"24hrs"}>Last 24 hrs</MenuItem>
+                                        <MenuItem value={"7days"}>Last 7 days</MenuItem>
+                                        <MenuItem value={"30days"}>Last 30 days</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </div>
+                            {/* } */}
                         </div>
-                        {/* } */}
                     </div>
+                    <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter", color: "#ffffff" }}>
+                        See your stats
+                    </div>
+
+                    <div className='w-10/12 flex flex-row items-center mt-6 pb-6 justify-between'>
+                        <div className='flex flex-row items-center gap-6'>
+
+                            <div className='flex flex-row justify-center items-center border-2 border-white'
+                                style={{
+                                    width: "55px",
+                                    height: "55px", borderRadius: "50%",
+                                }}>
+                                <img style={{ width: 17 }} src="/assets/selectedCallIcon.png" alt="phoneicon" />
+                            </div>
+                            {/* <div style={{ height: "71px", width: "71px" }}>
+                            <CircularProgressbarWithChildren value={66}
+                                strokeWidth={4}
+                                styles={{
+                                    path: {
+                                        stroke: `white`, // Change the color to red
+                                    },
+                                    text: {
+                                        fill: '#000000', // Change the text color to red
+                                        fontSize: 20,
+                                        fontWeight: "500"
+                                    },
+                                    trail: {
+                                        stroke: '#ffffff60', // Change the trail color (if needed)
+                                    },
+                                }}>
+                                <img style={{ width: 17, marginTop: -5 }} src="/assets/creatorProfileNavIcons/document.png" alt="doge" />
+                            </CircularProgressbarWithChildren>
+                        </div> */}
+                            <div className='flex flex-col gap-2'>
+                                <div style={styles.statsHeading}>
+                                    Callers
+                                </div>
+                                <div className='flex flex-row items-center gap-1'>
+                                    <p style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
+                                        {dashBoardData?.totalCalls ?
+                                            <div>
+                                                {dashBoardData.totalCalls}
+                                            </div> : "0"}
+                                    </p>
+                                    <div className='flex flex-row items-center'>
+                                        {/* <Image src="/assets/creatorProfileNavIcons/greenUp.png" alt='up' height={13} width={10} /> */}
+                                        <ArrowUp className='mb-1' size={15} weight="bold" color='#00FF57' />
+                                        <div style={styles.statsSubText}>
+                                            2%
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='flex flex-row items-center gap-6'>
+                            <div className='flex flex-row justify-center items-center border-2 border-white'
+                                style={{
+                                    width: "55px",
+                                    height: "55px", borderRadius: "50%",
+                                }}>
+                                <img style={{ width: 17 }} src="/assets/carbon_time.png" alt="doge" />
+                            </div>
+                            {/* <div style={{ height: "71px", width: "71px" }}>
+                            <CircularProgressbarWithChildren value={66}
+                                strokeWidth={4}
+                                styles={{
+                                    path: {
+                                        stroke: `white`, // Change the color to red
+                                    },
+                                    text: {
+                                        fill: '#000000', // Change the text color to red
+                                        fontSize: 20,
+                                        fontWeight: "500"
+                                    },
+                                    trail: {
+                                        stroke: '#ffffff60', // Change the trail color (if needed)
+                                    },
+                                }}>
+                                <img style={{ width: 17, marginTop: -5 }} src="/assets/creatorProfileNavIcons/document.png" alt="doge" />
+                            </CircularProgressbarWithChildren>
+                        </div> */}
+                            <div className='flex flex-col gap-2'>
+                                <div style={styles.statsHeading}>
+                                    Minutes
+                                </div>
+                                <div className='flex flex-row items-center gap-1'>
+                                    <p style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
+                                        {dashBoardData?.totalDurationMinutes ?
+                                            <div>
+                                                {dashBoardData.totalDurationMinutes}
+                                            </div> : "0"}
+                                    </p>
+                                    <div className='flex flex-row items-center'>
+                                        {/* <Image src="/assets/creatorProfileNavIcons/greenUp.png" alt='up' height={13} width={10} /> */}
+                                        <ArrowUp className='mb-1' size={15} weight="bold" color='#00FF57' />
+                                        <div style={styles.statsSubText}>
+                                            2%
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='flex flex-row items-center gap-6'>
+                            <div className='flex flex-row justify-center items-center border-2 border-white'
+                                style={{
+                                    width: "55px",
+                                    height: "55px", borderRadius: "50%",
+                                }}>
+                                <img style={{ width: 20, height: 20 }} src="/assets/minTalIcon.png" alt="doge" />
+                            </div>
+                            {/* <div style={{ height: "71px", width: "71px" }}>
+                            <CircularProgressbarWithChildren value={66}
+                                strokeWidth={4}
+                                styles={{
+                                    path: {
+                                        stroke: `white`, // Change the color to red
+                                    },
+                                    text: {
+                                        fill: '#000000', // Change the text color to red
+                                        fontSize: 20,
+                                        fontWeight: "500"
+                                    },
+                                    trail: {
+                                        stroke: '#ffffff60', // Change the trail color (if needed)
+                                    },
+                                }}>
+                                <img style={{ width: 17, marginTop: -5 }} src="/assets/creatorProfileNavIcons/document.png" alt="doge" />
+                            </CircularProgressbarWithChildren>
+                        </div> */}
+                            <div className='flex flex-col gap-2'>
+                                <div style={styles.statsHeading}>
+                                    Call Rev
+                                </div>
+                                <div className='flex flex-row items-center gap-1'>
+                                    <p style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
+                                        ${dashBoardData?.totalEarnings ?
+                                            <div>
+                                                {dashBoardData.totalEarnings.toFixed(2)}
+                                            </div> : "0"}
+                                    </p>
+                                    <div className='flex flex-row items-center'>
+                                        {/* <Image src="/assets/creatorProfileNavIcons/greenUp.png" alt='up' height={13} width={10} /> */}
+                                        <ArrowDown className='mb-1' size={15} weight="bold" color='#FF7918' />
+                                        <div style={{ ...styles.statsSubText, color: "#FF7918" }}>
+                                            2%
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='flex flex-row items-center gap-6'>
+                            <div className='flex flex-row justify-center items-center border-2 border-white'
+                                style={{
+                                    width: "55px",
+                                    height: "55px", borderRadius: "50%",
+                                }}>
+                                <img style={{ width: 17, height: 17 }} src="/assets/revenueIcon.png" alt="doge" />
+                            </div>
+                            {/* <div style={{ height: "71px", width: "71px" }}>
+                            <CircularProgressbarWithChildren value={66}
+                                strokeWidth={4}
+                                styles={{
+                                    path: {
+                                        stroke: `white`, // Change the color to red
+                                    },
+                                    text: {
+                                        fill: '#000000', // Change the text color to red
+                                        fontSize: 20,
+                                        fontWeight: "500"
+                                    },
+                                    trail: {
+                                        stroke: '#ffffff60', // Change the trail color (if needed)
+                                    },
+                                }}>
+                                <img style={{ width: 17, marginTop: -5 }} src="/assets/creatorProfileNavIcons/document.png" alt="doge" />
+                            </CircularProgressbarWithChildren>
+                        </div> */}
+                            <div className='flex flex-col gap-2'>
+                                <div style={styles.statsHeading}>
+                                    Product Rev
+                                </div>
+                                <div className='flex flex-row items-center gap-1'>
+                                    <p style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
+                                        ${dashBoardData?.totalEarnings ?
+                                            <div>
+                                                {dashBoardData.totalEarnings.toFixed(2)}
+                                            </div> : "0"}</p>
+                                    <div className='flex flex-row items-center'>
+                                        {/* <Image src="/assets/creatorProfileNavIcons/greenUp.png" alt='up' height={13} width={10} /> */}
+                                        <ArrowRight className='mb-1' size={15} weight="bold" color='white' />
+                                        <div style={{ ...styles.statsSubText, color: "white" }}>
+                                            Flat
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-                <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter", color: "#ffffff" }}>
-                    See your stats
-                </div>
 
-                <div className='w-10/12 flex flex-row items-center mt-6 pb-8 justify-between'>
-                    <div className='flex flex-row items-center gap-6'>
-
-                        <div className='flex flex-row justify-center items-center border-2 border-white'
-                            style={{
-                                width: "55px",
-                                height: "55px", borderRadius: "50%",
-                            }}>
-                            <img style={{ width: 17 }} src="/assets/selectedCallIcon.png" alt="doge" />
+                <div className='w-full mt-6 mb-8 flex flex-row gap-2'>
+                    <div className='w-6/12 flex flex-col rounded-2xl px-6 pb-4 max-h-[55vh] overflow-auto scrollbar scrollbar-track-transparent scrollbar-thin scrollbar-thumb-purple' style={{ backgroundColor: "#ffffff", height: "auto" }}>
+                        <div className='flex flex-row justify-between items-center mt-12 w-11/12 ps-6'>
+                            <div
+                                style={{
+                                    fontSize: 20, fontWeight: "500", fontFamily: 'inter'
+                                }}>Products</div>
+                            {
+                                products.length > 3 && (
+                                    <button
+                                        onClick={() => { setShowAlProductsl(!showAllProducts) }}
+                                        className='text-purple py-1 underline'
+                                        style={{
+                                            borderRadius: "50px", fontSize: 13, fontWeight: "400", fontFamily: 'inter'
+                                        }}>
+                                        {showAllProducts ? "View Less Products" : "View All Products"}
+                                    </button>
+                                )}
                         </div>
-                        {/* <div style={{ height: "71px", width: "71px" }}>
-                            <CircularProgressbarWithChildren value={66}
-                                strokeWidth={4}
-                                styles={{
-                                    path: {
-                                        stroke: `white`, // Change the color to red
-                                    },
-                                    text: {
-                                        fill: '#000000', // Change the text color to red
-                                        fontSize: 20,
-                                        fontWeight: "500"
-                                    },
-                                    trail: {
-                                        stroke: '#ffffff60', // Change the trail color (if needed)
-                                    },
-                                }}>
-                                <img style={{ width: 17, marginTop: -5 }} src="/assets/creatorProfileNavIcons/document.png" alt="doge" />
-                            </CircularProgressbarWithChildren>
-                        </div> */}
-                        <div className='flex flex-col gap-2'>
-                            <div style={styles.statsHeading}>
-                                Callers
-                            </div>
-                            <div className='flex flex-row items-center gap-1'>
-                                <p style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
-                                    {dashBoardData?.totalCalls ?
-                                        <div>
-                                            {dashBoardData.totalCalls}
-                                        </div> : "0"}
-                                </p>
-                                <div className='flex flex-row items-center'>
-                                    {/* <Image src="/assets/creatorProfileNavIcons/greenUp.png" alt='up' height={13} width={10} /> */}
-                                    <ArrowUp className='mb-1' size={15} weight="bold" color='#00FF57' />
-                                    <div style={styles.statsSubText}>
-                                        2%
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className='flex flex-row items-center gap-6'>
-                        <div className='flex flex-row justify-center items-center border-2 border-white'
-                            style={{
-                                width: "55px",
-                                height: "55px", borderRadius: "50%",
-                            }}>
-                            <img style={{ width: 17 }} src="/assets/carbon_time.png" alt="doge" />
-                        </div>
-                        {/* <div style={{ height: "71px", width: "71px" }}>
-                            <CircularProgressbarWithChildren value={66}
-                                strokeWidth={4}
-                                styles={{
-                                    path: {
-                                        stroke: `white`, // Change the color to red
-                                    },
-                                    text: {
-                                        fill: '#000000', // Change the text color to red
-                                        fontSize: 20,
-                                        fontWeight: "500"
-                                    },
-                                    trail: {
-                                        stroke: '#ffffff60', // Change the trail color (if needed)
-                                    },
-                                }}>
-                                <img style={{ width: 17, marginTop: -5 }} src="/assets/creatorProfileNavIcons/document.png" alt="doge" />
-                            </CircularProgressbarWithChildren>
-                        </div> */}
-                        <div className='flex flex-col gap-2'>
-                            <div style={styles.statsHeading}>
-                                Minutes
-                            </div>
-                            <div className='flex flex-row items-center gap-1'>
-                                <p style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
-                                    {dashBoardData?.totalDurationMinutes ?
-                                        <div>
-                                            {dashBoardData.totalDurationMinutes}
-                                        </div> : "0"}
-                                </p>
-                                <div className='flex flex-row items-center'>
-                                    {/* <Image src="/assets/creatorProfileNavIcons/greenUp.png" alt='up' height={13} width={10} /> */}
-                                    <ArrowUp className='mb-1' size={15} weight="bold" color='#00FF57' />
-                                    <div style={styles.statsSubText}>
-                                        2%
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className='flex flex-row items-center gap-6'>
-                        <div className='flex flex-row justify-center items-center border-2 border-white'
-                            style={{
-                                width: "55px",
-                                height: "55px", borderRadius: "50%",
-                            }}>
-                            <img style={{ width: 20, height: 20 }} src="/assets/minTalIcon.png" alt="doge" />
-                        </div>
-                        {/* <div style={{ height: "71px", width: "71px" }}>
-                            <CircularProgressbarWithChildren value={66}
-                                strokeWidth={4}
-                                styles={{
-                                    path: {
-                                        stroke: `white`, // Change the color to red
-                                    },
-                                    text: {
-                                        fill: '#000000', // Change the text color to red
-                                        fontSize: 20,
-                                        fontWeight: "500"
-                                    },
-                                    trail: {
-                                        stroke: '#ffffff60', // Change the trail color (if needed)
-                                    },
-                                }}>
-                                <img style={{ width: 17, marginTop: -5 }} src="/assets/creatorProfileNavIcons/document.png" alt="doge" />
-                            </CircularProgressbarWithChildren>
-                        </div> */}
-                        <div className='flex flex-col gap-2'>
-                            <div style={styles.statsHeading}>
-                                Minutes Talked
-                            </div>
-                            <div className='flex flex-row items-center gap-1'>
-                                <p style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>87</p>
-                                <div className='flex flex-row items-center'>
-                                    {/* <Image src="/assets/creatorProfileNavIcons/greenUp.png" alt='up' height={13} width={10} /> */}
-                                    <ArrowDown className='mb-1' size={15} weight="bold" color='#FF7918' />
-                                    <div style={{ ...styles.statsSubText, color: "#FF7918" }}>
-                                        2%
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className='flex flex-row items-center gap-6'>
-                        <div className='flex flex-row justify-center items-center border-2 border-white'
-                            style={{
-                                width: "55px",
-                                height: "55px", borderRadius: "50%",
-                            }}>
-                            <img style={{ width: 17, height: 17 }} src="/assets/revenueIcon.png" alt="doge" />
-                        </div>
-                        {/* <div style={{ height: "71px", width: "71px" }}>
-                            <CircularProgressbarWithChildren value={66}
-                                strokeWidth={4}
-                                styles={{
-                                    path: {
-                                        stroke: `white`, // Change the color to red
-                                    },
-                                    text: {
-                                        fill: '#000000', // Change the text color to red
-                                        fontSize: 20,
-                                        fontWeight: "500"
-                                    },
-                                    trail: {
-                                        stroke: '#ffffff60', // Change the trail color (if needed)
-                                    },
-                                }}>
-                                <img style={{ width: 17, marginTop: -5 }} src="/assets/creatorProfileNavIcons/document.png" alt="doge" />
-                            </CircularProgressbarWithChildren>
-                        </div> */}
-                        <div className='flex flex-col gap-2'>
-                            <div style={styles.statsHeading}>
-                                Product Rev
-                            </div>
-                            <div className='flex flex-row items-center gap-1'>
-                                <p style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
-                                    ${dashBoardData?.totalEarnings ?
-                                        <div>
-                                            {dashBoardData.totalEarnings.toFixed(2)}
-                                        </div> : "0"}</p>
-                                <div className='flex flex-row items-center'>
-                                    {/* <Image src="/assets/creatorProfileNavIcons/greenUp.png" alt='up' height={13} width={10} /> */}
-                                    <ArrowRight className='mb-1' size={15} weight="bold" color='white' />
-                                    <div style={{ ...styles.statsSubText, color: "white" }}>
-                                        Flat
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div className='w-full mt-6 mb-8 flex flex-row gap-2'>
-                <div className='w-5/12 flex flex-col rounded-2xl px-6 pb-4' style={{ backgroundColor: "#ffffff50", height: "auto" }}>
-                    <div className='flex flex-row justify-between items-center mt-12 w-11/12 ps-6'>
-                        <div
-                            style={{
-                                fontSize: 20, fontWeight: "500", fontFamily: 'inter'
-                            }}>Products</div>
-                        {
-                            products.length > 3 && (
-                                <button
-                                    onClick={() => { setShowAlProductsl(!showAllProducts) }}
-                                    className='text-purple py-1 underline'
-                                    style={{
-                                        borderRadius: "50px", fontSize: 13, fontWeight: "400", fontFamily: 'inter'
-                                    }}>
-                                    {showAllProducts ? "View Less Products" : "View All Products"}
-                                </button>
-                            )}
-                    </div>
-                    {/* <div className='w-full flex flex-row gap-1 mt-5 justify-between'>
+                        {/* <div className='w-full flex flex-row gap-1 mt-5 justify-between'>
                         <div className='w-3/12'>
                             <div style={styles.text}>Product Name</div>
                         </div>
@@ -629,127 +660,135 @@ const Dashboard = () => {
                             <div style={styles.text}>Date</div>
                         </div>
                     </div> */}
-                    <div className='w-full flex flex-col items-center'>
-                        {
-                            callersLoader ?
-                                <div className='w-10/12 flex flex-row justify-center mt-4'>
-                                    <CircularProgress />
-                                </div> :
-                                <div className='w-10/12'>
-                                    {
-                                        products.length > 0 ?
-                                            <div key={products.id}>
-                                                {itemsToDisplay.map((item) => (
-                                                    // <React.Fragment key={item.id}>
-                                                    <div key={item.id}>
-                                                        <div key={item.id} className='w-full flex flex-row gap-1 mt-10 justify-between'>
-                                                            <div>
-                                                                <div style={{ ...styles.text2, color: "#000000", fontSize: 15, fontWeight: "500" }}>{item.name}</div>
-                                                                <div style={styles.text2}>
-                                                                    {/* {item.createdAt} */}
-                                                                    {moment(item.createdAt).format("MM/DD/YYYY")}
+                        <div className='w-full flex flex-col items-center'>
+                            {
+                                callersLoader ?
+                                    <div className='w-10/12 flex flex-row justify-center mt-4'>
+                                        <CircularProgress />
+                                    </div> :
+                                    <div className='w-10/12'>
+                                        {
+                                            products.length > 0 ?
+                                                <div key={products.id}>
+                                                    {itemsToDisplay.map((item) => (
+                                                        // <React.Fragment key={item.id}>
+                                                        <div key={item.id}>
+                                                            <div key={item.id} className='w-full flex flex-row gap-1 mt-10 justify-between'>
+                                                                <div>
+                                                                    <div style={{ ...styles.text2, color: "#000000", fontSize: 15, fontWeight: "500" }}>{item.name}</div>
+                                                                    <div style={styles.text2}>
+                                                                        {/* {item.createdAt} */}
+                                                                        {moment(item.createdAt).format("MM/DD/YYYY")}
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div className='flex flex-col items-end'>
-                                                                <div style={{ ...styles.text2, color: "#000000", fontSize: 20 }}>
-                                                                    ${Number(item.productPrice).toFixed(2)}
-                                                                </div>
-                                                                <div style={styles.text2}>
+                                                                <div className='flex flex-col items-end'>
+                                                                    <div style={{ ...styles.text2, color: "#000000", fontSize: 20 }}>
+                                                                        ${Number(item.productPrice).toFixed(2)}
+                                                                    </div>
+                                                                    {/* <div style={styles.text2}>
                                                                     200 Purchased
+                                                                </div> */}
                                                                 </div>
                                                             </div>
+                                                            {/* </React.Fragment> */}
                                                         </div>
-                                                        {/* </React.Fragment> */}
-                                                    </div>
-                                                ))}
-                                            </div> : "No Product"
-                                    }
-                                </div>
-                        }
-                    </div>
-                </div>
-                <div className='w-6/12 flex flex-col rounded-2xl px-6 pb-4' style={{ backgroundColor: "#ffffff50", height: "auto" }}>
-                    <div className='mt-12 flex flex-row justify-between items-center'>
-                        <div className='font-light'
-                            style={{
-                                fontSize: 20, fontWeight: "500", fontFamily: 'inter'
-                            }}>Top Callers</div>
-                        {
-                            topCallersDetails.length > 3 && (
-                                <button className='bg-purple text-white px-2 py-1'
-                                    onClick={() => { setShowAlCallers(!showAllCallers) }}
-                                    style={{
-                                        borderRadius: "50px", fontSize: 13, fontWeight: "400", fontFamily: 'inter'
-                                    }}>
-                                    {showAllCallers ? "View less" : "View all"}
-                                </button>
-                            )}
-                    </div>
-                    <div className='w-full flex flex-row justify-between mt-5'>
-                        <div className='w-4/12'>
-                            <div style={styles.text}>Name</div>
+                                                    ))}
+                                                </div> :
+                                                <div className='text-center mt-8 text-2xl font-bold'>
+                                                    No purchases yet
+                                                </div>
+                                        }
+                                    </div>
+                            }
                         </div>
-                        {/* <div className='w-3/12'>
+                    </div>
+                    <div className='w-6/12 flex flex-col rounded-2xl px-6 pb-4 max-h-[55vh] overflow-auto scrollbar scrollbar-track-transparent scrollbar-thin scrollbar-thumb-purple' style={{ backgroundColor: "#ffffff", height: "auto" }}>
+                        <div className='mt-12 flex flex-row justify-between items-center'>
+                            <div className='font-light'
+                                style={{
+                                    fontSize: 20, fontWeight: "500", fontFamily: 'inter'
+                                }}>Top Callers</div>
+                            {
+                                topCallersDetails.length > 3 && (
+                                    <button className='text-purple underline'
+                                        onClick={() => { setShowAlCallers(!showAllCallers) }}
+                                        style={{
+                                            fontSize: 13, fontWeight: "400", fontFamily: 'inter'
+                                        }}>
+                                        {showAllCallers ? "View less callers" : "View all callers"}
+                                    </button>
+                                )
+                            }
+                        </div>
+                        <div className='w-full flex flex-row justify-between mt-5'>
+                            <div className='w-4/12'>
+                                <div style={styles.text}>Name</div>
+                            </div>
+                            {/* <div className='w-3/12'>
                         <div style={styles.text}>City, state</div>
                     </div> */}
-                        <div className='w-3/12'>
-                            <div style={styles.text}>Total Minutes</div>
+                            <div className='w-3/12'>
+                                <div style={styles.text}>Total Minutes</div>
+                            </div>
+                            <div className='w-2/12'>
+                                <div style={styles.text}>Num of calls</div>
+                            </div>
+                            <div className='w-3/12 ps-8'>
+                                <div style={styles.text}>Total spent</div>
+                            </div>
                         </div>
-                        <div className='w-2/12'>
-                            <div style={styles.text}>Num of calls</div>
-                        </div>
-                        <div className='w-3/12 ps-8'>
-                            <div style={styles.text}>Total spent</div>
-                        </div>
-                    </div>
 
 
-                    {
-                        callersLoader ?
-                            <div className='w-full flex flex-row justify-center mt-4'>
-                                <CircularProgress />
-                            </div> :
-                            <div>
-                                {
-                                    topCallersDetails.length > 0 ?
-                                        <div key={topCallersDetails.id}>
-                                            {
-                                                callersToDisplay.map((item) => (
-                                                    <div key={item.id} className='w-full flex flex-row justify-between mt-10'>
-                                                        <div className='w-4/12'>
-                                                            <div style={styles.text2}>
-                                                                {item.name}
+                        {
+                            callersLoader ?
+                                <div className='w-full flex flex-row justify-center mt-4'>
+                                    <CircularProgress />
+                                </div> :
+                                <div>
+                                    {
+                                        topCallersDetails.length > 0 ?
+                                            <div key={topCallersDetails.id}>
+                                                {
+                                                    callersToDisplay.map((item) => (
+                                                        <div key={item.id} className='w-full flex flex-row justify-between mt-10'>
+                                                            <div className='w-4/12'>
+                                                                <div style={styles.text2}>
+                                                                    {item.name}
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        {/* <div className='w-3/12 border-2 border-red'>
+                                                            {/* <div className='w-3/12 border-2 border-red'>
                                                 <div style={styles.text2}>
                                                     {item.city}
                                                 </div>
                                             </div> */}
-                                                        <div className='w-3/12'>
-                                                            <div style={styles.text2}>
-                                                                {item.totalMinutes}
+                                                            <div className='w-3/12'>
+                                                                <div style={styles.text2}>
+                                                                    {item.totalMinutes}
+                                                                </div>
+                                                            </div>
+                                                            <div className='w-2/12'>
+                                                                <div style={styles.text2}>
+                                                                    {item.callCount}
+                                                                </div>
+                                                            </div>
+                                                            <div className='w-3/12 text-center ps-8'>
+                                                                <div style={styles.text2}>
+                                                                    ${Number(item.totalSpent).toFixed(2)}
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div className='w-2/12'>
-                                                            <div style={styles.text2}>
-                                                                {item.callCount}
-                                                            </div>
-                                                        </div>
-                                                        <div className='w-3/12 text-center ps-8'>
-                                                            <div style={styles.text2}>
-                                                                ${Number(item.totalSpent).toFixed(2)}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                ))
-                                            }
-                                        </div> : "No Caller"
-                                }
-                            </div>
-                    }
+                                                    ))
+                                                }
+                                            </div> :
+                                            <div className='text-center mt-8 text-2xl font-bold'>
+                                                No caller yet
+                                            </div>
+                                    }
+                                </div>
+                        }
 
 
+                    </div>
                 </div>
             </div>
 
