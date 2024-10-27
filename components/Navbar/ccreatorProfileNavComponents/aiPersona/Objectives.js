@@ -134,6 +134,9 @@ const Objectives = ({ recallApi, aiData, loader }) => {
                     View Example
                 </button>
             </div>
+            <div style={{ fontWeight: "medium", fontSize: 14, fontFamily: "inter", color: "#00000060" }}>
+                If you would like to reference the caller, use {`callername`}.<br /> Ex: Hey {`callername`}, it's …
+            </div>
 
             {
                 loader ?

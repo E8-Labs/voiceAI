@@ -98,7 +98,11 @@ const ProfileStat = () => {
                                     </button>
                                 )
                             }
-                            etc
+                            {
+                                showKb || showSocials && (
+                                    "etc"
+                                )
+                            }
                         </div>
                     </div>
                 </div>
@@ -112,4 +116,4 @@ const ProfileStat = () => {
     )
 }
 
-export default ProfileStat
+export default ProfileStat;

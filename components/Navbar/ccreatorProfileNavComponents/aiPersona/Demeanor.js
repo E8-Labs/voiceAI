@@ -21,6 +21,7 @@ const Demeanor = ({ recallApi, aiData }) => {
     const [updateDemeanorTitle, setUpdateDemeanorTitle] = useState('');
     const [updateDemeanorDescription, setUpdateDemeanorDescription] = useState('');
     const [resultSnack, setResultSnack] = useState(false);
+    const [resultSnackErr, setResultSnackErr] = useState(null);
 
     useEffect(() => {
         const loalAiPersonaDetails = localStorage.getItem("aiPersonaDetails");
@@ -42,6 +43,8 @@ const Demeanor = ({ recallApi, aiData }) => {
     const handleClick = (event, item) => {
         setAnchorEl(event.currentTarget);
         setSelectedDemeanor(item);
+        setUpdateDemeanorTitle(item.title);
+        setUpdateDemeanorDescription(item.description);
     };
 
 
@@ -59,7 +62,8 @@ const Demeanor = ({ recallApi, aiData }) => {
             console.log("Apipath is", ApiPath);
 
             const ApiData = {
-                promt: addDemeanorDescription
+                title: addDemeanorTitle,
+                description: addDemeanorDescription
             }
 
             console.log("Data sendgin in api is", ApiData);
@@ -74,14 +78,16 @@ const Demeanor = ({ recallApi, aiData }) => {
                 console.log("Response of add demeanor api is", response.data.data);
                 if (response.data.status === true) {
                     setAddDemeanorModal(false);
+                    setAddDemeanorTitle("");
                     setAddDemeanorDescription("");
                     // recallApi();
                     setDemenorData(response.data.data.demeanor);
                     localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
+                    setResultSnack(response.data.message);
                 } else {
+                    setResultSnackErr(response.data.message);
                     console.log("Error occured")
                 }
-                setResultSnack(response.data.message);
             }
 
         } catch (error) {
@@ -103,8 +109,9 @@ const Demeanor = ({ recallApi, aiData }) => {
             console.log("Apipath is", ApiPath);
 
             const ApiData = {
-                id: selectedDonot.id,
-                description: updateDonotDescription,
+                id: selectedDemeanor.id,
+                title: updateDemeanorTitle,
+                description: updateDemeanorDescription,
             }
 
             console.log("Data sendgin in api is", ApiData);
@@ -118,10 +125,10 @@ const Demeanor = ({ recallApi, aiData }) => {
             if (response) {
                 console.log("Response of update demenor api is", response.data);
                 if (response.data.status === true) {
-                    setOpenUpdateModal(false);
+                    setUpdateDemeanorModal(false);
                     setAnchorEl(null);
                     // recallApi();
-                    setDonotDiscussData(response.data.data.DoNots);
+                    setDemenorData(response.data.data.Demeanor);
                     localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                 } else {
                     console.log("Error occured")
@@ -136,8 +143,8 @@ const Demeanor = ({ recallApi, aiData }) => {
         }
     }
 
-    //Update donot
-    const handleDemenor = async () => {
+    //Delete demeanor
+    const handleDelDemenor = async () => {
         try {
             setDemeanorLoader(true);
             const ApiPath = Apis.DelDemeanor;
@@ -148,8 +155,7 @@ const Demeanor = ({ recallApi, aiData }) => {
             console.log("Apipath is", ApiPath);
 
             const ApiData = {
-                id: selectedDonot.id,
-                // description: addNewDonotDescription,
+                id: selectedDemeanor.id,
             }
 
             console.log("Data sendgin in api is", ApiData);
@@ -164,7 +170,7 @@ const Demeanor = ({ recallApi, aiData }) => {
                 console.log("Response of delete demenor api is", response.data);
                 if (response.data.status === true) {
                     setAnchorEl(null);
-                    setDonotDiscussData(response.data.data.DoNots);
+                    setDemenorData(response.data.data.DoNots);
                     localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                 } else {
                     console.log("Error occured")
@@ -225,8 +231,14 @@ const Demeanor = ({ recallApi, aiData }) => {
                                 demenorData.map((item) => (
                                     <div key={item.id}>
                                         <div className='border-2 rounded-lg p-4 mt-8 flex flex-row items-start justify-between'>
-                                            <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
-                                                {item.description}
+
+                                            <div>
+                                                <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
+                                                    {item.title}
+                                                </div>
+                                                <div style={{ fontWeight: "400", fontSize: 15, fontFamily: "inter" }}>
+                                                    {item.description}
+                                                </div>
                                             </div>
 
                                             <div>
@@ -259,7 +271,7 @@ const Demeanor = ({ recallApi, aiData }) => {
                                                         {
                                                             demeanorLoader ?
                                                                 <CircularProgress size={15} /> :
-                                                                <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }}>
+                                                                <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }} onClick={handleDelDemenor}>
                                                                     Delete
                                                                 </button>
                                                         }
@@ -323,14 +335,14 @@ const Demeanor = ({ recallApi, aiData }) => {
                                     </button>
                                 </div>
                                 <div className='mt-4 w-full'>
-                                    {/* <div>
+                                    <div>
                                         <input className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
-                                            // value={UpdateValues}
-                                            // onChange={(e) => setUpdateValues(e.target.value)}
+                                            value={addDemeanorTitle}
+                                            onChange={(e) => setAddDemeanorTitle(e.target.value)}
                                             placeholder='Title'
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13 }}
                                         />
-                                    </div> */}
+                                    </div>
                                     <div className='mt-8'>
                                         <textarea className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                                             value={addDemeanorDescription}
@@ -391,14 +403,14 @@ const Demeanor = ({ recallApi, aiData }) => {
                                     </button>
                                 </div>
                                 <div className='mt-4 w-full'>
-                                    {/* <div>
+                                    <div>
                                         <input className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
-                                            // value={UpdateValues}
-                                            // onChange={(e) => setUpdateValues(e.target.value)}
+                                            value={updateDemeanorTitle}
+                                            onChange={(e) => setUpdateDemeanorTitle(e.target.value)}
                                             placeholder='Title'
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13 }}
                                         />
-                                    </div> */}
+                                    </div>
                                     <div className='mt-8'>
                                         <textarea className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                                             value={updateDemeanorDescription}
@@ -446,10 +458,38 @@ const Demeanor = ({ recallApi, aiData }) => {
                     <Alert
                         onClose={() => {
                             setResultSnack(null)
-                        }} severity="none"
-                        className='bg-purple rounded-lg text-white'
-                        sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}>
+                        }} severity="success"
+                        // className='bg-purple rounded-lg text-white'
+                        sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}
+                    >
                         {resultSnack}
+                    </Alert>
+                </Snackbar>
+            </div>
+            <div>
+                <Snackbar
+                    open={resultSnackErr}
+                    autoHideDuration={3000}
+                    onClose={() => {
+                        setResultSnackErr(null);
+                    }}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center'
+                    }}
+                    TransitionComponent={Fade}
+                    TransitionProps={{
+                        direction: 'center'
+                    }}
+                >
+                    <Alert
+                        onClose={() => {
+                            setResultSnackErr(null)
+                        }} severity="success"
+                        // className='bg-purple rounded-lg text-white'
+                        sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}
+                    >
+                        {resultSnackErr}
                     </Alert>
                 </Snackbar>
             </div>

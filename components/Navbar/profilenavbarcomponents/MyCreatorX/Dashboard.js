@@ -1,5 +1,5 @@
 import Apis from '@/components/apis/Apis';
-import { CircularProgress, duration, FormControl, MenuItem, Select } from '@mui/material';
+import { Box, CircularProgress, duration, FormControl, MenuItem, Modal, Select } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import moment from 'moment';
@@ -8,7 +8,9 @@ import 'react-circular-progressbar/dist/styles.css';
 import { ArrowDown, ArrowRight, ArrowUp, CaretDown, CaretUpDown } from '@phosphor-icons/react';
 import Image from 'next/image';
 import ProfileStat from '@/components/ProfileStat';
-
+import SetPrice from '@/components/creatorOnboarding/SetPrice';
+import EnableCallPrice from '../../ccreatorProfileNavComponents/aiPersona/EnableCallPrice';
+import { Switch, Button, Popover, Typography } from '@mui/material'
 
 const Dashboard = () => {
 
@@ -32,6 +34,19 @@ const Dashboard = () => {
     const [analyticsDuration, setAnalyticsDuration] = useState('24hrs');
     const [callersLoader, setCallersLoader] = useState(false);
     const [creatorName, setCreatorName] = useState("");
+    const [enablePRiceBtn, setEnablePRiceBtn] = useState(false);
+    const [showEnablePriceModal, setShowEnablePriceModal] = useState(false);
+    // const [aiData, setAiData] = useState(null);
+    const [callAmount, setCallAmount] = useState(null);
+
+    //code for enabling price
+    const [callPrice, setCallPrice] = useState("");
+    const [showInputErr, setShowInputErr] = useState(false);
+    const [showWarningText, setShowWarningText] = useState(false);
+    const [anchorel, setAnchorel] = useState(null);
+    const open = Boolean(anchorel)
+    const id = open ? '0' : undefined;
+    const [updateLoader, setUpdateLoader] = useState(false);
 
 
     const callDetails = [
@@ -73,7 +88,7 @@ const Dashboard = () => {
     useEffect(() => {
         console.log("Api call check 1 ----------")
         getDashboardData();
-        getProfile();
+        getAi();
     }, []);
 
     const getDashboardData = async () => {
@@ -112,7 +127,7 @@ const Dashboard = () => {
         }
     };
 
-    const getProfile = async () => {
+    const getAi = async () => {
         const localData = localStorage.getItem('User');
         if (localData) {
             try {
@@ -127,10 +142,52 @@ const Dashboard = () => {
                     }
                 });
                 if (response) {
-                    console.log("Response of get .my ai Api is", response.data.data)
+                    console.log("Response of get .my ai Api is", response.data.data);
+                    if (response.data.data.ai.isFree === true) {
+                        console.log("Status of is free is ::");
+                        setEnablePRiceBtn(true);
+                    } else {
+                        setEnablePRiceBtn(false);
+                        setCallAmount(response.data.data.ai.price)
+                    }
                 }
             } catch (error) {
                 console.error("Error occured is");
+            }
+        }
+    }
+
+    const updateAi = async () => {
+        const localData = localStorage.getItem('User');
+        setUpdateLoader(true);
+        if (localData) {
+            try {
+                const Data = JSON.parse(localData);
+                const AuthToken = Data.data.token;
+                const ApiPath = Apis.UpdateBuilAI;
+                // const ApiPath = Apis.MyProfile;
+                const formData = new FormData();
+                formData.append('price', callPrice);
+
+
+                const response = await axios.post(ApiPath, formData, {
+                    headers: {
+                        "Authorization": "Bearer " + AuthToken,
+                        "Content-Type": "application/json"
+                    }
+                });
+                if (response) {
+                    console.log("Response of updateai Api is", response.data.data);
+                    if (response.data.status === true) {
+                        setShowEnablePriceModal(false);
+                        setCallPrice("");
+                    }
+                }
+            } catch (error) {
+                console.error("Error occured is", error);
+            }
+            finally {
+                setUpdateLoader(false);
             }
         }
     }
@@ -200,6 +257,50 @@ const Dashboard = () => {
             fontSize: 12,
             fontFamily: "inter",
             fontWeight: "400", color: "#00FF57"
+        },
+        //style for the Modal
+        AddNewValueModal: {
+            height: "auto",
+            bgcolor: "transparent",
+            // p: 2,
+            mx: "auto",
+            my: "50vh",
+            transform: "translateY(-55%)",
+            borderRadius: 2,
+            border: "none",
+            outline: "none",
+        },
+        inputContainer: {
+            marginTop: 10,
+            display: "flex",
+            alignItems: "center",
+            backgroundColor: "#EDEDED", /* Light grey background */
+            bordeRadius: 20, /* Rounded corners */
+            padding: "5px 0px",
+            paddingLeft: "15px",
+            border: callPrice && showInputErr ? "1px solid red" : "none",
+            borderRadius: 5
+
+        },
+        input: {
+            border: 'none',
+            outline: 'none',
+            backgroundColor: 'transparent',
+            flexGrow: 1,
+            fontSize: '16px',
+            padding: '5px',
+            color: '#000', // Ensure text is black
+            MozAppearance: 'textfield'
+        },
+        text: {
+            fontSize: 11,
+            fontWeight: 'normal',
+            color: '#050A0860'
+        },
+        PriceText: {
+            fontSize: 13,
+            fontWeight: 'normal',
+            color: '#050A0860'
         }
     };
 
@@ -567,19 +668,209 @@ const Dashboard = () => {
                                     Call Rev
                                 </div>
                                 <div className='flex flex-row items-center gap-1'>
-                                    <p style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
+                                    {
+                                        enablePRiceBtn ?
+                                            <button style={{ ...styles.statsHeading, color: "white" }} onClick={() => { setShowEnablePriceModal(true) }}>
+                                                Enable Price
+                                            </button> :
+                                            <div style={{ ...styles.statsHeading, color: "white" }}>
+                                                {callAmount && (<div>${callAmount.toFixed(2)}</div>)}
+                                            </div>
+                                    }
+
+                                    {/* Modal to enable pricce if not */}
+                                    <Modal
+                                        open={showEnablePriceModal}
+                                        onClose={() => setShowEnablePriceModal(false)}
+                                        closeAfterTransition
+                                        BackdropProps={{
+                                            timeout: 1000,
+                                            sx: {
+                                                backgroundColor: "transparent",
+                                                backdropFilter: "blur(20px)",
+                                            },
+                                        }}
+                                    >
+                                        <Box className="lg:w-5/12 sm:w-7/12 lg:w-6/12 xl:w-5/12 w-full" sx={styles.AddNewValueModal}>
+                                            {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
+                                            <div className="flex flex-row justify-center w-full">
+                                                <div
+                                                    className="sm:w-full w-full"
+                                                    style={{
+                                                        backgroundColor: "#ffffff20",
+                                                        padding: 20,
+                                                        borderRadius: 10,
+                                                    }}
+                                                >
+                                                    <div style={{ backgroundColor: "#ffffff", borderRadius: 7, padding: 10 }}>
+                                                        <div className='flex flex-row items-center justify-end p-2' style={{ fontWeight: '500', fontFamily: "inter", fontSize: 20 }}>
+                                                            {/* <p /> */}
+                                                            {/* <p>Update </p> */}
+                                                            <button onClick={() => { setShowEnablePriceModal(false) }}>
+                                                                <Image src="/assets/crossBtn.png" height={15} width={15} alt='*' />
+                                                            </button>
+                                                        </div>
+                                                        <div className='w-full flex flex-row justify-center'>
+                                                            <div className='w-10/12'>
+                                                                <div className='w-10/12 rounded' style={styles.inputContainer}>
+                                                                    {/* <div>$</div> */}
+                                                                    <div className="flex items-center border-none border-gray-300 w-full">
+                                                                        <span className="mr-1">$</span>
+                                                                        <input
+                                                                            // disabled={toogleActive ? true : false}
+                                                                            style={{
+                                                                                ...styles.input,
+                                                                                WebkitAppearance: "none",
+                                                                                MozAppearance: "textfield",
+                                                                                appearance: "none",
+                                                                                // backgroundColor: 'red'
+                                                                            }}
+                                                                            className='w-full border-none outline-none'
+                                                                            value={callPrice}
+                                                                            onChange={(e) => {
+                                                                                e.target.value = e.target.value.replace(/[^0-9 .]/g, '');
+                                                                                setCallPrice(e.target.value);
+                                                                                let P = e.target.value;
+                                                                                if (P) {
+                                                                                    if (P < 1) {
+                                                                                        console.log("Value is less then 1", P);
+                                                                                        setShowInputErr(true)
+                                                                                    } else {
+                                                                                        setShowInputErr(false)
+                                                                                    }
+                                                                                }
+                                                                            }}
+                                                                            onFocus={() => { setShowWarningText(true) }}
+                                                                            onBlur={() => { setShowWarningText(false) }}
+                                                                            // placeholder='$'
+                                                                            type='text'
+                                                                            inputMode='number'
+                                                                            pattern='[0-9]*'
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                                <div className='text-red mt-3'
+                                                                    style={{
+                                                                        fontSize: 11,
+                                                                        fontWeight: 'normal',
+                                                                        height: 12
+                                                                        // color: '#'
+                                                                    }}>
+                                                                    {callPrice && showInputErr && ("Nothing less than $1 per minute")}
+                                                                </div>
+                                                                <div>
+                                                                    <div className='mt-8 w-10/12 flex flex-row justify-between'>
+                                                                        <div className='' style={styles.PriceText}>
+                                                                            Your price per minute
+                                                                        </div>
+
+                                                                        <div className='' style={styles.PriceText}>
+                                                                            ${callPrice}
+                                                                        </div>
+
+                                                                    </div>
+
+
+                                                                    <div className='mt-8 w-10/12 flex flex-row  justify-between'>
+                                                                        <div className='w-9/12 flex flex-row pe-12'>
+                                                                            <div style={styles.PriceText}>
+                                                                                Our fee - 20% to run our engine.
+                                                                            </div>
+                                                                            <div className='ms-1'>
+
+                                                                                <Typography
+                                                                                    aria-owns={open ? 'mouse-over-popover' : undefined}
+                                                                                    aria-haspopup="true"
+                                                                                    onMouseEnter={(e) => {
+                                                                                        setAnchorel(e.currentTarget)
+                                                                                    }}
+                                                                                    onMouseLeave={(e) => {
+                                                                                        setAnchorel(null)
+                                                                                    }}
+                                                                                >
+                                                                                    <img src={'/assets/questionImage.png'}
+                                                                                        style={{ alignSelf: 'center', height: 15, width: 15 }} />
+                                                                                </Typography>
+                                                                                <Popover
+                                                                                    id="mouse-over-popover"
+                                                                                    sx={{
+                                                                                        pointerEvents: 'none',
+                                                                                    }}
+                                                                                    PaperProps={{
+                                                                                        sx: {
+                                                                                            borderRadius: '10px', // Add borderRadius here
+                                                                                            padding: "2px"
+                                                                                        },
+                                                                                    }}
+                                                                                    open={open}
+                                                                                    anchorEl={anchorel}
+                                                                                    anchorOrigin={{
+                                                                                        vertical: 'bottom',
+                                                                                        horizontal: 'left',
+                                                                                    }}
+                                                                                    transformOrigin={{
+                                                                                        vertical: 'top',
+                                                                                        horizontal: 'left',
+                                                                                    }}
+                                                                                    onClose={() => {
+                                                                                        setAnchorel(null)
+                                                                                    }}
+                                                                                    disableRestoreFocus
+                                                                                >
+                                                                                    <Typography sx={{ p: 1, fontSize: 13, padding: 1 }}>We share this with our creators. We pay<br /> OpenAI, twilio, 11labs, Amazon Web<br /> Services, Stripe, 3rd Party Providers,<br />and not to mention…our expensive<br /> developers at E8 Labs.</Typography>
+                                                                                </Popover>
+                                                                            </div>
+
+
+                                                                        </div>
+                                                                        <div className='' style={styles.PriceText}>
+                                                                            ${((20 / 100) * callPrice).toFixed(2)}
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <div style={styles.PriceText}>You keep the rest.</div>
+
+                                                                    <div className='flex flex-row justify-between w-10/12 mt-6'>
+                                                                        <div className='' style={styles.PriceText}>Profit (straight to the bank)</div>
+                                                                        <div style={styles.PriceText}>${((80 / 100) * callPrice).toFixed(2)}</div>
+                                                                    </div>
+                                                                    {
+                                                                        updateLoader ?
+                                                                            <div className='text-white flex flex-row justify-center w-10/12 mt-10'>
+                                                                                <CircularProgress size={25} />
+                                                                            </div> :
+                                                                            <button
+                                                                                onClick={updateAi}
+                                                                                className='bg-purple text-white w-10/12 mt-10'
+                                                                                style={{ fontSize: 15, fontWeight: "400", height: "52px", borderRadius: "50px", color: "white" }}>
+                                                                                Continue
+                                                                            </button>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                            {/* <EnableCallPrice /> */}
+                                                            {/* <SetPrice /> */}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </Box>
+                                    </Modal>
+
+
+
+                                    {/* <p style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
                                         ${dashBoardData?.totalEarnings ?
                                             <div>
                                                 {dashBoardData.totalEarnings.toFixed(2)}
                                             </div> : "0"}
                                     </p>
                                     <div className='flex flex-row items-center'>
-                                        {/* <Image src="/assets/creatorProfileNavIcons/greenUp.png" alt='up' height={13} width={10} /> */}
                                         <ArrowDown className='mb-1' size={15} weight="bold" color='#FF7918' />
                                         <div style={{ ...styles.statsSubText, color: "#FF7918" }}>
                                             2%
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>

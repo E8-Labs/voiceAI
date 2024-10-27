@@ -81,8 +81,8 @@ const Apis = {
     AddObjection: `${BasePath}api/ai/addObjectionHandling`,
     DelObjection: `${BasePath}api/ai/deleteObjectionHandling`,
     UpdateObjection: `${BasePath}api/ai/updateObjectionhandling`,
-    AddDemeanor: `${BasePath}api/ai/addObjectionHandling`,
-    DelDemeanor: `${BasePath}api/ai/deleteObjectionHandling`,
+    AddDemeanor: `${BasePath}api/ai/addDemeanor`,
+    DelDemeanor: `${BasePath}api/ai/deleteDemeanor`,
     UpdateDemeanor: `${BasePath}api/ai/updateDemeanor`
 
 
