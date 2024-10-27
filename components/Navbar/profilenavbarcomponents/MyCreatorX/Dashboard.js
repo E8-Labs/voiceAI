@@ -7,6 +7,7 @@ import { CircularProgressbar, CircularProgressbarWithChildren } from 'react-circ
 import 'react-circular-progressbar/dist/styles.css';
 import { ArrowDown, ArrowRight, ArrowUp, CaretDown, CaretUpDown } from '@phosphor-icons/react';
 import Image from 'next/image';
+import ProfileStat from '@/components/ProfileStat';
 
 
 const Dashboard = () => {
@@ -342,7 +343,7 @@ const Dashboard = () => {
                 />
             </div> */}
 
-            <div className='w-11/12 flex flex-row items-center justify-between mt-4 bg-white px-6 py-4 rounded-2xl'>
+            {/*<div className='w-11/12 flex flex-row items-center justify-between mt-4 bg-white px-6 py-4 rounded-2xl'>
                 <div className='flex flex-row items-center gap-2'>
                     <div style={{ height: "71px", width: "71px" }}>
                         <CircularProgressbar value={value} maxValue={1} text={`${value * 100}%`}
@@ -375,6 +376,9 @@ const Dashboard = () => {
                         Complete
                     </button>
                 </div>
+                        </div>*/}
+            <div>
+                <ProfileStat />
             </div>
 
             <div className='w-11/12'>

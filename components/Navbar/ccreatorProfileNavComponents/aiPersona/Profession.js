@@ -129,7 +129,8 @@ const Profession = ({ recallApi, aiData }) => {
                 </div>
 
                 {
-                    showTaglineBtn ?
+                    showTaglineBtn &&
+                    (
                         <div>
                             {
                                 updateLoader ?
@@ -145,16 +146,18 @@ const Profession = ({ recallApi, aiData }) => {
                                         Save
                                     </button>
                             }
-                        </div> :
-                        <button
-                            className='text-purple underline'
-                            style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}
-                            onClick={() => {
-                                taglineRef.current.focus()
-                            }}
-                        >
-                            Edit
-                        </button>
+                        </div>
+                    )
+                    // :
+                    // <button
+                    //     className='text-purple underline'
+                    //     style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}
+                    //     onClick={() => {
+                    //         taglineRef.current.focus()
+                    //     }}
+                    // >
+                    //     Edit
+                    // </button>
                 }
 
 
@@ -216,7 +219,7 @@ const Profession = ({ recallApi, aiData }) => {
                 </div>
 
                 {
-                    showActionBtn ?
+                    showActionBtn && (
                         <div>
                             {
                                 updateLoader ?
@@ -232,16 +235,18 @@ const Profession = ({ recallApi, aiData }) => {
                                         Save
                                     </button>
                             }
-                        </div> :
-                        <button
-                            className='text-purple underline'
-                            style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}
-                            onClick={() => {
-                                actionRef.current.focus()
-                            }}
-                        >
-                            Edit
-                        </button>
+                        </div>
+                    )
+                    //  :
+                    // <button
+                    //     className='text-purple underline'
+                    //     style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}
+                    //     onClick={() => {
+                    //         actionRef.current.focus()
+                    //     }}
+                    // >
+                    //     Edit
+                    // </button>
                 }
 
 

@@ -98,7 +98,7 @@ const FAQ = () => {
 
             <div>
                 <button className='text-purple underline mt-4' style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
-                    Advance Settings
+                    Advanced settings
                 </button>
             </div>
         </div>

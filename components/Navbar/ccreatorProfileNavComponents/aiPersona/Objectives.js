@@ -1,5 +1,5 @@
 import Apis from '@/components/apis/Apis';
-import { Alert, CircularProgress, Fade, Popover, Snackbar } from '@mui/material';
+import { Alert, Box, CircularProgress, Fade, Modal, Popover, Snackbar } from '@mui/material';
 import { DotsThree } from '@phosphor-icons/react'
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react'
@@ -12,16 +12,23 @@ const Objectives = ({ recallApi, aiData, loader }) => {
     const [updateLoader, setUpdateLoader] = useState(false);
     const [showSaveBtn, setShowSaveBtn] = useState(false);
     const [resultSnack, setResultSnack] = useState(null);
+    const [openExamplesPopup, setOpenExamplesPopup] = useState(false);
 
     const [anchorEl, setAnchorEl] = useState(null);
 
     useEffect(() => {
-        if (aiData?.ai?.aiObjective) {
-            setAiObjective(aiData.ai.aiObjective);
-        } else {
-            setAiObjective("");
+        const localAiPersonaDetails = localStorage.getItem("aiPersonaDetails");
+        if (localAiPersonaDetails) {
+            const AiDetails = JSON.parse(localAiPersonaDetails);
+            setAiObjective(AiDetails?.ai?.aiObjective);
+            console.log("Aidetails recieved from local storage are", AiDetails);
         }
-    }, [recallApi]);
+        // if (aiData?.ai?.aiObjective) {
+        //     setAiObjective(aiData.ai.aiObjective);
+        // } else {
+        //     setAiObjective("");
+        // }
+    }, []);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -43,16 +50,22 @@ const Objectives = ({ recallApi, aiData, loader }) => {
             setUpdateLoader(true);
             if (localData) {
                 const Data = JSON.parse(localData);
+                const AiPersona = localStorage.getItem('aiPersonaDetails');
+                const PersonaDetails = JSON.parse(AiPersona);
+                // console.log('Data of localstorage is', PersonaDetails);
+                //code for updating localdata
+                // let Updated = Data.data
+                // return
                 const AuthToken = Data.data.token;
                 console.log("Auth token is", AuthToken);
                 const ApiPath = Apis.UpdateBuilAI;
                 console.log("Api path is", ApiPath);
                 const formData = new FormData();
-                if (aiObjective) {
-                    formData.append('aiObjective', aiObjective)
-                }
+                // if (aiObjective) {
+                formData.append('aiObjective', aiObjective)
+                // }
 
-                console.log("Form data is")
+                console.log("Form data is");
                 formData.forEach((value, key) => {
                     console.log(`${key}: ${value}`);
                 });
@@ -66,6 +79,9 @@ const Objectives = ({ recallApi, aiData, loader }) => {
                     setResultSnack(response.data.message);
                     if (response.data.status === true) {
                         aiObjectiveRef.current.blur();
+                        let ObjectiveUpdate = PersonaDetails.ai.aiObjective;
+                        ObjectiveUpdate = aiObjective;
+                        localStorage.setItem('aiPersonaDetails', JSON.stringify(ObjectiveUpdate));
                     }
                 }
             }
@@ -76,12 +92,47 @@ const Objectives = ({ recallApi, aiData, loader }) => {
         }
     }
 
+    //code for modal styles
+    const styles = {
+        examplesModalStyle: {
+            height: "auto",
+            bgcolor: "transparent",
+            // p: 2,
+            mx: "auto",
+            my: "50vh",
+            transform: "translateY(-55%)",
+            borderRadius: 2,
+            border: "none",
+            outline: "none",
+        },
+    }
+
+    const examplesData = [
+        {
+            id: 1,
+            heading: "Pitch a product"
+        },
+        {
+            id: 2,
+            heading: "Invite to a webinar"
+        },
+        {
+            id: 3,
+            heading: "Engage with followers"
+        },
+    ]
+
 
 
     return (
         <div className='w-full'>
-            <div style={{ fontWeight: "medium", fontSize: 20, fontFamily: "inter" }}>
-                Objective
+            <div className='w-11/12 flex flex-row items-center justify-between'>
+                <div style={{ fontWeight: "medium", fontSize: 20, fontFamily: "inter" }}>
+                    Objective
+                </div>
+                <button className='underline text-purple' onClick={() => { setOpenExamplesPopup(true) }}>
+                    View Example
+                </button>
             </div>
 
             {
@@ -105,7 +156,7 @@ const Objectives = ({ recallApi, aiData, loader }) => {
                             </div>
                             <div>
                                 {
-                                    showSaveBtn ?
+                                    showSaveBtn && (
                                         <div>
                                             {
                                                 updateLoader ?
@@ -119,14 +170,16 @@ const Objectives = ({ recallApi, aiData, loader }) => {
                                                         Save
                                                     </button>
                                             }
-                                        </div> :
-                                        <button
-                                            onClick={() => { aiObjectiveRef.current.focus() }}
-                                            className='text-purple underline'
-                                            style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}
-                                        >
-                                            Edit
-                                        </button>
+                                        </div>
+                                    )
+                                    //  :
+                                    //     <button
+                                    //         onClick={() => { aiObjectiveRef.current.focus() }}
+                                    //         className='text-purple underline'
+                                    //         style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}
+                                    //     >
+                                    //         Edit
+                                    //     </button>
                                 }
                             </div>
                             {/* <div>
@@ -187,6 +240,72 @@ const Objectives = ({ recallApi, aiData, loader }) => {
 
 
                         </div>
+
+                        {/* Code for examples modal */}
+                        <Modal
+                            open={openExamplesPopup}
+                            onClose={() => setOpenExamplesPopup(false)}
+                            closeAfterTransition
+                            BackdropProps={{
+                                timeout: 1000,
+                                sx: {
+                                    backgroundColor: "transparent",
+                                    backdropFilter: "blur(40px)",
+                                },
+                            }}
+                        >
+                            <Box className="lg:w-5/12 sm:w-7/12 w-full" sx={styles.examplesModalStyle}>
+                                {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
+                                <div className="flex flex-row justify-center w-full">
+                                    <div
+                                        className="sm:w-7/12 w-full"
+                                        style={{
+                                            backgroundColor: "#ffffff23",
+                                            padding: 20,
+                                            borderRadius: 10,
+                                        }}
+                                    >
+                                        <div style={{ backgroundColor: "#ffffff", borderRadius: 7, padding: 10 }}>
+                                            <div style={{ fontWeight: '500', fontFamily: "inter", fontSize: 20 }}>
+                                                Examples
+                                            </div>
+                                            <div className='mt-4 w-full'>
+                                                {
+                                                    examplesData.map((item, index) => (
+                                                        <div key={item.id} className='flex flex-col items-center w-full'>
+                                                            <div className='flex flex-row items-center p-4 border-[2px] border-[#00000010] w-full justify-between rounded-lg'>
+                                                                <div className='flex flex-row items-center gap-2'>
+                                                                    <div className='text-white bg-purple flex flex-row items-center justify-center' style={{ height: 29, width: 29, borderRadius: "50%" }}>
+                                                                        {item.id}
+                                                                    </div>
+                                                                    <div style={styles.text1}>
+                                                                        {item.heading}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            {/* <div style={{ height: '30px', borderLeft: "1px dashed #620FEB", width: "1px" }} /> */}
+                                                            {index !== examplesData.length - 1 && (
+                                                                <div style={{ height: '30px', borderLeft: "1px dashed #620FEB", width: "1px" }} />
+                                                            )}
+                                                        </div>
+                                                    ))
+                                                }
+                                                <div className='w-full flex flex-row justify-center items-center mt-8'>
+                                                    <button
+                                                        onClick={() => { setOpenExamplesPopup(false) }}
+                                                        className='flex flex-row gap-2 justify-center items-center bg-purple text-white px-4 py-2 w-full'
+                                                        style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13, borderRadius: "50px" }}>
+                                                        <p>
+                                                            Close
+                                                        </p>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Box>
+                        </Modal>
                         {/* {
                             aiObjective ?
                                 <div className='flex flex-row items-center justify-between w-11/12 border-[2px] border-[#00000010] p-4 rounded mt-4'>

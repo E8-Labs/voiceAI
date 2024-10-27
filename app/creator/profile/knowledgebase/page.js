@@ -1,4 +1,5 @@
 "use client"
+import ProfileStat from '@/components/ProfileStat';
 import Apis from '@/components/apis/Apis';
 import Knowledgebase from '@/components/buildai/Knowledgebase';
 import loginFunction from '@/components/loginFunction';
@@ -152,12 +153,12 @@ const Page = () => {
 
     return (
         <div className='w-full h-screen' style={{ overflow: 'auto', backgroundColor: "#ffffff40" }}>
-            <div className='w-11/12 pt-12 pl-10 pb-8'>
+            <div className='w-11/12 pt-2 pl-10 pb-8'>
                 <div className='w-fll flex flex-row items-center justify-between'>
-                    <p style={{ fontSize: 28, fontWeight: "500", fontFamily: "inter" }}>
+
+                    {/*<p style={{ fontSize: 28, fontWeight: "500", fontFamily: "inter" }}>
                         Knowledge base
-                    </p>
-                    {/* <Image
+                    </p> <Image
                 src="/assets/placeholderImg.jpg"
                 alt='profile'
                 height={70}
@@ -174,7 +175,7 @@ const Page = () => {
                 }}
             /> */}
                 </div>
-                <div className='w-full flex flex-row items-center justify-between mt-4 bg-white px-6 py-4 rounded-2xl'>
+                {/*<div className='w-full flex flex-row items-center justify-between mt-4 bg-white px-6 py-4 rounded-2xl'>
                     <div className='flex flex-row items-center gap-2'>
                         <div style={{ height: "71px", width: "71px" }}>
                             <CircularProgressbar value={value} maxValue={1} text={`${value * 100}%`}
@@ -207,6 +208,9 @@ const Page = () => {
                             Complete
                         </button>
                     </div>
+                            </div>*/}
+                <div>
+                    <ProfileStat />
                 </div>
 
                 {

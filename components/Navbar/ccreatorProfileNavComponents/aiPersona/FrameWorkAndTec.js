@@ -264,7 +264,18 @@ const FrameWorkAndTec = ({ recallApi, aiData }) => {
             }
           </div> :
           <div className='text-xl font-bold text-center mt-8'>
-            No Framework Added
+            <div className='flex flex-col items-center w-full gap-3 mt-4'>
+              <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={75} width={75} alt='seting' />
+              <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
+                No strategy found yet
+              </div>
+              <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter", color: "#050A0860", textAlign: "center" }}>
+                Please add your strategy
+              </div>
+              <button className='bg-purple px-4 py-2 text-white' style={{ borderRadius: "50px" }} onClick={() => { setAddFrameWorkModal(true) }}>
+                Add New
+              </button>
+            </div>
           </div>
       }
 

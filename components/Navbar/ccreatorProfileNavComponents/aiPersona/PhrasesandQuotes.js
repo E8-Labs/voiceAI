@@ -266,14 +266,25 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
                             }
                         </div> :
                         <div className='font-bold text-xl text-center mt-8'>
-                            No Phrase Added
+                            <div className='flex flex-col items-center w-full gap-3 mt-4'>
+                                <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={75} width={75} alt='seting' />
+                                <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
+                                    No key quote found yet
+                                </div>
+                                <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter", color: "#050A0860", textAlign: "center" }}>
+                                    Please add your key quotes
+                                </div>
+                                <button className='bg-purple px-4 py-2 text-white' style={{ borderRadius: "50px" }} onClick={() => { setAddNewModal(true) }}>
+                                    Add New
+                                </button>
+                            </div>
                         </div>
                 }
             </div>
 
             <div>
                 <button className='text-purple underline mt-4' style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
-                    Advance Settings
+                    Advanced settings
                 </button>
             </div>
 

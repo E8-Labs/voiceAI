@@ -56,7 +56,7 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
     //add new donot
     const handleaddNewDonotDescription = async () => {
         try {
-            // setDonotDisturbLoader(true);
+            setDonotDisturbLoader(true);
             const ApiPath = Apis.AddDonot;
             const localData = localStorage.getItem('User');
             const Data = JSON.parse(localData);
@@ -228,55 +228,76 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
                     Add New
                 </button>
             </div>
+
             {
-                donotDiscussData.map((item, index) => (
-                    <div key={item.id} className='flex flex-row items-start p-4 border border-[#00000010] mt-8 justify-between'>
-                        <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
-                            {item.description}
-                        </div>
-                        <div>
-                            <button className='-mt-2' aria-describedby={donotDisturbPopoverId} variant="contained" color="primary" onClick={(event) => { handeDonotDiscussMoreClick(event, item) }}>
-                                <DotsThree size={32} weight="bold" />
+                donotDiscussData.length > 0 ?
+                    <div>
+
+                        {
+                            donotDiscussData.map((item, index) => (
+                                <div key={item.id} className='flex flex-row items-start p-4 border border-[#00000010] mt-8 justify-between'>
+                                    <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
+                                        {item.description}
+                                    </div>
+                                    <div>
+                                        <button className='-mt-2' aria-describedby={donotDisturbPopoverId} variant="contained" color="primary" onClick={(event) => { handeDonotDiscussMoreClick(event, item) }}>
+                                            <DotsThree size={32} weight="bold" />
+                                        </button>
+                                        <Popover
+                                            id={donotDisturbPopoverId}
+                                            open={Boolean(donotDisturbAnchorel)}
+                                            anchorEl={donotDisturbAnchorel}
+                                            onClose={handleClose}
+                                            anchorOrigin={{
+                                                vertical: 'bottom',
+                                                horizontal: 'center',
+                                            }}
+                                            transformOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'center',
+                                            }}
+                                        >
+                                            <div className='p-2 flex flex-col justify-start items-start w-[100px]'>
+                                                <button className='text-purple' style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter" }}
+                                                    onClick={() => { setOpenUpdateModal(true) }}
+                                                >
+                                                    Edit
+                                                </button>
+                                                {
+                                                    donotDisturbLoader ?
+                                                        <CircularProgress style={{ marginTop: 8 }} size={15} /> :
+                                                        <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }}
+                                                            onClick={handleDeleteDonotDescription}
+                                                        >
+                                                            Delete
+                                                        </button>
+                                                }
+                                            </div>
+                                        </Popover>
+                                    </div>
+                                </div >
+                            ))
+                        }
+                    </div> :
+                    <div>
+                        <div className='flex flex-col items-center w-full gap-3 mt-4'>
+                            <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={75} width={75} alt='seting' />
+                            <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
+                                No donot discuss found yet
+                            </div>
+                            <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter", color: "#050A0860", textAlign: "center" }}>
+                                Please add your donotdiscuss
+                            </div>
+                            <button className='bg-purple px-4 py-2 text-white' style={{ borderRadius: "50px" }} onClick={() => { setOpenModal(true) }}>
+                                Add New
                             </button>
-                            <Popover
-                                id={donotDisturbPopoverId}
-                                open={Boolean(donotDisturbAnchorel)}
-                                anchorEl={donotDisturbAnchorel}
-                                onClose={handleClose}
-                                anchorOrigin={{
-                                    vertical: 'bottom',
-                                    horizontal: 'center',
-                                }}
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'center',
-                                }}
-                            >
-                                <div className='p-2 flex flex-col justify-start items-start w-[100px]'>
-                                    <button className='text-purple' style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter" }}
-                                        onClick={() => { setOpenUpdateModal(true) }}
-                                    >
-                                        Edit
-                                    </button>
-                                    {
-                                        donotDisturbLoader ?
-                                            <CircularProgress style={{ marginTop: 8 }} size={15} /> :
-                                            <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }}
-                                                onClick={handleDeleteDonotDescription}
-                                            >
-                                                Delete
-                                            </button>
-                                    }
-                                </div>
-                            </Popover>
                         </div>
-                    </div >
-                ))
+                    </div>
             }
 
             <div>
                 <button className='text-purple underline mt-4' style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }} onClick={() => { setOpenAdvanceSettingPopup(true) }}>
-                    Advance Settings
+                    Advanced settings
                 </button>
             </div>
 
@@ -448,7 +469,7 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
                                     </button>
                                 </div>
                                 <div style={{ fontWeight: "500", fontFamily: "inter", fontSize: 15, color: "#00000060" }}>
-                                    Advance Settings
+                                    Advanced settings
                                 </div>
                                 <div className='mt-8'>
                                     <CommunicationSetting recallApi={recallApi} aiData={aiData} />

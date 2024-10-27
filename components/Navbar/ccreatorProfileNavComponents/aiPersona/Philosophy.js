@@ -430,7 +430,18 @@ const Philosophy = ({ aiData, recallApi }) => {
                             }
                         </div> :
                         <div className='text-center w-full mt-8' style={{ fontWeight: "bold", fontSize: 18, fontFamily: "inter" }}>
-                            No Philosophy Added
+                            <div className='flex flex-col items-center w-full gap-3 mt-4'>
+                                <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={75} width={75} alt='seting' />
+                                <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
+                                    No philosophy found yet
+                                </div>
+                                <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter", color: "#050A0860", textAlign: "center" }}>
+                                    Please add your philosophy
+                                </div>
+                                <button className='bg-purple px-4 py-2 text-white' style={{ borderRadius: "50px" }} onClick={() => { setAddPhilosophyModal(true) }}>
+                                    Add New
+                                </button>
+                            </div>
                         </div>
                 }
             </div>
@@ -502,7 +513,18 @@ const Philosophy = ({ aiData, recallApi }) => {
                             }
                         </div> :
                         <div className='w-full text-center mt-8' style={{ fontWeight: "bold", fontSize: 18, fontFamily: "inter" }}>
-                            No Views
+                            <div className='flex flex-col items-center w-full gap-3 mt-4'>
+                                <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={75} width={75} alt='seting' />
+                                <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
+                                    No view found yet
+                                </div>
+                                <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter", color: "#050A0860", textAlign: "center" }}>
+                                    Please add your view
+                                </div>
+                                <button className='bg-purple px-4 py-2 text-white' style={{ borderRadius: "50px" }} onClick={() => { setAddValueModal(true) }}>
+                                    Add New
+                                </button>
+                            </div>
                         </div>
                 }
             </div>
@@ -535,7 +557,7 @@ const Philosophy = ({ aiData, recallApi }) => {
                             <div style={{ backgroundColor: "#ffffff", borderRadius: 7, padding: 10 }}>
                                 <div className='flex flex-row items-center justify-between p-2' style={{ fontWeight: '500', fontFamily: "inter", fontSize: 20 }}>
                                     <p />
-                                    <p>Add Values</p>
+                                    <p>Add View</p>
                                     <button onClick={() => { setAddValueModal(false) }}>
                                         <Image src="/assets/crossBtn.png" height={15} width={15} alt='*' />
                                     </button>
@@ -602,7 +624,7 @@ const Philosophy = ({ aiData, recallApi }) => {
                             <div style={{ backgroundColor: "#ffffff", borderRadius: 7, padding: 10 }}>
                                 <div className='flex flex-row items-center justify-between p-2' style={{ fontWeight: '500', fontFamily: "inter", fontSize: 20 }}>
                                     <p />
-                                    <p>Update Values</p>
+                                    <p>Update View</p>
                                     <button onClick={() => { setUpdateValueModal(false) }}>
                                         <Image src="/assets/crossBtn.png" height={15} width={15} alt='*' />
                                     </button>

@@ -21,6 +21,7 @@ import { CircularProgressbar, CircularProgressbarWithChildren } from 'react-circ
 import 'react-circular-progressbar/dist/styles.css';
 import loginFunction from '@/components/loginFunction';
 import ObjectionHandling2 from '@/components/Navbar/ccreatorProfileNavComponents/aiPersona/ObjectionHandling2';
+import ProfileStat from '@/components/ProfileStat';
 
 const Page = () => {
 
@@ -331,7 +332,7 @@ const Page = () => {
                                         >
                                             {item.title}
                                         </button>
-                                        <Image src={item.id === selectedAICharacteristics ? "/assets/claimLogo2.png" : "/assets/TickIcon.png"} alt='icon' height={10} width={10} />
+                                        <Image src={"/assets/TickIcon.png"} alt='icon' height={10} width={10} />
                                     </div>
                                 ))
                             }
@@ -357,7 +358,7 @@ const Page = () => {
                                         >
                                             {item.title}
                                         </button>
-                                        <Image src={item.id === selectedCommunication ? "/assets/claimLogo2.png" : "/assets/TickIcon.png"} alt='icon' height={10} width={10} />
+                                        <Image src={"/assets/TickIcon.png"} alt='icon' height={10} width={10} />
                                     </div>
                                 ))
                             }
@@ -383,7 +384,7 @@ const Page = () => {
                                         >
                                             {item.heading}
                                         </button>
-                                        <Image src={item.id === selectedGetToolMenu ? "/assets/claimLogo2.png" : "/assets/TickIcon.png"} alt='icon' height={10} width={10} />
+                                        <Image src={"/assets/TickIcon.png"} alt='icon' height={10} width={10} />
                                     </div>
                                 ))
                             }
@@ -409,7 +410,7 @@ const Page = () => {
                                         >
                                             {item.title}
                                         </button>
-                                        <Image src={item.id === selectedProductService ? "/assets/claimLogo2.png" : "/assets/TickIcon.png"} alt='icon' height={10} width={10} />
+                                        <Image src={"/assets/TickIcon.png"} alt='icon' height={10} width={10} />
                                     </div>
                                 ))
                             }
@@ -436,7 +437,7 @@ const Page = () => {
                                         >
                                             {item.title}
                                         </button>
-                                        <Image src={item.id === selectedCallStrategy ? "/assets/claimLogo2.png" : "/assets/TickIcon.png"} alt='icon' height={10} width={10} />
+                                        <Image src={"/assets/TickIcon.png"} alt='icon' height={10} width={10} />
                                     </div>
                                 ))
                             }
@@ -460,7 +461,7 @@ const Page = () => {
                                         >
                                             {item.heading}
                                         </button>
-                                        <Image src={item.id === selectedGetProfessionalMenuMenu ? "/assets/claimLogo2.png" : "/assets/TickIcon.png"} alt='icon' height={10} width={10} />
+                                        <Image src={"/assets/TickIcon.png"} alt='icon' height={10} width={10} />
                                     </div>
                                 ))
                             }
@@ -478,12 +479,13 @@ const Page = () => {
 
     return (
         <div className='w-full h-screen' style={{ overflow: 'auto', backgroundColor: "#ffffff40" }}>
-            <div className='w-11/12 pt-12 pl-10'>
+            <div className='w-11/12 pt-2 pl-10'>
                 <div className='w-fll flex flex-row items-center justify-between'>
-                    <p style={{ fontSize: 28, fontWeight: "500", fontFamily: "inter" }}>
+
+                    {/*<p style={{ fontSize: 28, fontWeight: "500", fontFamily: "inter" }}>
                         AI Persona
                     </p>
-                    {/* <Image
+                     <Image
                         src="/assets/placeholderImg.jpg"
                         alt='profile'
                         height={70}
@@ -500,40 +502,9 @@ const Page = () => {
                         }}
                     /> */}
                 </div>
-                <div className='w-11/12 flex flex-row items-center justify-between mt-4 bg-white px-6 py-4 rounded-2xl'>
-                    <div className='flex flex-row items-center gap-2'>
-                        <div style={{ height: "71px", width: "71px" }}>
-                            <CircularProgressbar value={value} maxValue={1} text={`${value * 100}%`}
-                                strokeWidth={4}
-                                styles={{
-                                    path: {
-                                        stroke: `#552AFF`, // Change the color to red
-                                    },
-                                    text: {
-                                        fill: '#000000', // Change the text color to red
-                                        fontSize: 20,
-                                        fontWeight: "500"
-                                    },
-                                    trail: {
-                                        stroke: '#d6d6d6', // Change the trail color (if needed)
-                                    },
-                                }} />
-                        </div>
-                        <div className='flex flex-col gap-1'>
-                            <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
-                                Complete Profile
-                            </div>
-                            <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
-                                Voice, Kb, SocialLinks etc
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <button className='text-white bg-purple px-4 py-2' style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter", borderRadius: "50px" }}>
-                            Complete
-                        </button>
-                    </div>
-                </div>
+                
+
+                <ProfileStat />
 
                 {/* Code for the side menu */}
                 <div className='flex flex-row justify-between items-start w-11/12 mt-4 pt-12 mb-4 bg-white rounded-2xl p-4'>
@@ -559,7 +530,7 @@ const Page = () => {
                                     >
                                         <div className='flex flex-row items-center gap-4'>
                                             <div>{item.menu}</div>
-                                            <Image src={item.id === selectedMenu ? "/assets/claimLogo2.png" : "/assets/TickIcon.png"} alt='icon' height={10} width={10} />
+                                            <Image src="/assets/TickIcon.png" alt='icon' height={10} width={10} />
                                         </div>
                                         {
                                             [2, 3, 5, 7, 8].includes(item.id) &&

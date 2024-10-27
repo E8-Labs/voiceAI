@@ -80,7 +80,10 @@ const Apis = {
     UpdateCallStrategy: `${BasePath}/api/ai/updateCallStrategy`,
     AddObjection: `${BasePath}api/ai/addObjectionHandling`,
     DelObjection: `${BasePath}api/ai/deleteObjectionHandling`,
-    UpdateObjection: `${BasePath}api/ai/updateObjectionhandling`
+    UpdateObjection: `${BasePath}api/ai/updateObjectionhandling`,
+    AddDemeanor: `${BasePath}api/ai/addObjectionHandling`,
+    DelDemeanor: `${BasePath}api/ai/deleteObjectionHandling`,
+    UpdateDemeanor: `${BasePath}api/ai/updateDemeanor`
 
 
 }

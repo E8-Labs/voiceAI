@@ -4,8 +4,11 @@ import Apis from '@/components/apis/Apis';
 import axios from 'axios';
 import { ArrowRight, DotsThree } from '@phosphor-icons/react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 const PersonalityTraits = ({ aiData, recallApi }) => {
+
+    const router = useRouter();
 
     const [openManuallyTrait, setOpenManuallyTrait] = useState(false);
     const [newTrait, setNewTrait] = useState("");
@@ -340,6 +343,10 @@ const PersonalityTraits = ({ aiData, recallApi }) => {
             borderRadius: 2,
             border: "none",
             outline: "none",
+        },
+        text1: {
+            fontWeight: '500',
+            fontSize: 15, fontFamily: 'inter'
         }
     }
 
@@ -360,7 +367,7 @@ const PersonalityTraits = ({ aiData, recallApi }) => {
                                             Personality Trait
                                         </div>
                                         <button className='underline text-purple'
-                                            onClick={() => { setOpenManuallyTrait(true) }}>
+                                            onClick={() => { setOpenAddTraitPopup(true) }}>
                                             Add New
                                         </button>
                                     </div>
@@ -495,7 +502,7 @@ const PersonalityTraits = ({ aiData, recallApi }) => {
                                             <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter", color: "#050A0860", textAlign: "center" }}>
                                                 Please add a knowledge base or connect to your social <br /> media account.
                                             </div>
-                                            <button className='bg-purple px-4 py-2 text-white' style={{ borderRadius: "50px" }} onClick={() => { setOpenManuallyTrait(true) }}>
+                                            <button className='bg-purple px-4 py-2 text-white' style={{ borderRadius: "50px" }} onClick={() => { setOpenAddTraitPopup(true) }}>
                                                 Add New
                                             </button>
                                         </div>
@@ -524,7 +531,7 @@ const PersonalityTraits = ({ aiData, recallApi }) => {
                     {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
                     <div className="flex flex-row justify-center w-full">
                         <div
-                            className="sm:w-7/12 w-full"
+                            className="sm:w-full w-full"
                             style={{
                                 backgroundColor: "#ffffff50",
                                 padding: 20,
@@ -539,32 +546,50 @@ const PersonalityTraits = ({ aiData, recallApi }) => {
                                         <Image src="/assets/crossBtn.png" height={15} width={15} alt='*' />
                                     </button>
                                 </div>
+                                <div style={{ fontWeight: '500', fontFamily: 'inter', fontSize: 13, textAlign: 'center' }}>
+                                    Lorem ipsum dolor sit amet consectetur. sit. <br />Feugiat consequat ultrices erat est. Nulla.
+                                </div>
                                 <div className='mt-4 w-full'>
-                                    <div className='flex flex-col items-center w-full'>
-                                        <div className='flex flex-row items-center p-4 w-full justify-between rounded-lg mb-6'>
+                                    <div className='flex flex-row items-center w-full'>
+                                        <button className='flex flex-col items-start gap-8 p-4 w-4/12 justify-between rounded-lg'
+                                            style={{ border: '2px solid #552AFF' }}
+                                            onClick={() => { router.push('/creator/profile/knowledgebase') }}
+                                        >
+                                            <div>
+                                                <Image src={"/assets/creatorProfileNavIcons/kbUnfocus.png"} height={20} width={20} alt='soial' />
+                                            </div>
                                             <div style={styles.text1}>
-                                                From knowledge base
+                                                knowledge base
                                             </div>
                                             <div>
                                                 <ArrowRight size={20} weight="bold" color='#620FEB' />
                                             </div>
-                                        </div>
-                                        <div className='flex flex-row items-center p-4 w-full justify-between rounded-lg mb-6'>
+                                        </button>
+                                        <button className='flex flex-col items-start gap-8 p-4 ms-4 w-4/12 justify-between rounded-lg'
+                                            style={{ border: '2px solid #552AFF' }}
+                                            onClick={() => { router.push('/creator/profile/socials') }}
+                                        >
+                                            <div>
+                                                <Image src={"/assets/creatorProfileNavIcons/socialUnfocus.png"} height={20} width={20} alt='soial' />
+                                            </div>
                                             <div style={styles.text1}>
-                                                From social account
+                                                social account
                                             </div>
                                             <div>
                                                 <ArrowRight size={20} weight="bold" color='#620FEB' />
                                             </div>
-                                        </div>
-                                        <div className='flex flex-row items-center p-4 w-full justify-between rounded-lg'>
+                                        </button>
+                                        <button className='flex flex-col items-start gap-8 p-4 ms-4 w-4/12 justify-between rounded-lg' onClick={() => { setOpenManuallyTrait(true) }} style={{ border: '2px solid #552AFF' }}>
+                                            <div>
+                                                <Image src={"/assets/creatorProfileNavIcons/socialUnfocus.png"} height={20} width={20} alt='soial' />
+                                            </div>
                                             <div style={styles.text1}>
                                                 Enter manually
                                             </div>
-                                            <button onClick={() => { setOpenManuallyTrait(true) }}>
+                                            <div>
                                                 <ArrowRight size={20} weight="bold" color='#620FEB' />
-                                            </button>
-                                        </div>
+                                            </div>
+                                        </button>
                                         {/* <div style={{ height: '30px', borderLeft: "1px dashed #620FEB", width: "1px" }} /> */}
                                     </div>
                                     {/* <div className='w-full flex flex-row justify-center items-center mt-6'>

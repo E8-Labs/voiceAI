@@ -386,7 +386,12 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                                 beliefsData.map((item) => (
                                     <div key={item.id} className='flex flex-row items-start p-[2vh] border border-[#00000010] mb-4 justify-between'>
                                         <div>
-                                            {item.description}
+                                            <div style={{ fontWeight: "500", fontSize: 12, fontFamily: "inter" }}>
+                                                {item.title}
+                                            </div>
+                                            <div style={{ fontWeight: "400", fontSize: 15, fontFamily: "inter" }}>
+                                                {item.description}
+                                            </div>
                                         </div>
                                         <div>
                                             <button aria-describedby={id} variant="contained" color="primary" onClick={(event) => { handleClick(event, item) }}>
@@ -432,7 +437,23 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                             }
                         </div> :
                         <div className='text-center w-full mt-8' style={{ fontWeight: "bold", fontSize: 18, fontFamily: "inter" }}>
-                            No Beliefs Added
+                            <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
+                                Beliefs
+                            </div>
+                            <div>
+                                <div className='flex flex-col items-center w-full gap-3 mt-4'>
+                                    <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={75} width={75} alt='seting' />
+                                    <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
+                                        No belief found yet
+                                    </div>
+                                    <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter", color: "#050A0860", textAlign: "center" }}>
+                                        Please add your belief
+                                    </div>
+                                    <button className='bg-purple px-4 py-2 text-white' style={{ borderRadius: "50px" }} onClick={() => { setAddBeliefModal(true) }}>
+                                        Add New
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                 }
             </div>
@@ -449,7 +470,7 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                     Add new
                 </button>
             </div>
-            <div className='max-h-[27vh] overflow-auto scrollbar scrollbar-track-transparent scrollbar-thumb-purple scrollbar-thin mt-4'>
+            <div className='max-h-[25vh] overflow-auto scrollbar scrollbar-track-transparent scrollbar-thumb-purple scrollbar-thin mt-4'>
                 {
                     valuesData && valuesData.length > 0 ?
                         <div>
@@ -457,10 +478,10 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                                 valuesData.map((item) => (
                                     <div key={item.id} className='flex flex-row items-start p-[2vh] border border-[#00000010] mb-4 justify-between'>
                                         <div>
-                                            {/* <div>
-                                {item.title}
-                            </div> */}
-                                            <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
+                                            <div style={{ fontWeight: "500", fontSize: 12, fontFamily: "inter" }}>
+                                                {item.title}
+                                            </div>
+                                            <div style={{ fontWeight: "400", fontSize: 15, fontFamily: "inter" }}>
                                                 {item.description}
                                             </div>
                                         </div>
@@ -503,7 +524,18 @@ const ValuesandBeliefs = ({ aiData, recallApi }) => {
                             }
                         </div> :
                         <div className='w-full text-center mt-8' style={{ fontWeight: "bold", fontSize: 18, fontFamily: "inter" }}>
-                            No Values Added
+                            <div className='flex flex-col items-center w-full gap-3 mt-4'>
+                                <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={75} width={75} alt='seting' />
+                                <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
+                                    No value found yet
+                                </div>
+                                <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter", color: "#050A0860", textAlign: "center" }}>
+                                    Please add your value
+                                </div>
+                                <button className='bg-purple px-4 py-2 text-white' style={{ borderRadius: "50px" }} onClick={() => { setAddValueModal(true) }}>
+                                    Add New
+                                </button>
+                            </div>
                         </div>
                 }
             </div>

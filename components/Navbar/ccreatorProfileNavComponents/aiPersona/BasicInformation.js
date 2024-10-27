@@ -142,27 +142,28 @@ const BasicInformation = ({ recallApi, aiData }) => {
                         placeholder='Hey this is James. Feel free to ask me anything about....' />
                 </div>
                 {
-                    showGreetingSaveBtn ?
-                        <div>
-                            {
-                                updateLoader ?
-                                    <CircularProgress size={17} /> :
-                                    <button
-                                        className='text-purple underline'
-                                        style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}
-                                        onMouseDown={(e) => e.preventDefault()}
-                                        onClick={handleUpdateAi}
-                                    >
-                                        Save
-                                    </button>
-                            }
-                        </div> :
-                        <button className='text-purple underline' style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}
-                            onClick={(e) => {
-                                greetingRef.current.focus();
-                            }}>
-                            Edit
-                        </button>
+                    showGreetingSaveBtn &&
+                    <div>
+                        {
+                            updateLoader ?
+                                <CircularProgress size={17} /> :
+                                <button
+                                    className='text-purple underline'
+                                    style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}
+                                    onMouseDown={(e) => e.preventDefault()}
+                                    onClick={handleUpdateAi}
+                                >
+                                    Save
+                                </button>
+                        }
+                    </div>
+                    // :
+                    // <button className='text-purple underline' style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}
+                    //     onClick={(e) => {
+                    //         greetingRef.current.focus();
+                    //     }}>
+                    //     Edit
+                    // </button>
                 }
                 {/* <Popover
                     id={greetCallersPopoverId}
@@ -208,31 +209,32 @@ const BasicInformation = ({ recallApi, aiData }) => {
                         onChange={(e) => {
                             setUserQuerry(e.target.value);
                         }}
-                        placeholder='How to scale my business, how to overcome a breakup, etc '
-                    /> :
+                        placeholder='How to scale my business, how to overcome a breakup, etc'
+                    />
                 </div>
                 {
-                    showQuerrySaveBtn ?
-                        <div>
-                            {
-                                updateLoader ?
-                                    <CircularProgress size={17} /> :
-                                    <button
-                                        className='text-purple underline'
-                                        style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}
-                                        onMouseDown={(e) => e.preventDefault()}
-                                        onClick={handleUpdateAi}
-                                    >
-                                        Save
-                                    </button>
-                            }
-                        </div> :
-                        <button className='text-purple underline' style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}
-                            onClick={(e) => {
-                                querryRef.current.focus();
-                            }}>
-                            Edit
-                        </button>
+                    showQuerrySaveBtn &&
+                    <div>
+                        {
+                            updateLoader ?
+                                <CircularProgress size={17} /> :
+                                <button
+                                    className='text-purple underline'
+                                    style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}
+                                    onMouseDown={(e) => e.preventDefault()}
+                                    onClick={handleUpdateAi}
+                                >
+                                    Save
+                                </button>
+                        }
+                    </div>
+                    // :
+                    // <button className='text-purple underline' style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}
+                    //     onClick={(e) => {
+                    //         querryRef.current.focus();
+                    //     }}>
+                    //     Edit
+                    // </button>
                 }
                 {/* <Popover
                     id={callersQueryPopoverId}
@@ -263,7 +265,7 @@ const BasicInformation = ({ recallApi, aiData }) => {
 
             <div>
                 <button className='text-purple underline mt-12' onClick={() => setOpenAdvanceSettingPopup(true)}>
-                    Advance Settings
+                    Advanced settings
                 </button>
             </div>
 
@@ -297,7 +299,7 @@ const BasicInformation = ({ recallApi, aiData }) => {
                                     </button>
                                 </div>
                                 <div style={{ fontWeight: "500", fontFamily: "inter", fontSize: 15, color: "#00000060" }}>
-                                    Advance Settings
+                                    Advanced settings
                                 </div>
                                 <div className='mt-2'>
                                     <AiCharacteristicSeeting recallApi={recallApi} aiData={aiData} />

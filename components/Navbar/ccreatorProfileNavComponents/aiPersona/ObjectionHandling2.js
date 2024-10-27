@@ -240,69 +240,87 @@ const ObjectionHandling2 = () => {
                     View Examples
                 </button>
             </div>
-            <div className='mt-8 w-10/12'>
-                {
-                    callInstructionData.map((item, index) => (
-                        <div key={item.id} className='flex flex-col items-center w-full'>
-                            <div className='flex flex-row items-center p-4 border-[1px] border-[#00000010] w-full justify-between rounded-lg'>
-                                <div className='flex flex-row items-center gap-2'>
-                                    <div className='text-white bg-purple flex flex-row items-center justify-center' style={{ height: 29, width: 29, borderRadius: "50%" }}>
-                                        {index + 1}
-                                    </div>
-                                    <div style={styles.text1}>
-                                        {/* {item.objectionType} */}
-                                        {item.prompt}
-                                    </div>
-                                </div>
-                                <div>
-                                    <button aria-describedby={id} variant="contained" color="primary" onClick={(event) => { handleMoreClick(event, item) }}>
-                                        <DotsThree size={32} weight="bold" />
-                                    </button>
-                                    <Popover
-                                        id={id}
-                                        open={Boolean(anchorEl)}
-                                        anchorEl={anchorEl}
-                                        onClose={handleClose}
-                                        anchorOrigin={{
-                                            vertical: 'bottom',
-                                            horizontal: 'center',
-                                        }}
-                                        transformOrigin={{
-                                            vertical: 'top',
-                                            horizontal: 'center',
-                                        }}
-                                    >
-                                        <div className='p-2 flex flex-col justify-start items-start w-[100px]'>
-                                            <button className='text-purple' style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter" }} onClick={() => { setUpdateStrategyModal(true) }}>
-                                                Edit
-                                            </button>
-                                            {
-                                                strategyLoader ?
-                                                    <CircularProgress size={15} /> :
-                                                    <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }} onClick={handleDeleteteStrategy}>
-                                                        Delete
-                                                    </button>
-                                            }
+            {
+                callInstructionData.length > 0 ?
+                    <div className='mt-8 w-10/12'>
+                        {
+                            callInstructionData.map((item, index) => (
+                                <div key={item.id} className='flex flex-col items-center w-full'>
+                                    <div className='flex flex-row items-center p-4 border-[1px] border-[#00000010] w-full justify-between rounded-lg'>
+                                        <div className='flex flex-row items-center gap-2'>
+                                            <div className='text-white bg-purple flex flex-row items-center justify-center' style={{ height: 29, width: 29, borderRadius: "50%" }}>
+                                                {index + 1}
+                                            </div>
+                                            <div style={styles.text1}>
+                                                {/* {item.objectionType} */}
+                                                {item.prompt}
+                                            </div>
                                         </div>
-                                    </Popover>
+                                        <div>
+                                            <button aria-describedby={id} variant="contained" color="primary" onClick={(event) => { handleMoreClick(event, item) }}>
+                                                <DotsThree size={32} weight="bold" />
+                                            </button>
+                                            <Popover
+                                                id={id}
+                                                open={Boolean(anchorEl)}
+                                                anchorEl={anchorEl}
+                                                onClose={handleClose}
+                                                anchorOrigin={{
+                                                    vertical: 'bottom',
+                                                    horizontal: 'center',
+                                                }}
+                                                transformOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'center',
+                                                }}
+                                            >
+                                                <div className='p-2 flex flex-col justify-start items-start w-[100px]'>
+                                                    <button className='text-purple' style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter" }} onClick={() => { setUpdateStrategyModal(true) }}>
+                                                        Edit
+                                                    </button>
+                                                    {
+                                                        strategyLoader ?
+                                                            <CircularProgress size={15} /> :
+                                                            <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }} onClick={handleDeleteteStrategy}>
+                                                                Delete
+                                                            </button>
+                                                    }
+                                                </div>
+                                            </Popover>
+                                        </div>
+                                    </div>
+                                    <div style={{ height: '30px', borderLeft: "1px dashed #620FEB", width: "1px" }} />
                                 </div>
-                            </div>
-                            <div style={{ height: '30px', borderLeft: "1px dashed #620FEB", width: "1px" }} />
+                            ))
+                        }
+                        <div className='w-full flex flex-row justify-center items-center'>
+                            <button className='flex flex-row gap-2 justify-center items-center bg-purple text-white px-4 py-2'
+                                style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13, borderRadius: "50px" }}
+                                onClick={() => setAddStrategyModal(true)}
+                            >
+                                <Plus size={22} weight="light" />
+                                <p>
+                                    Add step
+                                </p>
+                            </button>
                         </div>
-                    ))
-                }
-                <div className='w-full flex flex-row justify-center items-center'>
-                    <button className='flex flex-row gap-2 justify-center items-center bg-purple text-white px-4 py-2'
-                        style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13, borderRadius: "50px" }}
-                        onClick={() => setAddStrategyModal(true)}
-                    >
-                        <Plus size={22} weight="light" />
-                        <p>
-                            Add step
-                        </p>
-                    </button>
-                </div>
-            </div>
+                    </div> :
+                    <div>
+                        <div className='flex flex-col items-center w-full gap-3 mt-4'>
+                            <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={75} width={75} alt='seting' />
+                            <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
+                                No objection found yet
+                            </div>
+                            <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter", color: "#050A0860", textAlign: "center" }}>
+                                Please add your objection
+                            </div>
+                            <button className='bg-purple px-4 py-2 text-white' style={{ borderRadius: "50px" }} onClick={() => { setAddStrategyModal(true) }}>
+                                Add New
+                            </button>
+                        </div>
+                    </div>
+            }
+
 
             {/* Code for examples modal */}
             <Modal
@@ -411,7 +429,7 @@ const ObjectionHandling2 = () => {
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13 }}
                                         />
                                     </div>
-                                    <div className='mt-12'>
+                                    <div className='mt-8'>
                                         <textarea className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                                             value={addStrategyDescription}
                                             onChange={(e) => setAddStrategyDescription(e.target.value)}
@@ -478,7 +496,7 @@ const ObjectionHandling2 = () => {
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13 }}
                                         />
                                     </div>
-                                    <div className='mt-12'>
+                                    <div className='mt-8'>
                                         <textarea className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                                             value={updateStrategyDescription}
                                             onChange={(e) => setUpdateStrategyDescription(e.target.value)}
