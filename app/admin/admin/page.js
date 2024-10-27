@@ -24,8 +24,21 @@ const Page = () => {
     //getting creators
 
     const getCreators = async () => {
+        const LocalData = localStorage.getItem('User');
+        if (LocalData) {
+            const Data = JSON.parse(LocalData);
+            console.log("User loggedin is", Data.data.user);
+            if (Data.data.user.role === "creator") {
+                const Path = Data.data.user.assitant.name;
+                router.push(`/${Path}`);
+                return
+            } else if (Data.data.user.role === "caller") {
+                // const Path = Data.data.user.assitant.name;
+                router.push("/tristan.ai");
+                return
+            }
+        }
         try {
-            const LocalData = localStorage.getItem('User');
             if (LocalData) {
                 const Data = JSON.parse(LocalData);
                 setAdminData(Data.data.user);
