@@ -174,7 +174,7 @@ const Dashboard = () => {
                     }
                 }
             } catch (error) {
-                console.error("Error occured is");
+                console.error("Error occured is", error);
             }
         }
     }
