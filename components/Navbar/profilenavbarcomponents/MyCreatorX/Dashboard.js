@@ -11,9 +11,11 @@ import ProfileStat from '@/components/ProfileStat';
 import SetPrice from '@/components/creatorOnboarding/SetPrice';
 import EnableCallPrice from '../../ccreatorProfileNavComponents/aiPersona/EnableCallPrice';
 import { Switch, Button, Popover, Typography } from '@mui/material'
+import { useRouter } from 'next/navigation';
 
 const Dashboard = () => {
 
+    const router = useRouter();
 
     const value = 0.66
     const [selectedDuration, setSelectedDuration] = useState(1);
