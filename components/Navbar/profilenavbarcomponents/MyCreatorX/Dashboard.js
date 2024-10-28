@@ -98,7 +98,11 @@ const Dashboard = () => {
             if (localData) {
                 const Data = JSON.parse(localData);
                 const AuthToken = Data.data.token;
-                console.log("Loggedin user details are", Data.data);
+                console.log("Loggedin user details are", Data.data.user.role);
+                if (Data.data.user.role !== "creator") {
+                    router.push("/");
+                    return
+                }
                 setCreatorName(Data.data.user.username);
                 const ApiPath = Apis.DashBoardApi;
                 const result = await axios.get(ApiPath, {
