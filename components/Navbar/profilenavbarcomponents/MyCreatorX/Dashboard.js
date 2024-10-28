@@ -197,7 +197,7 @@ const Dashboard = () => {
                     }
                 });
                 if (response) {
-                    console.log("Response of processObjectiveProfession api is ::", response.data.data);
+                    console.log("Response of processObjectiveProfession api is ::", response.data);
                 }
             } catch (error) {
                 console.error("Error occured in api is", error);

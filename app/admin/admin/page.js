@@ -29,43 +29,43 @@ const Page = () => {
             const Data = JSON.parse(LocalData);
             console.log("User loggedin is", Data.data.user);
             if (Data.data.user.role === "creator") {
-                const Path = Data.data.user.assitant.name;
-                router.push(`/${Path}`);
+                router.push(`/creator/profile`);
                 return
             } else if (Data.data.user.role === "caller") {
                 // const Path = Data.data.user.assitant.name;
                 router.push("/tristan.ai");
                 return
             }
-        }
-        try {
-            if (LocalData) {
-                const Data = JSON.parse(LocalData);
-                setAdminData(Data.data.user);
-                const AuthToken = Data.data.token;
-                console.log("Auth is", AuthToken);
-                console.log("Data of localuser", Data)
-                const ApiPath = Apis.GetCreators;
-                console.log("Api path is", ApiPath)
-                const response = await axios.get(ApiPath, {
-                    headers: {
-                        'Authorization': 'Bearer ' + AuthToken,
-                        'Content-Type': 'application/json'
-                    }
-                });
-                if (response) {
-                    console.log("Response fo get creaators api is", response.data);
-                    if (response.data.status === true) {
-                        // setCreatorDetails()
-                        setCreators(response.data.data);
-                        setCreatorDetails(response.data.data[0]);
-                        setDescription(response.data.data[0].assitant.prompt);
-                    }
+            else{
+                try {
+                    const Data = JSON.parse(LocalData);
+                        setAdminData(Data.data.user);
+                        const AuthToken = Data.data.token;
+                        console.log("Auth is", AuthToken);
+                        console.log("Data of localuser", Data)
+                        const ApiPath = Apis.GetCreators;
+                        console.log("Api path is", ApiPath)
+                        const response = await axios.get(ApiPath, {
+                            headers: {
+                                'Authorization': 'Bearer ' + AuthToken,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                        if (response) {
+                            console.log("Response fo get creaators api is", response.data);
+                            if (response.data.status === true) {
+                                // setCreatorDetails()
+                                setCreators(response.data.data);
+                                setCreatorDetails(response.data.data[0]);
+                                setDescription(response.data.data[0].assitant.prompt);
+                            }
+                        }
+                } catch (error) {
+                    console.error("Error occured in getcreators list api is", error);
                 }
             }
-        } catch (error) {
-            console.error("Error occured in getcreators list api is", error);
         }
+        
         // finally {
         //     console.log('Ended the api call')
         // }
