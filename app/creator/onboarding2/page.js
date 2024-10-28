@@ -58,6 +58,7 @@ export default function Home() {
                             router.push("/creator/profile");
                         } else {
                             console.log("Kycs are not added");
+                            router.push("/creator/buildscript2");
                         }
                     } else {
                         router.push("/creator/buildscript");
