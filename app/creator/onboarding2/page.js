@@ -1,13 +1,15 @@
 'use client'
 import Animation from '@/components/animation/Animation';
+import Apis from '@/components/apis/Apis';
 import GroupImages from '@/components/creatorOnboarding/GroupImages';
 import ImagesFile from '@/components/imagesfile/ImagesFile';
 import loginFunction from '@/components/loginFunction';
 import { Box } from '@mui/material';
+import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 
 const backgroundImage = {
     backgroundImage: 'url("/backgroundImage.png")', // Ensure the correct path
@@ -32,14 +34,54 @@ export default function Home() {
         setCurrentIndex(id);
     }
 
+    const getAiData = async () => {
+        console.log("Trying ...")
+        const localData = localStorage.getItem('User');
+        if (localData) {
+            const Data = JSON.parse(localData);
+            // setAiLoader(true);
+            // console.log("Data from local for nowledge", Data);
+            const AuthToken = Data.data.token;
+            console.log("Auth token is", AuthToken);
+            try {
+                const response = await axios.get(Apis.MyAiapi, {
+                    headers: {
+                        'Authorization': 'Bearer ' + AuthToken,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response) {
+                    console.log("Response of my ai api is", response.data.data);
+                    if (response.data.data.ai) {
+                        if (response?.data?.data?.questions.length > 0) {
+                            router.push("/creator/profile");
+                        } else {
+                            console.log("Kycs are not added");
+                        }
+                    } else {
+                        router.push("/creator/buildscript");
+                    }
+
+                }
+            } catch (error) {
+                console.error("Error occured in ai api  is :", error);
+            } finally {
+                // setAiLoader(false);
+            }
+        } else {
+            console.log("User not logged in")
+        }
+
+    }
+
     useEffect(() => {
         const localData = localStorage.getItem('User');
         if (localData) {
             const Data = JSON.parse(localData);
             console.log("Data recieved from localstorage in global component :", Data);
             console.log("User loged in")
-            router.push("https://www.mycreatorx.com/");
-            return
+            getAiData();
         } else {
             console.log("Not loged in")
         }

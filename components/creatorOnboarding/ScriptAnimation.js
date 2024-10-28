@@ -101,27 +101,24 @@ export default function ScriptAnimation({ onChangeIndex }) {
 
         if (response) {
           console.log("Response of kb api is", response.data.data);
-          if (response?.data?.data?.ai) {
-            router.push("/tristan.ai");
+          if (response.data.data.ai) {
+            if (response?.data?.data?.questions.length > 0) {
+              router.push("/creator/profile");
+            } else {
+              console.log("Kycs are not added");
+              router.push("/creator/buildscript2");
+            }
           } else {
-            console.log("Kycs are not added");
+            console.log("Ai not created");
           }
-          // if (response.data.status === true) {
-          //   setKnowledgeData(response.data.data.kb)
-          //   if (response.data.data.kb.length > 0) {
-          //     setkbData(false);
-          //   } else {
-          //     setkbData(true);
-          //   }
-          // } else {
-          //   console.error("Status of kb api", response.data.message);
-          // }
         }
       } catch (error) {
         console.error("Error occured in kb", error);
       } finally {
         // setAiLoader(false);
       }
+    }else{
+      router.push("/creator/onboarding2")
     }
 
   }

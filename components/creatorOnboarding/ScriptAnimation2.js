@@ -131,11 +131,23 @@ export default function ScriptAnimation2({ onChangeIndex }) {
 
         if (response) {
           console.log("Response of my ai api is", response.data.data);
-          if (response?.data?.data?.questions.length > 0) {
-            router.push("/tristan.ai");
+          // if (response?.data?.data?.questions.length > 0) {
+          //   router.push("/tristan.ai");
+          // } else {
+          //   console.log("Kycs are not added");
+          // }
+          if (response.data.data.ai) {
+            if (response?.data?.data?.questions.length > 0) {
+              router.push("/creator/profile");
+            } else {
+              console.log("Kycs are not added");
+              // router.push("/creator/buildscript2");
+            }
           } else {
-            console.log("Kycs are not added");
+            console.log("Ai not created");
+            router.push("/creator/buildscript");
           }
+
           // if (response.data.status === true) {
           //   setKnowledgeData(response.data.data.kb)
           //   if (response.data.data.kb.length > 0) {
@@ -152,6 +164,8 @@ export default function ScriptAnimation2({ onChangeIndex }) {
       } finally {
         // setAiLoader(false);
       }
+    } else {
+      router.push("/creator/onboarding2")
     }
 
   }
