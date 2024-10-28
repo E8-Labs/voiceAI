@@ -103,8 +103,10 @@ const ProfileStat = () => {
                     if (response.data.data.ai.audio === null) {
                         setUploadVoice(true);
                     }
-                    if (response.data.data.kb.length < 0) {
-                        setShowKb(true)
+                    if (response.data.data.kb.length > 0) {
+                        console.log("KB exists");
+                    } else {
+                        setShowKb(true);
                     }
                     const ResponseData = response.data.data.ai;
                     if (ResponseData.discordUrl || ResponseData.fbUrl || ResponseData.instaUrl || ResponseData.twitterUrl || ResponseData.webUrl || ResponseData.youtubeUrl === "") {
