@@ -152,13 +152,13 @@ const Dashboard = () => {
                         if (response?.data?.data?.questions && response?.data?.data?.questions?.length > 0) {
                             console.log("KYC is already present", response?.data?.data?.questions)
                         }
-                        else{
+                        else {
                             router.push("/creator/buildscript2");
                         }
                     } else {
                         router.push("/creator/buildscript");
                     }
-                   
+
                     if (response.data.data.ai.isFree === true) {
                         console.log("Status of is free is ::");
                         setEnablePRiceBtn(true);
@@ -167,14 +167,8 @@ const Dashboard = () => {
                         setCallAmount(response.data.data.ai.price)
                     }
 
-                    if (response?.data?.data?.ai?.aiObjective) {
+                    if (response?.data?.data?.ai?.aiObjective && response?.data?.data?.ai?.profession) {
                         console.log("Objectives exist");
-                    } else {
-                        processObjectiveProfession();
-                    }
-
-                    if (response?.data?.data?.ai?.tagline && response?.data?.data?.ai?.action) {
-                        console.log("Professionn added")
                     } else {
                         processObjectiveProfession();
                     }
