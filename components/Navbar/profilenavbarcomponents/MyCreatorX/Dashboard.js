@@ -148,15 +148,17 @@ const Dashboard = () => {
                 if (response) {
                     console.log("Response of get .my ai Api is", response.data.data);
                     if (response?.data?.data?.ai) {
-                        console.log("Ai is Present");
+                        console.log("Ai is already present")
+                        if (response?.data?.data?.questions && response?.data?.data?.questions?.length > 0) {
+                            console.log("KYC is already present", response?.data?.data?.questions)
+                        }
+                        else{
+                            router.push("/creator/buildscript2");
+                        }
                     } else {
                         router.push("/creator/buildscript");
                     }
-                    if (response?.data?.data?.questions) {
-                        console.log("Kycs are added");
-                    } else {
-                        router.push("/creator/buildscript2");
-                    }
+                   
                     if (response.data.data.ai.isFree === true) {
                         console.log("Status of is free is ::");
                         setEnablePRiceBtn(true);
