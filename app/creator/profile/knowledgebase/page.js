@@ -73,6 +73,7 @@ const Page = () => {
                     setTextData(textItems);
                     setDocumentData(documentItems);
                     setWebData(urlItems);
+                    // refreAIDATA();
                 }
             }
 
@@ -220,7 +221,7 @@ const Page = () => {
                     </div>
                             </div>*/}
                 <div>
-                    <ProfileStat />
+                    <ProfileStat refreAIDATA={getAiApi} />
                 </div>
 
                 {
@@ -259,7 +260,21 @@ const Page = () => {
                                                     </div>
                                                 ))
                                             }
-                                        </div> : "No Document"
+                                        </div> :
+                                        <div>
+                                            <div className='flex flex-col items-center w-full gap-3 mt-4'>
+                                                <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={75} width={75} alt='seting' />
+                                                <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
+                                                    No document found yet
+                                                </div>
+                                                <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter", color: "#050A0860", textAlign: "center" }}>
+                                                    Please add your document
+                                                </div>
+                                                <button className='bg-purple px-4 py-2 text-white' style={{ borderRadius: "50px" }} onClick={() => { setKbPopup(true) }}>
+                                                    Add New
+                                                </button>
+                                            </div>
+                                        </div>
                                 }
 
                                 {/* code for showing web links */}
@@ -286,7 +301,21 @@ const Page = () => {
                                                     </div>
                                                 ))
                                             }
-                                        </div> : "No WebUrl"
+                                        </div> :
+                                        <div>
+                                            <div className='flex flex-col items-center w-full gap-3 mt-4'>
+                                                <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={75} width={75} alt='seting' />
+                                                <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
+                                                    No weburl found yet
+                                                </div>
+                                                <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter", color: "#050A0860", textAlign: "center" }}>
+                                                    Please add your weburl
+                                                </div>
+                                                <button className='bg-purple px-4 py-2 text-white' style={{ borderRadius: "50px" }} onClick={() => { setKbPopup(true) }}>
+                                                    Add New
+                                                </button>
+                                            </div>
+                                        </div>
                                 }
 
                                 {/* code for showing Text */}
@@ -313,7 +342,21 @@ const Page = () => {
                                                     </div>
                                                 ))
                                             }
-                                        </div> : "No Text Added"
+                                        </div> :
+                                        <div>
+                                            <div className='flex flex-col items-center w-full gap-3 mt-4'>
+                                                <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={75} width={75} alt='seting' />
+                                                <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
+                                                    No text yet
+                                                </div>
+                                                <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter", color: "#050A0860", textAlign: "center" }}>
+                                                    Please add your text
+                                                </div>
+                                                <button className='bg-purple px-4 py-2 text-white' style={{ borderRadius: "50px" }} onClick={() => { setKbPopup(true) }}>
+                                                    Add New
+                                                </button>
+                                            </div>
+                                        </div>
                                 }
 
 

@@ -7,7 +7,7 @@ import { Box, CircularProgress, Modal } from '@mui/material';
 import Image from 'next/image';
 import EnableCallPrice from './Navbar/ccreatorProfileNavComponents/aiPersona/EnableCallPrice';
 
-const ProfileStat = () => {
+const ProfileStat = ({ refreAIDATA }) => {
 
     const router = useRouter();
 
@@ -39,6 +39,11 @@ const ProfileStat = () => {
             fileInputRef.current.click();
         }
     };
+
+    useEffect(() => {
+        console.log("Ai updated trying to recall stats api");
+        getAiApi();
+    }, [refreAIDATA])
 
     const updateAi = async () => {
         const localData = localStorage.getItem('User');
@@ -102,15 +107,20 @@ const ProfileStat = () => {
                     localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                     if (response.data.data.ai.audio === null) {
                         setUploadVoice(true);
+                    } else {
+                        setUploadVoice(false);
                     }
                     if (response.data.data.kb.length > 0) {
                         console.log("KB exists");
+                        setShowKb(false);
                     } else {
                         setShowKb(true);
                     }
                     const ResponseData = response.data.data.ai;
                     if (ResponseData.discordUrl || ResponseData.fbUrl || ResponseData.instaUrl || ResponseData.twitterUrl || ResponseData.webUrl || ResponseData.youtubeUrl === "") {
                         setShowSocials(true);
+                    } else {
+                        setShowSocials(false);
                     }
                 }
             }

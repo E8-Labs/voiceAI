@@ -171,8 +171,8 @@ const Dashboard = () => {
 
                     if (response?.data?.data?.ai?.aiObjective && response?.data?.data?.ai?.profession) {
                         console.log("Objectives exist");
-                    } else {
                         processObjectiveProfession();
+                    } else {
                     }
                 }
             } catch (error) {
