@@ -37,8 +37,11 @@ export default function Home() {
         if (localData) {
             const Data = JSON.parse(localData);
             console.log("Data recieved from localstorage in global component :", Data);
+            console.log("User loged in")
             router.push("https://www.mycreatorx.com/");
             return
+        } else {
+            console.log("Not loged in")
         }
     }, [])
 
