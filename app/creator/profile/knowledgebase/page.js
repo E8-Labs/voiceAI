@@ -48,6 +48,16 @@ const Page = () => {
                 console.log("Response of getai on parent screen api", response.data.data);
                 if (response.data) {
                     setAiData(response.data.data);
+                    if (response?.data?.data?.ai) {
+                        console.log("Ai is Present");
+                    } else {
+                        router.push("/creator/buildscript");
+                    }
+                    if (response?.data?.data?.questions) {
+                        console.log("Kycs are added");
+                    } else {
+                        router.push("/creator/buildscript2");
+                    }
 
                     // Filter the items based on their type and update the respective arrays
                     const responseData = response.data.data.kb;

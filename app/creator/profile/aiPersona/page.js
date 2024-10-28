@@ -151,6 +151,16 @@ const Page = () => {
                 if (response.data) {
                     setAiData(response.data.data);
                     localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
+                    if (response?.data?.data?.ai) {
+                        console.log("Ai is Present");
+                    } else {
+                        router.push("/creator/buildscript");
+                    }
+                    if (response?.data?.data?.questions) {
+                        console.log("Kycs are added");
+                    } else {
+                        router.push("/creator/buildscript2");
+                    }
                 }
             }
         } catch (error) {
@@ -502,7 +512,7 @@ const Page = () => {
                         }}
                     /> */}
                 </div>
-                
+
 
                 <ProfileStat />
 

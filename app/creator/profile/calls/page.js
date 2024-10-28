@@ -1,4 +1,5 @@
 "use client"
+import Apis from '@/components/apis/Apis';
 import loginFunction from '@/components/loginFunction';
 import Calls from '@/components/Navbar/ccreatorProfileNavComponents/calls/Calls';
 import ProfileStat from '@/components/ProfileStat';
@@ -10,11 +11,45 @@ import { CircularProgressbar, CircularProgressbarWithChildren } from 'react-circ
 const Page = () => {
     loginFunction();
     const value = 0.65
+
+    const myAi = async () => {
+        const localData = localStorage.getItem("User");
+        if (localData) {
+            const Data = JSON.parse(localData);
+            console.log("localdata  of user is", Data.data.user);
+            // return
+            const AuthToken = Data.data.token;
+            const response = await axios.get(Apis.MyAiapi, {
+                headers: {
+                    Authorization: "Bearer " + AuthToken,
+                    "Content-Type": "application/json",
+                },
+            });
+            if (response) {
+                console.log("Response of My AI api is ::", response.data.data);
+                if (response?.data?.data?.ai) {
+                    console.log("Ai is Present");
+                } else {
+                    router.push("/creator/buildscript");
+                }
+                if (response?.data?.data?.questions) {
+                    console.log("Kycs are added");
+                } else {
+                    router.push("/creator/buildscript2");
+                }
+            }
+        }
+    };
+
+    useEffect(() => {
+        myAi();
+    }, []);
+
     return (
         <div className='w-full h-screen' style={{ overflow: 'hidden', backgroundColor: "#ffffff40" }}>
             <div className='w-11/12 pt-2 pl-10 pb-8'>
                 <div className='w-fll flex flex-row items-center justify-between'>
-                    
+
                     {/*<p style={{ fontSize: 28, fontWeight: "500", fontFamily: "inter" }}>
                         Calls
                     </p>
@@ -69,7 +104,7 @@ const Page = () => {
                         </button>
                     </div>
                             </div>*/}
-                            <ProfileStat />
+                <ProfileStat />
 
                 <div>
                     <Calls />

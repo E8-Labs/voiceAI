@@ -203,23 +203,13 @@ const Creator = () => {
       });
       if (response) {
         console.log("Response of My AI api is ::", response.data.data);
-        if (response?.data?.data?.ai) {
-          console.log("Ai is Present");
-        } else {
-          router.push("/creator/buildscript");
-        }
-        if (response?.data?.data?.questions.length > 0) {
-          console.log("Kycs are added");
-        } else {
-          router.push("/creator/buildscript2");
-        }
+        
       }
     }
   };
 
   useEffect(() => {
     getMyProfile();
-    myAi()
   }, []);
 
   useEffect(() => {

@@ -88,6 +88,16 @@ const Page = () => {
             if (response) {
                 console.log("Response of getai on socials mein screen api", response.data.data);
                 if (response.data) {
+                    if (response?.data?.data?.ai) {
+                        console.log("Ai is Present");
+                    } else {
+                        router.push("/creator/buildscript");
+                    }
+                    if (response?.data?.data?.questions) {
+                        console.log("Kycs are added");
+                    } else {
+                        router.push("/creator/buildscript2");
+                    }
                     // setAiData(response.data.data);
                     // if (response.data.status === true) {
                     //     let linkData = response.data.data

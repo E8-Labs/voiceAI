@@ -143,6 +143,16 @@ const Dashboard = () => {
                 });
                 if (response) {
                     console.log("Response of get .my ai Api is", response.data.data);
+                    if (response?.data?.data?.ai) {
+                        console.log("Ai is Present");
+                    } else {
+                        router.push("/creator/buildscript");
+                    }
+                    if (response?.data?.data?.questions) {
+                        console.log("Kycs are added");
+                    } else {
+                        router.push("/creator/buildscript2");
+                    }
                     if (response.data.data.ai.isFree === true) {
                         console.log("Status of is free is ::");
                         setEnablePRiceBtn(true);
