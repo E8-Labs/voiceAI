@@ -20,7 +20,7 @@ const backgroundImage = {
 
 export default function Home() {
 
-    loginFunction();
+    // loginFunction();
     const router = useRouter();
     const [currentIndex, setCurrentIndex] = useState(null);
     const [isHighScreen, setIsHighScreen] = useState(false);
@@ -31,6 +31,16 @@ export default function Home() {
     const handleCurrentIndex = (id) => {
         setCurrentIndex(id);
     }
+
+    useEffect(() => {
+        const localData = localStorage.getItem('User');
+        if (localData) {
+            const Data = JSON.parse(localData);
+            console.log("Data recieved from localstorage in global component :", Data);
+            router.push("https://www.mycreatorx.com/");
+            return
+        }
+    }, [])
 
     useLayoutEffect(() => {
         // Setting initial values before the component renders
