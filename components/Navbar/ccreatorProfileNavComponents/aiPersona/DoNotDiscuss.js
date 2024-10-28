@@ -220,8 +220,8 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
             <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
                 <span style={{ color: "#00000060" }}>Communication |</span> Donot Discuss
             </div>
-            <div className='flex flex-row items-center justify-between'>
-                <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter", marginTop: 35 }}>
+            <div className='flex flex-row items-center justify-between mt-4'>
+                <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
                     Do not discuss
                 </div>
                 <button className='underline text-purple' onClick={handleOpenModal}>
@@ -438,7 +438,7 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
                 </Box>
             </Modal>
 
-            {/* Modal for setting s */}
+            {/* Modal for settings */}
             <Modal
                 open={openAdvanceSettingPopup}
                 onClose={() => setOpenAdvanceSettingPopup(false)}

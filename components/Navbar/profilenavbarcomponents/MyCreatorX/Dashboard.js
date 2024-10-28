@@ -164,9 +164,45 @@ const Dashboard = () => {
                         setEnablePRiceBtn(false);
                         setCallAmount(response.data.data.ai.price)
                     }
+
+                    if (response?.data?.data?.ai?.aiObjective) {
+                        console.log("Objectives exist");
+                    } else {
+                        processObjectiveProfession();
+                    }
+
+                    if (response?.data?.data?.ai?.tagline && response?.data?.data?.ai?.action) {
+                        console.log("Professionn added")
+                    } else {
+                        processObjectiveProfession();
+                    }
                 }
             } catch (error) {
                 console.error("Error occured is");
+            }
+        }
+    }
+
+    const processObjectiveProfession = async () => {
+        const localData = localStorage.getItem("User");
+        if (localData) {
+            const Data = JSON.parse(localData);
+            console.log("localdata  of user is", Data.data.user);
+            try {
+                const ApiPath = Apis.ProcessObjectiveProfession;
+                const AuthToken = Data.data.token;
+                console.log("Auth token is", AuthToken);
+                const response = await axios.post(ApiPath, {
+                    headers: {
+                        'Authorization': "Bearer " + AuthToken,
+                        "Content-Type": "application/json"
+                    }
+                });
+                if (response) {
+                    console.log("Response of processObjectiveProfession api is ::", response.data.data);
+                }
+            } catch (error) {
+                console.error("Error occured in api is", error);
             }
         }
     }

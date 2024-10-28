@@ -586,7 +586,7 @@ const Page = () => {
                                         ) : selectedCommunication === 303 ? (
                                             <PhrasesandQuotes recallApi={recallApi} aiData={aiData} />
                                         ) : selectedCommunication === 304 ? (
-                                            <FAQ />
+                                            <FAQ recallApi={recallApi} aiData={aiData} />
                                         ) : ""
                                     }
                                 </div>

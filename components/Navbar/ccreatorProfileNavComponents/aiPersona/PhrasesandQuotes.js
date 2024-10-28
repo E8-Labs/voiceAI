@@ -4,6 +4,7 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
 import Apis from '@/components/apis/Apis';
 import axios from 'axios';
+import CommunicationSetting from './CommunicationSetting';
 
 const PhrasesandQuotes = ({ recallApi, aiData }) => {
 
@@ -15,6 +16,9 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
     const [phrasesLoader, setPhrasesLoader] = useState(false);
     const [selectedPhrase, setSelectedPhrase] = useState(null);
     const [resultSnack, setResultSnack] = useState(null);
+    const [openAdvanceSettingPopup, setOpenAdvanceSettingPopup] = useState(false);
+
+
     //add new Phrase or Quote
     const [addPhraseValue, setAddPhraseValue] = useState("");
     const [addNewModal, setAddNewModal] = useState(false);
@@ -283,7 +287,7 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
             </div>
 
             <div>
-                <button className='text-purple underline mt-4' style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
+                <button className='text-purple underline mt-4' style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }} onClick={() => { setOpenAdvanceSettingPopup(true) }}>
                     Advanced settings
                 </button>
             </div>
@@ -419,6 +423,49 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
                                                 Save
                                             </button>
                                     }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Box>
+            </Modal>
+
+
+            {/* Modal for setting s */}
+            <Modal
+                open={openAdvanceSettingPopup}
+                onClose={() => setOpenAdvanceSettingPopup(false)}
+                closeAfterTransition
+                BackdropProps={{
+                    timeout: 1000,
+                    sx: {
+                        backgroundColor: "transparent",
+                        backdropFilter: "blur(40px)",
+                    },
+                }}
+            >
+                <Box className="sm:w-11/12 w-full" sx={styles.styleSettingPopup}>
+                    {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
+                    <div className="flex flex-row justify-center w-full">
+                        <div
+                            className="sm:w-11/12 w-full h-[80vh]"
+                            style={{
+                                backgroundColor: "#ffffff63",
+                                padding: 20,
+                                borderRadius: 10,
+                            }}
+                        >
+                            <div className='w-full bg-white px-14 py-6 rounded-lg' style={{ height: '100%' }}>
+                                <div className='flex flex-row w-full justify-end'>
+                                    <button onClick={() => setOpenAdvanceSettingPopup(false)}>
+                                        <Image src="/assets/crossBtn.png" height={24} width={24} alt='*' />
+                                    </button>
+                                </div>
+                                <div style={{ fontWeight: "500", fontFamily: "inter", fontSize: 15, color: "#00000060" }}>
+                                    Advanced settings
+                                </div>
+                                <div className='mt-8'>
+                                    <CommunicationSetting recallApi={recallApi} aiData={aiData} />
                                 </div>
                             </div>
                         </div>
