@@ -20,6 +20,11 @@ const Objectives = ({ recallApi, aiData, loader }) => {
         const localAiPersonaDetails = localStorage.getItem("aiPersonaDetails");
         if (localAiPersonaDetails) {
             const AiDetails = JSON.parse(localAiPersonaDetails);
+            if (AiDetails?.ai?.aiObjective) {
+                console.log("Objectives exist");
+            } else {
+                processObjectiveProfession();
+            }
             setAiObjective(AiDetails?.ai?.aiObjective);
             console.log("Aidetails recieved from local storage are", AiDetails);
         }
@@ -29,6 +34,30 @@ const Objectives = ({ recallApi, aiData, loader }) => {
         //     setAiObjective("");
         // }
     }, []);
+
+    const processObjectiveProfession = async () => {
+        const localData = localStorage.getItem("User");
+        if (localData) {
+            const Data = JSON.parse(localData);
+            console.log("localdata  of user is", Data.data.user);
+            try {
+                const ApiPath = Apis.ProcessObjectiveProfession;
+                const AuthToken = Data.data.token;
+                console.log("Auth token is", AuthToken);
+                const response = await axios.post(ApiPath, {
+                    headers: {
+                        'Authorization': "Bearer " + AuthToken,
+                        "Content-Type": "application/json"
+                    }
+                });
+                if (response) {
+                    console.log("Response of processObjectiveProfession api is ::", response.data.data);
+                }
+            } catch (error) {
+                console.error("Error occured in api is", error);
+            }
+        }
+    }
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);

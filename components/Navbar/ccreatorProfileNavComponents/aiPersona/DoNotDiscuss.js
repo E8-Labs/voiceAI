@@ -55,8 +55,8 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
 
     //add new donot
     const handleaddNewDonotDescription = async () => {
+        setDonotDisturbLoader(true);
         try {
-            setDonotDisturbLoader(true);
             const ApiPath = Apis.AddDonot;
             const localData = localStorage.getItem('User');
             const Data = JSON.parse(localData);
@@ -101,8 +101,8 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
 
     //Update donot
     const handleupdateDonotDescription = async () => {
+        setDonotDisturbLoader(true);
         try {
-            setDonotDisturbLoader(true);
             const ApiPath = Apis.UpdateDonot;
             const localData = localStorage.getItem('User');
             const Data = JSON.parse(localData);
@@ -146,8 +146,8 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
 
     //Update donot
     const handleDeleteDonotDescription = async () => {
+        setDonotDisturbLoader(true);
         try {
-            setDonotDisturbLoader(true);
             const ApiPath = Apis.DeleteDonot;
             const localData = localStorage.getItem('User');
             const Data = JSON.parse(localData);

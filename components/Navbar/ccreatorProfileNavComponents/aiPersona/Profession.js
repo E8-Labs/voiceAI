@@ -42,8 +42,37 @@ const Profession = ({ recallApi, aiData }) => {
         if (aiData) {
             setTagline(aiData.ai.tagline);
             setActionValue(aiData.ai.action);
+            if (aiData?.ai?.tagline && aiData?.ai?.action) {
+                console.log("Professionn added")
+            } else {
+                processObjectiveProfession();
+            }
         }
     }, [recallApi]);
+
+    const processObjectiveProfession = async () => {
+        const localData = localStorage.getItem("User");
+        if (localData) {
+            const Data = JSON.parse(localData);
+            console.log("localdata  of user is", Data.data.user);
+            try {
+                const ApiPath = Apis.ProcessObjectiveProfession;
+                const AuthToken = Data.data.token;
+                console.log("Auth token is", AuthToken);
+                const response = await axios.post(ApiPath, {
+                    headers: {
+                        'Authorization': "Bearer " + AuthToken,
+                        "Content-Type": "application/json"
+                    }
+                });
+                if (response) {
+                    console.log("Response of processObjectiveProfession api is ::", response.data.data);
+                }
+            } catch (error) {
+                console.error("Error occured in api is", error);
+            }
+        }
+    }
 
 
     const handeProfessionMoreClick = (event) => {

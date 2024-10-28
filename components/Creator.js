@@ -188,8 +188,38 @@ const Creator = () => {
     }
   };
 
+  const myAi = async () => {
+    const localData = localStorage.getItem("User");
+    if (localData) {
+      const Data = JSON.parse(localData);
+      console.log("localdata  of user is", Data.data.user);
+      // return
+      const AuthToken = Data.data.token;
+      const response = await axios.get(Apis.MyAiapi, {
+        headers: {
+          Authorization: "Bearer " + AuthToken,
+          "Content-Type": "application/json",
+        },
+      });
+      if (response) {
+        console.log("Response of My AI api is ::", response.data.data);
+        if (response?.data?.data?.ai) {
+          console.log("Ai is Present");
+        } else {
+          router.push("/creator/buildscript");
+        }
+        if (response?.data?.data?.questions.length > 0) {
+          console.log("Kycs are added");
+        } else {
+          router.push("/creator/buildscript2");
+        }
+      }
+    }
+  };
+
   useEffect(() => {
     getMyProfile();
+    myAi()
   }, []);
 
   useEffect(() => {

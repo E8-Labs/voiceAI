@@ -374,7 +374,7 @@ const PersonalityTraits = ({ aiData, recallApi }) => {
 
                                     <div>
 
-                                        <div className='max-h-[54vh] overflow-auto scrollbar scrollbar-thin scrollbar-track-transparent scrollbar-thumb-purple'>
+                                        <div className='h-[54vh] overflow-auto scrollbar scrollbar-thin scrollbar-track-transparent scrollbar-thumb-purple'>
                                             {
                                                 personalityTraits.map((item, index) => (
                                                     <div key={index} className='mt-4 px-2'>

@@ -63,7 +63,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
   console.log("Public key is ", stripePublickKey);
   const stripePromise = loadStripe(stripePublickKey);
 
-  loginFunction();
+  // loginFunction();
 
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(2);
@@ -113,7 +113,51 @@ export default function ScriptAnimation2({ onChangeIndex }) {
   const [validOtherLinkErr, setValidOtherLinkErr] = useState(false);
   const [aiName, setAiName] = useState("");
 
+  const getAiData = async () => {
+    const localData = localStorage.getItem('User');
+    if (localData) {
+      const Data = JSON.parse(localData);
+      // setAiLoader(true);
+      // console.log("Data from local for nowledge", Data);
+      const AuthToken = Data.data.token;
+      console.log("Auth token is", AuthToken);
+      try {
+        const response = await axios.get(Apis.MyAiapi, {
+          headers: {
+            'Authorization': 'Bearer ' + AuthToken,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (response) {
+          console.log("Response of my ai api is", response.data.data);
+          if (response?.data?.data?.questions.length > 0) {
+            router.push("/tristan.ai");
+          } else {
+            console.log("Kycs are not added");
+          }
+          // if (response.data.status === true) {
+          //   setKnowledgeData(response.data.data.kb)
+          //   if (response.data.data.kb.length > 0) {
+          //     setkbData(false);
+          //   } else {
+          //     setkbData(true);
+          //   }
+          // } else {
+          //   console.error("Status of kb api", response.data.message);
+          // }
+        }
+      } catch (error) {
+        console.error("Error occured in kb", error);
+      } finally {
+        // setAiLoader(false);
+      }
+    }
+
+  }
+
   useEffect(() => {
+    getAiData();
     const localData = localStorage.getItem('User');
     if (localData) {
       const Data = JSON.parse(localData);
@@ -1991,7 +2035,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                       height={64}
                       width={140}
                     />
-                    <Image
+                    {/* <Image
                       src="/assets/eps.png"
                       alt="card"
                       height={64}
@@ -2002,7 +2046,7 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                       alt="card"
                       height={64}
                       width={140}
-                    />
+                    /> */}
                   </div>
                   <div className="w-8/12">
                     <Elements stripe={stripePromise}>

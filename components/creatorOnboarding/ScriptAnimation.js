@@ -40,7 +40,7 @@ const boxVariants = {
 
 export default function ScriptAnimation({ onChangeIndex }) {
 
-  loginFunction();
+  // loginFunction();
   useEffect(() => {
     const Data = localStorage.getItem('BuildaiIndex');
     if (Data) {
@@ -101,21 +101,21 @@ export default function ScriptAnimation({ onChangeIndex }) {
 
         if (response) {
           console.log("Response of kb api is", response.data.data);
-          if (response.data.status === true) {
-            setKnowledgeData(response.data.data.kb)
-            if (response.data.data.kb.length > 0) {
-              setkbData(false);
-            } else {
-              setkbData(true);
-            }
-            // setAiData(response.data.data.kb);
-            // setUserSelectedData(response.data.data.kb);
-            // getknowledgeData(response.data.data.kb);
-            // closeModal(false);
-            // localStorage('KnowledgeBase', JSON.stringify(response.data.data.kb));
+          if (response?.data?.data?.ai) {
+            router.push("/tristan.ai");
           } else {
-            console.error("Status of kb api", response.data.message);
+            console.log("Kycs are not added");
           }
+          // if (response.data.status === true) {
+          //   setKnowledgeData(response.data.data.kb)
+          //   if (response.data.data.kb.length > 0) {
+          //     setkbData(false);
+          //   } else {
+          //     setkbData(true);
+          //   }
+          // } else {
+          //   console.error("Status of kb api", response.data.message);
+          // }
         }
       } catch (error) {
         console.error("Error occured in kb", error);

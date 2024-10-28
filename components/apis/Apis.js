@@ -83,7 +83,11 @@ const Apis = {
     UpdateObjection: `${BasePath}api/ai/updateObjectionhandling`,
     AddDemeanor: `${BasePath}api/ai/addDemeanor`,
     DelDemeanor: `${BasePath}api/ai/deleteDemeanor`,
-    UpdateDemeanor: `${BasePath}api/ai/updateDemeanor`
+    UpdateDemeanor: `${BasePath}api/ai/updateDemeanor`,
+    AddInterPersonalSkills: `${BasePath}api/ai/addInterpersonalSkills`,
+    UpdateInterPersonalSkills: `${BasePath}api/ai/updateInterpersonalSkills`,
+    DelInterPersonalSkills: `${BasePath}api/ai/deleteInterpersonalSkills`,
+    ProcessObjectiveProfession: `${BasePath}/api/ai/processObjectiveAndProfession`
 
 
 }
