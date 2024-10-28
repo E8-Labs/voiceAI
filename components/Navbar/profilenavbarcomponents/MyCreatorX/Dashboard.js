@@ -189,7 +189,7 @@ const Dashboard = () => {
             try {
                 const ApiPath = Apis.ProcessObjectiveProfession;
                 const AuthToken = Data.data.token;
-                console.log("Auth token is", AuthToken);
+                console.log("Auth token for ProcessObjectiveProfession is", AuthToken);
                 const response = await axios.post(ApiPath, {
                     headers: {
                         'Authorization': "Bearer " + AuthToken,
