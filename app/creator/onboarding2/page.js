@@ -2,6 +2,7 @@
 import Animation from '@/components/animation/Animation';
 import GroupImages from '@/components/creatorOnboarding/GroupImages';
 import ImagesFile from '@/components/imagesfile/ImagesFile';
+import loginFunction from '@/components/loginFunction';
 import { Box } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
@@ -19,6 +20,7 @@ const backgroundImage = {
 
 export default function Home() {
 
+    loginFunction();
     const router = useRouter();
     const [currentIndex, setCurrentIndex] = useState(null);
     const [isHighScreen, setIsHighScreen] = useState(false);
