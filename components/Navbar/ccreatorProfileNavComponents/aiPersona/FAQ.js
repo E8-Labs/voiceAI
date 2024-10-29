@@ -41,6 +41,8 @@ const FAQ = ({ recallApi, aiData }) => {
     const handeFAQMoreClick = (event, item) => {
         setFAQAnchorel(event.currentTarget);
         setSelectedFAQ(item);
+        setUpdateFaqQuestion(item.question);
+        setUpdateFaqAnswer(item.answer);
     }
 
     const handleClose = () => {
@@ -101,7 +103,7 @@ const FAQ = ({ recallApi, aiData }) => {
     const hnadleUpdateFAQ = async () => {
         setFAQLoader(true);
         try {
-            const ApiPath = Apis.AddComunictionFAQ;
+            const ApiPath = Apis.UpdateComunictionFAQ;
             const localData = localStorage.getItem('User');
             const Data = JSON.parse(localData);
             const AuthToken = Data.data.token;
@@ -127,6 +129,7 @@ const FAQ = ({ recallApi, aiData }) => {
             if (response) {
                 console.log("Response of add FAQ api is", response.data.data);
                 if (response.data.status === true) {
+                    setFAQAnchorel(null);
                     setUpdateFaqModal(false);
                     setFAQData(response.data.data.communicatinCommonFaqs);
                     localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));

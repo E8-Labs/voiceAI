@@ -89,7 +89,7 @@ const Apis = {
     DelInterPersonalSkills: `${BasePath}api/ai/deleteInterpersonalSkills`,
     ProcessObjectiveProfession: `${BasePath}/api/ai/processObjectiveAndProfession`,
     AddComunictionFAQ: `${BasePath}api/ai/addCommonFaqs`,
-    UpdateComunictionFAQ: `${BasePath}api/ai/deleteProductFaqs`,
+    UpdateComunictionFAQ: `${BasePath}api/ai/updateCommonFaqs`,
     DelComunictionFAQ: `${BasePath}api/ai/deleteCommonFaqs`
 
 
