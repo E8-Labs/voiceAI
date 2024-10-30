@@ -383,7 +383,7 @@ const Philosophy = ({ aiData, recallApi }) => {
                             {
                                 philosophyData.map((item) => (
                                     <div key={item.id} className='flex flex-row items-center p-[1vh] border border-[#00000010] mt-4 justify-between'>
-                                        <div>
+                                        <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
                                             {item.description}
                                         </div>
                                         <div>

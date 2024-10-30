@@ -40,7 +40,7 @@ const Page = () => {
 
     //code for new menu items
     const [selectedAICharacteristics, setSelectedAICharacteristics] = useState(201);
-    const [selectedCommunication, setSelectedCommunication] = useState(301);
+    const [selectedCommunication, setSelectedCommunication] = useState(302);
     const [selectedProductService, setSelectedProductService] = useState(501);
     const [selectedIntegrations, setSelectedIntegrations] = useState(701);
     const [loader, setLoader] = useState(false);
