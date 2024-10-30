@@ -1,16 +1,18 @@
 import Apis from '@/components/apis/Apis';
 import { Box, CircularProgress, Modal, Popover } from '@mui/material';
-import { DotsThree, Plus } from '@phosphor-icons/react';
+import { CaretDown, CaretUp, DotsThree, Plus } from '@phosphor-icons/react';
 import axios from 'axios';
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 
 const ObjectionHandling2 = () => {
 
-    const [openExamplesPopup, setOpenExamplesPopup] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [callInstructionData, setCallInstructionData] = useState([]);
     const [strategyLoader, setStrategyLoader] = useState(false);
+    //code for examples popup
+    const [openExamplesPopup, setOpenExamplesPopup] = useState(false);
+    const [toggleShowDetails, setToggleShowDetails] = useState(false);
     //add strategy
     const [addStrategyModal, setAddStrategyModal] = useState(false);
     const [addStrategyTitle, setAddStrategyTitle] = useState("");
@@ -72,7 +74,7 @@ const ObjectionHandling2 = () => {
                 }
             });
             if (response) {
-                console.log("Response of add call strategy api is", response.data);
+                console.log("Response of add objection api is", response.data);
                 if (response.data.status === true) {
                     setAddStrategyModal(false);
                     setAddStrategyDescription("");
@@ -86,7 +88,7 @@ const ObjectionHandling2 = () => {
             }
 
         } catch (error) {
-            console.error("ERR occured in call strategy api is", error);
+            console.error("ERR occured in objection api is", error);
         } finally {
             setStrategyLoader(false);
         }
@@ -214,15 +216,28 @@ const ObjectionHandling2 = () => {
     const examplesData = [
         {
             id: 1,
-            heading: "Pitch a product"
+            title: "Time-based Objection",
+            details: "Caller: I don't have the time for this right now.Response: I totally understand. Time can feel so limited, but even dedicating a little time now can lead to big changes. Let's look at how we can fit this into your current routine. You'll thank yourself later for starting."
         },
         {
             id: 2,
-            heading: "Invite to a webinar"
+            title: "Price Objection",
+            details: "Caller: It's too expensive for me.Response: I get it, price is always a factor. But consider this: the value you'll get from this product is going to pay off tenfold in the long run. Investing in yourself now saves you time, money, and frustration down the road."
         },
         {
             id: 3,
-            heading: "Engage with followers"
+            title: "Trust Objection",
+            details: "Caller: I'm not sure this is going to work for me.Response: I completely understand your hesitation. But I've worked with so many people who were in your exact position, and they've seen amazing results. Trust me, if you put in the effort, you'll see the change."
+        },
+        {
+            id: 4,
+            title: "Value Objection",
+            details: "Caller: I'm not sure if this will give me enough value.Response: I hear you. But the value comes from the transformation you'll experience, not just the product itself. Think of where you'll be a few months from now if you take this step today."
+        },
+        {
+            id: 5,
+            title: "Need Objection",
+            details: "Caller: I don't think I need this right now.Response: I understand it might not feel urgent, but sometimes the best time to start is before things get worse. Imagine how much easier things will be when you've already tackled this challenge."
         },
     ]
 
@@ -337,8 +352,7 @@ const ObjectionHandling2 = () => {
                     },
                 }}
             >
-                <Box className="lg:w-5/12 sm:w-7/12 w-full" sx={styles.examplesModalStyle}>
-                    {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
+                {/* <Box className="lg:w-5/12 sm:w-7/12 w-full" sx={styles.examplesModalStyle}>
                     <div className="flex flex-row justify-center w-full">
                         <div
                             className="sm:w-7/12 w-full"
@@ -366,7 +380,6 @@ const ObjectionHandling2 = () => {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                {/* <div style={{ height: '30px', borderLeft: "1px dashed #620FEB", width: "1px" }} /> */}
                                                 {index !== examplesData.length - 1 && (
                                                     <div style={{ height: '30px', borderLeft: "1px dashed #620FEB", width: "1px" }} />
                                                 )}
@@ -383,6 +396,66 @@ const ObjectionHandling2 = () => {
                                             </p>
                                         </button>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Box> */}
+                <Box className="lg:w-5/12 sm:w-7/12 w-full" sx={styles.AddNewValueModal}>
+                    <div className="flex flex-row justify-center w-full">
+                        <div
+                            className="sm:w-7/12 w-full"
+                            style={{
+                                backgroundColor: "#ffffff20",
+                                padding: 20,
+                                borderRadius: 10,
+                            }}
+                        >
+                            <div style={{ backgroundColor: "#ffffff", borderRadius: 7, padding: 10 }}>
+                                <div className='flex flex-row items-center justify-between p-2' style={{ fontWeight: '500', fontFamily: "inter", fontSize: 20 }}>
+                                    <p>Objection Handling Examples</p>
+                                    <button onClick={() => { setOpenExamplesPopup(false) }}>
+                                        <Image src="/assets/crossBtn.png" height={15} width={15} alt='*' />
+                                    </button>
+                                </div>
+                                <div className="mt-4 overflow-auto max-h-[50vh] scrollbar scrollbar-track-transparent scrollbar-thin scrollbar-thumb-purple">
+                                    {examplesData.map((item) => {
+                                        const detailsParts = item.details.split(/(Caller:|Response:)/).filter((part) => part.trim());
+
+                                        return (
+                                            <div key={item.id} className="border rounded-lg mb-6 px-4 py-2">
+                                                <button
+                                                    className="flex flex-row items-center w-full justify-between"
+                                                    onClick={() => setToggleShowDetails((prevId) => (prevId === item.id ? null : item.id))}
+                                                >
+                                                    <div style={{ fontWeight: '600', fontSize: 13, fontFamily: 'inter' }}>
+                                                        {item.title}
+                                                    </div>
+                                                    <div>
+                                                        {item.id === toggleShowDetails ? (
+                                                            <CaretUp size={22} weight="light" color="#620FEB" />
+                                                        ) : (
+                                                            <CaretDown size={22} weight="light" />
+                                                        )}
+                                                    </div>
+                                                </button>
+                                                {item.id === toggleShowDetails && (
+                                                    <div style={{ fontWeight: '400', fontSize: 15, fontFamily: 'inter', marginTop: '8px' }}>
+                                                        {detailsParts.map((part, index) => (
+                                                            <div key={index} style={{ marginBottom: '4px' }}>
+                                                                {part.includes('Caller:') ? (
+                                                                    <span style={{ fontWeight: '500' }}>Caller:</span>
+                                                                ) : part.includes('Response:') ? (
+                                                                    <span style={{ fontWeight: '500' }}>Response:</span>
+                                                                ) : null}
+                                                                {part.replace(/^(Caller:|Response:)/, '').trim()}
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        );
+                                    })}
                                 </div>
                             </div>
                         </div>

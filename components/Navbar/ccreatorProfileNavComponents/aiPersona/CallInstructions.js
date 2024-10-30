@@ -1,6 +1,6 @@
 import Apis from '@/components/apis/Apis';
 import { Box, CircularProgress, Modal, Popover } from '@mui/material';
-import { DotsThree, Plus } from '@phosphor-icons/react'
+import { CaretDown, CaretUp, DotsThree, Plus } from '@phosphor-icons/react'
 import axios from 'axios';
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
@@ -34,6 +34,7 @@ const CallInstructions = () => {
     const [updateStrategyModal, setUpdateStrategyModal] = useState(false);
     const [updateStrategyTitle, setUpdateStrategyTitle] = useState("");
     const [updateStrategyDescription, setUpdateStrategyDescription] = useState("");
+    const [toggleShowDetails, setToggleShowDetails] = useState(null)
 
     const handleMoreClick = (event, item) => {
         setAnchorEl(event.currentTarget);
@@ -224,18 +225,18 @@ const CallInstructions = () => {
     }
 
     //dummy data
-    const examplesData = [
+    const callFlowExamples = [
         {
             id: 1,
-            heading: "Pitch a product"
+            title: "Pitch a product"
         },
         {
             id: 2,
-            heading: "Invite to a webinar"
+            title: "Invite to a webinar"
         },
         {
             id: 3,
-            heading: "Engage with followers"
+            title: "Engage with followers"
         },
     ]
 
@@ -243,7 +244,7 @@ const CallInstructions = () => {
         <div className='w-full'>
             <div className='flex flex-row items-center w-full justify-between'>
                 <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
-                    Call Strategy
+                    Call Flow
                 </div>
                 <button
                     className='underline text-purple'
@@ -352,6 +353,58 @@ const CallInstructions = () => {
                     },
                 }}
             >
+                {/* <Box className="lg:w-5/12 sm:w-7/12 w-full" sx={styles.AddNewValueModal}>
+                    <div className="flex flex-row justify-center w-full">
+                        <div
+                            className="sm:w-7/12 w-full"
+                            style={{
+                                backgroundColor: "#ffffff20",
+                                padding: 20,
+                                borderRadius: 10,
+                            }}
+                        >
+                            <div style={{ backgroundColor: "#ffffff", borderRadius: 7, padding: 10 }}>
+                                <div className='flex flex-row items-center justify-between p-2' style={{ fontWeight: '500', fontFamily: "inter", fontSize: 20 }}>
+                                    <p>Call Flow Examples</p>
+                                    <button onClick={() => { setExamplesModal(false) }}>
+                                        <Image src="/assets/crossBtn.png" height={15} width={15} alt='*' />
+                                    </button>
+                                </div>
+                                <div className='mt-4'>
+                                    {
+                                        callFlowExamples.map((item, index) => (
+                                            <div key={item.id} className='border rounded-lg mb-6 px-4 py-2'>
+                                                <div className='flex flex-row items-center w-full justify-between'>
+                                                    <div style={{ fontWeight: "600", fontSize: 13, fontFamily: "inter" }}>
+                                                        {
+                                                            item.title
+                                                        }
+                                                    </div>
+                                                    <button onClick={(e) => { setToggleShowDetails(prevId => prevId === item.id ? null : item.id) }}>
+                                                        {item.id === toggleShowDetails ?
+                                                            <CaretUp size={22} weight="light" color='#620FEB' /> :
+                                                            <CaretDown size={22} weight="light" />
+                                                        }
+                                                    </button>
+                                                </div>
+                                                {
+                                                    item.id === toggleShowDetails && (
+                                                        <div style={{ fontWeight: "400", fontSize: 15, fontFamily: "inter" }}>
+                                                            {
+                                                                item.details
+                                                            }
+                                                        </div>
+                                                    )
+                                                }
+                                            </div>
+                                        )
+                                        )
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Box> */}
                 <Box className="lg:w-5/12 sm:w-7/12 w-full" sx={styles.examplesModalStyle}>
                     {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
                     <div className="flex flex-row justify-center w-full">
@@ -369,7 +422,7 @@ const CallInstructions = () => {
                                 </div>
                                 <div className='mt-4 w-full'>
                                     {
-                                        examplesData.map((item, index) => (
+                                        callFlowExamples.map((item, index) => (
                                             <div key={item.id} className='flex flex-col items-center w-full'>
                                                 <div className='flex flex-row items-center p-4 border-[2px] border-[#00000010] w-full justify-between rounded-lg'>
                                                     <div className='flex flex-row items-center gap-2'>
@@ -377,12 +430,12 @@ const CallInstructions = () => {
                                                             {item.id}
                                                         </div>
                                                         <div style={styles.text1}>
-                                                            {item.heading}
+                                                            {item.title}
                                                         </div>
                                                     </div>
                                                 </div>
                                                 {/* <div style={{ height: '30px', borderLeft: "1px dashed #620FEB", width: "1px" }} /> */}
-                                                {index !== examplesData.length - 1 && (
+                                                {index !== callFlowExamples.length - 1 && (
                                                     <div style={{ height: '30px', borderLeft: "1px dashed #620FEB", width: "1px" }} />
                                                 )}
                                             </div>

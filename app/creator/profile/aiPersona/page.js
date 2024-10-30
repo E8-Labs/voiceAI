@@ -364,7 +364,7 @@ const Page = () => {
     const communications = [
         {
             id: 901,
-            title: "Call Strategy"
+            title: "Call Flow"
         },
         {
             id: 902,

@@ -517,19 +517,19 @@ const Demeanor = ({ recallApi, aiData }) => {
                                     {
                                         demeanorExamples.map((item, index) => (
                                             <div key={item.id} className='border rounded-lg mb-6 px-4 py-2'>
-                                                <div className='flex flex-row items-center w-full justify-between'>
+                                                <button className='flex flex-row items-center w-full justify-between' onClick={(e) => { setToggleShowDetails(prevId => prevId === item.id ? null : item.id) }}>
                                                     <div style={{ fontWeight: "600", fontSize: 13, fontFamily: "inter" }}>
                                                         {
                                                             item.title
                                                         }
                                                     </div>
-                                                    <button onClick={(e) => { setToggleShowDetails(prevId => prevId === item.id ? null : item.id) }}>
+                                                    <div>
                                                         {item.id === toggleShowDetails ?
                                                             <CaretUp size={22} weight="light" color='#620FEB' /> :
                                                             <CaretDown size={22} weight="light" />
                                                         }
-                                                    </button>
-                                                </div>
+                                                    </div>
+                                                </button>
                                                 {
                                                     item.id === toggleShowDetails && (
                                                         <div style={{ fontWeight: "400", fontSize: 15, fontFamily: "inter" }}>
