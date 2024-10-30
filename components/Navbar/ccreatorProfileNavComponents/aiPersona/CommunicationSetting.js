@@ -36,7 +36,7 @@ const CommunicationSetting = ({ recallApi, aiData }) => {
                             fontWeight: "500", fontSize: 15, fontFamily: "inter",
                             color: selectedMenu === item.id ? "#552AFF" : "#000000"
                         }}>
-                            <button style={{ textAlign: "start" }} onClick={() => { setSelectedMenu(item.id) }}>
+                            <button className='border-none outline-none' style={{ textAlign: "start" }} onClick={() => { setSelectedMenu(item.id) }}>
                                 {item.menuItem}
                             </button>
                         </div>

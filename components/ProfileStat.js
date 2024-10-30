@@ -11,7 +11,8 @@ const ProfileStat = ({ refreAIDATA }) => {
 
     const router = useRouter();
 
-    const value = 0.2;
+
+
 
     const [showSocials, setShowSocials] = useState(false);
     const [showKb, setShowKb] = useState(false);
@@ -23,6 +24,8 @@ const ProfileStat = ({ refreAIDATA }) => {
     const [audioUrl, setAudioUrl] = useState(null);
     const fileInputRef = useRef(null);
     const [updateLoader, setUpdateLoader] = useState(false);
+    const [value, setValue] = useState(0.7);
+    const [apiCalled, setApiCalled] = useState(false);
 
     const handleAudioChange = (event) => {
         const file = event.target.files[0];
@@ -44,6 +47,29 @@ const ProfileStat = ({ refreAIDATA }) => {
         console.log("Ai updated trying to recall stats api");
         getAiApi();
     }, [refreAIDATA])
+
+
+
+    useEffect(() => {
+        console.log("Rechecking values...");
+        let newValue = 0.7; // Start with base value of 0.7
+
+        if (!showKb) {
+            console.log("Check 1: Adding 0.1 for !showKb");
+            newValue += 0.1;
+        }
+        if (!showSocials) {
+            console.log("Check 2: Adding 0.1 for !showSocials");
+            newValue += 0.1;
+        }
+        if (!uploadVoice) {
+            console.log("Check 3: Adding 0.1 for !uploadVoice");
+            newValue += 0.1;
+        }
+
+        console.log("Value updated is", newValue);
+        setValue(newValue);
+    }, [apiCalled, showKb, showSocials, uploadVoice]);
 
     const updateAi = async () => {
         const localData = localStorage.getItem('User');
@@ -116,6 +142,7 @@ const ProfileStat = ({ refreAIDATA }) => {
                     } else {
                         setShowKb(true);
                     }
+                    setApiCalled(true);
                     const ResponseData = response.data.data.ai;
                     if (ResponseData.discordUrl || ResponseData.fbUrl || ResponseData.instaUrl || ResponseData.twitterUrl || ResponseData.webUrl || ResponseData.youtubeUrl === "") {
                         setShowSocials(true);
@@ -152,10 +179,10 @@ const ProfileStat = ({ refreAIDATA }) => {
 
     return (
         <div>
-            <div className='w-11/12 flex flex-row items-center justify-between mt-4 bg-white px-6 py-4 rounded-2xl'>
+            <div className='w-full flex flex-row items-center justify-between mt-4 bg-white px-6 py-4 rounded-2xl'>
                 <div className='flex flex-row items-center gap-2'>
                     <div style={{ height: "71px", width: "71px" }}>
-                        <CircularProgressbar value={value} maxValue={1} text={`${value * 100}%`}
+                        <CircularProgressbar value={value} maxValue={1} text={`${value.toFixed(3) * 100}%`}
                             strokeWidth={4}
                             styles={{
                                 path: {

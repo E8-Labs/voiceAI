@@ -104,7 +104,9 @@ const Page = () => {
                         </button>
                     </div>
                             </div>*/}
-                <ProfileStat />
+                <div className='w-full'>
+                    <ProfileStat />
+                </div>
 
                 <div>
                     <Calls />

@@ -22,6 +22,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import loginFunction from '@/components/loginFunction';
 import ObjectionHandling2 from '@/components/Navbar/ccreatorProfileNavComponents/aiPersona/ObjectionHandling2';
 import ProfileStat from '@/components/ProfileStat';
+import ConversionGoals from '@/components/Navbar/ccreatorProfileNavComponents/aiPersona/ConversionGoals';
 
 const Page = () => {
 
@@ -33,6 +34,7 @@ const Page = () => {
     const [selectedGetProfessionalMenuMenu, setSelectedGetProfessionalMenuMenu] = useState(201);
     const [aiData, setAiData] = useState(null);
     const [selectedCallStrategy, setSelectedCallStrategy] = useState(901);
+    const [aiDetails, setAiDetails] = useState(null);
 
 
 
@@ -44,40 +46,148 @@ const Page = () => {
     const [loader, setLoader] = useState(false);
 
 
+    useEffect(() => {
+        const AiPersonaltiy = localStorage.getItem("aiPersonaDetails");
+        console.log("I am working")
+        if (AiPersonaltiy) {
+            const AiDetails = JSON.parse(AiPersonaltiy);
+            // setAiDetails(AiDetails);
+            console.log("Ai persona details testing are", aiDetails);
+        }
+    }, [])
 
     //new drop down menu
 
-    const menuItems = [{
+    function isAiPersonalityComplete() {
+        if (!aiData) {
+            return false
+        }
+
+        if (aiData.ai.greeting == "" || aiData.ai.greeting == null) {
+            return false
+        }
+        if (aiData.ai.possibleUserQuery == "" || aiData.ai.possibleUserQuery == null) {
+            return false
+        }
+        if (aiData.ai.action == "" || aiData.ai.action == null) {
+            return false
+        }
+        if (aiData.ai.tagline == "" || aiData.ai.tagline == null) {
+            return false
+        }
+        if (aiData.values.length === 0) {
+            return false
+        }
+        if (aiData.beliefs.length === 0) {
+            return false
+        }
+        if (aiData.traits.length === 0) {
+            return false
+        }
+        if (aiData.Philosophies.length === 0) {
+            return false
+        }
+
+
+        // console.log('"Ai complete"')
+        return true
+    }
+
+    function isCommunicationComplete() {
+        if (!aiData) {
+            return false
+        }
+
+        if (aiData) {
+            if (aiData.DoNots.length === 0) {
+                return false
+            }
+            if (aiData.intractions.length === 0) {
+                return false
+            }
+            if (aiData.PhrasesAndQuotes.length === 0) {
+                return false
+            }
+            if (aiData.communicatinCommonFaqs.length === 0) {
+                return false
+            }
+            if (aiData.CommunicationInstructions.length === 0) {
+                return false
+            }
+            if (aiData.demeanor.length === 0) {
+                return false
+            }
+            if (aiData.interpersonalSkills.length === 0) {
+                return false
+            }
+        }
+        // if (aiData.ai.Communicatinstyle == "" || aiData.ai.Communicatinstyle == null) {
+        //     return false
+        // }
+
+
+        return true
+    }
+
+    function isProductsAndServicesComplete() {
+        if (!aiData) {
+            return false
+        }
+
+        if (aiData) {
+            if (aiData.products.length === 0) {
+                return false
+            }
+            // if (aiData.intractions.length === 0) {
+            //     return false
+            // }
+
+
+            return true;
+        }
+    }
+
+
+
+    let menuItems = [{
         id: 1,
         menu: 'Objective',
+        isComplete: (aiData && aiData.ai.aiObjective != "" && aiData.ai.aiObjective != null)
     },
     {
         id: 2,
         menu: 'AI Characteristics',
+        isComplete: isAiPersonalityComplete()
     },
     {
         id: 3,
         menu: 'Communication',
+        isComplete: isCommunicationComplete()
     },
     {
         id: 4,
         menu: 'Strategies & Techniques',
+        isComplete: (aiData && aiData.frameworks.length > 0)
     },
     {
         id: 5,
         menu: 'Product & Services',
+        isComplete: isProductsAndServicesComplete()
     },
     {
         id: 6,
         menu: 'Objection Handling',
+        isComplete: (aiData && aiData.objectionHandling.length > 0)
     },
     {
         id: 7,
         menu: 'Integrations', //added the values and beliefs here
+        isComplete: false
     },
     {
         id: 8,
         menu: 'Call Strategy', //added the personality traits here
+        isComplete: (aiData && aiData.callStrategy.length > 0)
     },
     ];
 
@@ -131,7 +241,8 @@ const Page = () => {
     const getAiApi = async () => {
         try {
             setLoader(true);
-            console.log("Trying....")
+            console.log("Trying....");
+            // return
             const ApiPath = Apis.MyAiapi;
             const localData = localStorage.getItem('User');
             const Data = JSON.parse(localData);
@@ -150,6 +261,7 @@ const Page = () => {
                 console.log("Response of getai on parent screen api", response.data.data);
                 if (response.data) {
                     setAiData(response.data.data);
+                    // setAiDetails(response.data.data);
                     localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                     if (response?.data?.data?.ai) {
                         console.log("Ai is Present");
@@ -281,10 +393,6 @@ const Page = () => {
     //index 3 drop down
     const CommunicationMenu = [
         {
-            id: 301,
-            title: "Donot Discuss"
-        },
-        {
             id: 302,
             title: "Intraction Examples"
         },
@@ -295,6 +403,10 @@ const Page = () => {
         {
             id: 304,
             title: "FAQ"
+        },
+        {
+            id: 301,
+            title: "Donot Discuss"
         },
     ]
 
@@ -334,7 +446,7 @@ const Page = () => {
                             {
                                 AiCharacteristics.map((item) => (
                                     <div key={item.id} className='mb-4 flex flex-row items-center gap-2'>
-                                        <button className='text-start outline-noe border-none'
+                                        <button className='text-start outline-none border-none'
                                             onClick={() => {
                                                 setSelectedAICharacteristics(item.id);
                                             }}
@@ -360,7 +472,7 @@ const Page = () => {
                             {
                                 CommunicationMenu.map((item) => (
                                     <div key={item.id} className='mb-4 flex flex-row items-center gap-2'>
-                                        <button className='text-start outline-noe border-none'
+                                        <button className='text-start outline-none border-none'
                                             onClick={() => {
                                                 setSelectedCommunication(item.id);
                                             }}
@@ -386,7 +498,7 @@ const Page = () => {
                             {
                                 getTools.map((item) => (
                                     <div key={item.id} className='mb-4 flex flex-row items-center gap-2'>
-                                        <button className='text-start outline-noe border-none'
+                                        <button className='text-start outline-none border-none'
                                             onClick={() => {
                                                 setSelectedGetToolMenu(item.id);
                                             }}
@@ -412,7 +524,7 @@ const Page = () => {
                             {
                                 ProductsServicesMenu.map((item) => (
                                     <div key={item.id} className='mb-4 flex flex-row items-center gap-2'>
-                                        <button className='text-start outline-noe border-none'
+                                        <button className='text-start outline-none border-none'
                                             onClick={() => {
                                                 setSelectedProductService(item.id);
                                             }}
@@ -439,7 +551,7 @@ const Page = () => {
                             {
                                 communications.map((item) => (
                                     <div key={item.id} className='mb-4 flex flex-row items-center gap-2'>
-                                        <button className='text-start outline-noe border-none'
+                                        <button className='text-start outline-none border-none'
                                             onClick={() => {
                                                 setSelectedCallStrategy(item.id);
                                             }}
@@ -463,7 +575,7 @@ const Page = () => {
                             {
                                 personalCharacteristics.map((item) => (
                                     <div key={item.id} className='mb-4 flex flex-row items-center gap-2'>
-                                        <button className='text-start outline-noe border-none'
+                                        <button className='text-start outline-none border-none'
                                             onClick={() => {
                                                 setSelectedGetProfessionalMenuMenu(item.id);
                                             }}
@@ -514,10 +626,12 @@ const Page = () => {
                 </div>
 
 
-                <ProfileStat />
+                <div className='w-full'>
+                    <ProfileStat />
+                </div>
 
                 {/* Code for the side menu */}
-                <div className='flex flex-row justify-between items-start w-11/12 mt-4 pt-12 mb-4 bg-white rounded-2xl p-4'>
+                <div className='flex flex-row justify-between items-start w-full mt-4 pt-12 mb-4 bg-white rounded-2xl p-4'>
                     <div className='flex flex-col w-4/12 gap-6'>
                         {
                             menuItems.map((item) => (
@@ -540,7 +654,11 @@ const Page = () => {
                                     >
                                         <div className='flex flex-row items-center gap-4'>
                                             <div>{item.menu}</div>
-                                            <Image src="/assets/TickIcon.png" alt='icon' height={10} width={10} />
+                                            {
+                                                item.isComplete && (
+                                                    <Image src="/assets/TickIcon.png" alt='icon' height={10} width={10} />
+                                                )
+                                            }
                                         </div>
                                         {
                                             [2, 3, 5, 7, 8].includes(item.id) &&
@@ -612,7 +730,7 @@ const Page = () => {
                                             <ProductDetails recallApi={recallApi} aiData={aiData} />
                                         ) : selectedProductService === 502 ? (
                                             <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
-                                                <span style={{ color: "#00000060" }}>Products & Services |</span> Conversation Goals
+                                                <ConversionGoals />
                                             </div>
                                         ) : ""
                                     }

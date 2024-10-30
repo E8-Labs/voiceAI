@@ -1,5 +1,5 @@
 import { Alert, Box, CircularProgress, Fade, Modal, Popover, Snackbar } from '@mui/material'
-import { DotsThree } from '@phosphor-icons/react'
+import { CaretDown, CaretUp, DotsThree } from '@phosphor-icons/react'
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
 import Apis from '@/components/apis/Apis';
@@ -21,6 +21,9 @@ const CommunicaionInstruction = ({ recallApi, aiData }) => {
     const [updateModal, setUpdateModal] = useState(false);
     const [updateDescription, setUpdateDescription] = useState("");
     const [updateTitle, setUpdateTitle] = useState("");
+    //code for Examples modal
+    const [examplesModal, setExamplesModal] = useState(false);
+    const [toggleShowDetails, setToggleShowDetails] = useState(null);
 
 
 
@@ -36,6 +39,25 @@ const CommunicaionInstruction = ({ recallApi, aiData }) => {
         //     setCommunicationInstructionData(aiData.CommunicationInstructions);
         // }
     }, []);
+
+    //Data of examples
+    const CoomunicationInstructiionExamples = [
+        {
+            id: 1,
+            title: "Scenario",
+            details: "A scenario specific to the creator's domain"
+        },
+        {
+            id: 2,
+            title: "Prompt",
+            details: "A common question a follower may ask creator"
+        },
+        {
+            id: 3,
+            title: "Answer",
+            details: "A highly realistic answer the creator will give"
+        },
+    ]
 
 
     const handleClose = () => {
@@ -203,9 +225,9 @@ const CommunicaionInstruction = ({ recallApi, aiData }) => {
                 <div>
                     Communication Instructions
                 </div>
-                <button className='text-purple underline' onClick={() => { setAdddComunicationInstModal(true) }}>
+                {/* <button className='text-purple underline' onClick={() => { setExamplesModal(true) }}>
                     View Examples
-                </button>
+                </button> */}
             </div>
 
             {
@@ -214,9 +236,23 @@ const CommunicaionInstruction = ({ recallApi, aiData }) => {
                         {
                             communicationInstructionData.map((item) => (
                                 <div key={item.id} className='p-3 border-2 rounded-lg mt-8'>
-                                    <div className='flex flex-row items-center justify-between'>
-                                        <div style={{ fontWeight: "700", fontFamily: "inter", fontSize: 13 }}>
-                                            {item.title}
+                                    <div className='flex flex-row items-start justify-between'>
+                                        <div>
+                                            <div style={{ fontWeight: "700", fontFamily: "inter", fontSize: 13 }}>
+                                                {item.pacing}
+                                            </div>
+                                            <div style={{ fontWeight: "700", fontFamily: "inter", fontSize: 13 }}>
+                                                {item.tone}
+                                            </div>
+                                            <div style={{ fontWeight: "700", fontFamily: "inter", fontSize: 13 }}>
+                                                {item.prompt}
+                                            </div>
+                                            <div style={{ fontWeight: "700", fontFamily: "inter", fontSize: 13 }}>
+                                                {item.response}
+                                            </div>
+                                            <div style={{ fontWeight: "700", fontFamily: "inter", fontSize: 13 }}>
+                                                {item.intonation}
+                                            </div>
                                         </div>
                                         <div>
                                             <button aria-describedby={id} variant="contained" color="primary" onClick={(event) => { handleClick(event, item) }}>
@@ -245,13 +281,13 @@ const CommunicaionInstruction = ({ recallApi, aiData }) => {
                                                         }}>
                                                         Edit
                                                     </button>
-                                                    {
+                                                    {/* {
                                                         communicationInstructionLoader ?
                                                             <CircularProgress size={15} /> :
                                                             <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }} onClick={handleDeleteCommunication}>
                                                                 Delete
                                                             </button>
-                                                    }
+                                                    } */}
                                                 </div>
                                             </Popover>
                                         </div>
@@ -265,7 +301,9 @@ const CommunicaionInstruction = ({ recallApi, aiData }) => {
                     </div> :
                     <div className='text-xl font-bold text-center mt-8'>
                         <div className='flex flex-col items-center w-full gap-3 mt-4'>
-                            <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={75} width={75} alt='seting' />
+                            <div className='flex flex-row items-center justify-center bg-purple' style={{ height: "70px", width: "70px", borderRadius: "50%" }}>
+                                <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={32} width={32} alt='seting' />
+                            </div>
                             <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
                                 No commmunication instruction found yet
                             </div>
@@ -441,6 +479,79 @@ const CommunicaionInstruction = ({ recallApi, aiData }) => {
                     </Alert>
                 </Snackbar>
             </div>
+
+
+            {/* Code for Examples modal */}
+            <Modal
+                open={examplesModal}
+                onClose={() => setExamplesModal(false)}
+                closeAfterTransition
+                BackdropProps={{
+                    timeout: 1000,
+                    sx: {
+                        backgroundColor: "transparent",
+                        backdropFilter: "blur(20px)",
+                    },
+                }}
+            >
+                <Box className="lg:w-5/12 sm:w-7/12 w-full" sx={styles.AddNewValueModal}>
+                    {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
+                    <div className="flex flex-row justify-center w-full">
+                        <div
+                            className="sm:w-8/12 w-full"
+                            style={{
+                                backgroundColor: "#ffffff20",
+                                padding: 20,
+                                borderRadius: 10,
+                            }}
+                        >
+                            <div style={{ backgroundColor: "#ffffff", borderRadius: 7, padding: 10 }}>
+                                <div className='flex flex-row items-center justify-between p-2' style={{ fontWeight: '500', fontFamily: "inter", fontSize: 20 }}>
+                                    {/* <p /> */}
+                                    <p>Communication Instruction Examples</p>
+                                    <button onClick={() => { setExamplesModal(false) }}>
+                                        <Image src="/assets/crossBtn.png" height={15} width={15}
+                                            alt='*'
+                                        // style={{ height: "20px", width: "20px" }}
+                                        />
+                                    </button>
+                                </div>
+                                <div className='mt-4'>
+                                    {
+                                        CoomunicationInstructiionExamples.map((item, index) => (
+                                            <div key={item.id} className='border rounded-lg mb-6 px-4 py-2'>
+                                                <div className='flex flex-row items-center w-full justify-between'>
+                                                    <div style={{ fontWeight: "600", fontSize: 13, fontFamily: "inter" }}>
+                                                        {
+                                                            item.title
+                                                        }
+                                                    </div>
+                                                    <button onClick={(e) => { setToggleShowDetails(prevId => prevId === item.id ? null : item.id) }}>
+                                                        {item.id === toggleShowDetails ?
+                                                            <CaretUp size={22} weight="light" color='#620FEB' /> :
+                                                            <CaretDown size={22} weight="light" />
+                                                        }
+                                                    </button>
+                                                </div>
+                                                {
+                                                    item.id === toggleShowDetails && (
+                                                        <div style={{ fontWeight: "400", fontSize: 15, fontFamily: "inter" }}>
+                                                            {
+                                                                item.details
+                                                            }
+                                                        </div>
+                                                    )
+                                                }
+                                            </div>
+                                        )
+                                        )
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Box>
+            </Modal>
 
         </div>
     )

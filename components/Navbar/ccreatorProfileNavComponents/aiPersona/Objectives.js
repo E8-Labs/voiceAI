@@ -1,5 +1,5 @@
 import Apis from '@/components/apis/Apis';
-import { Alert, Box, CircularProgress, Fade, Modal, Popover, Snackbar } from '@mui/material';
+import { Alert, Box, CircularProgress, Fade, Modal, Popover, Snackbar, TextField } from '@mui/material';
 import { DotsThree } from '@phosphor-icons/react'
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react'
@@ -174,16 +174,43 @@ const Objectives = ({ recallApi, aiData, loader }) => {
                     </div>
                     :
                     <div>
-                        <div className='flex flex-row items-center justify-between w-11/12 border-[2px] border-[#00000010] p-4 rounded mt-4'>
+                        <div className='flex flex-row items-center justify-between w-11/12 border-[2px] border-[#00000010] pe-4 rounded mt-4'>
                             <div className='w-full'>
-                                <input
+                                {/* <textarea
                                     className='w-[90%] outline-none border-none'
+                                    rows={6}
                                     ref={aiObjectiveRef}
                                     value={aiObjective}
                                     onChange={(e) => { setAiObjective(e.target.value) }}
                                     onFocus={() => { setShowSaveBtn(true) }}
                                     onBlur={() => { setShowSaveBtn(false) }}
-                                    placeholder='Ai Objective'
+                                    placeholder="What's the objective for your AI?"
+                                    style={{ resize: "none" }}
+                                /> */}
+                                <TextField
+                                    multiline
+                                    minRows={1}
+                                    maxRows={8}
+                                    ref={aiObjectiveRef}
+                                    value={aiObjective}
+                                    onChange={(e) => { setAiObjective(e.target.value) }}
+                                    onFocus={() => { setShowSaveBtn(true) }}
+                                    onBlur={() => { setShowSaveBtn(false) }}
+                                    className='w-[100%] outline-none border-none'
+                                    placeholder="What's the objective for your AI?"
+                                    sx={{
+                                        "& .MuiOutlinedInput-root": {
+                                            "& fieldset": {
+                                                border: "none", // Ensures no border in default state
+                                            },
+                                            "&:hover fieldset": {
+                                                border: "none", // No border on hover
+                                            },
+                                            "&.Mui-focused fieldset": {
+                                                border: "none", // No border when focused
+                                            },
+                                        },
+                                    }}
                                 />
                             </div>
                             <div>

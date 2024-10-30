@@ -228,12 +228,9 @@ const FAQ = ({ recallApi, aiData }) => {
 
     return (
         <div>
-            <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
-                <span style={{ color: "#00000060" }}>Communication |</span> FAQ
-            </div>
-            <div className='flex flex-row justify-between items-center mt-8'>
-                <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
-                    FAQ
+            <div className='flex flex-row justify-between items-center'>
+                <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
+                    <span style={{ color: "#00000060" }}>Communication |</span> FAQ
                 </div>
                 <button className='underline text-purple' style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }} onClick={() => { setAddFaqModal(true) }}>
                     Add New
@@ -296,7 +293,9 @@ const FAQ = ({ recallApi, aiData }) => {
                     </div> :
                     <div>
                         <div className='flex flex-col items-center w-full gap-3 mt-4'>
-                            <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={75} width={75} alt='seting' />
+                            <div className='flex flex-row items-center justify-center bg-purple' style={{ height: "70px", width: "70px", borderRadius: "50%" }}>
+                                <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={32} width={32} alt='seting' />
+                            </div>
                             <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
                                 No communication FAQ's found yet
                             </div>
@@ -345,8 +344,8 @@ const FAQ = ({ recallApi, aiData }) => {
                         >
                             <div style={{ backgroundColor: "#ffffff", borderRadius: 7, padding: 10 }}>
                                 <div className='flex flex-row items-center justify-between p-2' style={{ fontWeight: '500', fontFamily: "inter", fontSize: 20 }}>
-                                    <p />
-                                    <p>Add Communication FAQ's</p>
+                                    {/* <p /> */}
+                                    <p>Add frequently asked questions </p>
                                     <button onClick={() => { setAddFaqModal(false) }}>
                                         <Image src="/assets/crossBtn.png" height={15} width={15} alt='*' />
                                     </button>
@@ -356,7 +355,7 @@ const FAQ = ({ recallApi, aiData }) => {
                                         <input className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                                             value={addFaqQuestion}
                                             onChange={(e) => setAddFaqQuestion(e.target.value)}
-                                            placeholder='Title'
+                                            placeholder='Ex: Handling Relationship Issues'
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13 }}
                                         />
                                     </div>
@@ -364,7 +363,7 @@ const FAQ = ({ recallApi, aiData }) => {
                                         <textarea className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                                             value={addFaqAnswer}
                                             onChange={(e) => setAddFaqAnswer(e.target.value)}
-                                            placeholder='Description'
+                                            placeholder="What's the best way to handle disagreements in a relationship?"
                                             rows={4}
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13, resize: "none" }}
                                         />
@@ -413,8 +412,8 @@ const FAQ = ({ recallApi, aiData }) => {
                         >
                             <div style={{ backgroundColor: "#ffffff", borderRadius: 7, padding: 10 }}>
                                 <div className='flex flex-row items-center justify-between p-2' style={{ fontWeight: '500', fontFamily: "inter", fontSize: 20 }}>
-                                    <p />
-                                    <p>Update Communication FAQ's</p>
+                                    {/* <p /> */}
+                                    <p>Update frequently asked questions </p>
                                     <button onClick={() => { setUpdateFaqModal(false) }}>
                                         <Image src="/assets/crossBtn.png" height={15} width={15} alt='*' />
                                     </button>
@@ -424,7 +423,7 @@ const FAQ = ({ recallApi, aiData }) => {
                                         <input className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                                             value={updateFaqQuestion}
                                             onChange={(e) => setUpdateFaqQuestion(e.target.value)}
-                                            placeholder='Title'
+                                            placeholder='Ex: Handling Relationship Issues'
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13 }}
                                         />
                                     </div>
@@ -432,7 +431,7 @@ const FAQ = ({ recallApi, aiData }) => {
                                         <textarea className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                                             value={updateFaqAnswer}
                                             onChange={(e) => setUpdateFaqAnswer(e.target.value)}
-                                            placeholder='Description'
+                                            placeholder="What's the best way to handle disagreements in a relationship?"
                                             rows={4}
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13, resize: "none" }}
                                         />
@@ -473,7 +472,7 @@ const FAQ = ({ recallApi, aiData }) => {
                     {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
                     <div className="flex flex-row justify-center w-full">
                         <div
-                            className="sm:w-11/12 w-full h-[80vh]"
+                            className="sm:w-10/12 w-11/12 h-[80vh]"
                             style={{
                                 backgroundColor: "#ffffff63",
                                 padding: 20,

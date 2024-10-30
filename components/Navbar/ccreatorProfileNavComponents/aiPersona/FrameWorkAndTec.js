@@ -199,7 +199,7 @@ const FrameWorkAndTec = ({ recallApi, aiData }) => {
     <div>
       <div className='flex flex-row items-center w-full justify-between mt-12'>
         <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
-          Framework & Techniques
+          Strategies & Techniques
         </div>
         <button
           className='text-purple underline'
@@ -265,7 +265,9 @@ const FrameWorkAndTec = ({ recallApi, aiData }) => {
           </div> :
           <div className='text-xl font-bold text-center mt-8'>
             <div className='flex flex-col items-center w-full gap-3 mt-4'>
-              <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={75} width={75} alt='seting' />
+              <div className='flex flex-row items-center justify-center bg-purple' style={{ height: "70px", width: "70px", borderRadius: "50%" }}>
+                <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={32} width={32} alt='seting' />
+              </div>
               <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
                 No strategy found yet
               </div>
@@ -280,7 +282,7 @@ const FrameWorkAndTec = ({ recallApi, aiData }) => {
       }
 
 
-      {/* Modal to add values */}
+      {/* Modal to add tec */}
       <Modal
         open={addFrameWorkModal}
         onClose={() => setAddFrameWorkModal(false)}
@@ -307,7 +309,7 @@ const FrameWorkAndTec = ({ recallApi, aiData }) => {
               <div style={{ backgroundColor: "#ffffff", borderRadius: 7, padding: 10 }}>
                 <div className='flex flex-row items-center justify-between p-2' style={{ fontWeight: '500', fontFamily: "inter", fontSize: 18 }}>
                   <p />
-                  <p>Add Framework & Techniques</p>
+                  <p>Add Strategies & Techniques</p>
                   <button onClick={() => { setAddFrameWorkModal(false) }}>
                     <Image src="/assets/crossBtn.png" height={15} width={15} alt='*' />
                   </button>
@@ -317,7 +319,7 @@ const FrameWorkAndTec = ({ recallApi, aiData }) => {
                     <input className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                       value={addFrameWorkTitle}
                       onChange={(e) => setAddFrameWorkTitle(e.target.value)}
-                      placeholder='Title'
+                      placeholder='Ex: Effective Communication:'
                       style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13 }}
                     />
                   </div>
@@ -325,7 +327,7 @@ const FrameWorkAndTec = ({ recallApi, aiData }) => {
                     <textarea className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                       value={addFrameWorkDescription}
                       onChange={(e) => setAddFrameWorkDescription(e.target.value)}
-                      placeholder='Description'
+                      placeholder='Techniques to improve clarity and effectiveness in communication, ensuring both parties understand and respect each other’s viewpoints.'
                       rows={4}
                       style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13, resize: "none" }}
                     />
@@ -347,7 +349,7 @@ const FrameWorkAndTec = ({ recallApi, aiData }) => {
         </Box>
       </Modal>
 
-      {/* Modal to add values */}
+      {/* Modal to update tec */}
       <Modal
         open={updateFrameWorkModal}
         onClose={() => setUpdateFrameWorkModal(false)}
@@ -373,8 +375,8 @@ const FrameWorkAndTec = ({ recallApi, aiData }) => {
             >
               <div style={{ backgroundColor: "#ffffff", borderRadius: 7, padding: 10 }}>
                 <div className='flex flex-row items-center justify-between p-2' style={{ fontWeight: '500', fontFamily: "inter", fontSize: 18 }}>
-                  <p />
-                  <p>Update Framework & Techniques</p>
+                  {/* <p /> */}
+                  <p>Update Strategies & Techniques</p>
                   <button onClick={() => { setUpdateFrameWorkModal(false) }}>
                     <Image src="/assets/crossBtn.png" height={15} width={15} alt='*' />
                   </button>
@@ -384,7 +386,7 @@ const FrameWorkAndTec = ({ recallApi, aiData }) => {
                     <input className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                       value={updateFrameWorkTitle}
                       onChange={(e) => setUpdateFrameWorkTitle(e.target.value)}
-                      placeholder='Title'
+                      placeholder='Ex: Effective Communication:'
                       style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13 }}
                     />
                   </div>
@@ -392,7 +394,7 @@ const FrameWorkAndTec = ({ recallApi, aiData }) => {
                     <textarea className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                       value={updateFrameWorkDescription}
                       onChange={(e) => setUpdateFrameWorkDescription(e.target.value)}
-                      placeholder='Description'
+                      placeholder='Techniques to improve clarity and effectiveness in communication, ensuring both parties understand and respect each other’s viewpoints.'
                       rows={4}
                       style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13, resize: "none" }}
                     />

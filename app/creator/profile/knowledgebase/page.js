@@ -220,7 +220,8 @@ const Page = () => {
                         </button>
                     </div>
                             </div>*/}
-                <div>
+                {/* <ProfileStat refreAIDATA={getAiApi} /> */}
+                <div className='w-full'>
                     <ProfileStat refreAIDATA={getAiApi} />
                 </div>
 

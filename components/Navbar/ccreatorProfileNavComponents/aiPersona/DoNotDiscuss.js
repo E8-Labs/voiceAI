@@ -217,12 +217,9 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
 
     return (
         <div>
-            <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
-                <span style={{ color: "#00000060" }}>Communication |</span> Donot Discuss
-            </div>
-            <div className='flex flex-row items-center justify-between mt-4'>
-                <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
-                    Do not discuss
+            <div className='flex flex-row items-center justify-between'>
+                <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
+                    <span style={{ color: "#00000060" }}>Communication |</span> Do Not Discuss
                 </div>
                 <button className='underline text-purple' onClick={handleOpenModal}>
                     Add New
@@ -281,12 +278,14 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
                     </div> :
                     <div>
                         <div className='flex flex-col items-center w-full gap-3 mt-4'>
-                            <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={75} width={75} alt='seting' />
+                            <div className='flex flex-row items-center justify-center bg-purple' style={{ height: "70px", width: "70px", borderRadius: "50%" }}>
+                                <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={32} width={32} alt='seting' />
+                            </div>
                             <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
-                                No donot discuss found yet
+                                No do not discuss found yet
                             </div>
                             <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter", color: "#050A0860", textAlign: "center" }}>
-                                Please add your donotdiscuss
+                                Tell your AI what to not discuss.
                             </div>
                             <button className='bg-purple px-4 py-2 text-white' style={{ borderRadius: "50px" }} onClick={() => { setOpenModal(true) }}>
                                 Add New
@@ -329,7 +328,7 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
                             <div style={{ backgroundColor: "#ffffff", borderRadius: 7, padding: 10 }}>
                                 <div className='flex flex-row items-center justify-between p-2' style={{ fontWeight: '500', fontFamily: "inter", fontSize: 20 }}>
                                     <p />
-                                    <p>Add Donot Discuss</p>
+                                    <p>Add Do Not Discuss</p>
                                     <button onClick={() => { setOpenModal(false) }}>
                                         <Image src="/assets/crossBtn.png" height={15} width={15} alt='*' />
                                     </button>
@@ -347,7 +346,7 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
                                         <textarea className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                                             value={addNewDonotDescription}
                                             onChange={(e) => setaddNewDonotDescriptionDescription(e.target.value)}
-                                            placeholder='Description'
+                                            placeholder='Describe to your AI what to not discuss'
                                             rows={4}
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13, resize: "none" }}
                                         />
@@ -397,7 +396,7 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
                             <div style={{ backgroundColor: "#ffffff", borderRadius: 7, padding: 10 }}>
                                 <div className='flex flex-row items-center justify-between p-2' style={{ fontWeight: '500', fontFamily: "inter", fontSize: 20 }}>
                                     <p />
-                                    <p>Update Donot Discuss</p>
+                                    <p>Update Do Not Discuss</p>
                                     <button onClick={() => { setOpenUpdateModal(false) }}>
                                         <Image src="/assets/crossBtn.png" height={15} width={15} alt='*' />
                                     </button>
@@ -455,7 +454,7 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
                     {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
                     <div className="flex flex-row justify-center w-full">
                         <div
-                            className="sm:w-11/12 w-full h-[80vh]"
+                            className="sm:w-10/12 w-11/12 h-[80vh]"
                             style={{
                                 backgroundColor: "#ffffff63",
                                 padding: 20,

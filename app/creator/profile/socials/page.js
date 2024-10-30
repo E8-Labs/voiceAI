@@ -346,11 +346,11 @@ const Page = () => {
                     </div>
                             </div>*/}
 
-                <div>
+                <div className='w-full'>
                     <ProfileStat />
                 </div>
 
-                <div className='w-11/12 flex flex-row items-start gap-4 mt-4'>
+                <div className='w-full flex flex-row items-start gap-4 mt-4'>
                     {
                         loader ?
                             <div className='w-6/12 flex flex-row justify-center mt-12'>

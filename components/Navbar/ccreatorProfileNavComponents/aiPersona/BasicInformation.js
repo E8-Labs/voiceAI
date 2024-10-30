@@ -285,7 +285,7 @@ const BasicInformation = ({ recallApi, aiData }) => {
                     {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
                     <div className="flex flex-row justify-center w-full">
                         <div
-                            className="sm:w-11/12 w-full h-[85vh]"
+                            className="sm:w-10/12 w-11/12 h-[85vh]"
                             style={{
                                 backgroundColor: "#ffffff63",
                                 padding: 20,

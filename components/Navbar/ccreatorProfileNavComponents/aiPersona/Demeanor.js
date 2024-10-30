@@ -1,6 +1,6 @@
 import Apis from '@/components/apis/Apis';
 import { Alert, Box, CircularProgress, Fade, Modal, Popover, Snackbar } from '@mui/material';
-import { DotsThree } from '@phosphor-icons/react';
+import { CaretDown, CaretUp, DotsThree } from '@phosphor-icons/react';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
@@ -12,6 +12,9 @@ const Demeanor = ({ recallApi, aiData }) => {
     const id = anchorEl ? 'simple-popover' : undefined;
     const [demeanorLoader, setDemeanorLoader] = useState(false);
     const [selectedDemeanor, setSelectedDemeanor] = useState(null);
+    //code for Examples demeanor
+    const [examplesModal, setExamplesModal] = useState(false);
+    const [toggleShowDetails, setToggleShowDetails] = useState(null);
     //code to add demeanor
     const [addDemeanorModal, setAddDemeanorModal] = useState(false);
     const [addDemeanorTitle, setAddDemeanorTitle] = useState('');
@@ -34,6 +37,29 @@ const Demeanor = ({ recallApi, aiData }) => {
         //     setDonotDiscussData(aiData.DoNots);
         // }
     }, []);
+
+    const demeanorExamples = [
+        //         Supportive and Encouraging: Promotes a positive and supportive environment to foster growth and learning.
+
+        // Direct and Honest: Communicates directly but tactfully, ensuring clarity and effectiveness in advice.
+
+        // Reflective and Thoughtful: Uses reflection on personal experiences to offer deeper insights and relatable advice.
+        {
+            id: 1,
+            title: "Supportive and Encouraging",
+            details: "Promotes a positive and supportive environment to foster growth and learning."
+        },
+        {
+            id: 2,
+            title: "Direct and Honest",
+            details: "Communicates directly but tactfully, ensuring clarity and effectiveness in advice."
+        },
+        {
+            id: 3,
+            title: "Reflective and Thoughtful",
+            details: "Uses reflection on personal experiences to offer deeper insights and relatable advice."
+        },
+    ]
 
 
     const handleClose = () => {
@@ -215,12 +241,27 @@ const Demeanor = ({ recallApi, aiData }) => {
     return (
         <div>
             <div className='flex flex-row items-center justify-between' style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
-                <div>
-                    Demeanor
+                <div className='flex flex-row items-end gap-2'>
+                    <div>
+                        Demeanor
+                    </div>
+                    {
+                        demenorData.length > 0 &&
+                        <button className='text-purple underline text-xs' onClick={() => { setExamplesModal(true) }}>
+                            (View Examples)
+                        </button>
+                    }
                 </div>
-                <button className='text-purple underline' onClick={() => { setAddDemeanorModal(true) }}>
-                    Add New
-                </button>
+
+                {
+                    demenorData.length > 0 ?
+                        <button className='text-purple underline' onClick={() => { setAddDemeanorModal(true) }}>
+                            Add New
+                        </button> :
+                        <button className='text-purple underline' onClick={() => { setExamplesModal(true) }}>
+                            View Examples
+                        </button>
+                }
             </div>
 
             <div className='max-h-[55vh] overflow-auto scrollbar scrollbar-thumb-purple scrollbar-track-transparent scrollbar-thin'>
@@ -286,7 +327,9 @@ const Demeanor = ({ recallApi, aiData }) => {
                         </div> :
                         <div>
                             <div className='flex flex-col items-center w-full gap-3 mt-4'>
-                                <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={75} width={75} alt='seting' />
+                                <div className='flex flex-row items-center justify-center bg-purple' style={{ height: "70px", width: "70px", borderRadius: "50%" }}>
+                                    <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={32} width={32} alt='seting' />
+                                </div>
                                 <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
                                     No demeanor found yet
                                 </div>
@@ -339,7 +382,7 @@ const Demeanor = ({ recallApi, aiData }) => {
                                         <input className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                                             value={addDemeanorTitle}
                                             onChange={(e) => setAddDemeanorTitle(e.target.value)}
-                                            placeholder='Title'
+                                            placeholder='Ex: Supportive and Encouraging'
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13 }}
                                         />
                                     </div>
@@ -347,7 +390,7 @@ const Demeanor = ({ recallApi, aiData }) => {
                                         <textarea className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                                             value={addDemeanorDescription}
                                             onChange={(e) => setAddDemeanorDescription(e.target.value)}
-                                            placeholder='Description'
+                                            placeholder='For example:  Promotes a positive and supportive environment to foster growth and learning'
                                             rows={4}
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13, resize: "none" }}
                                         />
@@ -407,7 +450,7 @@ const Demeanor = ({ recallApi, aiData }) => {
                                         <input className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                                             value={updateDemeanorTitle}
                                             onChange={(e) => setUpdateDemeanorTitle(e.target.value)}
-                                            placeholder='Title'
+                                            placeholder='Ex: Supportive and Encouraging'
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13 }}
                                         />
                                     </div>
@@ -415,7 +458,7 @@ const Demeanor = ({ recallApi, aiData }) => {
                                         <textarea className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                                             value={updateDemeanorDescription}
                                             onChange={(e) => setUpdateDemeanorDescription(e.target.value)}
-                                            placeholder='Description'
+                                            placeholder='For example:  Promotes a positive and supportive environment to foster growth and learning'
                                             rows={4}
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13, resize: "none" }}
                                         />
@@ -430,6 +473,75 @@ const Demeanor = ({ recallApi, aiData }) => {
                                             >
                                                 Save
                                             </button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Box>
+            </Modal>
+
+            {/* Modal for the demeanor examples */}
+            <Modal
+                open={examplesModal}
+                onClose={() => setExamplesModal(false)}
+                closeAfterTransition
+                BackdropProps={{
+                    timeout: 1000,
+                    sx: {
+                        backgroundColor: "transparent",
+                        backdropFilter: "blur(20px)",
+                    },
+                }}
+            >
+                <Box className="lg:w-5/12 sm:w-7/12 w-full" sx={styles.AddNewValueModal}>
+                    {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
+                    <div className="flex flex-row justify-center w-full">
+                        <div
+                            className="sm:w-7/12 w-full"
+                            style={{
+                                backgroundColor: "#ffffff20",
+                                padding: 20,
+                                borderRadius: 10,
+                            }}
+                        >
+                            <div style={{ backgroundColor: "#ffffff", borderRadius: 7, padding: 10 }}>
+                                <div className='flex flex-row items-center justify-between p-2' style={{ fontWeight: '500', fontFamily: "inter", fontSize: 20 }}>
+                                    {/* <p /> */}
+                                    <p>Demeanor Examples</p>
+                                    <button onClick={() => { setExamplesModal(false) }}>
+                                        <Image src="/assets/crossBtn.png" height={15} width={15} alt='*' />
+                                    </button>
+                                </div>
+                                <div className='mt-4'>
+                                    {
+                                        demeanorExamples.map((item, index) => (
+                                            <div key={item.id} className='border rounded-lg mb-6 px-4 py-2'>
+                                                <div className='flex flex-row items-center w-full justify-between'>
+                                                    <div style={{ fontWeight: "600", fontSize: 13, fontFamily: "inter" }}>
+                                                        {
+                                                            item.title
+                                                        }
+                                                    </div>
+                                                    <button onClick={(e) => { setToggleShowDetails(prevId => prevId === item.id ? null : item.id) }}>
+                                                        {item.id === toggleShowDetails ?
+                                                            <CaretUp size={22} weight="light" color='#620FEB' /> :
+                                                            <CaretDown size={22} weight="light" />
+                                                        }
+                                                    </button>
+                                                </div>
+                                                {
+                                                    item.id === toggleShowDetails && (
+                                                        <div style={{ fontWeight: "400", fontSize: 15, fontFamily: "inter" }}>
+                                                            {
+                                                                item.details
+                                                            }
+                                                        </div>
+                                                    )
+                                                }
+                                            </div>
+                                        )
+                                        )
                                     }
                                 </div>
                             </div>

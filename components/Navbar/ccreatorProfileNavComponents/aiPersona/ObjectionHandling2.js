@@ -307,7 +307,9 @@ const ObjectionHandling2 = () => {
                     </div> :
                     <div>
                         <div className='flex flex-col items-center w-full gap-3 mt-4'>
-                            <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={75} width={75} alt='seting' />
+                            <div className='flex flex-row items-center justify-center bg-purple' style={{ height: "70px", width: "70px", borderRadius: "50%" }}>
+                                <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={32} width={32} alt='seting' />
+                            </div>
                             <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
                                 No objection found yet
                             </div>

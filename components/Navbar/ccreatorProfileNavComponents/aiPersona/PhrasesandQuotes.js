@@ -199,6 +199,18 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
             borderRadius: 2,
             border: "none",
             outline: "none",
+        },
+        styleSettingPopup: {
+            height: "auto",
+            bgcolor: "transparent",
+            // p: 2,
+            mx: "auto",
+            my: "50vh",
+            transform: "translateY(-50%)",
+            borderRadius: 2,
+            border: "none",
+            outline: "none",
+            // border: "2px solid green"
         }
     }
 
@@ -220,12 +232,12 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
                         <div className='overflow-auto max-h-[50vh] scrollbar scrollbar-track-transparent scrollbar-thin scrollbar-thumb-purple'>
                             {
                                 phrasesData.map((item, index) => (
-                                    <div key={item.id} className='flex flex-row items-start p-4 border border-[#00000010] mt-8 justify-between'>
+                                    <div key={item.id} className='flex flex-row items-start p-2 pt-3 border border-[#00000010] mt-8 justify-between'>
                                         <div>
-                                            <div style={{ fontWeight: "600", fontSize: 12, fontFamily: "inter" }}>
+                                            {/* <div style={{ fontWeight: "600", fontSize: 12, fontFamily: "inter" }}>
                                                 {item.title}
-                                            </div>
-                                            <div style={{ fontWeight: "400", fontSize: 13, fontFamily: "inter" }}>
+                                            </div> */}
+                                            <div style={{ fontWeight: "400", fontSize: 14, fontFamily: "inter" }}>
                                                 {item.description}
                                             </div>
                                         </div>
@@ -270,15 +282,17 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
                             }
                         </div> :
                         <div className='font-bold text-xl text-center mt-8'>
-                            <div className='flex flex-col items-center w-full gap-3 mt-4'>
-                                <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={75} width={75} alt='seting' />
-                                <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
+                            <div className='flex flex-col items-center w-full'>
+                                <div className='flex flex-row items-center justify-center bg-purple' style={{ height: "70px", width: "70px", borderRadius: "50%" }}>
+                                    <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={32} width={32} alt='seting' />
+                                </div>
+                                <div className='mt-1' style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
                                     No key quote found yet
                                 </div>
                                 <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter", color: "#050A0860", textAlign: "center" }}>
                                     Please add your key quotes
                                 </div>
-                                <button className='bg-purple px-4 py-2 text-white' style={{ borderRadius: "50px" }} onClick={() => { setAddNewModal(true) }}>
+                                <button className='bg-purple px-4 py-2 text-white mt-1' style={{ borderRadius: "50px" }} onClick={() => { setAddNewModal(true) }}>
                                     Add New
                                 </button>
                             </div>
@@ -320,25 +334,25 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
                             <div style={{ backgroundColor: "#ffffff", borderRadius: 7, padding: 10 }}>
                                 <div className='flex flex-row items-center justify-between p-2' style={{ fontWeight: '500', fontFamily: "inter", fontSize: 20 }}>
                                     <p />
-                                    <p>Add Phrase</p>
+                                    <p>Add your personal quotes</p>
                                     <button onClick={() => { setAddNewModal(false) }}>
                                         <Image src="/assets/crossBtn.png" height={15} width={15} alt='*' />
                                     </button>
                                 </div>
                                 <div className='mt-4 w-full'>
-                                    <div>
+                                    {/* <div>
                                         <input className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                                             value={addPhraseValue}
                                             onChange={(e) => setAddPhraseValue(e.target.value)}
                                             placeholder='Title'
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13 }}
                                         />
-                                    </div>
+                                    </div> */}
                                     <div className='mt-8'>
                                         <textarea className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                                             value={addNewPhrase}
                                             onChange={(e) => setAddNewPhrase(e.target.value)}
-                                            placeholder='Description'
+                                            placeholder='Write out your personal quote, ex: "Success is not for the weak."'
                                             rows={4}
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13, resize: "none" }}
                                         />
@@ -388,26 +402,26 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
                         >
                             <div style={{ backgroundColor: "#ffffff", borderRadius: 7, padding: 10 }}>
                                 <div className='flex flex-row items-center justify-between p-2' style={{ fontWeight: '500', fontFamily: "inter", fontSize: 20 }}>
-                                    <p />
-                                    <p>Update Phrase</p>
+                                    {/* <p /> */}
+                                    <p>Update your personal quotes</p>
                                     <button onClick={() => { setUpdateModal(false) }}>
                                         <Image src="/assets/crossBtn.png" height={15} width={15} alt='*' />
                                     </button>
                                 </div>
                                 <div className='mt-4 w-full'>
-                                    <div>
+                                    {/* <div>
                                         <input className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                                             value={updatePhraseValue}
                                             onChange={(e) => setUpdatePhraseValue(e.target.value)}
                                             placeholder='Title'
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13 }}
                                         />
-                                    </div>
+                                    </div> */}
                                     <div className='mt-8'>
                                         <textarea className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                                             value={updatePhrase}
                                             onChange={(e) => setUpdatePhrase(e.target.value)}
-                                            placeholder='Description'
+                                            placeholder='Write out your personal quote, ex: "Success is not for the weak."'
                                             rows={4}
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13, resize: "none" }}
                                         />
@@ -448,7 +462,7 @@ const PhrasesandQuotes = ({ recallApi, aiData }) => {
                     {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
                     <div className="flex flex-row justify-center w-full">
                         <div
-                            className="sm:w-11/12 w-full h-[80vh]"
+                            className="sm:w-10/12 w-10/12 h-[80vh]"
                             style={{
                                 backgroundColor: "#ffffff63",
                                 padding: 20,

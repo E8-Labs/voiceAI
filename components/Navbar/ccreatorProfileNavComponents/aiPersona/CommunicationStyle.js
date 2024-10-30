@@ -1,34 +1,15 @@
+import { CircularProgress, Popover } from '@mui/material';
+import { DotsThree } from '@phosphor-icons/react';
 import React, { useState } from 'react'
 
 const CommunicationStyle = () => {
 
-    const menuItems = [
-        {
-            id: 1,
-            title: "Direct",
-            description: "Think of equity as the portion of the house you truly own, it’s like having a slice of the real estate pie"
-        },
-        {
-            id: 2,
-            title: "Blunt",
-            description: "Let's break down the closing process step by step, so you know exactly what to expect"
-        },
-        {
-            id: 3,
-            title: "Sarcastic",
-            description: "I can share some articles and videos that explains this concept in easy-to-understand terms"
-        },
-        {
-            id: 4,
-            title: "Encouraging",
-            description: "Let me draw this out for you. so it’s easier to understand how the mortgage amortisation works"
-        },
-    ];
-    const [selectedCommunication, setSelectedCommunication] = useState(null);
+    const [donotDiscussData, setDonotDiscussData] = useState([]);
 
-    const toggleSelectCommunication = (id) => {
-        setSelectedCommunication(id);
-    }
+    const [donotDisturbAnchorel, setDonotDiscussAnchorel] = useState(null);
+    const donotDisturbPopoverId = donotDisturbAnchorel ? 'simple-popover' : undefined;
+    const [donotDisturbLoader, setDonotDisturbLoader] = useState(false);
+
 
 
     return (
@@ -43,33 +24,54 @@ const CommunicationStyle = () => {
             </div>
 
             <div className='overflow-auto max-h-[46vh]'>
-                {
-                    menuItems.map((item) => (
-                        <div key={item.id} className='flex flex-row items-center justify-between p-[2vh] border rounded-lg mt-6'>
-                            <div>
-                                <div>
-                                    {item.title}
-                                </div>
-                                <div>
+                <div>
+
+                    {
+                        donotDiscussData.map((item, index) => (
+                            <div key={item.id} className='flex flex-row items-start p-4 border border-[#00000010] mt-8 justify-between'>
+                                <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter" }}>
                                     {item.description}
                                 </div>
-                            </div>
-                            <div>
-                                {
-                                    selectedCommunication === item.id ?
-                                        <button onClick={() => { setSelectedCommunication(null) }}>
-                                            <div className='border border-purple flex flex-row items-center justify-center' style={{ height: "30px", width: "30px", borderRadius: "50%" }}>
-                                                <div className='bg-purple' style={{ height: "18px", width: "18px", borderRadius: "50%" }} />
-                                            </div>
-                                        </button> :
-                                        <button onClick={() => { toggleSelectCommunication(item.id) }}>
-                                            <div className='border' style={{ height: "27px", width: "27px", borderRadius: "50%" }} />
-                                        </button>
-                                }
-                            </div>
-                        </div>
-                    ))
-                }
+                                <div>
+                                    <button className='-mt-2' aria-describedby={donotDisturbPopoverId} variant="contained" color="primary" onClick={(event) => { handeDonotDiscussMoreClick(event, item) }}>
+                                        <DotsThree size={32} weight="bold" />
+                                    </button>
+                                    <Popover
+                                        id={donotDisturbPopoverId}
+                                        open={Boolean(donotDisturbAnchorel)}
+                                        anchorEl={donotDisturbAnchorel}
+                                        onClose={handleClose}
+                                        anchorOrigin={{
+                                            vertical: 'bottom',
+                                            horizontal: 'center',
+                                        }}
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'center',
+                                        }}
+                                    >
+                                        <div className='p-2 flex flex-col justify-start items-start w-[100px]'>
+                                            <button className='text-purple' style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter" }}
+                                                onClick={() => { setOpenUpdateModal(true) }}
+                                            >
+                                                Edit
+                                            </button>
+                                            {
+                                                donotDisturbLoader ?
+                                                    <CircularProgress style={{ marginTop: 8 }} size={15} /> :
+                                                    <button style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter", marginTop: 8 }}
+                                                        onClick={handleDeleteDonotDescription}
+                                                    >
+                                                        Delete
+                                                    </button>
+                                            }
+                                        </div>
+                                    </Popover>
+                                </div>
+                            </div >
+                        ))
+                    }
+                </div>
             </div>
 
 

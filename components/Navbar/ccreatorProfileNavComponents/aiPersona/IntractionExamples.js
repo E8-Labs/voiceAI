@@ -197,12 +197,9 @@ const IntractionExamples = ({ recallApi, aiData }) => {
 
     return (
         <div>
-            <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
-                <span style={{ color: "#00000060" }}>Communication |</span> Intraction Exaples
-            </div>
-            <div className='flex flex-row items-center w-full justify-between mt-12'>
+            <div className='flex flex-row items-center w-full justify-between'>
                 <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
-                    Intractions
+                    <span style={{ color: "#00000060" }}>Communication |</span> Intraction Exaples
                 </div>
                 <button
                     className='text-purple underline'
@@ -268,7 +265,9 @@ const IntractionExamples = ({ recallApi, aiData }) => {
                     </div> :
                     <div className='text-xl font-bold text-center mt-8'>
                         <div className='flex flex-col items-center w-full gap-3 mt-4'>
-                            <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={75} width={75} alt='seting' />
+                            <div className='flex flex-row items-center justify-center bg-purple' style={{ height: "70px", width: "70px", borderRadius: "50%" }}>
+                                <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={32} width={32} alt='seting' />
+                            </div>
                             <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
                                 No intraction examples found yet
                             </div>
@@ -309,8 +308,8 @@ const IntractionExamples = ({ recallApi, aiData }) => {
                         >
                             <div style={{ backgroundColor: "#ffffff", borderRadius: 7, padding: 10 }}>
                                 <div className='flex flex-row items-center justify-between p-2' style={{ fontWeight: '500', fontFamily: "inter", fontSize: 18 }}>
-                                    <p />
-                                    <p>Intractions</p>
+                                    {/* <p /> */}
+                                    <p>Add Interaction Examples</p>
                                     <button onClick={() => { setAddIntractionModal(false) }}>
                                         <Image src="/assets/crossBtn.png" height={15} width={15} alt='*' />
                                     </button>
@@ -320,15 +319,15 @@ const IntractionExamples = ({ recallApi, aiData }) => {
                                         <input className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                                             value={addIntractionTitle}
                                             onChange={(e) => setAddIntractionTitle(e.target.value)}
-                                            placeholder='Title'
+                                            placeholder='Ex: Building Confidence'
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13 }}
                                         />
                                     </div>
-                                    <div className='mt-12'>
+                                    <div className='mt-8'>
                                         <textarea className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                                             value={addIntractionDescription}
                                             onChange={(e) => setAddIntractionDescription(e.target.value)}
-                                            placeholder='Description'
+                                            placeholder="Ex: How can I be more confident when approaching someone I'm interested in?"
                                             rows={4}
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13, resize: "none" }}
                                         />
@@ -387,7 +386,7 @@ const IntractionExamples = ({ recallApi, aiData }) => {
                                         <input className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                                             value={updateIntractionTitle}
                                             onChange={(e) => setUpdateIntractionTitle(e.target.value)}
-                                            placeholder='Title'
+                                            placeholder='Ex: Building Confidence'
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13 }}
                                         />
                                     </div>
@@ -395,7 +394,7 @@ const IntractionExamples = ({ recallApi, aiData }) => {
                                         <textarea className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                                             value={updateIntractionDescription}
                                             onChange={(e) => setUpdateIntractionDescription(e.target.value)}
-                                            placeholder='Description'
+                                            placeholder="Ex: How can I be more confident when approaching someone I'm interested in?"
                                             rows={4}
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13, resize: "none" }}
                                         />

@@ -50,7 +50,7 @@ const ImpersonalSkills = ({ recallApi, aiData }) => {
 
     //add Framework
     const handleAddSkill = async () => {
-        setFrameWorkLoader(true);
+        setSkillsLoader(true);
         try {
             const ApiPath = Apis.AddInterPersonalSkills;
             const localData = localStorage.getItem('User');
@@ -75,10 +75,10 @@ const ImpersonalSkills = ({ recallApi, aiData }) => {
             if (response) {
                 console.log("Response of add framework api is", response.data);
                 if (response.data.status === true) {
-                    setAddFrameWorkModal(false);
-                    setAddFrameWorkDescription("");
-                    setAddFrameWorkTitle("");
-                    setFrameWorkData(response.data.data.frameworks);
+                    setAddSkillModal(false);
+                    setAddSkillTitle("");
+                    setAddSkillDescription("");
+                    SetPersonalSkillsData(response.data.data.interpersonalSkills);
                     localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                 } else {
                     console.log("Error occured")
@@ -88,7 +88,7 @@ const ImpersonalSkills = ({ recallApi, aiData }) => {
         } catch (error) {
             console.error("ERR occured in add framework api is", error);
         } finally {
-            setFrameWorkLoader(false);
+            setSkillsLoader(false);
         }
     }
 
@@ -175,7 +175,9 @@ const ImpersonalSkills = ({ recallApi, aiData }) => {
                     </div> :
                     <div className='text-xl font-bold text-center mt-8'>
                         <div className='flex flex-col items-center w-full gap-3 mt-4'>
-                            <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={75} width={75} alt='seting' />
+                            <div className='flex flex-row items-center justify-center bg-purple' style={{ height: "70px", width: "70px", borderRadius: "50%" }}>
+                                <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={32} width={32} alt='seting' />
+                            </div>
                             <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
                                 No personal skill found yet
                             </div>
@@ -241,7 +243,7 @@ const ImpersonalSkills = ({ recallApi, aiData }) => {
                                         />
                                     </div>
                                     {
-                                        skillLoader ?
+                                        skillsLoader ?
                                             <div className='w-full flex flex-row justify-center' style={{ marginTop: 35 }}>
                                                 <CircularProgress size={25} />
                                             </div> :

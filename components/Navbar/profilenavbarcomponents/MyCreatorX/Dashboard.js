@@ -526,7 +526,7 @@ const Dashboard = () => {
                     </button>
                 </div>
                         </div>*/}
-            <div>
+            <div className='w-11/12'>
                 <ProfileStat />
             </div>
 

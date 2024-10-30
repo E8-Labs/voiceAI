@@ -128,7 +128,7 @@ const ProductDetails = ({ aiData, recallApi }) => {
                 </button>
             </div>
             {
-                productsData && productsData.length > 0 ?
+                !productsData && productsData.length > 0 ?
                     <div className='max-h-[60vh] overflow-auto scrollbar scrollbar-track-transparent scrollbar-thumb-purple scrollbar-thin'>
                         {
                             productsData.map((item, index) => (
@@ -149,8 +149,21 @@ const ProductDetails = ({ aiData, recallApi }) => {
                             ))
                         }
                     </div> :
-                    <div className='text-xl font-bold text-center'>
-                        No Product Yet
+                    <div className='text-xl font-bold text-center mt-8'>
+                        <div className='flex flex-col items-center w-full gap-3 mt-4'>
+                            <div className='flex flex-row items-center justify-center bg-purple' style={{ height: "70px", width: "70px", borderRadius: "50%" }}>
+                                <Image src="/assets/creatorProfileNavIcons/settingIcon.png" height={32} width={32} alt='seting' />
+                            </div>
+                            <div style={{ fontWeight: "500", fontSize: 15, fontFamily: "inter" }}>
+                                No product found yet
+                            </div>
+                            <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter", color: "#050A0860", textAlign: "center" }}>
+                                Please add your product
+                            </div>
+                            <button className='bg-purple px-4 py-2 text-white' style={{ borderRadius: "50px" }} onClick={() => { setAddProductModal(true) }}>
+                                Add New
+                            </button>
+                        </div>
                     </div>
             }
 
