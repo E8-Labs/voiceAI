@@ -21,6 +21,14 @@ const CommunicaionInstruction = ({ recallApi, aiData }) => {
     const [updateModal, setUpdateModal] = useState(false);
     const [updateDescription, setUpdateDescription] = useState("");
     const [updateTitle, setUpdateTitle] = useState("");
+    const [pacingValue, setPacingValue] = useState("");
+    const [PromptValue, setPromptValue] = useState("");
+    const [ResponseValue, setResponseValue] = useState("");
+    const [ToneValue, setToneValue] = useState("");
+    const [IntonationValue, setIntonationValue] = useState("");
+
+
+
     //code for Examples modal
     const [examplesModal, setExamplesModal] = useState(false);
     const [toggleShowDetails, setToggleShowDetails] = useState(null);
@@ -69,6 +77,11 @@ const CommunicaionInstruction = ({ recallApi, aiData }) => {
         setSelectedInstruction(item);
         setUpdateDescription(item.description);
         setUpdateTitle(item.title);
+        setPacingValue(item.pacing);
+        setPromptValue(item.tone);
+        setResponseValue(item.prompt);
+        setToneValue(item.response);
+        setIntonationValue(item.intonation);
     };
 
     //code to add Communication Inst
@@ -130,8 +143,13 @@ const CommunicaionInstruction = ({ recallApi, aiData }) => {
 
             const ApiData = {
                 id: selectedInstruction.id,
-                description: updateDescription,
-                title: updateTitle
+                pacing: pacingValue,
+                prompt: PromptValue,
+                intonation: IntonationValue,
+                response: ResponseValue,
+                tone: ToneValue
+                // description: updateDescription,
+                // title: updateTitle
             }
 
             console.log("Data sendgin in api is", ApiData);
@@ -417,19 +435,61 @@ const CommunicaionInstruction = ({ recallApi, aiData }) => {
                                         <Image src="/assets/crossBtn.png" height={15} width={15} alt='*' />
                                     </button>
                                 </div>
-                                <div className='mt-4 w-full'>
-                                    <div>
+                                <div className='mt-4 w-full max-h-[50vh] overflow-auto scrollbar scrollbar-track-transparent scrollbar-thin scrollbar-thumb-purple'>
+                                    {/* Description */}
+                                    {/* <div>
                                         <input className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
                                             value={updateTitle}
                                             onChange={(e) => setUpdateTitle(e.target.value)}
                                             placeholder='Title'
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13 }}
                                         />
+                                    </div> */}
+                                    {/* Pacing */}
+                                    <div className=''>
+                                        <textarea className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
+                                            value={pacingValue}
+                                            onChange={(e) => setPacingValue(e.target.value)}
+                                            placeholder='Description'
+                                            rows={4}
+                                            style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13, resize: "none" }}
+                                        />
                                     </div>
+                                    {/* PromptValue */}
                                     <div className='mt-8'>
                                         <textarea className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
-                                            value={updateDescription}
-                                            onChange={(e) => setUpdateDescription(e.target.value)}
+                                            value={PromptValue}
+                                            onChange={(e) => setPromptValue(e.target.value)}
+                                            placeholder='Description'
+                                            rows={4}
+                                            style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13, resize: "none" }}
+                                        />
+                                    </div>
+                                    {/* ResponseValue */}
+                                    <div className='mt-8'>
+                                        <textarea className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
+                                            value={ResponseValue}
+                                            onChange={(e) => setResponseValue(e.target.value)}
+                                            placeholder='Description'
+                                            rows={4}
+                                            style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13, resize: "none" }}
+                                        />
+                                    </div>
+                                    {/* ToneValue */}
+                                    <div className='mt-8'>
+                                        <textarea className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
+                                            value={ToneValue}
+                                            onChange={(e) => setToneValue(e.target.value)}
+                                            placeholder='Description'
+                                            rows={4}
+                                            style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13, resize: "none" }}
+                                        />
+                                    </div>
+                                    {/* IntonationValue */}
+                                    <div className='mt-8'>
+                                        <textarea className='w-full p-2 rounded-lg bg-[#EDEDED80] outline-none border-none'
+                                            value={IntonationValue}
+                                            onChange={(e) => setIntonationValue(e.target.value)}
                                             placeholder='Description'
                                             rows={4}
                                             style={{ fontWeight: "500", fontFamily: "inter", fontSize: 13, resize: "none" }}
