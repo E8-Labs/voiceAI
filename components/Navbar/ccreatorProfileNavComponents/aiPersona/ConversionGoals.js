@@ -9,9 +9,7 @@ const ConversionGoals = () => {
     const [sellProduct, setSellProduct] = useState(false);
     const [value, setValue] = useState([]);
     const [selected, setSlected] = useState("");
-    const [inputRows, setInputRows] = useState([
-        // { productAmount: "", productName: "" },
-    ]);
+    const [inputRows, setInputRows] = useState([]);
 
     //invite to webinar
     const [inviteWebinar, setInviteWebinar] = useState(false);
@@ -30,6 +28,11 @@ const ConversionGoals = () => {
             const AiPersonaDetails = JSON.parse(AiPersona);
             console.log("Ai details recieved from localstorage are :---", AiPersonaDetails);
             setInputRows(AiPersonaDetails.products);
+            const namesArray = AiPersonaDetails.products.map((item) => item.name);
+            setValue(namesArray);
+            if (AiPersonaDetails.products.length > 0) {
+                setSellProduct(true)
+            }
         }
     }, []);
 
@@ -37,6 +40,16 @@ const ConversionGoals = () => {
     const handleChange = (event) => {
         setValue(event.target.value);
     };
+
+    //code to update AI
+    // const handleUpdateAi = async () => {
+    //     try{
+
+    //     }catch(error){
+    //         console.error("Error occured in update ai api is", error);
+            
+    //     }
+    // }
 
     //code to validate urls
     const validateUrl = (url) => {

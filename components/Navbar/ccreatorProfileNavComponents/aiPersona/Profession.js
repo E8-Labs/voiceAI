@@ -96,12 +96,8 @@ const Profession = ({ recallApi, aiData }) => {
                 const ApiPath = Apis.UpdateBuilAI;
                 console.log("Api path is", ApiPath);
                 const formData = new FormData();
-                if (tagline) {
-                    formData.append('tagline', tagline)
-                }
-                if (actionValue) {
-                    formData.append('possibleUserQuery', actionValue)
-                }
+                formData.append('tagline', tagline)
+                formData.append('possibleUserQuery', actionValue)
 
                 console.log("Form data is")
                 formData.forEach((value, key) => {

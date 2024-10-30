@@ -57,12 +57,8 @@ const BasicInformation = ({ recallApi, aiData }) => {
                 const ApiPath = Apis.UpdateBuilAI;
                 console.log("Api path is", ApiPath);
                 const formData = new FormData();
-                if (greetingValue) {
-                    formData.append('greeting', greetingValue)
-                }
-                if (userQuerry) {
-                    formData.append('possibleUserQuery', userQuerry)
-                }
+                formData.append('greeting', greetingValue)
+                formData.append('possibleUserQuery', userQuerry)
 
                 console.log("Form data is")
                 formData.forEach((value, key) => {

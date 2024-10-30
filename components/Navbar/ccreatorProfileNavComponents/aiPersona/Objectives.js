@@ -1,8 +1,9 @@
 import Apis from '@/components/apis/Apis';
 import { Alert, Box, CircularProgress, Fade, Modal, Popover, Snackbar, TextField } from '@mui/material';
-import { DotsThree } from '@phosphor-icons/react'
+import { CaretDown, CaretUp, DotsThree } from '@phosphor-icons/react'
 import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 
 const Objectives = ({ recallApi, aiData, loader }) => {
 
@@ -12,7 +13,9 @@ const Objectives = ({ recallApi, aiData, loader }) => {
     const [updateLoader, setUpdateLoader] = useState(false);
     const [showSaveBtn, setShowSaveBtn] = useState(false);
     const [resultSnack, setResultSnack] = useState(null);
+    //code for the examples modal
     const [openExamplesPopup, setOpenExamplesPopup] = useState(false);
+    const [toggleShowDetails, setToggleShowDetails] = useState(null);
 
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -134,21 +137,40 @@ const Objectives = ({ recallApi, aiData, loader }) => {
             border: "none",
             outline: "none",
         },
+        AddNewValueModal: {
+            height: "auto",
+            bgcolor: "transparent",
+            // p: 2,
+            mx: "auto",
+            my: "50vh",
+            transform: "translateY(-55%)",
+            borderRadius: 2,
+            border: "none",
+            outline: "none",
+        },
     }
 
     const examplesData = [
         {
             id: 1,
-            heading: "Pitch a product"
+            title: "Life Coach",
+            description: "Your objective is to emulate {Creator Name}, a {life and personal development} expert, as callers reach out to discuss topics of {goal setting, mindset, emotional resilience, and life balance}. As {Creator Name}, embody a {compassionate, motivational, and insightful} persona providing guidance that empowers callers to gain {clarity, overcome personal obstacles, and build fulfilling lives}. Your advice should be practical and grounded, offering steps callers can apply in their daily routines to achieve {growth, happiness, and self-fulfillment}. During each call, identify the caller's main challenges or aspirations and make a tailored pitch for relevant products or services {Creator Name} offers, ensuring each suggestion aligns with the caller's personal journey and objectives."
         },
         {
             id: 2,
-            heading: "Invite to a webinar"
+            title: "Fitness Coach",
+            description: "Your objective is to emulate {Creator Name}, a {fitness and health} coach, as callers reach out to seek support on {exercise routines, nutrition, weight loss, and fitness motivation}. As {Creator Name}, embody a {motivational, knowledgeable, and supportive} persona that drives callers to take tangible steps toward {improving their physical health and fitness levels}. Your advice should be actionable, customized to each caller's fitness goals, and centered on long-term wellness and body positivity. Throughout the call, assess the caller's fitness background, current routines, and specific goals to make a personalized pitch for {Creator Name's} products or services, such as workout plans, coaching sessions, or nutrition guides, ensuring each recommendation feels relevant and achievable."
         },
         {
             id: 3,
-            heading: "Engage with followers"
+            title: "Business Coach",
+            description: "Your objective is to emulate {Creator Name}, an {entrepreneurship and business strategy} expert, as callers reach out to seek insights on {business growth, leadership, productivity, and scaling operations}. As {Creator Name}, embody a {strategic, results-oriented, and insightful} persona, helping callers break down complex business challenges into clear, actionable steps. Your guidance should focus on empowering callers to build {sustainable, successful business models} and develop leadership skills that foster team and personal growth. During the call, pinpoint the caller's business pain points or aspirations, providing tailored advice that aligns with their unique challenges. When relevant, pitch {Creator Name's} specialized services, such as one-on-one business coaching, courses, or tools, to further enhance their business journey and help them achieve their goals effectively."
         },
+        {
+            id: 3,
+            title: "Dating Coach",
+            description: "Your objective is to emulate {Creator Name}, a {dating and relationship} expert, as callers reach out to discuss topics of {confidence, relationship advice, and personal growth}. As Tristan, embody a {confident, knowledgeable, and empathetic persona} providing deep insights and practical advice on {dating dynamics, relationship management, and self-improvement}. Your guidance advice should be actionable, tailored to individual caller scenarios, encouraging them to become {more confident and successful in their interpersonal interactions}. During each call, actively identify the caller's main challenges or goals and make a personalized pitch or offer based on the products and services {Creatorname} offers that specifically addresses their needs, enhancing the relevance and impact of the advice given."
+        }
     ]
 
 
@@ -313,8 +335,7 @@ const Objectives = ({ recallApi, aiData, loader }) => {
                                 },
                             }}
                         >
-                            <Box className="lg:w-5/12 sm:w-7/12 w-full" sx={styles.examplesModalStyle}>
-                                {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
+                            {/* <Box className="lg:w-5/12 sm:w-7/12 w-full" sx={styles.examplesModalStyle}>
                                 <div className="flex flex-row justify-center w-full">
                                     <div
                                         className="sm:w-7/12 w-full"
@@ -342,7 +363,6 @@ const Objectives = ({ recallApi, aiData, loader }) => {
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            {/* <div style={{ height: '30px', borderLeft: "1px dashed #620FEB", width: "1px" }} /> */}
                                                             {index !== examplesData.length - 1 && (
                                                                 <div style={{ height: '30px', borderLeft: "1px dashed #620FEB", width: "1px" }} />
                                                             )}
@@ -363,7 +383,65 @@ const Objectives = ({ recallApi, aiData, loader }) => {
                                         </div>
                                     </div>
                                 </div>
+                            </Box> */}
+
+
+                            <Box className="lg:w-5/12 sm:w-7/12 w-full" sx={styles.AddNewValueModal}>
+                                {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
+                                <div className="flex flex-row justify-center w-full">
+                                    <div
+                                        className="sm:w-7/12 w-full"
+                                        style={{
+                                            backgroundColor: "#ffffff20",
+                                            padding: 20,
+                                            borderRadius: 10,
+                                        }}
+                                    >
+                                        <div style={{ backgroundColor: "#ffffff", borderRadius: 7, padding: 10 }}>
+                                            <div className='flex flex-row items-center justify-between p-2' style={{ fontWeight: '500', fontFamily: "inter", fontSize: 20 }}>
+                                                {/* <p /> */}
+                                                <p>Objectives Examples</p>
+                                                <button onClick={() => { setOpenExamplesPopup(false) }}>
+                                                    <Image src="/assets/crossBtn.png" height={15} width={15} alt='*' />
+                                                </button>
+                                            </div>
+                                            <div className='mt-4 overflow-auto max-h-[50vh] scrollbar scrollbar-track-transparent scrollbar-thin scrollbar-thumb-purple'>
+                                                {
+                                                    examplesData.map((item, index) => (
+                                                        <div key={item.id} className='border rounded-lg mb-6 px-4 py-2'>
+                                                            <button className='flex flex-row items-center w-full justify-between' onClick={(e) => { setToggleShowDetails(prevId => prevId === item.id ? null : item.id) }}>
+                                                                <div style={{ fontWeight: "600", fontSize: 13, fontFamily: "inter" }}>
+                                                                    {
+                                                                        item.title
+                                                                    }
+                                                                </div>
+                                                                <div>
+                                                                    {item.id === toggleShowDetails ?
+                                                                        <CaretUp size={22} weight="light" color='#620FEB' /> :
+                                                                        <CaretDown size={22} weight="light" />
+                                                                    }
+                                                                </div>
+                                                            </button>
+                                                            {
+                                                                item.id === toggleShowDetails && (
+                                                                    <div style={{ fontWeight: "400", fontSize: 15, fontFamily: "inter" }}>
+                                                                        {
+                                                                            item.description
+                                                                        }
+                                                                    </div>
+                                                                )
+                                                            }
+                                                        </div>
+                                                    )
+                                                    )
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </Box>
+
+
                         </Modal>
                         {/* {
                             aiObjective ?

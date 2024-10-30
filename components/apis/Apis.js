@@ -90,7 +90,10 @@ const Apis = {
     ProcessObjectiveProfession: `${BasePath}/api/ai/processObjectiveAndProfession`,
     AddComunictionFAQ: `${BasePath}api/ai/addCommonFaqs`,
     UpdateComunictionFAQ: `${BasePath}api/ai/updateCommonFaqs`,
-    DelComunictionFAQ: `${BasePath}api/ai/deleteCommonFaqs`
+    DelComunictionFAQ: `${BasePath}api/ai/deleteCommonFaqs`,
+    AddCommunicationStyle: `${BasePath}api/ai/addCommunicationStyle`,
+    DelCommunicationStyle: `${BasePath}api/ai/deleteCommunicationStyle`,
+    UpdateCommunicationStyle: `${BasePath}api/ai/updateCommunicationStyle`
 
 
 }

@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Apis from '@/components/apis/Apis';
 import axios from 'axios';
 
-const FAQ = ({ recallApi, aiData }) => {
+const FAQ = ({ recallApi, aiData, recallUseEffect }) => {
 
 
     const [FAQData, setFAQData] = useState([]);
@@ -89,6 +89,7 @@ const FAQ = ({ recallApi, aiData }) => {
                     console.log("Error occured")
                     setResultSnackErr(response.data.message);
                 }
+                recallUseEffect()
             }
 
         } catch (error) {
@@ -183,6 +184,7 @@ const FAQ = ({ recallApi, aiData }) => {
                     console.log("Error occured")
                     setResultSnackErr(response.data.message);
                 }
+                recallUseEffect();
             }
 
         } catch (error) {

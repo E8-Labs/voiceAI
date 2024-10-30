@@ -23,6 +23,7 @@ import loginFunction from '@/components/loginFunction';
 import ObjectionHandling2 from '@/components/Navbar/ccreatorProfileNavComponents/aiPersona/ObjectionHandling2';
 import ProfileStat from '@/components/ProfileStat';
 import ConversionGoals from '@/components/Navbar/ccreatorProfileNavComponents/aiPersona/ConversionGoals';
+import Calender from '@/components/Navbar/ccreatorProfileNavComponents/aiPersona/integrations/Calender';
 
 const Page = () => {
 
@@ -44,6 +45,7 @@ const Page = () => {
     const [selectedProductService, setSelectedProductService] = useState(501);
     const [selectedIntegrations, setSelectedIntegrations] = useState(701);
     const [loader, setLoader] = useState(false);
+    const [RecallStatus, setRecallStatus] = useState(false);
 
 
     useEffect(() => {
@@ -51,10 +53,33 @@ const Page = () => {
         console.log("I am working")
         if (AiPersonaltiy) {
             const AiDetails = JSON.parse(AiPersonaltiy);
-            // setAiDetails(AiDetails);
+            setAiDetails(AiDetails);
             console.log("Ai persona details testing are", aiDetails);
         }
-    }, [])
+    }, [RecallStatus]);
+
+    useEffect(() => {
+        getAiApi();
+    }, []);
+
+    const recallApi = () => {
+        getAiApi();
+    }
+
+    //code for dropdown in ID 4, 6 & 8
+    const handleDropdownToggle = (id) => {
+        if (dropdownOpen === id) {
+            setDropdownOpen(null); // Close the dropdown if it is already open
+        } else {
+            setDropdownOpen(id); // Open the dropdown for the specific menu item
+        }
+    }
+
+    //recallUseeffect
+    const handleRecallUseEffect = () => {
+        console.log("I am hit");
+        setRecallStatus(true);
+    }
 
     //new drop down menu
 
@@ -147,6 +172,49 @@ const Page = () => {
         }
     }
 
+    const getAiApi = async () => {
+        try {
+            setLoader(true);
+            console.log("Trying....");
+            // return
+            const ApiPath = Apis.MyAiapi;
+            const localData = localStorage.getItem('User');
+            const Data = JSON.parse(localData);
+            const AuthToken = Data.data.token;
+            console.log("Authtoken is", AuthToken);
+            console.log("Apipath is", ApiPath);
+
+            const response = await axios.get(ApiPath, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": "Bearer " + AuthToken
+                }
+            });
+            // return
+            if (response) {
+                console.log("Response of getai on parent screen api", response.data.data);
+                if (response.data) {
+                    setAiData(response.data.data);
+                    setAiDetails(response.data.data);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
+                    if (response?.data?.data?.ai) {
+                        console.log("Ai is Present");
+                    } else {
+                        router.push("/creator/buildscript");
+                    }
+                    if (response?.data?.data?.questions) {
+                        console.log("Kycs are added");
+                    } else {
+                        router.push("/creator/buildscript2");
+                    }
+                }
+            }
+        } catch (error) {
+            console.error("ERR occured in get ai api is", error);
+        } finally {
+            setLoader(false);
+        }
+    }
 
 
     let menuItems = [{
@@ -192,113 +260,6 @@ const Page = () => {
     ];
 
 
-    // const menuItems = [{
-    //     id: 1,
-    //     menu: 'Call instructions',
-    // },
-    // {
-    //     id: 2,
-    //     menu: 'Objective',
-    // },
-    // {
-    //     id: 3,
-    //     menu: 'General guideline',
-    // },
-    // {
-    //     id: 4,
-    //     menu: 'Get tools',
-    // },
-    // {
-    //     id: 5,
-    //     menu: 'Objection handling',
-    // },
-    // {
-    //     id: 6,
-    //     menu: 'Product & Services',
-    // },
-    // {
-    //     id: 7,
-    //     menu: 'Specific Strategies & techniques', //added the values and beliefs here
-    // },
-    // {
-    //     id: 8,
-    //     menu: 'Communication', //added the personality traits here
-    // },
-    // {
-    //     id: 9,
-    //     menu: 'Persona Characteristics',
-    // },
-    // ];
-
-    //code to call the get ai api
-
-
-    //
-
-
-
-
-    const getAiApi = async () => {
-        try {
-            setLoader(true);
-            console.log("Trying....");
-            // return
-            const ApiPath = Apis.MyAiapi;
-            const localData = localStorage.getItem('User');
-            const Data = JSON.parse(localData);
-            const AuthToken = Data.data.token;
-            console.log("Authtoken is", AuthToken);
-            console.log("Apipath is", ApiPath);
-
-            const response = await axios.get(ApiPath, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    "Authorization": "Bearer " + AuthToken
-                }
-            });
-            // return
-            if (response) {
-                console.log("Response of getai on parent screen api", response.data.data);
-                if (response.data) {
-                    setAiData(response.data.data);
-                    // setAiDetails(response.data.data);
-                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
-                    if (response?.data?.data?.ai) {
-                        console.log("Ai is Present");
-                    } else {
-                        router.push("/creator/buildscript");
-                    }
-                    if (response?.data?.data?.questions) {
-                        console.log("Kycs are added");
-                    } else {
-                        router.push("/creator/buildscript2");
-                    }
-                }
-            }
-        } catch (error) {
-            console.error("ERR occured in get ai api is", error);
-        } finally {
-            setLoader(false);
-        }
-    }
-
-    useEffect(() => {
-        getAiApi();
-    }, []);
-
-    const recallApi = () => {
-        getAiApi();
-    }
-
-    //code for dropdown in ID 4, 6 & 8
-    const handleDropdownToggle = (id) => {
-        if (dropdownOpen === id) {
-            setDropdownOpen(null); // Close the dropdown if it is already open
-        } else {
-            setDropdownOpen(id); // Open the dropdown for the specific menu item
-        }
-    }
-
     //styles code
     const styles = {
         buttonText: (item) => ({
@@ -322,71 +283,83 @@ const Page = () => {
     const getTools = [
         {
             id: 201,
-            heading: 'Knowledge base'
+            heading: 'Knowledge base',
+            isComplete: false
         },
         {
             id: 202,
-            heading: 'Get Availability'
+            heading: 'Get Availability',
+            isComplete: false
         },
         {
             id: 203,
-            heading: 'Create Booking'
+            heading: 'Create Booking',
+            isComplete: false
         },
         {
             id: 204,
-            heading: 'Get conversation data'
+            heading: 'Get conversation data',
+            isComplete: false
         },
     ]
 
     const personalCharacteristics = [
         {
             id: 201,
-            heading: 'Profession'
+            heading: 'Profession',
+            isComplete: false
         },
         {
             id: 202,
-            heading: 'Professional Background'
+            heading: 'Professional Background',
+            isComplete: false
         },
         {
             id: 203,
-            heading: 'Values & beliefs'
+            heading: 'Values & beliefs',
+            isComplete: false
         },
         {
             id: 204,
-            heading: 'Personality Traits'
+            heading: 'Personality Traits',
+            isComplete: false
         },
         {
             id: 205,
-            heading: 'Intraction Examples'
+            heading: 'Intraction Examples',
+            isComplete: false
         },
     ]
 
-    const communications = [
+    const callStrategy = [
         {
             id: 901,
-            title: "Call Flow"
+            title: "Call Flow (Call instruction)",
+            isComplete: (aiData && aiData.callStrategy.length > 0)
         },
         {
             id: 902,
-            title: "Item 2"
+            title: "KYC (Know Your Customer)",
+            isComplete: false
         },
-        {
-            id: 903,
-            title: "Item 3"
-        },
+        // {
+        //     id: 903,
+        //     title: "Item 3",
+        //     isComplete: false
+        // },
     ]
-
-    //new drop downs for new list
 
     //index 2 drop down
     const AiCharacteristics = [
         {
             id: 201,
-            title: "Basic Information"
+            title: "Basic Information",
+            isComplete: (aiData && aiData.ai.greeting && aiData && aiData.ai.possibleUserQuery)
         },
         {
             id: 202,
-            title: "Profession"
+            title: "Profession",
+            isComplete: (aiData && aiData.ai.tagline && aiData && aiData.ai.action)
         }
     ]
 
@@ -394,19 +367,23 @@ const Page = () => {
     const CommunicationMenu = [
         {
             id: 302,
-            title: "Intraction Examples"
+            title: "Intraction Examples",
+            isComplete: (aiDetails && aiDetails.intractions.length > 0)
         },
         {
             id: 303,
-            title: "Phrases & Quotes"
+            title: "Phrases & Quotes",
+            isComplete: (aiDetails && aiDetails.PhrasesAndQuotes.length > 0)
         },
         {
             id: 304,
-            title: "FAQ"
+            title: "FAQ",
+            isComplete: (aiDetails && aiDetails.communicatinCommonFaqs.length > 0)
         },
         {
             id: 301,
-            title: "Donot Discuss"
+            title: "Donot Discuss",
+            isComplete: (aiDetails && aiDetails.DoNots.length > 0)
         },
     ]
 
@@ -414,11 +391,13 @@ const Page = () => {
     const ProductsServicesMenu = [
         {
             id: 501,
-            title: "Product Details"
+            title: "Product Details",
+            isComplete: (aiData && aiData.products.length > 0)
         },
         {
             id: 502,
-            title: "Conversion Goals"
+            title: "Conversion Goals",
+            isComplete: false
         },
     ]
 
@@ -426,13 +405,30 @@ const Page = () => {
     const integrationMenu = [
         {
             id: 701,
-            title: "Item 1"
+            title: "Calendar",
+            isComplete: false
         },
         {
             id: 702,
-            title: "Item 2"
+            title: "GHL",
+            isComplete: false
         },
-    ]
+        {
+            id: 703,
+            title: "SMS",
+            isComplete: false
+        }
+    ];
+
+
+    const comingSoonBtnStyle = {
+        color: "#552AFF",
+        fontSize: 10,
+        fontFamily: "inter",
+        backgroundColor: "#552AFF25",
+        paddingInline: 10,
+        borderRadius: "20px"
+    }
 
     //different dropdowns for different ID
     const renderDropdownContent = (id) => {
@@ -454,7 +450,11 @@ const Page = () => {
                                         >
                                             {item.title}
                                         </button>
-                                        <Image src={"/assets/TickIcon.png"} alt='icon' height={10} width={10} />
+                                        {
+                                            item.isComplete && (
+                                                <Image src="/assets/TickIcon.png" alt='icon' height={10} width={10} />
+                                            )
+                                        }
                                     </div>
                                 ))
                             }
@@ -480,7 +480,9 @@ const Page = () => {
                                         >
                                             {item.title}
                                         </button>
-                                        <Image src={"/assets/TickIcon.png"} alt='icon' height={10} width={10} />
+                                        {item.isComplete && (
+                                            <Image src={"/assets/TickIcon.png"} alt='icon' height={10} width={10} />
+                                        )}
                                     </div>
                                 ))
                             }
@@ -506,7 +508,11 @@ const Page = () => {
                                         >
                                             {item.heading}
                                         </button>
-                                        <Image src={"/assets/TickIcon.png"} alt='icon' height={10} width={10} />
+                                        {
+                                            item.isComplete && (
+                                                <Image src="/assets/TickIcon.png" alt='icon' height={10} width={10} />
+                                            )
+                                        }
                                     </div>
                                 ))
                             }
@@ -532,7 +538,40 @@ const Page = () => {
                                         >
                                             {item.title}
                                         </button>
-                                        <Image src={"/assets/TickIcon.png"} alt='icon' height={10} width={10} />
+                                        {
+                                            item.isComplete && (
+                                                <Image src="/assets/TickIcon.png" alt='icon' height={10} width={10} />
+                                            )
+                                        }
+                                    </div>
+                                ))
+                            }
+                            {/* <button className='mt-4'>Get Tools Option 2</button>
+                            <button className='mt-4'>Get Tools Option 3</button> */}
+                        </ul>
+                    </div>
+                );
+
+            case 7:
+                return (
+                    <div className='flex flex-col items-start rounded w-ful ms-8'>
+                        <ul>
+                            {
+                                integrationMenu.map((item) => (
+                                    <div key={item.id} className='mb-4 flex flex-row items-center gap-2'>
+                                        <button className='text-start outline-none border-none flex flex-row items-center gap-2'
+                                            onClick={() => {
+                                                setSelectedIntegrations(item.id);
+                                            }}
+                                            style={{ color: selectedIntegrations === item.id ? "#620FEB" : "black" }}
+                                        >
+                                            {item.title} {item.title === "GHL" && (<div className='py-1' style={comingSoonBtnStyle}>Comming soon</div>)} {item.title === "SMS" && (<div className='py-1' style={comingSoonBtnStyle}>Comming soon</div>)}
+                                        </button>
+                                        {
+                                            item.isComplete && (
+                                                <Image src="/assets/TickIcon.png" alt='icon' height={10} width={10} />
+                                            )
+                                        }
                                     </div>
                                 ))
                             }
@@ -543,13 +582,12 @@ const Page = () => {
                 );
 
 
-
             case 8:
                 return (
                     <div className='flex flex-col items-start ms-8 rounded w-full'>
                         <ul>
                             {
-                                communications.map((item) => (
+                                callStrategy.map((item) => (
                                     <div key={item.id} className='mb-4 flex flex-row items-center gap-2'>
                                         <button className='text-start outline-none border-none'
                                             onClick={() => {
@@ -559,7 +597,11 @@ const Page = () => {
                                         >
                                             {item.title}
                                         </button>
-                                        <Image src={"/assets/TickIcon.png"} alt='icon' height={10} width={10} />
+                                        {
+                                            item.isComplete && (
+                                                <Image src="/assets/TickIcon.png" alt='icon' height={10} width={10} />
+                                            )
+                                        }
                                     </div>
                                 ))
                             }
@@ -583,7 +625,11 @@ const Page = () => {
                                         >
                                             {item.heading}
                                         </button>
-                                        <Image src={"/assets/TickIcon.png"} alt='icon' height={10} width={10} />
+                                        {
+                                            item.isComplete && (
+                                                <Image src="/assets/TickIcon.png" alt='icon' height={10} width={10} />
+                                            )
+                                        }
                                     </div>
                                 ))
                             }
@@ -698,13 +744,13 @@ const Page = () => {
                                 <div>
                                     {
                                         selectedCommunication === 301 ? (
-                                            <DoNotDiscuss recallApi={recallApi} aiData={aiData} />
+                                            <DoNotDiscuss recallApi={recallApi} aiData={aiData} recallUseEffect={handleRecallUseEffect} />
                                         ) : selectedCommunication === 302 ? (
-                                            <IntractionExamples recallApi={recallApi} aiData={aiData} />
+                                            <IntractionExamples recallApi={recallApi} aiData={aiData} recallUseEffect={handleRecallUseEffect} />
                                         ) : selectedCommunication === 303 ? (
-                                            <PhrasesandQuotes recallApi={recallApi} aiData={aiData} />
+                                            <PhrasesandQuotes recallApi={recallApi} aiData={aiData} recallUseEffect={handleRecallUseEffect} />
                                         ) : selectedCommunication === 304 ? (
-                                            <FAQ recallApi={recallApi} aiData={aiData} />
+                                            <FAQ recallApi={recallApi} aiData={aiData} recallUseEffect={handleRecallUseEffect} />
                                         ) : ""
                                     }
                                 </div>
@@ -739,7 +785,18 @@ const Page = () => {
                                 // <Objectionhandling />
                                 <ObjectionHandling2 />
                             ) : selectedMenu === 7 ? (
-                                <FrameWorkAndTec recallApi={recallApi} aiData={aiData} />
+                                // <FrameWorkAndTec recallApi={recallApi} aiData={aiData} />
+                                <div>
+                                    {
+                                        selectedIntegrations === 701 ? (
+                                            <Calender />
+                                        ) : selectedIntegrations === 702 ? (
+                                            "GHL"
+                                        ) : selectedIntegrations === 703 ? (
+                                            "Cal.Calender"
+                                        ) : ""
+                                    }
+                                </div>
                             ) : selectedMenu === 8 ? (
                                 <div>
                                     {

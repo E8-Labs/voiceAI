@@ -1,5 +1,5 @@
 import { Alert, Box, CircularProgress, Fade, Modal, Popover, Snackbar } from '@mui/material'
-import { DotsThree } from '@phosphor-icons/react'
+import { CaretDown, CaretUp, DotsThree } from '@phosphor-icons/react'
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
 import Apis from '@/components/apis/Apis';
@@ -23,6 +23,10 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
     //update Donot
     const [updateDonotDescription, setUpdateDonotDescriptionDescription] = useState("");
     const [openUpdateModal, setOpenUpdateModal] = useState(false);
+
+    //examples code
+    const [examplesModal, setExamplesModal] = useState(false);
+    const [toggleShowDetails, setToggleShowDetails] = useState(null);
 
     //advance setting code
     const [openAdvanceSettingPopup, setOpenAdvanceSettingPopup] = useState(false);
@@ -214,16 +218,57 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
         }
     }
 
+    //examples array
+    const donotDiscussExamples = [
+        {
+            id: 1,
+            title: "Mental Health Diagnoses",
+            details: "Avoid providing advice or discussing clinical topics like depression, anxiety disorders, or any mental health diagnosis. Recommend consulting a mental health professional for such issues."
+        },
+        {
+            id: 2,
+            title: "Abuse or Trauma Counseling",
+            details: "Do not attempt to provide guidance on past trauma or experiences of abuse. Encourage users to seek professional help for these sensitive areas."
+        },
+        {
+            id: 3,
+            title: "Medical or Sexual Health Advice",
+            details: "Refrain from discussing sexual health topics, medical conditions, or physical health advice beyond general self-care."
+        },
+        {
+            id: 4,
+            title: "Financial Advice",
+            details: " Avoid discussing personal finance or suggesting any changes in spending, investing, or managing finances, as these areas require financial expertise."
+        },
+    ]
+
 
     return (
         <div>
             <div className='flex flex-row items-center justify-between'>
-                <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
-                    <span style={{ color: "#00000060" }}>Communication |</span> Do Not Discuss
+                <div className='flex flex-row items-center gap-2'>
+                    <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
+                        <span style={{ color: "#00000060" }}>Communication |</span> Do Not Discuss
+                    </div>
+                    <div>
+                        {
+                            donotDiscussData.length > 0 && (
+                                <button className='text-purple underline text-xs' onClick={() => { setExamplesModal(true) }}>
+                                    (View Examples)
+                                </button>
+                            )
+                        }
+                    </div>
                 </div>
-                <button className='underline text-purple' onClick={handleOpenModal}>
-                    Add New
-                </button>
+                {
+                    donotDiscussData.length > 0 ?
+                        <button className='underline text-purple' onClick={handleOpenModal}>
+                            Add New
+                        </button> :
+                        <button className='text-purple underline text-md' onClick={() => { setExamplesModal(true) }}>
+                            View Examples
+                        </button>
+                }
             </div>
 
             {
@@ -472,6 +517,75 @@ const DoNotDiscuss = ({ recallApi, aiData }) => {
                                 </div>
                                 <div className='mt-8'>
                                     <CommunicationSetting recallApi={recallApi} aiData={aiData} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Box>
+            </Modal>
+
+            {/* Modal for examples */}
+            <Modal
+                open={examplesModal}
+                onClose={() => setExamplesModal(false)}
+                closeAfterTransition
+                BackdropProps={{
+                    timeout: 1000,
+                    sx: {
+                        backgroundColor: "transparent",
+                        backdropFilter: "blur(20px)",
+                    },
+                }}
+            >
+                <Box className="lg:w-5/12 sm:w-7/12 w-full" sx={styles.AddNewValueModal}>
+                    {/* <LoginModal creator={creator} assistantData={getAssistantData} closeForm={setOpenLoginModal} /> */}
+                    <div className="flex flex-row justify-center w-full">
+                        <div
+                            className="sm:w-7/12 w-full"
+                            style={{
+                                backgroundColor: "#ffffff20",
+                                padding: 20,
+                                borderRadius: 10,
+                            }}
+                        >
+                            <div style={{ backgroundColor: "#ffffff", borderRadius: 7, padding: 10 }}>
+                                <div className='flex flex-row items-center justify-between p-2' style={{ fontWeight: '500', fontFamily: "inter", fontSize: 20 }}>
+                                    {/* <p /> */}
+                                    <p>Do Not Discuss Examples</p>
+                                    <button onClick={() => { setExamplesModal(false) }}>
+                                        <Image src="/assets/crossBtn.png" height={15} width={15} alt='*' />
+                                    </button>
+                                </div>
+                                <div className='mt-4'>
+                                    {
+                                        donotDiscussExamples.map((item, index) => (
+                                            <div key={item.id} className='border rounded-lg mb-6 px-4 py-2'>
+                                                <button className='flex flex-row items-center w-full justify-between' onClick={(e) => { setToggleShowDetails(prevId => prevId === item.id ? null : item.id) }}>
+                                                    <div style={{ fontWeight: "600", fontSize: 13, fontFamily: "inter" }}>
+                                                        {
+                                                            item.title
+                                                        }
+                                                    </div>
+                                                    <div>
+                                                        {item.id === toggleShowDetails ?
+                                                            <CaretUp size={22} weight="light" color='#620FEB' /> :
+                                                            <CaretDown size={22} weight="light" />
+                                                        }
+                                                    </div>
+                                                </button>
+                                                {
+                                                    item.id === toggleShowDetails && (
+                                                        <div style={{ fontWeight: "400", fontSize: 15, fontFamily: "inter" }}>
+                                                            {
+                                                                item.details
+                                                            }
+                                                        </div>
+                                                    )
+                                                }
+                                            </div>
+                                        )
+                                        )
+                                    }
                                 </div>
                             </div>
                         </div>

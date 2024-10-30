@@ -5,7 +5,7 @@ import Apis from '@/components/apis/Apis';
 import axios from 'axios';
 import Image from 'next/image';
 
-const IntractionExamples = ({ recallApi, aiData }) => {
+const IntractionExamples = ({ recallApi, aiData,  recallUseEffect }) => {
 
     //get intraction
     const [intractionsData, setIntractionsData] = useState([]);
@@ -81,6 +81,7 @@ const IntractionExamples = ({ recallApi, aiData }) => {
                 } else {
                     console.log("Error occured")
                 }
+                recallUseEffect()
             }
 
         } catch (error) {
@@ -122,6 +123,7 @@ const IntractionExamples = ({ recallApi, aiData }) => {
                     // setIntractionsData(intractions =>
                     //     intractions.filter(preIntraction => preIntraction.id !== selectedItem.id)
                     // )
+                    recallUseEffect();
                 } else {
                     console.log("Error occured")
                 }
