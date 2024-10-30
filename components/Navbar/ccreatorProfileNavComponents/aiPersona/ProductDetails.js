@@ -128,7 +128,7 @@ const ProductDetails = ({ aiData, recallApi }) => {
                 </button>
             </div>
             {
-                !productsData && productsData.length > 0 ?
+                productsData && productsData.length > 0 ?
                     <div className='max-h-[60vh] overflow-auto scrollbar scrollbar-track-transparent scrollbar-thumb-purple scrollbar-thin'>
                         {
                             productsData.map((item, index) => (
