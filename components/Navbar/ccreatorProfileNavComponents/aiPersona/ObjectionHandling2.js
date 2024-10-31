@@ -1,5 +1,5 @@
 import Apis from '@/components/apis/Apis';
-import { Box, CircularProgress, Modal, Popover } from '@mui/material';
+import { Alert, Box, CircularProgress, Fade, Modal, Popover, Slider, Snackbar } from '@mui/material';
 import { CaretDown, CaretUp, DotsThree, Plus } from '@phosphor-icons/react';
 import axios from 'axios';
 import Image from 'next/image'
@@ -10,6 +10,8 @@ const ObjectionHandling2 = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [callInstructionData, setCallInstructionData] = useState([]);
     const [strategyLoader, setStrategyLoader] = useState(false);
+    const [resultSnackErr, setResultSnackErr] = useState(null);
+    const [resultSnack, setResultSnack] = useState(null);
     //code for examples popup
     const [openExamplesPopup, setOpenExamplesPopup] = useState(false);
     const [toggleShowDetails, setToggleShowDetails] = useState(false);
@@ -23,6 +25,19 @@ const ObjectionHandling2 = () => {
     const [updateStrategyModal, setUpdateStrategyModal] = useState(false);
     const [updateStrategyTitle, setUpdateStrategyTitle] = useState("");
     const [updateStrategyDescription, setUpdateStrategyDescription] = useState("");
+
+    //code for sliders
+    const [assuranceSolution, setAssuranceSolution] = useState(2.5);
+    const [validateconcerns, setValidateconcerns] = useState(2.5);
+    const [compromisesandAlternatives, setCompromisesandAlternatives] = useState(2.5);
+    const [positiveRedirects, setPositiveRedirects] = useState(2.5);
+    const [ProvideDetailedExplanation, setProvideDetailedExplanation] = useState(2.5);
+    const [updateLoader, setUpdateLoader] = useState(false);
+
+    const handleSliderChange = (event, newValue) => {
+        setAssuranceSolution(newValue);
+
+    };
 
     const handleMoreClick = (event, item) => {
         setAnchorEl(event.currentTarget);
@@ -47,6 +62,53 @@ const ObjectionHandling2 = () => {
             console.log("Aidetails recieved from local storage are", AiDetails);
         }
     }, []);
+
+
+    //code to update AI
+    const handleUpdateAi = async () => {
+
+        try {
+            setUpdateLoader(true);
+            const ApiPath = Apis.UpdateBuilAI;
+            const LocalData = localStorage.getItem("User");
+            const Data = JSON.parse(LocalData);
+            const AuthToken = Data.data.token;
+            //console.log("Auth token", AuthToken);
+            const formData = new FormData();
+            formData.append("reassurance", assuranceSolution);
+            formData.append("validateConcerns", validateconcerns);
+            formData.append("compromiseAndAlternatives", compromisesandAlternatives);
+            formData.append("positiveRedirects", positiveRedirects);
+            formData.append("provideDetailedExplanation", ProvideDetailedExplanation);
+            console.log("Data being sent to the API:");
+            for (let [key, value] of formData.entries()) {
+                console.log(`${key}: ${value}`);
+            }
+            console.log("Api path is", ApiPath);
+            return
+            const response = await axios.post(ApiPath, formData, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + AuthToken,
+                },
+            });
+
+            if (response) {
+                console.log("Response of api is", response.data);
+                if (response.data.status === true) {
+                    console.log("Response of update ai api is", response);
+                    localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
+                    setResultSnack(response.data.message);
+                }else if(response.data.status === false){
+                    setResultSnackErr(response.data.message);
+                }
+            }
+        } catch (error) {
+            console.error("error occured in script api is", error);
+        } finally {
+            setUpdateLoader(false);
+        }
+    };
 
 
     //add CallStrategy
@@ -184,6 +246,12 @@ const ObjectionHandling2 = () => {
 
     const styles = {
         text1: {
+            fontWeight: "400",
+            fontFamily: "inter",
+            fontSize: 15,
+            marginTop: 25
+        },
+        text2: {
             fontWeight: "500",
             fontFamily: "inter",
             fontSize: 15
@@ -209,6 +277,9 @@ const ObjectionHandling2 = () => {
             borderRadius: 2,
             border: "none",
             outline: "none",
+        },
+        sliderHeading: {
+            fontWeight: "500", fontSize: 15, fontWeight: "inter"
         }
     }
 
@@ -243,32 +314,326 @@ const ObjectionHandling2 = () => {
 
 
     return (
-        <div className='w-full'>
+        <div className='w-full overflow-auto max-h-[70vh] scrollbar scrollbar-track-transparent scrollbar-thin scrollbar-thumb-purple'>
             <div className='flex flex-row items-center w-full justify-between'>
                 <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
                     Objection Handling
                 </div>
-                <button
+                {/* <button
                     className='underline text-purple'
                     onClick={() => { setOpenExamplesPopup(true) }}
                 >
                     View Examples
-                </button>
+                </button> */}
+            </div>
+
+            {/* Code for Range Sliders */}
+
+            <div className='w-8/12'>
+
+                <div className='mt-4' style={styles.sliderHeading}>
+                    Re-assurance & solution
+                </div>
+                <div className='mt-8 ms-6'>
+                    <Slider
+                        max={5}
+                        min={1}
+                        value={assuranceSolution}
+                        onChange={handleSliderChange}
+                        aria-label="Default"
+                        valueLabelDisplay="on"
+                        step={0.1}
+                        sx={{
+                            color: '#620FEB',
+                            '& .MuiSlider-valueLabel': {
+                                top: '-5px',
+                                '& *': {
+                                    background: '#620FEB',
+                                    color: '#ffffff',
+                                    boxShadow: "none",
+                                    border: "none",
+                                    padding: '4px 8px',
+                                    borderRadius: '4px',
+                                    margin: 0,
+                                },
+                                backgroundColor: 'transparent',
+                                '&:before': {
+                                    content: '""',
+                                    position: 'absolute',
+                                    width: 0,
+                                    height: 0,
+                                    borderLeft: '6px solid transparent',
+                                    borderRight: '6px solid transparent',
+                                    borderTop: '6px solid #620FEB',
+                                    bottom: '-2px',
+                                    left: '50%',
+                                    transform: 'translateX(-50%)',
+                                },
+                            },
+                        }}
+                    />
+                </div>
+
+                <div className='mt-4' style={styles.sliderHeading}>
+                    Validate concerns
+                </div>
+                <div className='mt-8 ms-6'>
+                    <Slider
+                        max={5}
+                        min={1}
+                        value={validateconcerns}
+                        // onChange={handleSliderChange}
+                        onChange={(e) => { setValidateconcerns(e.target.value) }}
+                        aria-label="Default"
+                        valueLabelDisplay="on"
+                        step={0.1}
+                        sx={{
+                            color: '#620FEB',
+                            '& .MuiSlider-valueLabel': {
+                                top: '-5px',
+                                '& *': {
+                                    background: '#620FEB',
+                                    color: '#ffffff',
+                                    boxShadow: "none",
+                                    border: "none",
+                                    padding: '4px 8px',
+                                    borderRadius: '4px',
+                                    margin: 0,
+                                },
+                                backgroundColor: 'transparent',
+                                '&:before': {
+                                    content: '""',
+                                    position: 'absolute',
+                                    width: 0,
+                                    height: 0,
+                                    borderLeft: '6px solid transparent',
+                                    borderRight: '6px solid transparent',
+                                    borderTop: '6px solid #620FEB',
+                                    bottom: '-2px',
+                                    left: '50%',
+                                    transform: 'translateX(-50%)',
+                                },
+                            },
+                        }}
+                    />
+                </div>
+
+                <div className='mt-4' style={styles.sliderHeading}>
+                    Compromises and alternatives
+                </div>
+                <div className='mt-8 ms-6'>
+                    <Slider
+                        max={5}
+                        min={1}
+                        value={compromisesandAlternatives}
+                        // onChange={handleSliderChange}
+                        onChange={(e) => { setCompromisesandAlternatives(e.target.value) }}
+                        aria-label="Default"
+                        valueLabelDisplay="on"
+                        step={0.1}
+                        sx={{
+                            color: '#620FEB',
+                            '& .MuiSlider-valueLabel': {
+                                top: '-5px',
+                                '& *': {
+                                    background: '#620FEB',
+                                    color: '#ffffff',
+                                    boxShadow: "none",
+                                    border: "none",
+                                    padding: '4px 8px',
+                                    borderRadius: '4px',
+                                    margin: 0,
+                                },
+                                backgroundColor: 'transparent',
+                                '&:before': {
+                                    content: '""',
+                                    position: 'absolute',
+                                    width: 0,
+                                    height: 0,
+                                    borderLeft: '6px solid transparent',
+                                    borderRight: '6px solid transparent',
+                                    borderTop: '6px solid #620FEB',
+                                    bottom: '-2px',
+                                    left: '50%',
+                                    transform: 'translateX(-50%)',
+                                },
+                            },
+                        }}
+                    />
+                </div>
+
+                <div className='mt-4' style={styles.sliderHeading}>
+                    Compromises and alternatives
+                </div>
+                <div className='mt-8 ms-6'>
+                    <Slider
+                        max={5}
+                        min={1}
+                        value={positiveRedirects}
+                        // onChange={handleSliderChange}
+                        onChange={(e) => { setPositiveRedirects(e.target.value) }}
+                        aria-label="Default"
+                        valueLabelDisplay="on"
+                        step={0.1}
+                        sx={{
+                            color: '#620FEB',
+                            '& .MuiSlider-valueLabel': {
+                                top: '-5px',
+                                '& *': {
+                                    background: '#620FEB',
+                                    color: '#ffffff',
+                                    boxShadow: "none",
+                                    border: "none",
+                                    padding: '4px 8px',
+                                    borderRadius: '4px',
+                                    margin: 0,
+                                },
+                                backgroundColor: 'transparent',
+                                '&:before': {
+                                    content: '""',
+                                    position: 'absolute',
+                                    width: 0,
+                                    height: 0,
+                                    borderLeft: '6px solid transparent',
+                                    borderRight: '6px solid transparent',
+                                    borderTop: '6px solid #620FEB',
+                                    bottom: '-2px',
+                                    left: '50%',
+                                    transform: 'translateX(-50%)',
+                                },
+                            },
+                        }}
+                    />
+                </div>
+
+                <div className='mt-4' style={styles.sliderHeading}>
+                    Compromises and alternatives
+                </div>
+                <div className='mt-8 ms-6'>
+                    <Slider
+                        max={5}
+                        min={1}
+                        value={ProvideDetailedExplanation}
+                        // onChange={handleSliderChange}
+                        onChange={(e) => { setProvideDetailedExplanation(e.target.value) }}
+                        aria-label="Default"
+                        valueLabelDisplay="on"
+                        step={0.1}
+                        sx={{
+                            color: '#620FEB',
+                            '& .MuiSlider-valueLabel': {
+                                top: '-5px',
+                                '& *': {
+                                    background: '#620FEB',
+                                    color: '#ffffff',
+                                    boxShadow: "none",
+                                    border: "none",
+                                    padding: '4px 8px',
+                                    borderRadius: '4px',
+                                    margin: 0,
+                                },
+                                backgroundColor: 'transparent',
+                                '&:before': {
+                                    content: '""',
+                                    position: 'absolute',
+                                    width: 0,
+                                    height: 0,
+                                    borderLeft: '6px solid transparent',
+                                    borderRight: '6px solid transparent',
+                                    borderTop: '6px solid #620FEB',
+                                    bottom: '-2px',
+                                    left: '50%',
+                                    transform: 'translateX(-50%)',
+                                },
+                            },
+                        }}
+                    />
+                </div>
+
+                <div className='w-full mt-6'>
+                    {
+                        updateLoader ?
+                            <div className='w-full flex flex-row justify-center'>
+                                <CircularProgress size={25} />
+                            </div> :
+                            <button className='w-full text-white bg-purple'
+                                style={{
+                                    height: "50px",
+                                    borderRadius: "50px", fontWeight: "500", fontSize: 18, fontFamily: "inter"
+                                }}
+                                onClick={handleUpdateAi}
+                                >
+                                Update
+                            </button>
+                    }
+                </div>
+
+            </div>
+
+            {/* <Slider
+                max={10}
+                min={1}
+                // defaultValue={5}
+                aria-label="Default"
+                valueLabelDisplay="on"
+                value={newValue}
+                onChange={(e, newValue) => handleSliderChange(index, newValue, item)}
+                sx={{
+                    color: '#620FEB',
+                    '& .MuiSlider-valueLabel': {
+                        top: '-10px',
+                        '& *': {
+                            background: '#620FEB',
+                            color: '#ffffff',
+                            boxShadow: "none",
+                            border: "none",
+                            padding: '4px 8px',
+                            borderRadius: '4px',
+                            margin: 0,
+                        },
+                        backgroundColor: 'transparent',
+                        '&:before': {
+                            content: '""',
+                            position: 'absolute',
+                            width: 0,
+                            height: 0,
+                            borderLeft: '6px solid transparent',
+                            borderRight: '6px solid transparent',
+                            borderTop: '6px solid #620FEB',
+                            bottom: '-2px',
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                        },
+                    },
+                }}
+            /> */}
+
+
+
+            {/* Code for Objection list */}
+            <div className='mt-6' style={{ fontWeight: "500", fontSize: 16, fontFamily: "inter" }}>
+                Objection List
             </div>
             {
                 callInstructionData.length > 0 ?
-                    <div className='mt-8 w-10/12'>
+                    <div className='mt-8 w-10/12 overflow-auto max-h-[30vh] scrollbar scrollbar-track-transparent scrollbar-thin scrollbar-thumb-purple'>
                         {
                             callInstructionData.map((item, index) => (
                                 <div key={item.id} className='flex flex-col items-center w-full'>
-                                    <div className='flex flex-row items-center p-4 border-[1px] border-[#00000010] w-full justify-between rounded-lg'>
+                                    <div className='flex flex-row items-start p-4 border-[1px] border-[#00000010] w-full justify-between rounded-lg'>
                                         <div className='flex flex-row items-center gap-2'>
-                                            <div className='text-white bg-purple flex flex-row items-center justify-center' style={{ height: 29, width: 29, borderRadius: "50%" }}>
+                                            {/* <div className='text-white bg-purple flex flex-row items-center justify-center' style={{ height: 29, width: 29, borderRadius: "50%" }}>
                                                 {index + 1}
-                                            </div>
-                                            <div style={styles.text1}>
-                                                {/* {item.objectionType} */}
-                                                {item.prompt}
+                                            </div> */}
+                                            <div>
+                                                <div style={styles.text2}>
+                                                    {/* {item.objectionType} */}
+                                                    {item.objectionType}
+                                                </div>
+                                                <div style={styles.text1}>
+                                                    {/* {item.objectionType} */}
+                                                    {item.prompt}
+                                                </div>
                                             </div>
                                         </div>
                                         <div>
@@ -596,6 +961,66 @@ const ObjectionHandling2 = () => {
                     </div>
                 </Box>
             </Modal>
+
+
+
+            <div>
+                <Snackbar
+                    open={resultSnack}
+                    autoHideDuration={3000}
+                    onClose={() => {
+                        setResultSnack(null);
+                    }}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center'
+                    }}
+                    TransitionComponent={Fade}
+                    TransitionProps={{
+                        direction: 'center'
+                    }}
+                >
+                    <Alert
+                        onClose={() => {
+                            setResultSnack(null)
+                        }} severity="success"
+                        // className='bg-purple rounded-lg text-white'
+                        sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}
+                    >
+                        {resultSnack}
+                    </Alert>
+                </Snackbar>
+            </div>
+            <div>
+                <Snackbar
+                    open={resultSnackErr}
+                    autoHideDuration={3000}
+                    onClose={() => {
+                        setResultSnackErr(null);
+                    }}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center'
+                    }}
+                    TransitionComponent={Fade}
+                    TransitionProps={{
+                        direction: 'center'
+                    }}
+                >
+                    <Alert
+                        onClose={() => {
+                            setResultSnackErr(null)
+                        }} severity="success"
+                        // className='bg-purple rounded-lg text-white'
+                        sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}
+                    >
+                        {resultSnackErr}
+                    </Alert>
+                </Snackbar>
+            </div>
+
+
+
 
         </div>
     )

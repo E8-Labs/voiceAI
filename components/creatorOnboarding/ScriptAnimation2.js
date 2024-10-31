@@ -78,8 +78,12 @@ export default function ScriptAnimation2({ onChangeIndex }) {
   const selectedPlanRef = useRef(selectedPlan);
   const [inputs, setInputs] = useState([
     { value: "", placeholder: "What is your name?" },
-    { value: "", placeholder: "Where are you from?" },
+    // { value: "", placeholder: "Where are you from?" },
   ]);
+  //code for input popup
+  const [openInputModal, setOpenInputModal] = useState(null);
+  const [indexSelected, setIndexSelected] = useState(null);
+  //for selecting multiple products
   const [inputRows, setInputRows] = useState([
     { productAmount: "", productName: "" },
   ]);
@@ -112,6 +116,14 @@ export default function ScriptAnimation2({ onChangeIndex }) {
   const [validLinkErr, setValidLinkErr] = useState(false);
   const [validOtherLinkErr, setValidOtherLinkErr] = useState(false);
   const [aiName, setAiName] = useState("");
+
+  //handle modal
+  const handleOpenInputModal = (item, index) => {
+    console.log("Check 1 clear")
+    console.log("Data settin in modal is", item, index)
+    setOpenInputModal(item);
+    setIndexSelected(index)
+  }
 
   const getAiData = async () => {
     const localData = localStorage.getItem('User');
@@ -414,6 +426,17 @@ export default function ScriptAnimation2({ onChangeIndex }) {
       display: "flex",
       alignItems: "center",
       marginBottom: "8px",
+    },
+    AddNewValueModal: {
+      height: "auto",
+      bgcolor: "transparent",
+      // p: 2,
+      mx: "auto",
+      my: "50vh",
+      transform: "translateY(-55%)",
+      borderRadius: 2,
+      border: "none",
+      outline: "none",
     },
   };
 
@@ -957,11 +980,14 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                         style={inputStyle.inputContainer}
                         className="flex -flex-row justify-between items-center rounded-lg"
                       >
-                        <input
+                        {/* <input
                           className="w-full bg-transparent border-none outline-none"
                           type="text"
                           value={input.value}
-                          autoFocus={index ? true : ""}
+                          onFocus={() => { handleOpenInputModal(index) }}
+                          onBlur={() => { setOpenInputModal(false) }}
+                          // autoFocus={index ? true : ""}
+                          // autoFocus={true}
                           onChange={(e) => handleInputChange(index, e)}
                           placeholder={input.placeholder}
                           style={{
@@ -970,8 +996,19 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                             fontWeight: "400",
                             fontFamily: "inter",
                           }}
-                        />
-                        <button onClick={() => handleDeleteInput(index)}>
+                        /> */}
+                        <button className="border-none outline-none" onClick={() => { handleOpenInputModal(input, index) }}>
+                          {
+                            input.value ?
+                              <div>
+                                {input.value}
+                              </div> :
+                              <div>
+                                {input.placeholder}
+                              </div>
+                          }
+                        </button>
+                        <button onClick={() => { handleDeleteInput(index) }}>
                           <Image
                             src="/assets/croseBtn.png"
                             alt="cross"
@@ -981,6 +1018,80 @@ export default function ScriptAnimation2({ onChangeIndex }) {
                         </button>
                       </div>
                     ))}
+                    {/* Modal to update donnot */}
+                    <Modal
+                      open={openInputModal}
+                      onClose={() => setOpenInputModal(null)}
+                      closeAfterTransition
+                      BackdropProps={{
+                        timeout: 1000,
+                        sx: {
+                          backgroundColor: "transparent",
+                          backdropFilter: "blur(20px)",
+                        },
+                      }}
+                    >
+                      <Box className="lg:w-5/12 sm:w-7/12 w-full" sx={inputStyle.AddNewValueModal}>
+                        <div className="flex flex-row justify-center w-full">
+                          <div
+                            className="sm:w-7/12 w-full"
+                            style={{
+                              backgroundColor: "#ffffff20",
+                              padding: 20,
+                              borderRadius: 10,
+                            }}
+                          >
+                            <div style={{ backgroundColor: "#ffffff", borderRadius: 7, padding: 10 }}>
+                              <div className='flex flex-row items-center justify-between p-2' style={{ fontWeight: '500', fontFamily: "inter", fontSize: 20 }}>
+                                {/* <p /> */}
+                                <p>Add KYC Question</p>
+                                <button onClick={() => { setOpenInputModal(null) }}
+                                >
+                                  <Image src="/assets/crossBtn.png" height={15} width={15} alt='*' />
+                                </button>
+                              </div>
+                              <div>
+                                {/* {indexSelected} */}
+                                <input
+                                  className="w-full bg-transparent border p-2 rounded outline-none"
+                                  type="text"
+                                  value={openInputModal?.value}
+                                  // autoFocus={index ? true : ""}
+                                  // autoFocus={true}
+                                  onChange={(e) => handleInputChange(indexSelected, e)}
+                                  placeholder={openInputModal?.placeholder}
+                                  style={{
+                                    marginRight: "8px",
+                                    fontSize: 13,
+                                    fontWeight: "400",
+                                    fontFamily: "inter",
+                                  }}
+                                />
+                              </div>
+                              <div className="mt-2">
+                                Example 1
+                              </div>
+                              <div>
+                                Example 2
+                              </div>
+                              <div>
+                                Example 3
+                              </div>
+                              <div className="mt-4 w-full flex flex-row justify-end">
+                                <button className="bg-purple text-white px-3 py-1"
+                                  onClick={() => { setOpenInputModal(false) }}
+                                  style={{
+                                    borderRadius: "20px"
+                                  }}
+                                >
+                                  Done
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </Box>
+                    </Modal>
                   </div>
 
                   {inputs.length < 10 && (

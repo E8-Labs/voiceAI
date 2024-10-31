@@ -23,8 +23,6 @@ const Page = () => {
     const [instaUrl, setInstaUrl] = useState(null);
     const [linkedInUrl, setLinkedInUrl] = useState("");
     const [webUrl, setWebUrl] = useState("");
-    // const [spotifyurl, setSpotifyurl] = useState("");
-    const [appleProducts, setAppleProducts] = useState("");
     const [loader, setLoader] = useState(false);
 
     const [validLinkErr, setValidLinkErr] = useState(false);
@@ -56,6 +54,8 @@ const Page = () => {
             case 'instagram': setInstaUrl(""); break;
             case 'spotify': setSpotifyUrl(""); break;
             case 'applepodcast': setApplePodcastUrl(""); break;
+            case 'web': setWebUrl(""); break;
+            case 'linkedin': setLinkedInUrl(""); break;
             // Add cases for other socials as needed
             default: break;
         }
@@ -98,58 +98,36 @@ const Page = () => {
                     } else {
                         router.push("/creator/buildscript2");
                     }
-                    // setAiData(response.data.data);
-                    // if (response.data.status === true) {
-                    //     let linkData = response.data.data
-                    //     console.log("Data of user is", Data.data.user);
-                    //     if (Data?.data?.user?.ai?.fbUrl) {
-                    //         setFbUrl(Data.data.user.ai.fbUrl)
-                    //     }
-                    //     if (linkData?.ai?.youtubeUrl) {
-                    //         setYoutubeUrl(linkData?.ai?.youtubeUrl)
-                    //     }
-                    //     if (linkData?.ai?.twitterUrl) {
-                    //         setTwitterUrl(linkData?.ai?.twitterUrl)
-                    //     }
-                    //     // if (linkData?.ai?.fbUrl) {
-                    //     //     setApplePodcastUrl(linkData?.ai?.fbUrl)
-                    //     // }
-                    //     if (linkData?.ai?.spotify_url) {
-                    //         setSpotifyUrl(linkData?.ai?.spotify_url)
-                    //     }
-                    //     if (linkData?.ai?.instaUrl) {
-                    //         setInstaUrl(linkData?.ai?.instaUrl)
-                    //     }
-                    // }
 
                     if (response && response.data.status === true) {
                         const linkData = response.data.data.ai;
                         const initialSocials = [];
 
-                        if (linkData.fbUrl) {
+                        if (linkData.fbUrl && linkData.fbUrl.trim()) {
                             setFbUrl(linkData.fbUrl);
                             initialSocials.push('facebook');
                         }
-                        if (linkData.youtubeUrl) {
+                        if (linkData.youtubeUrl && linkData.youtubeUrl.trim()) {
                             setYoutubeUrl(linkData.youtubeUrl);
                             initialSocials.push('youtube');
                         }
-                        if (linkData.twitterUrl) {
+                        if (linkData.twitterUrl && linkData.twitterUrl.trim()) {
                             setTwitterUrl(linkData.twitterUrl);
                             initialSocials.push('twitter');
                         }
-                        if (linkData.spotify_url) {
+                        if (linkData.spotify_url && linkData.spotify_url.trim()) {
                             setSpotifyUrl(linkData.spotify_url);
                             initialSocials.push('spotify');
                         }
-                        if (linkData.instaUrl) {
+                        if (linkData.instaUrl && linkData.instaUrl.trim()) {
                             setInstaUrl(linkData.instaUrl);
                             initialSocials.push('instagram');
                         }
-                        if (linkData.applePodcastUrl) {
+                        if (linkData.applePodcastUrl && linkData.applePodcastUrl.trim()) {
                             setApplePodcastUrl(linkData.applePodcastUrl);
                             initialSocials.push('applepodcast');
                         }
+
 
                         setSocials(initialSocials);
                         setAvailableSocials(availableSocials.filter(social => !initialSocials.includes(social)));
@@ -163,6 +141,12 @@ const Page = () => {
         }
     }
 
+
+    useEffect(() => {
+        console.log("Socials stored are", socials);
+        console.log("availableSocials are", availableSocials);
+    }, [socials])
+
     const handleUpdateAi = async () => {
         try {
             setUpdateLoader(true);
@@ -174,31 +158,31 @@ const Page = () => {
             console.log("Authtoken is", AuthToken);
             console.log("Apipath is", ApiPath);
             const formData = new FormData();
-            if (applePodcastUrl) {
-                formData.append("discord_url", applePodcastUrl);
-            }
-            if (fbUrl) {
-                formData.append("fb_url", fbUrl);
-            }
-            if (instaUrl) {
-                formData.append("insta_url", instaUrl);
-            }
-            if (spotifyUrl) {
-                formData.append("spotify_url", spotifyUrl);
-            }
-            if (twitterUrl) {
-                formData.append("twitter_url", twitterUrl);
-            }
-            if (youtubeUrl) {
-                formData.append("youtube_url", youtubeUrl);
-            }
+            // if (applePodcastUrl) {
+            formData.append("discord_url", applePodcastUrl);
+            // }
+            // if (fbUrl) {
+            formData.append("fb_url", fbUrl);
+            // }
+            // if (instaUrl) {
+            formData.append("insta_url", instaUrl);
+            // }
+            // if (spotifyUrl) {
+            formData.append("spotify_url", spotifyUrl);
+            // }
+            // if (twitterUrl) {
+            formData.append("twitter_url", twitterUrl);
+            // }
+            // if (youtubeUrl) {
+            formData.append("youtube_url", youtubeUrl);
+            // }
 
             console.log("Data being sent to the API:");
             for (let [key, value] of formData.entries()) {
                 console.log(`${key}: ${value}`);
             }
 
-            const response = await axios.post(ApiPath, {
+            const response = await axios.post(ApiPath, formData, {
                 headers: {
                     'Content-Type': 'application/json',
                     "Authorization": "Bearer " + AuthToken
@@ -868,6 +852,21 @@ const Page = () => {
                                                     {!socials.includes('linkedin') && (
                                                         <button onClick={() => handleAddSocial('linkedin')}>
                                                             <LinkedinLogo size={30} />
+                                                        </button>
+                                                    )}
+                                                    {!socials.includes('youtube') && (
+                                                        <button onClick={() => handleAddSocial('youtube')}>
+                                                            <YoutubeLogo size={30} />
+                                                        </button>
+                                                    )}
+                                                    {!socials.includes('instagram') && (
+                                                        <button onClick={() => handleAddSocial('instagram')}>
+                                                            <InstagramLogo size={30} />
+                                                        </button>
+                                                    )}
+                                                    {!socials.includes('twitter') && (
+                                                        <button onClick={() => handleAddSocial('twitter')}>
+                                                            <XLogo size={30} />
                                                         </button>
                                                     )}
                                                     {!socials.includes('web') && (

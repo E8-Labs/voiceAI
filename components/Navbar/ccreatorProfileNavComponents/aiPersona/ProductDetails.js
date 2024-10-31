@@ -123,7 +123,7 @@ const ProductDetails = ({ aiData, recallApi }) => {
                 <div style={{ fontWeight: "500", fontSize: 20, fontFamily: "inter" }}>
                     <span style={{ color: "#00000060" }}>Products & Services |</span> Product Details
                 </div>
-                <button className='underline text-purple' onClick={() => { setAddProductModal(true) }}>
+                <button className='underline text-purple outline-none border-none' onClick={() => { setAddProductModal(true) }}>
                     Add New
                 </button>
             </div>
@@ -160,7 +160,7 @@ const ProductDetails = ({ aiData, recallApi }) => {
                             <div style={{ fontWeight: "500", fontSize: 13, fontFamily: "inter", color: "#050A0860", textAlign: "center" }}>
                                 Please add your product
                             </div>
-                            <button className='bg-purple px-4 py-2 text-white' style={{ borderRadius: "50px" }} onClick={() => { setAddProductModal(true) }}>
+                            <button className='bg-purple px-4 py-2 text-white outline-none border-none' style={{ borderRadius: "50px" }} onClick={() => { setAddProductModal(true) }}>
                                 Add New
                             </button>
                         </div>
@@ -271,7 +271,7 @@ const ProductDetails = ({ aiData, recallApi }) => {
                                                             }
                                                             placeholder="Product Name"
                                                         />
-                                                        <button
+                                                        <button className='outline-none border-none'
                                                             onClick={() => handleDeleteRow(index)}
                                                             style={{ backgroundColor: "" }}
                                                         >
@@ -290,7 +290,7 @@ const ProductDetails = ({ aiData, recallApi }) => {
                                         <div className="mt-4">
                                             <button
                                                 onClick={addInputRow}
-                                                className="text-purple"
+                                                className="text-purple outline-none border-none"
                                                 style={{
                                                     fontWeight: "400",
                                                     fontSize: 13,
@@ -304,7 +304,7 @@ const ProductDetails = ({ aiData, recallApi }) => {
                                             {
                                                 productsLoader ?
                                                     <CircularProgress size={35} /> :
-                                                    <button className='bg-purple text-white w-full' style={{ fontSize: 15, fontWeight: "500", fontFamily: "inter", borderRadius: "50px", height: "48px" }}
+                                                    <button className='bg-purple text-white w-full outline-none border-none' style={{ fontSize: 15, fontWeight: "500", fontFamily: "inter", borderRadius: "50px", height: "48px" }}
                                                         onClick={handleUpdateAi}
                                                     >
                                                         Add Product

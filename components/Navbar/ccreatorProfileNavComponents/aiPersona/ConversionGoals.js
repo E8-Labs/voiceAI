@@ -1,10 +1,14 @@
-import { CircularProgress, FormControl, MenuItem, Select } from '@mui/material';
+import Apis from '@/components/apis/Apis';
+import { Alert, CircularProgress, Fade, FormControl, MenuItem, Select, Snackbar } from '@mui/material';
+import axios from 'axios';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
 
 const ConversionGoals = () => {
 
     const [conversationLoader, setConversationLoader] = useState(false);
+    const [SuccessSnack, setSuccessSnack] = useState(null);
+    const [ErrSnack, setErrSnack] = useState(null);
     //sell a product
     const [sellProduct, setSellProduct] = useState(false);
     const [value, setValue] = useState([]);
@@ -28,7 +32,9 @@ const ConversionGoals = () => {
             const AiPersonaDetails = JSON.parse(AiPersona);
             console.log("Ai details recieved from localstorage are :---", AiPersonaDetails);
             setInputRows(AiPersonaDetails.products);
-            const namesArray = AiPersonaDetails.products.map((item) => item.name);
+            // const namesArray = AiPersonaDetails.products.map((item) => item.name);
+            const namesArray = AiPersonaDetails.products.filter((item) => item.isSelling === true)
+            .map((item) => item.name);
             setValue(namesArray);
             if (AiPersonaDetails.products.length > 0) {
                 setSellProduct(true)
@@ -36,20 +42,69 @@ const ConversionGoals = () => {
         }
     }, []);
 
+    useEffect(() => {
+        console.log("Values selected are", value);
+        console.log("Input rows are", inputRows);
+    }, [value, inputRows])
+
     //select multiple menuitems
     const handleChange = (event) => {
         setValue(event.target.value);
     };
 
     //code to update AI
-    // const handleUpdateAi = async () => {
-    //     try{
+    const handleUpdateAi = async () => {
+        try {
+            setConversationLoader(true);
+            const localData = localStorage.getItem("User");
+            if (localData) {
+                const loginDetails = JSON.parse(localData);
+                const Authtoken = loginDetails.data.token;
+                const ApiPath = Apis.UpdateBuilAI;
+                const formData = new FormData();
+                // formData.append("calCalendarApiKey", CalenderKey);
 
-    //     }catch(error){
-    //         console.error("Error occured in update ai api is", error);
-            
-    //     }
-    // }
+                if (inputRows) {
+                    inputRows.forEach((product) => {
+                        formData.append(`id[${product.id}][productName]`, product.name);
+                        formData.append(`id[${product.id}][isSelling]`, product.isSelling);
+                    });
+                }
+
+                console.log("Data sending in update ai api is");
+                for (let [key, value] of formData.entries()) {
+                    console.log(`${key}: ${value}`);
+                }
+
+                const response = await axios.post(ApiPath, formData, {
+                    headers: {
+                        "Authorization": "Bearer " + Authtoken,
+                    }
+                });
+
+                console.log("Api path is :----", ApiPath);
+
+                if (response) {
+                    console.log("Response of update api is", response.data.data);
+                    if (response.data.status === true) {
+                        setSuccessSnack(response.data.message);
+                    } else if (response.data.status === false) {
+                        setErrSnack(response.data.message);
+                    }
+                }
+
+            } else {
+                alert("Cannot Proceed!! No user logged in");
+                return
+            }
+        }
+        catch (error) {
+            console.error("Error occured in update ai api is", error);
+        }
+        finally {
+            setConversationLoader(false);
+        }
+    }
 
     //code to validate urls
     const validateUrl = (url) => {
@@ -159,7 +214,7 @@ const ConversionGoals = () => {
                     //         </Select>
                     //     </FormControl>
                     // </div>
-                    <div className="w-8/12 flex flex-col mt-8">
+                    <div className="w-8/12 flex flex-col mt-4">
                         <FormControl className="w-full mt-4">
                             <Select
                                 multiple
@@ -336,7 +391,7 @@ const ConversionGoals = () => {
                                 <CircularProgress size={35} />
                             </div>
                         ) : (
-                            <button className='text-white bg-purple w-full outline-none border-none' style={{ borderRadius: "50px", height: "50px" }}>
+                            <button className='text-white bg-purple w-full outline-none border-none' style={{ borderRadius: "50px", height: "50px" }} onClick={handleUpdateAi}>
                                 Update
                             </button>
                         )
@@ -344,6 +399,63 @@ const ConversionGoals = () => {
                 </div>
 
             </div>
+
+            <div>
+                <Snackbar
+                    open={SuccessSnack}
+                    autoHideDuration={3000}
+                    onClose={() => {
+                        setSuccessSnack(null);
+                    }}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center'
+                    }}
+                    TransitionComponent={Fade}
+                    TransitionProps={{
+                        direction: 'center'
+                    }}
+                >
+                    <Alert
+                        onClose={() => {
+                            setSuccessSnack(null)
+                        }} severity="success"
+                        // className='bg-purple rounded-lg text-white'
+                        sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}
+                    >
+                        {SuccessSnack}
+                    </Alert>
+                </Snackbar>
+            </div>
+
+            <div>
+                <Snackbar
+                    open={ErrSnack}
+                    autoHideDuration={3000}
+                    onClose={() => {
+                        setErrSnack(null);
+                    }}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center'
+                    }}
+                    TransitionComponent={Fade}
+                    TransitionProps={{
+                        direction: 'center'
+                    }}
+                >
+                    <Alert
+                        onClose={() => {
+                            setErrSnack(null)
+                        }} severity="success"
+                        // className='bg-purple rounded-lg text-white'
+                        sx={{ width: 'auto', fontWeight: '700', fontFamily: 'inter', fontSize: '22' }}
+                    >
+                        {ErrSnack}
+                    </Alert>
+                </Snackbar>
+            </div>
+
         </div>
     )
 }
