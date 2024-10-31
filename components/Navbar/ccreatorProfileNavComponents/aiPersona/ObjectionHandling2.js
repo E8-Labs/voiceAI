@@ -85,7 +85,6 @@ const ObjectionHandling2 = () => {
                 console.log(`${key}: ${value}`);
             }
             console.log("Api path is", ApiPath);
-            return
             const response = await axios.post(ApiPath, formData, {
                 headers: {
                     "Content-Type": "application/json",
