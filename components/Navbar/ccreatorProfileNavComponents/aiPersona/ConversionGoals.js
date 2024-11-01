@@ -14,11 +14,12 @@ const ConversionGoals = () => {
     const [value, setValue] = useState([]);
     const [selected, setSlected] = useState("");
     const [inputRows, setInputRows] = useState([]);
+    const [selectedRows, setSelectedRows] = useState([]);
 
     //invite to webinar
     const [inviteWebinar, setInviteWebinar] = useState(false);
     const [webinarUrl, setWebinarUrl] = useState("");
-    const [setValidLinkErr, validLinkErr] = useState(false);
+    const [validLinkErr, setValidLinkErr] = useState(false);
 
     //some thing else
     const [someThingElse, setSomeThingElse] = useState(false);
@@ -34,10 +35,19 @@ const ConversionGoals = () => {
             setInputRows(AiPersonaDetails.products);
             // const namesArray = AiPersonaDetails.products.map((item) => item.name);
             const namesArray = AiPersonaDetails.products.filter((item) => item.isSelling === true)
-            .map((item) => item.name);
+                .map((item) => item.name);
             setValue(namesArray);
             if (AiPersonaDetails.products.length > 0) {
-                setSellProduct(true)
+                setSellProduct(true);
+            }
+            if (AiPersonaDetails.ai.webinarUrl) {
+                setInviteWebinar(true);
+                setWebinarUrl(AiPersonaDetails.ai.webinarUrl);
+            }
+            if (AiPersonaDetails.ai.goalUrl && AiPersonaDetails.ai.goalTitle) {
+                setSomeThingElse(true);
+                setOtherGoal(AiPersonaDetails.ai.goalUrl);
+                setOtherUrl(AiPersonaDetails.ai.goalTitle);
             }
         }
     }, []);
@@ -50,6 +60,23 @@ const ConversionGoals = () => {
     //select multiple menuitems
     const handleChange = (event) => {
         setValue(event.target.value);
+
+        const {
+            target: { value }
+        } = event;
+
+        // Update selected rows
+        setSelectedRows(
+            typeof value === "string" ? value.split(",") : value
+        );
+
+        // Update isSelling based on selection
+        setInputRows((prevRows) =>
+            prevRows.map((row) => ({
+                ...row,
+                isSelling: value.includes(row.name)
+            }))
+        );
     };
 
     //code to update AI
@@ -71,6 +98,10 @@ const ConversionGoals = () => {
                     });
                 }
 
+                formData.append("webinarUrl", webinarUrl);
+                formData.append("goalUrl", otherUrl);
+                formData.append("goalTitle", otherGoal);
+
                 console.log("Data sending in update ai api is");
                 for (let [key, value] of formData.entries()) {
                     console.log(`${key}: ${value}`);
@@ -83,10 +114,11 @@ const ConversionGoals = () => {
                 });
 
                 console.log("Api path is :----", ApiPath);
-
+                // return
                 if (response) {
                     console.log("Response of update api is", response.data.data);
                     if (response.data.status === true) {
+                        localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                         setSuccessSnack(response.data.message);
                     } else if (response.data.status === false) {
                         setErrSnack(response.data.message);
@@ -133,7 +165,7 @@ const ConversionGoals = () => {
     };
 
     return (
-        <div>
+        <div className='overflow-auto max-h-[70vh] scrollbar scrollbar-track-transparent scrollbar-thin scrollbar-thumb-purple'>
             <div>
                 <span style={{ color: "#00000060" }}>Products & Services |</span> Conversion Goals
             </div>

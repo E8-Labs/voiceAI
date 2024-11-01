@@ -247,7 +247,7 @@ const CallInstructions = () => {
                     Call Flow
                 </div>
                 <button
-                    className='underline text-purple'
+                    className='underline text-purple border-none outline-none'
                     onClick={() => { setOpenExamplesPopup(true) }}
                 >
                     View Examples
@@ -261,11 +261,20 @@ const CallInstructions = () => {
                             callInstructionData.map((item, index) => (
                                 <div key={item.id} className='flex flex-col items-center w-full'>
                                     <div className='flex flex-row items-center p-4 border-[1px] border-[#00000010] w-full justify-between rounded-lg'>
-                                        <div className='flex flex-row items-center gap-2'>
-                                            <div className='text-white bg-purple flex flex-row items-center justify-center' style={{ height: 29, width: 29, borderRadius: "50%" }}>
-                                                {index + 1}
+                                        <div className='flex flex-row items-center'>
+                                            <div style={{ width: "10%" }}>
+                                                <div className='text-white bg-purple flex flex-row items-center justify-center p-0 m-0'
+                                                    style={{
+                                                        borderRadius: "50%",
+                                                        height: "30px",
+                                                        width: "30px",
+                                                        fontSize: 15,
+                                                        resize: "contain"
+                                                    }}>
+                                                    {index + 1}
+                                                </div>
                                             </div>
-                                            <div style={styles.text1}>
+                                            <div style={{ ...styles.text1, width: "90%" }}>
                                                 {item.description}
                                             </div>
                                         </div>

@@ -149,6 +149,9 @@ const Dashboard = () => {
                 });
                 if (response) {
                     console.log("Response of get .my ai Api is", response.data.data);
+                    if (response.data.data) {
+                        localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
+                    }
                     if (response?.data?.data?.ai) {
                         console.log("Ai is already present")
                         if (response?.data?.data?.questions && response?.data?.data?.questions?.length > 0) {
@@ -166,7 +169,7 @@ const Dashboard = () => {
                         setEnablePRiceBtn(true);
                     } else {
                         setEnablePRiceBtn(false);
-                        setCallAmount(response.data.data.ai.price)
+                        setCallAmount(response.data.data.ai.price);
                     }
 
                     if (response?.data?.data?.ai?.aiObjective && response?.data?.data?.ai?.profession) {
@@ -216,6 +219,7 @@ const Dashboard = () => {
                 // const ApiPath = Apis.MyProfile;
                 const formData = new FormData();
                 formData.append('price', callPrice);
+                formData.append('isFree', false);
 
 
                 const response = await axios.post(ApiPath, formData, {
@@ -227,6 +231,9 @@ const Dashboard = () => {
                 if (response) {
                     console.log("Response of updateai Api is", response.data.data);
                     if (response.data.status === true) {
+                        setEnablePRiceBtn(false);
+                        localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
+                        setCallAmount(response.data.data.ai.price);
                         setShowEnablePriceModal(false);
                         setCallPrice("");
                     }
@@ -626,13 +633,12 @@ const Dashboard = () => {
                                                 {dashBoardData.totalCalls}
                                             </div> : "0"}
                                     </p>
-                                    <div className='flex flex-row items-center'>
-                                        {/* <Image src="/assets/creatorProfileNavIcons/greenUp.png" alt='up' height={13} width={10} /> */}
+                                    {/* <div className='flex flex-row items-center'>
                                         <ArrowUp className='mb-1' size={15} weight="bold" color='#00FF57' />
                                         <div style={styles.statsSubText}>
                                             2%
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
@@ -674,13 +680,12 @@ const Dashboard = () => {
                                                 {dashBoardData.totalDurationMinutes}
                                             </div> : "0"}
                                     </p>
-                                    <div className='flex flex-row items-center'>
-                                        {/* <Image src="/assets/creatorProfileNavIcons/greenUp.png" alt='up' height={13} width={10} /> */}
+                                    {/* <div className='flex flex-row items-center'>
                                         <ArrowUp className='mb-1' size={15} weight="bold" color='#00FF57' />
                                         <div style={styles.statsSubText}>
                                             2%
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
@@ -726,7 +731,7 @@ const Dashboard = () => {
                                             </div>
                                     }
 
-                                    {/* Modal to enable pricce if not */}
+                                    {/* Modal to enable pricce if not enabled price */}
                                     <Modal
                                         open={showEnablePriceModal}
                                         onClose={() => setShowEnablePriceModal(false)}
@@ -760,6 +765,9 @@ const Dashboard = () => {
                                                         </div>
                                                         <div className='w-full flex flex-row justify-center'>
                                                             <div className='w-10/12'>
+                                                                <div style={{ fontSize: 18, fontFamily: "inter", fontWeight: "500" }}>
+                                                                    Enable Price
+                                                                </div>
                                                                 <div className='w-10/12 rounded' style={styles.inputContainer}>
                                                                     {/* <div>$</div> */}
                                                                     <div className="flex items-center border-none border-gray-300 w-full">
@@ -959,13 +967,12 @@ const Dashboard = () => {
                                             <div>
                                                 {dashBoardData.totalEarnings.toFixed(2)}
                                             </div> : "0"}</p>
-                                    <div className='flex flex-row items-center'>
-                                        {/* <Image src="/assets/creatorProfileNavIcons/greenUp.png" alt='up' height={13} width={10} /> */}
+                                    {/* <div className='flex flex-row items-center'>
                                         <ArrowRight className='mb-1' size={15} weight="bold" color='white' />
                                         <div style={{ ...styles.statsSubText, color: "white" }}>
                                             Flat
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
