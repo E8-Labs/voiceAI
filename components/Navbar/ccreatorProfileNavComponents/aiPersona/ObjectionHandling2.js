@@ -60,6 +60,11 @@ const ObjectionHandling2 = () => {
             const AiDetails = JSON.parse(localAiPersonaDetails);
             setCallInstructionData(AiDetails.objectionHandling);
             console.log("Aidetails recieved from local storage are", AiDetails);
+            setAssuranceSolution(AiDetails.ai.reassurance);
+            setValidateconcerns(AiDetails.ai.validateConcerns);
+            setCompromisesandAlternatives(AiDetails.ai.compromiseAndAlternatives);
+            setPositiveRedirects(AiDetails.ai.positiveRedirects);
+            setProvideDetailedExplanation(AiDetails.ai.provideDetailedExplanation);
         }
     }, []);
 
@@ -98,7 +103,7 @@ const ObjectionHandling2 = () => {
                     console.log("Response of update ai api is", response);
                     localStorage.setItem('aiPersonaDetails', JSON.stringify(response.data.data));
                     setResultSnack(response.data.message);
-                }else if(response.data.status === false){
+                } else if (response.data.status === false) {
                     setResultSnackErr(response.data.message);
                 }
             }
@@ -561,7 +566,7 @@ const ObjectionHandling2 = () => {
                                     borderRadius: "50px", fontWeight: "500", fontSize: 18, fontFamily: "inter"
                                 }}
                                 onClick={handleUpdateAi}
-                                >
+                            >
                                 Update
                             </button>
                     }
