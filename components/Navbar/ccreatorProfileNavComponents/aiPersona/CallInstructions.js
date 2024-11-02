@@ -261,7 +261,7 @@ const CallInstructions = () => {
                             callInstructionData.map((item, index) => (
                                 <div key={item.id} className='flex flex-col items-center w-full'>
                                     <div className='flex flex-row items-center p-4 border-[1px] border-[#00000010] w-full justify-between rounded-lg'>
-                                        <div className='flex flex-row items-center'>
+                                        <div className='w-full flex flex-row items-center'>
                                             <div style={{ width: "10%" }}>
                                                 <div className='text-white bg-purple flex flex-row items-center justify-center p-0 m-0'
                                                     style={{

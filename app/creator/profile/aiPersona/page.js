@@ -24,6 +24,7 @@ import ObjectionHandling2 from '@/components/Navbar/ccreatorProfileNavComponents
 import ProfileStat from '@/components/ProfileStat';
 import ConversionGoals from '@/components/Navbar/ccreatorProfileNavComponents/aiPersona/ConversionGoals';
 import Calender from '@/components/Navbar/ccreatorProfileNavComponents/aiPersona/integrations/Calender';
+import KYCQuestions from '@/components/Navbar/ccreatorProfileNavComponents/aiPersona/KYCQuestions';
 
 const Page = () => {
 
@@ -804,10 +805,11 @@ const Page = () => {
                                             // <IntractionExamples recallApi={recallApi} aiData={aiData} />
                                             <CallInstructions recallApi={recallApi} aiData={aiData} />
                                         ) : selectedCallStrategy === 902 ? (
-                                            "Item 2"
-                                        ) : selectedCallStrategy === 903 ? (
-                                            "Item 3"
+                                            <KYCQuestions recallApi={recallApi} aiData={aiData} />
                                         ) : ""
+                                        // selectedCallStrategy === 903 ? (
+                                        //     "Item 3"
+                                        // ) : ""
                                     }
                                 </div>
                             ) : selectedMenu === 9 ? (

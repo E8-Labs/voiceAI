@@ -166,8 +166,11 @@ const ProfileNav = () => {
 
                 <div style={{ marginTop: 20 }}>
                     <button className='px-4 flex gap-4 flex-row items-center py-1'
-                        style={{ borderRadius: 50, backgroundColor: "#ffffff30", width: "fit-content" }}
-                        onClick={() => { window.open('https://www.youtube.com/watch?v=ETr1X8hXWoo', "_blank") }}
+                        style={{ borderRadius: 50, backgroundColor: pathName === "/creator/profile/about" ? "#552AFF" : "#ffffff30" , width: "fit-content", color: pathName === "/creator/profile/about" ? "white" : "black" }}
+                        onClick={() => {
+                            // window.open('https://www.youtube.com/watch?v=ETr1X8hXWoo', "_blank")
+                            router.push("/creator/profile/about");
+                        }}
                     >
                         <div className='flex flex-row items-center'>
                             <div style={{ border: "2px solid black", borderRadius: "50%" }}>
