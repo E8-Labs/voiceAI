@@ -93,7 +93,9 @@ const Apis = {
     DelComunictionFAQ: `${BasePath}api/ai/deleteCommonFaqs`,
     AddCommunicationStyle: `${BasePath}api/ai/addCommunicationStyle`,
     DelCommunicationStyle: `${BasePath}api/ai/deleteCommunicationStyle`,
-    UpdateCommunicationStyle: `${BasePath}api/ai/updateCommunicationStyle`
+    UpdateCommunicationStyle: `${BasePath}api/ai/updateCommunicationStyle`,
+
+    DeleteKYC: `${BasePath}api/ai/deleteKyc`
 
 
 }

@@ -295,6 +295,11 @@ const CallInstructions = () => {
                                                     vertical: 'top',
                                                     horizontal: 'center',
                                                 }}
+                                                PaperProps={{
+                                                    style: {
+                                                        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)', // Adjust shadow here
+                                                    },
+                                                }}
                                             >
                                                 <div className='p-2 flex flex-col justify-start items-start w-[100px]'>
                                                     <button className='text-purple' style={{ fontSize: 13, fontWeight: "500", fontFamily: "inter" }} onClick={() => { setUpdateStrategyModal(true) }}>
